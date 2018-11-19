@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Main {
 
@@ -6,15 +7,16 @@ public class Main {
 
         Data data = new Data();
         Menu menu = new Menu();
-        ConsoleReader consoleReader = new ConsoleReader();
 
 
 
-//        menu.loadNewTransaction();
+        //////////////              PRINTUJE CALA BAZE DANYCH              /////////////////////
+//      System.out.println(testList.fileToData().toString());
 
-//        consoleReader.readString();
-//        menu.newSearch();
-        data.fileToData();
+
+        /////////////            PYTA UZYKTOWNIKA O PODANIE JEGO MIESZKANIA              ///////////////
+        Transaction newTransaction = menu.loadNewTransaction();
+
 
     }
 }

@@ -1,47 +1,60 @@
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Menu {
     //zawiera wszytskie odwoania do funkcji programu
 
     private ConsoleReader consoleReader = new ConsoleReader();
+    private Data data = new Data();
+    private ArrayList<Transaction> transactionsBase = new ArrayList<>(data.fileToData());
 
 
-    public Menu() {
+    public Menu() throws IOException {
+
 
     }
 
     public void newSearch(){
 
-
         System.out.println("Witaj! Tu wycenisz swoje mieszkanie w kilku szybkich krokach. " +
                 "Zacznij od przygotowania podstawowych danych odno?nie swojego mieszkania");
-
 
     }
 
     public Transaction loadNewTransaction(){
-        Transaction newTransaction = new Transaction(LocalDate.now(), loadCity(), loadDisctrict(), loadStreet(), loadMarket(),
-                BigDecimal.valueOf(0), loadSize(), BigDecimal.valueOf(0), loadLevel(), loadParkingSpot(), loadStandardLevel(), loadConstructionYear());
-        System.out.println(newTransaction);
+
+        Transaction newTransaction = new Transaction();
+
+        newTransaction.setTransactionDate(LocalDate.now());
+        newTransaction.setCity(loadCity());
+        newTransaction.setDistrict(loadDisctrict(data.districList(transactionsBase)));
+        newTransaction.setStreet(loadStreet());
+        newTransaction.setTypeOfMarket(loadMarket());
+        newTransaction.setPrice(BigDecimal.valueOf(0));
+        newTransaction.setFlatArea(loadSize());
+        newTransaction.setPricePerM2(BigDecimal.valueOf(0));
+        newTransaction.setLevel(loadLevel());
+        newTransaction.setParkingSpot(loadParkingSpot());
+        newTransaction.setStandardLevel(loadStandardLevel());
+        newTransaction.setConstructionYearCategory(loadConstructionYearCategory());
+
+        System.out.println(newTransaction); // Wypisanie podanych przez urzytkownika danych w formie transakcji
         return newTransaction;
     }
 
-
-
-    private String loadDisctrict(){
+    private String loadDisctrict(List<String> districtList){
         System.out.println("Podaj w jakiej dzielnicy jest twoje mieszkanie");
-        String[] districtList = {"Babie Doły", "Cwarzno-Wiczlino", "Chylonia", "Cisowa", "Dąbrowa", "Działki Leśne", "Grabówek",
-                            "Kamienna Góra", "Karwiny", "Leszczynki", "Mały Kack", "Obłóże", "Oksywie", "Orłowo", "Pogóże",
-                             "Pustki Cisowskie", "Redłowo", "Sopot", "Śródmieście z Portem", "Wieli Kack", "Witomino",
-                            "Wzgórze Św. Maksymiliana"};
-
-        for (int i = 0; i < districtList.length; i++){
-            System.out.println(i + 1 + " - " + districtList[i]);
+        for (int i = 0; i < districtList.size(); i++){
+            System.out.println(i + 1 + " - " + districtList.get(i));
         }
-        return districtList[consoleReader.readInt()-1];
+        return districtList.get(consoleReader.readInt()-1);
     }
-    
+
     private String loadCity(){
         System.out.println("Podaj nazwę miasta, w którym mieszkasz");
         String[] cityList = {"Gdynia", "Sopot"};
@@ -91,12 +104,11 @@ public class Menu {
         return standardLevelList[consoleReader.readInt()-1];
     }
 
-    private String loadConstructionYear() {
+    private int loadConstructionYearCategory() {
         System.out.println("Podaj rok budowy budynku, w którym jest twoje mieszkaie");
         System.out.println("1 - przed rokiem 1970" + "\n" + "2 - między rokiem 1970 a 1990" + "\n" + "3 - po roku 1990");
-        return consoleReader.readString();
+        return consoleReader.readInt();
     }
-
 
     public void saveSession(){
 
