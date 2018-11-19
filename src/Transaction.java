@@ -50,7 +50,6 @@ public class Transaction {
                 ", constructionYear='" + constructionYear + '\'' +
                 ", constructionYearCategory=" + constructionYearCategory +
                 '}' +"\n";
->>>>>>> tomBuster
     }
 
 
