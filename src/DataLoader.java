@@ -28,6 +28,19 @@ public class DataLoader {
         for (String rowList : listFileTransakcjeCSV) {
 
             List<String> listTransaction = Arrays.asList(rowList.split(","));
+////////////////////////////////////////TO BE REMOVED IF ALL WORKS FINE///////////////////////////////////////////////
+
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy MM dd");
+
+//            Transaction newRowOfTransactionList = new Transaction(LocalDate.parse(listTransaction.get(0), formatter),
+//                    listTransaction.get(1), listTransaction.get(2).replaceAll(" ", ""),
+//                    listTransaction.get(3), listTransaction.get(4),new BigDecimal(listTransaction.get(5)),
+//                    new BigDecimal(listTransaction.get(6).replaceAll(",", ".")),
+//                    new BigDecimal(listTransaction.get(7)), Integer.valueOf(listTransaction.get(8)),
+//                    listTransaction.get(9), listTransaction.get(10), listTransaction.get(11));
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
             Transaction newRowOfTransactionList = new Transaction();
 
             newRowOfTransactionList.setCity(listTransaction.get(INDEX_CITY));
@@ -61,13 +74,8 @@ public class DataLoader {
             int constructionYearCategory = Integer.valueOf(constructionYearCategoryString);
             newRowOfTransactionList.setConstructionYearCategory(constructionYearCategory);
 
-
             listOfTransaction.add(newRowOfTransactionList);
         }
-
-
         return listOfTransaction;
-
-
     }
 }
