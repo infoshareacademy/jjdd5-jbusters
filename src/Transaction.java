@@ -3,7 +3,7 @@
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class Transaction  {
+public class Transaction {
     private LocalDate transactionDate;
     private String city;
     private String district;
@@ -34,30 +34,13 @@ public class Transaction  {
     }
 
 
-//    public String toString(){
-//        //wypisywanie transakcji jako string - format do ustalenia - trzeba pamietac o pliku konfiguracyjnym -
-//        // np to, ze wypisywanie doubli musi byc wywolywane z uzyciem formattera tak jak w string.format()
-//        return " ";
-//    }
-
-    @Override
-    public String toString() {
-        return "Transaction{" +
-                "transactionDate=" + transactionDate +
-                ", city='" + city + '\'' +
-                ", district='" + district + '\'' +
-                ", street='" + street + '\'' +
-                ", typeOfMarket='" + typeOfMarket + '\'' +
-                ", price=" + price +
-                ", flatArea=" + flatArea +
-                ", pricePerM2=" + pricePerM2 +
-                ", level=" + level +
-                ", parkingSpot='" + parkingSpot + '\'' +
-                ", standardLevel='" + standardLevel + '\'' +
-                ", constructionYear='" + constructionYear + '\'' +
-                ", constructionYearCategory=" + constructionYearCategory +
-                '}';
+    public String toString(){
+        //wypisywanie transakcji jako string - format do ustalenia - trzeba pamietac o pliku konfiguracyjnym -
+        // np to, ze wypisywanie doubli musi byc wywolywane z uzyciem formattera tak jak w string.format()
+        return " ";
     }
+
+
 
     public LocalDate getTransactionDate() {
         return transactionDate;
@@ -99,7 +82,5 @@ public class Transaction  {
         return constructionYearCategory;
     }
 
-    public BigDecimal getPricePerM2() {
-        return pricePerM2;
-    }
+
 }
