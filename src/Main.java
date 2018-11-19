@@ -9,9 +9,5 @@ public class Main {
 
         System.out.println(testList.fileToData().toString());
 
-
-
-
-
     }
 }
