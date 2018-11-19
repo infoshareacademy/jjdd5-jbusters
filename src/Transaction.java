@@ -31,6 +31,7 @@ public class Transaction {
         this.parkingSpot = parkingSpot;
         this.standardLevel = standardLevel;
         this.constructionYear = constructionYear;
+        //test
     }
 
 
