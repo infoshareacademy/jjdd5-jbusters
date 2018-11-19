@@ -22,6 +22,12 @@ public class Data {
 
     }
 
+//    public String toString() {
+//        for (Transaction transactionsListView : ) {
+//            System.out.println(transactionsListView);
+//        }
+//    }
+
     public ArrayList<Transaction> filterData() {
         //metoda wypluwajca przefiltrowana liste
         return null;

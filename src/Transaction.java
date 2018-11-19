@@ -35,21 +35,20 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return "Transaction{"+"\n" +
-                "transactionDate=" + transactionDate +
-                ", city='" + city + '\'' +
-                ", district='" + district + '\'' +
-                ", street='" + street + '\'' +
-                ", typeOfMarket='" + typeOfMarket + '\'' +
-                ", price=" + price +
-                ", flatArea=" + flatArea +
-                ", pricePerM2=" + pricePerM2 +
-                ", level=" + level +
-                ", parkingSpot='" + parkingSpot + '\'' +
-                ", standardLevel='" + standardLevel + '\'' +
-                ", constructionYear='" + constructionYear + '\'' +
-                ", constructionYearCategory=" + constructionYearCategory +
-                '}' +"\n";
+        return String.format("%-18s%-12s%-7s%-8s%-10s%-27s%-9s%-30s%-14s%-17s%-8s%-9s%-7s%-8s%-15s%-7s%-8s%-4s%-15s%-36s%-17s%-30s%-20s%-12s%-16s%-1s",
+                "Transaction date:", transactionDate,
+                "city:", city,
+                "district:", district,
+                "street:", street,
+                "market type:", typeOfMarket,
+                "price:", price,
+                "size:", flatArea,
+                "price per m2:", pricePerM2,
+                "level:", level,
+                "parking spot:", parkingSpot,
+                "standard level:", standardLevel,
+                "construction year:", constructionYear,
+                "year category:", constructionYearCategory);
     }
 
 
