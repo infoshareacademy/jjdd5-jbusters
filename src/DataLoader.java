@@ -1,4 +1,5 @@
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -58,12 +59,13 @@ public class DataLoader {
             newRowOfTransactionList.setTransactionDate(transactionDate);
 
             // convert String to BigDecimal
+            DecimalFormat decimalFormat = new DecimalFormat("#.##");
             String price = listTransaction.get(INDEX_PRICE);
-            newRowOfTransactionList.setPrice(new BigDecimal(price));
+            newRowOfTransactionList.setPrice(new BigDecimal(price).setScale(2, BigDecimal.ROUND_UP));
             String flatArea = listTransaction.get(INDEX_FLAT_AREA);
-            newRowOfTransactionList.setFlatArea(new BigDecimal(flatArea));
+            newRowOfTransactionList.setFlatArea(new BigDecimal(flatArea).setScale(2, BigDecimal.ROUND_UP));
             String pricePerM2 = listTransaction.get(INDEX_PRICE_PER_M2);
-            newRowOfTransactionList.setPricePerM2(new BigDecimal(pricePerM2));
+            newRowOfTransactionList.setPricePerM2(new BigDecimal(pricePerM2).setScale(2, BigDecimal.ROUND_UP));
 
             //convert String to int
             String levelString = listTransaction.get(INDEX_LEVEL);
