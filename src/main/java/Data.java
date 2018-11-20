@@ -17,7 +17,7 @@ public class Data {
 
     public List<Transaction> fileToData() throws IOException {
 
-        Path pathToFileTransactionCSV = Paths.get("resources", "transaction.csv");
+        Path pathToFileTransactionCSV = Paths.get("src", "main", "resources", "transaction.csv");
         List<String> listFileTransactionCSV = Files.readAllLines(pathToFileTransactionCSV);
         listFileTransactionCSV.remove(0);
 
