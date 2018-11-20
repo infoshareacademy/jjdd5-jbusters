@@ -10,11 +10,7 @@ public class Menu {
     private Data data = new Data();
 
 
-
-//    private String inputCity = loadCity(data.cityList(data.getTransactionsBase()));
-
     public Menu() throws IOException {
-
 
     }
 
@@ -25,13 +21,13 @@ public class Menu {
 
     }
 
-    public Transaction loadNewTransaction(){
+    public Transaction loadNewTransaction() throws IOException {
 
         Transaction newTransaction = new Transaction();
 
         newTransaction.setTransactionDate(LocalDate.now());
         newTransaction.setCity(loadCity(data.cityList(data.getTransactionsBase())));
-        newTransaction.setDistrict(loadDisctrict(data.districList(data.getTransactionsBase())));
+        newTransaction.setDistrict(loadDistrict(data.districtList(data.getTransactionsBase())));
         newTransaction.setStreet(loadStreet());
         newTransaction.setTypeOfMarket(loadMarket());
         newTransaction.setPrice(BigDecimal.valueOf(0));
@@ -46,7 +42,7 @@ public class Menu {
         return newTransaction;
     }
 
-    private String loadDisctrict(List<String> districtList){
+    private String loadDistrict(List<String> districtList){
         int printLimit = 0;
         MapSorter mapSorter = new MapSorter();
         System.out.println("Podaj w jakiej dzielnicy jest twoje mieszkanie");
@@ -148,10 +144,6 @@ public class Menu {
         System.out.println("1 - przed rokiem 1970" + "\n" + "2 - między rokiem 1970 a 1990" + "\n" + "3 - po roku 1990");
         return consoleReader.readInt();
     }
-
-//    public String getInputCity() {
-//        return inputCity;
-//    }
 
     public void saveSession(){
 

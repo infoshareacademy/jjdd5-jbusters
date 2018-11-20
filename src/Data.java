@@ -13,6 +13,7 @@ public class Data {
 
     private ArrayList<Transaction> transactionsBase = new ArrayList<>(fileToData());
 
+
     public  Data() throws IOException {
 
     }
@@ -41,8 +42,8 @@ public class Data {
 
     public List<String> cityList(List<Transaction> transactionBase) {
         List<String> cityList = new ArrayList<>();
-        for (int i = 0; i < transactionsBase.size(); i++) {
-            cityList.add(transactionsBase.get(i).getCity());
+        for (int i = 0; i < transactionBase.size(); i++) {
+            cityList.add(transactionBase.get(i).getCity());
         }
         TreeSet<String> noDuplicates = new TreeSet<>(cityList);
         cityList = new ArrayList<>(noDuplicates);
@@ -50,12 +51,18 @@ public class Data {
         return cityList;
     }
 
-    public List<String> districList(List<Transaction> transactionsBase) {
-
+    public List<String> districtList(List<Transaction> transactionsBase) throws IOException {
+        Menu menu = new Menu();
         List<String> districtList = new ArrayList<>();
         for (int i = 0; i < transactionsBase.size(); i++) {
-            districtList.add(transactionsBase.get(i).getDistrict());
+
+            //TODO NA PODSTAWIE WYBRANEGO PRZEZ UZYTKOWNIKA MIASTA WYPISAC ODPOWIEDNIE DZIELNICE
+            //TODO PROBLEM Z PRZECHWYCENIEM MIASTA I URZYCIA GO DO POROWNANIA
+//            if (menu.getInputCity().equals(transactionsBase.get(i).getCity())) {
+                districtList.add(transactionsBase.get(i).getDistrict());
+//            }
         }
+
         TreeSet<String> noDuplicates = new TreeSet<>(districtList);
         districtList = new ArrayList<>(noDuplicates);
 
