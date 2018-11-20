@@ -1,13 +1,22 @@
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        Data testList = new Data();
+        Data data = new Data();
+        Menu menu = new Menu();
 
 
-        System.out.println(testList.fileToData().toString());
+
+
+        //////////////              PRINTUJE CALA BAZE DANYCH              /////////////////////
+      System.out.println(data.fileToData().subList(20, 50).toString());
+
+
+        /////////////            PYTA UZYKTOWNIKA O PODANIE JEGO MIESZKANIA              ///////////////
+//        Transaction newTransaction = menu.loadNewTransaction();
 
     }
 }
