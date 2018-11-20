@@ -1,18 +1,17 @@
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class Menu {
     //zawiera wszytskie odwoania do funkcji programu
 
     private ConsoleReader consoleReader = new ConsoleReader();
     private Data data = new Data();
-    private ArrayList<Transaction> transactionsBase = new ArrayList<>(data.fileToData());
 
+
+
+//    private String inputCity = loadCity(data.cityList(data.getTransactionsBase()));
 
     public Menu() throws IOException {
 
@@ -31,8 +30,8 @@ public class Menu {
         Transaction newTransaction = new Transaction();
 
         newTransaction.setTransactionDate(LocalDate.now());
-        newTransaction.setCity(loadCity());
-        newTransaction.setDistrict(loadDisctrict(data.districList(transactionsBase)));
+        newTransaction.setCity(loadCity(data.cityList(data.getTransactionsBase())));
+        newTransaction.setDistrict(loadDisctrict(data.districList(data.getTransactionsBase())));
         newTransaction.setStreet(loadStreet());
         newTransaction.setTypeOfMarket(loadMarket());
         newTransaction.setPrice(BigDecimal.valueOf(0));
@@ -43,26 +42,66 @@ public class Menu {
         newTransaction.setStandardLevel(loadStandardLevel());
         newTransaction.setConstructionYearCategory(loadConstructionYearCategory());
 
-        System.out.println(newTransaction); // Wypisanie podanych przez urzytkownika danych w formie transakcji
+        System.out.println(newTransaction);         // Wypisanie podanych przez urzytkownika danych w formie transakcji
         return newTransaction;
     }
 
     private String loadDisctrict(List<String> districtList){
+        int printLimit = 0;
+        MapSorter mapSorter = new MapSorter();
         System.out.println("Podaj w jakiej dzielnicy jest twoje mieszkanie");
+        char[] charsArray =  consoleReader.readString().toCharArray();                     // urzytkownik wpisuje dzielnice jako string i zamieniany jest na charArray
+        Map<String, Integer> districtMap = new HashMap<>();
         for (int i = 0; i < districtList.size(); i++){
-            System.out.println(i + 1 + " - " + districtList.get(i));
+            Integer counter = 0;
+            for (int j = 0; j < charsArray.length; j++) {
+                if (districtList.get(i).indexOf(charsArray[j]) != -1) {
+                    counter ++;                                                 // pętla porównuje ile z podanych liter znajdire się w nazwie dzielnic
+                }
+                districtMap.put(districtList.get(i), counter);                  // tworzona jest mapa - dzielnica jako key, counter jako value
+            }
         }
-        return districtList.get(consoleReader.readInt()-1);
+        Map<String, Integer> sortedMap = mapSorter.sorter(districtMap);         // sortowanie mapy wzgledem value od najwiekszego do najmniejszego
+        List<String> sortedDistrictList = new ArrayList<String>(sortedMap.keySet());
+
+        if (sortedDistrictList.size() < 5) {
+            printLimit = sortedDistrictList.size();
+        } else {
+            printLimit = 5;
+        }
+        for (int i = 0; i < printLimit; i++){
+            System.out.println(i + 1 + " - " + sortedDistrictList.get(i));      // wypisanie na ekran 5 dzielnic z najwiekszym counterem
+        }
+        return sortedDistrictList.get(consoleReader.readInt()-1);
     }
 
-    private String loadCity(){
+    private String loadCity(List<String> cityList){
+        int printLimit = 0;
+        MapSorter mapSorter = new MapSorter();
         System.out.println("Podaj nazwę miasta, w którym mieszkasz");
-        String[] cityList = {"Gdynia", "Sopot"};
-
-        for (int i = 0; i < cityList.length; i++) {
-            System.out.println(i + 1 + " - " + cityList[i]);
+        char[] charsArray = consoleReader.readString().toCharArray();
+        Map<String, Integer> cityMap = new HashMap<>();
+        for (int i = 0; i <cityList.size(); i++) {
+            Integer counter = 0;
+            for (int j = 0; j < charsArray.length; j++) {
+                if (cityList.get(i).indexOf(charsArray[j]) != -1) {
+                    counter ++;
+                }
+                cityMap.put(cityList.get(i), counter);
+            }
         }
-        return cityList[consoleReader.readInt()-1];
+        Map<String, Integer> sortedMap = mapSorter.sorter(cityMap);
+        List<String> sortedCityList = new ArrayList<>(sortedMap.keySet());
+        if (sortedCityList.size() < 5) {
+            printLimit = sortedCityList.size();
+        } else {
+            printLimit = 5;
+        }
+
+        for (int i = 0; i < printLimit; i++) {
+            System.out.println(i + 1 + " - " + sortedCityList.get(i));
+        }
+        return sortedCityList.get(consoleReader.readInt()-1);
     }
 
     private String loadStreet() {
@@ -109,6 +148,10 @@ public class Menu {
         System.out.println("1 - przed rokiem 1970" + "\n" + "2 - między rokiem 1970 a 1990" + "\n" + "3 - po roku 1990");
         return consoleReader.readInt();
     }
+
+//    public String getInputCity() {
+//        return inputCity;
+//    }
 
     public void saveSession(){
 
