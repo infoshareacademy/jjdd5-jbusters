@@ -1,7 +1,6 @@
 //Klasa zawierajaca dane wczytywane z pliku, kazdy rekord w pliku excel bedzie jedna iinstancja clasy transaction.
 // klasa data powinna zawierac metody pozwalajace dodawac rekord do bazy(pliku?)
 
-import sun.reflect.generics.tree.Tree;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -31,12 +30,6 @@ public class Data {
     }
 
 
-//    public String toString() {
-//        for (Transaction transactionsListView : ) {
-//            System.out.println(transactionsListView);
-//        }
-//    }
-
     // Metoda do wyciągania z bazy danych listy dzielnic bez duplikatów + w kolejnkości alfabetycznej
     // i przekazuje ja do wyswietlenia w menu
 
@@ -51,16 +44,13 @@ public class Data {
         return cityList;
     }
 
-    public List<String> districtList(List<Transaction> transactionsBase) throws IOException {
-        Menu menu = new Menu();
+    public List<String> districtList(List<Transaction> transactionsBase, Transaction newTransaction) throws IOException {
+
         List<String> districtList = new ArrayList<>();
         for (int i = 0; i < transactionsBase.size(); i++) {
-
-            //TODO NA PODSTAWIE WYBRANEGO PRZEZ UZYTKOWNIKA MIASTA WYPISAC ODPOWIEDNIE DZIELNICE
-            //TODO PROBLEM Z PRZECHWYCENIEM MIASTA I URZYCIA GO DO POROWNANIA
-//            if (menu.getInputCity().equals(transactionsBase.get(i).getCity())) {
+            if (newTransaction.getCity().equals(transactionsBase.get(i).getCity())) {
                 districtList.add(transactionsBase.get(i).getDistrict());
-//            }
+            }
         }
 
         TreeSet<String> noDuplicates = new TreeSet<>(districtList);

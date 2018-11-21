@@ -5,8 +5,11 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        Data data = new Data();
+//        Data data = new Data();
         Menu menu = new Menu();
+        Data data = new Data();
+        ConsoleReader consoleReader = menu.getConsoleReader();
+        NewTransactionCreator newTransactionCreator = new NewTransactionCreator(data, consoleReader);
 
 
 
@@ -16,7 +19,7 @@ public class Main {
 
 
         /////////////            PYTA UZYKTOWNIKA O PODANIE JEGO MIESZKANIA              ///////////////
-        Transaction newTransaction = menu.loadNewTransaction();
+        Transaction newTransaction = newTransactionCreator.loadNewTransaction();
 
     }
 }
