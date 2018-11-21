@@ -1,3 +1,5 @@
+package com.infoshareacademy.jbusters.console;
+
 import com.infoshareacademy.jbusters.console.ConsoleReader;
 import com.infoshareacademy.jbusters.console.Menu;
 import com.infoshareacademy.jbusters.data.Data;
