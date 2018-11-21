@@ -11,11 +11,14 @@ import java.util.*;
 
 public class Data {
 
-    public  Data() throws IOException {
+    private List<Transaction> listOfTransactionsFromFile;
 
+    public Data() throws IOException {
+        listOfTransactionsFromFile = new ArrayList<>();
     }
 
     public List<Transaction> fileToData() throws IOException {
+
 
         Path pathToFileTransactionCSV = Paths.get("src", "main", "resources", "transaction.csv");
         List<String> listFileTransactionCSV = Files.readAllLines(pathToFileTransactionCSV);
@@ -55,6 +58,10 @@ public class Data {
 
     public void addTransactionToData(Transaction trans) {
         //metoda dodajca tranzakcje do bazy danych
+    }
+
+    public List<Transaction> getListOfTransactionsFromFile() {
+        return listOfTransactionsFromFile;
     }
 }
 
