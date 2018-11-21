@@ -1,4 +1,4 @@
-//pojedynczy rekord - zawiera wszytstkie pola wymagane do wyceny mieszkania
+package com.infoshareacademy.jbusters.data;//pojedynczy rekord - zawiera wszytstkie pola wymagane do wyceny mieszkania
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -35,7 +35,7 @@ public class Transaction {
                 "parking spot:", parkingSpot,
                 "standard level:", standardLevel,
                 "construction year:", constructionYear,
-                "year category:", constructionYearCategory)+"\n";
+                "year category:", constructionYearCategory);
     }
 
 

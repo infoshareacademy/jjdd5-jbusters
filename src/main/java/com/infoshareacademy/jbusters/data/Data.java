@@ -1,7 +1,7 @@
-//Klasa zawierajaca dane wczytywane z pliku, kazdy rekord w pliku excel bedzie jedna iinstancja clasy transaction.
+package com.infoshareacademy.jbusters.data;//Klasa zawierajaca dane wczytywane z pliku, kazdy rekord w pliku excel bedzie jedna iinstancja clasy transaction.
 // klasa data powinna zawierac metody pozwalajace dodawac rekord do bazy(pliku?)
 
-import sun.reflect.generics.tree.Tree;
+import com.infoshareacademy.jbusters.*;
 
 import java.io.IOException;
 import java.nio.file.Files;

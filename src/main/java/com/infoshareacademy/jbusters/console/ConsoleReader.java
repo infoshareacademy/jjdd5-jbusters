@@ -1,3 +1,5 @@
+package com.infoshareacademy.jbusters.console;
+
 import java.math.BigDecimal;
 import java.util.Scanner;
 
