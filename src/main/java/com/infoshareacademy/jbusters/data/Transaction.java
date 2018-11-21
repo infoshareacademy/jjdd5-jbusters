@@ -1,4 +1,4 @@
-package data;//pojedynczy rekord - zawiera wszytstkie pola wymagane do wyceny mieszkania
+package data;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

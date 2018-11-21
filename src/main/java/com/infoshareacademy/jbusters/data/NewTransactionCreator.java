@@ -2,7 +2,6 @@ package data;
 
 import console.ConsoleReader;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -22,7 +21,7 @@ public class NewTransactionCreator {
     }
 
 
-    public Transaction loadNewTransaction() throws IOException {
+    public Transaction loadNewTransaction() {
 
 
         newTransaction.setTransactionDate(LocalDate.now());
@@ -46,10 +45,10 @@ public class NewTransactionCreator {
         int printLimit;
         MapSorter mapSorter = new MapSorter();
         System.out.println("Podaj w jakiej dzielnicy jest twoje mieszkanie");
-        char[] charsArray =  consoleReader.readString().toCharArray();                     // urzytkownik wpisuje dzielnice jako string i zamieniany jest na charArray
+        char[] charsArray =  consoleReader.readString().toCharArray();                      // urzytkownik wpisuje dzielnice jako string i zamieniany jest na charArray
         Map<String, Integer> districtMap = new HashMap<>();
         compare(districtList, charsArray, districtMap);
-        Map<String, Integer> sortedMap = mapSorter.sorter(districtMap);         // sortowanie mapy wzgledem value od najwiekszego do najmniejszego
+        Map<String, Integer> sortedMap = mapSorter.sorter(districtMap);                     // sortowanie mapy wzgledem value od najwiekszego do najmniejszego
         List<String> sortedDistrictList = new ArrayList<>(sortedMap.keySet());
 
         if (sortedDistrictList.size() < 5) {
@@ -58,7 +57,7 @@ public class NewTransactionCreator {
             printLimit = 5;
         }
         for (int i = 0; i < printLimit; i++){
-            System.out.println(i + 1 + " - " + sortedDistrictList.get(i));      // wypisanie na ekran 5 dzielnic z najwiekszym counterem
+            System.out.println(i + 1 + " - " + sortedDistrictList.get(i));                  // wypisanie na ekran 5 dzielnic z najwiekszym counterem
         }
         return sortedDistrictList.get(consoleReader.readInt(1, printLimit)-1);
     }

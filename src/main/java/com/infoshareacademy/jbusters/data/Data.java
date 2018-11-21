@@ -31,7 +31,7 @@ public class Data {
     }
 
 
-    // Metoda do wyciągania z bazy danych listy dzielnic bez duplikatów + w kolejnkości alfabetycznej
+    // Metoda do wyciągania z bazy danych listy miast/dzielnic bez duplikatów + w kolejnkości alfabetycznej
     // i przekazuje ja do wyswietlenia w menu
 
     public List<String> cityList(List<Transaction> transactionBase) {
@@ -45,7 +45,7 @@ public class Data {
         return cityList;
     }
 
-    public List<String> districtList(List<Transaction> transactionsBase, Transaction newTransaction) throws IOException {
+    public List<String> districtList(List<Transaction> transactionsBase, Transaction newTransaction)  {
 
         List<String> districtList = new ArrayList<>();
         for (int i = 0; i < transactionsBase.size(); i++) {
