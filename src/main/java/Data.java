@@ -28,12 +28,6 @@ public class Data {
     }
 
 
-//    public String toString() {
-//        for (Transaction transactionsListView : ) {
-//            System.out.println(transactionsListView);
-//        }
-//    }
-
     // Metoda do wyciągania z bazy danych listy dzielnic bez duplikatów + w kolejnkości alfabetycznej
     // i przekazuje ja do wyswietlenia w menu
     public List<String> districList(List<Transaction> transactionsBase) {

@@ -11,12 +11,11 @@ public class Main {
 
 
 
-        //////////////              PRINTUJE CALA BAZE DANYCH              /////////////////////
+        //PRINTUJE CALA BAZE DANYCH
+
       System.out.println(data.fileToData().subList(20, 50).toString());
 
 
-        /////////////            PYTA UZYKTOWNIKA O PODANIE JEGO MIESZKANIA              ///////////////
-//        Transaction newTransaction = menu.loadNewTransaction();
 
     }
 }

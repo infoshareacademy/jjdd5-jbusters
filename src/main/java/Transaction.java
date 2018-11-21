@@ -18,20 +18,7 @@ public class Transaction {
     private String constructionYear;
     private int constructionYearCategory;
 
-//    public Transaction(LocalDate transactionDate, String city, String district, String street, String typeOfMarket, BigDecimal price, BigDecimal flatArea, BigDecimal pricePerM2, int level, String parkingSpot, String standardLevel, String constructionYear) {
-//        this.transactionDate = transactionDate;
-//        this.city = city;
-//        this.district = district;
-//        this.street = street;
-//        this.typeOfMarket = typeOfMarket;
-//        this.price = price;
-//        this.flatArea = flatArea;
-//        this.pricePerM2 = pricePerM2;
-//        this.level = level;
-//        this.parkingSpot = parkingSpot;
-//        this.standardLevel = standardLevel;
-//        this.constructionYear = constructionYear;
-//    }
+
 
     @Override
     public String toString() {
@@ -52,11 +39,6 @@ public class Transaction {
     }
 
 
-//    public String toString(){
-//        //wypisywanie transakcji jako string - format do ustalenia - trzeba pamietac o pliku konfiguracyjnym -
-//        // np to, ze wypisywanie doubli musi byc wywolywane z uzyciem formattera tak jak w string.format()
-//        return " ";
-//    }
 
     // ************GETTER AND SETTER***********
 
