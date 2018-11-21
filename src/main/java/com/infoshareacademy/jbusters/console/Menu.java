@@ -1,16 +1,7 @@
-package com.infoshareacademy.jbusters.console;
+package console;
 
-
-import com.infoshareacademy.jbusters.data.Data;
-import com.infoshareacademy.jbusters.data.Transaction;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 public class Menu {
     //zawiera wszytskie odwoania do funkcji programu

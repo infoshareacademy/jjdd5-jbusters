@@ -1,4 +1,4 @@
-package com.infoshareacademy.jbusters.data;//pojedynczy rekord - zawiera wszytstkie pola wymagane do wyceny mieszkania
+package data;//pojedynczy rekord - zawiera wszytstkie pola wymagane do wyceny mieszkania
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

@@ -1,11 +1,10 @@
-import com.infoshareacademy.jbusters.console.ConsoleReader;
-import com.infoshareacademy.jbusters.console.Menu;
-import com.infoshareacademy.jbusters.data.Data;
-import com.infoshareacademy.jbusters.data.NewTransactionCreator;
-import com.infoshareacademy.jbusters.data.Transaction;
+package console;
+
+import data.Data;
+import data.NewTransactionCreator;
+import data.Transaction;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class Main {
 
@@ -21,7 +20,7 @@ public class Main {
 
 
         //////////////              PRINTUJE CALA BAZE DANYCH              /////////////////////
-        data.fileToData().subList(20, 50).forEach(System.out::println);
+//        data.fileToData().subList(20, 50).forEach(System.out::println);
 
 
         /////////////            PYTA UZYKTOWNIKA O PODANIE JEGO MIESZKANIA              ///////////////

@@ -1,4 +1,4 @@
-package com.infoshareacademy.jbusters.data;
+package data;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;

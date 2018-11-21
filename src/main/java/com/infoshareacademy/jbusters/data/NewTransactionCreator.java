@@ -1,9 +1,6 @@
-package com.infoshareacademy.jbusters.data;
+package data;
 
-import com.infoshareacademy.jbusters.console.ConsoleReader;
-import com.infoshareacademy.jbusters.data.Data;
-import com.infoshareacademy.jbusters.data.Transaction;
-
+import console.ConsoleReader;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -46,14 +43,14 @@ public class NewTransactionCreator {
     }
 
     private String loadDistrict(List<String> districtList){
-        int printLimit = 0;
+        int printLimit;
         MapSorter mapSorter = new MapSorter();
         System.out.println("Podaj w jakiej dzielnicy jest twoje mieszkanie");
         char[] charsArray =  consoleReader.readString().toCharArray();                     // urzytkownik wpisuje dzielnice jako string i zamieniany jest na charArray
         Map<String, Integer> districtMap = new HashMap<>();
         compare(districtList, charsArray, districtMap);
         Map<String, Integer> sortedMap = mapSorter.sorter(districtMap);         // sortowanie mapy wzgledem value od najwiekszego do najmniejszego
-        List<String> sortedDistrictList = new ArrayList<String>(sortedMap.keySet());
+        List<String> sortedDistrictList = new ArrayList<>(sortedMap.keySet());
 
         if (sortedDistrictList.size() < 5) {
             printLimit = sortedDistrictList.size();
@@ -63,23 +60,11 @@ public class NewTransactionCreator {
         for (int i = 0; i < printLimit; i++){
             System.out.println(i + 1 + " - " + sortedDistrictList.get(i));      // wypisanie na ekran 5 dzielnic z najwiekszym counterem
         }
-        return sortedDistrictList.get(consoleReader.readInt()-1);
-    }
-
-    private void compare(List<String> districtList, char[] charsArray, Map<String, Integer> districtMap) {
-        for (int i = 0; i < districtList.size(); i++){
-            Integer counter = 0;
-            for (int j = 0; j < charsArray.length; j++) {
-                if (districtList.get(i).indexOf(charsArray[j]) != -1) {
-                    counter ++;                                                 // pętla porównuje ile z podanych liter znajdire się w nazwie dzielnic
-                }
-                districtMap.put(districtList.get(i), counter);                  // tworzona jest mapa - dzielnica jako key, counter jako value
-            }
-        }
+        return sortedDistrictList.get(consoleReader.readInt(1, printLimit)-1);
     }
 
     public String loadCity(List<String> cityList){
-        int printLimit = 0;
+        int printLimit;
         MapSorter mapSorter = new MapSorter();
         System.out.println("Podaj nazwę miasta, w którym mieszkasz");
         char[] charsArray = consoleReader.readString().toCharArray();
@@ -96,7 +81,19 @@ public class NewTransactionCreator {
         for (int i = 0; i < printLimit; i++) {
             System.out.println(i + 1 + " - " + sortedCityList.get(i));
         }
-        return sortedCityList.get(consoleReader.readInt()-1);
+        return sortedCityList.get(consoleReader.readInt(1, printLimit)-1);
+    }
+
+    private void compare(List<String> districtList, char[] charsArray, Map<String, Integer> districtMap) {
+        for (int i = 0; i < districtList.size(); i++){
+            Integer counter = 0;
+            for (int j = 0; j < charsArray.length; j++) {
+                if (districtList.get(i).indexOf(charsArray[j]) != -1) {
+                    counter ++;                                                 // pętla porównuje ile z podanych liter znajdire się w nazwie dzielnic
+                }
+                districtMap.put(districtList.get(i), counter);                  // tworzona jest mapa - dzielnica jako key, counter jako value
+            }
+        }
     }
 
     private String loadStreet() {
@@ -107,7 +104,7 @@ public class NewTransactionCreator {
     private String loadMarket() {
         System.out.println("Podaj rodzaj rynku" + "\n" + "1 - Rynek wtórny" + "\n" + "2 - Rynek pierwotny");
         String[] marketList = {"RYNEK WTÓRNY", "RYNEK PIERWOTNY"};
-        return marketList[consoleReader.readInt()-1];
+        return marketList[consoleReader.readInt(1, 2)-1];
     }
 
     private BigDecimal loadSize() {
@@ -121,7 +118,7 @@ public class NewTransactionCreator {
         for (int i = 0; i < parkingSpotList.length; i++) {
             System.out.println(i + 1 + " - " + parkingSpotList[i]);
         }
-        return parkingSpotList[consoleReader.readInt()-1];
+        return parkingSpotList[consoleReader.readInt(1, 4)-1];
     }
 
     private int loadLevel() {
@@ -135,12 +132,12 @@ public class NewTransactionCreator {
         for (int i = 0; i <standardLevelList.length; i++) {
             System.out.println(i + 1 + " - " + standardLevelList[i]);
         }
-        return standardLevelList[consoleReader.readInt()-1];
+        return standardLevelList[consoleReader.readInt(1 ,6)-1];
     }
 
     private int loadConstructionYearCategory() {
         System.out.println("Podaj rok budowy budynku, w którym jest twoje mieszkaie");
         System.out.println("1 - przed rokiem 1970" + "\n" + "2 - między rokiem 1970 a 1990" + "\n" + "3 - po roku 1990");
-        return consoleReader.readInt();
+        return consoleReader.readInt(1, 3);
     }
 }

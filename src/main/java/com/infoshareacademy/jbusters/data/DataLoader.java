@@ -1,6 +1,4 @@
-package com.infoshareacademy.jbusters.data;
-
-import com.infoshareacademy.jbusters.*;
+package data;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
