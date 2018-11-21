@@ -34,7 +34,6 @@ public class DataLoader {
 
             List<String> listTransaction = Arrays.asList(rowList.split(","));
 
-
             Transaction newRowOfTransactionList = new Transaction();
 
             newRowOfTransactionList.setCity(listTransaction.get(INDEX_CITY));

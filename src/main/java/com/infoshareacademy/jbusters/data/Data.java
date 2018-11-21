@@ -11,6 +11,9 @@ import java.util.*;
 
 public class Data {
 
+    private ArrayList<Transaction> transactionsBase = new ArrayList<>(fileToData());
+
+
     public  Data() throws IOException {
 
     }
@@ -30,15 +33,35 @@ public class Data {
 
     // Metoda do wyciągania z bazy danych listy dzielnic bez duplikatów + w kolejnkości alfabetycznej
     // i przekazuje ja do wyswietlenia w menu
-    public List<String> districList(List<Transaction> transactionsBase) {
+
+    public List<String> cityList(List<Transaction> transactionBase) {
+        List<String> cityList = new ArrayList<>();
+        for (int i = 0; i < transactionBase.size(); i++) {
+            cityList.add(transactionBase.get(i).getCity());
+        }
+        TreeSet<String> noDuplicates = new TreeSet<>(cityList);
+        cityList = new ArrayList<>(noDuplicates);
+
+        return cityList;
+    }
+
+    public List<String> districtList(List<Transaction> transactionsBase, Transaction newTransaction) throws IOException {
+
         List<String> districtList = new ArrayList<>();
         for (int i = 0; i < transactionsBase.size(); i++) {
-            districtList.add(transactionsBase.get(i).getDistrict());
+            if (newTransaction.getCity().equals(transactionsBase.get(i).getCity())) {
+                districtList.add(transactionsBase.get(i).getDistrict());
+            }
         }
         TreeSet<String> noDuplicates = new TreeSet<>(districtList);
         districtList = new ArrayList<>(noDuplicates);
 
         return districtList;
+    }
+
+
+    public ArrayList<Transaction> getTransactionsBase() {
+        return transactionsBase;
     }
 
 
