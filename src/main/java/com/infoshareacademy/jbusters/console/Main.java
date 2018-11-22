@@ -16,14 +16,9 @@ public class Main {
         ConsoleReader consoleReader = menu.getConsoleReader();
         NewTransactionCreator newTransactionCreator = new NewTransactionCreator(data, consoleReader);
 
+        data.fileToData().subList(20, 50).forEach(System.out::println);
 
-        //////////////              PRINTUJE CALA BAZE DANYCH              /////////////////////
-//        data.fileToData().subList(20, 50).forEach(System.out::println);
-
-        /////////////            PYTA UZYKTOWNIKA O PODANIE JEGO MIESZKANIA              ///////////////
         Transaction newTransaction = newTransactionCreator.loadNewTransaction();
-
-        //newTransactionCreator.loadNewTransaction();
 
     }
 }

@@ -20,8 +20,7 @@ public class ConsoleReader {
                     return inputInt;
                 }
 
-            }
-            catch (java.util.InputMismatchException e) {
+            } catch (java.util.InputMismatchException e) {
                 System.out.println("Podaj liczbę ");
                 scanner.nextLine();
             }
@@ -34,8 +33,7 @@ public class ConsoleReader {
         while (true) {
             try {
                 return BigDecimal.valueOf(scanner.nextDouble());
-            }
-            catch (java.util.InputMismatchException e) {
+            } catch (java.util.InputMismatchException e) {
                 System.out.println("Podaj liczbę ");
                 scanner.nextLine();
             }
@@ -60,8 +58,7 @@ public class ConsoleReader {
         while (true) {
             try {
                 return scanner.nextInt();
-            }
-            catch (java.util.InputMismatchException e) {
+            } catch (java.util.InputMismatchException e) {
                 System.out.println("Podaj liczbę ");
                 scanner.nextLine();
             }

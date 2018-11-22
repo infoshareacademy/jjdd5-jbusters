@@ -23,6 +23,7 @@ public class DataLoader {
     private static final int INDEX_STANDARD_LEVEL = 10;
     private static final int INDEX_CONSTRUCTION_YEAR = 11;
     private static final int INDEX_CONSTRUCTION_YEAR_CATEGORY = 12;
+    private static final String separator = ",";
 
     public List<Transaction> createTransactionList(List<String> listFileTransakcjeCSV) {
 
@@ -30,7 +31,7 @@ public class DataLoader {
 
         for (String rowList : listFileTransakcjeCSV) {
 
-            List<String> listTransaction = Arrays.asList(rowList.split(","));
+            List<String> listTransaction = Arrays.asList(rowList.split(separator));
 
             Transaction newRowOfTransactionList = new Transaction();
 

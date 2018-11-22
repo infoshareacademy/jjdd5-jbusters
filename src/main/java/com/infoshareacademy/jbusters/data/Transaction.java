@@ -18,8 +18,6 @@ public class Transaction {
     private String constructionYear;
     private int constructionYearCategory;
 
-
-
     @Override
     public String toString() {
         return String.format("%-18s%-12s%-7s%-8s%-10s%-27s%-9s%-30s%-14s%-17s%-8s%-12s%-7s%-8s%-15s%-10s%-8s%-4s%-15s%-36s%-17s%-30s%-20s%-12s%-16s%-1s",
@@ -38,10 +36,7 @@ public class Transaction {
                 "year category:", constructionYearCategory);
     }
 
-
-
     // ************GETTER AND SETTER***********
-
 
     public LocalDate getTransactionDate() {
         return transactionDate;

@@ -15,23 +15,23 @@ public class Data {
 
     private ArrayList<Transaction> transactionsBase = new ArrayList<>(fileToData());
 
-
-    public  Data() throws IOException {
-
-    }
-
-    public List<Transaction> fileToData() throws IOException {
+    public List<Transaction> fileToData() {
 
         Path pathToFileTransactionCSV = Paths.get("src", "main", "resources", "transaction.csv");
-        List<String> listFileTransactionCSV = Files.readAllLines(pathToFileTransactionCSV);
-        listFileTransactionCSV.remove(0);
+        List<String> listFileTransactionCSV = null;
+        try {
+            listFileTransactionCSV = Files.readAllLines(pathToFileTransactionCSV);
+            listFileTransactionCSV.remove(0);
+            DataLoader data = new DataLoader();
 
-        DataLoader data = new DataLoader();
-
-        return data.createTransactionList(listFileTransactionCSV);
+            return data.createTransactionList(listFileTransactionCSV);
+        } catch (IOException e) {
+            System.out.println("Error while loading data: ");
+            e.printStackTrace();
+        }
+        return null;
 
     }
-
 
     // Metoda do wyciągania z bazy danych listy miast/dzielnic bez duplikatów + w kolejnkości alfabetycznej
     // i przekazuje ja do wyswietlenia w menu
@@ -47,7 +47,7 @@ public class Data {
         return cityList;
     }
 
-    public List<String> districtList(List<Transaction> transactionsBase, Transaction newTransaction)  {
+    public List<String> districtList(List<Transaction> transactionsBase, Transaction newTransaction) {
 
         List<String> districtList = new ArrayList<>();
         for (int i = 0; i < transactionsBase.size(); i++) {
@@ -62,7 +62,7 @@ public class Data {
     }
 
 
-    public ArrayList<Transaction> getTransactionsBase() {
+    public List<Transaction> getTransactionsBase() {
         return transactionsBase;
     }
 
