@@ -9,11 +9,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeSet;
 
 public class Data {
 
-    private ArrayList<Transaction> transactionsBase = new ArrayList<>(fileToData());
+    private List<Transaction> transactionsBase = new ArrayList<>(fileToData());
 
     public List<Transaction> fileToData() {
 
@@ -41,7 +42,7 @@ public class Data {
         for (int i = 0; i < transactionBase.size(); i++) {
             cityList.add(transactionBase.get(i).getCity());
         }
-        TreeSet<String> noDuplicates = new TreeSet<>(cityList);
+        Set<String> noDuplicates = new TreeSet<>(cityList);
         cityList = new ArrayList<>(noDuplicates);
 
         return cityList;
@@ -55,7 +56,7 @@ public class Data {
                 districtList.add(transactionsBase.get(i).getDistrict());
             }
         }
-        TreeSet<String> noDuplicates = new TreeSet<>(districtList);
+        Set<String> noDuplicates = new TreeSet<>(districtList);
         districtList = new ArrayList<>(noDuplicates);
 
         return districtList;
