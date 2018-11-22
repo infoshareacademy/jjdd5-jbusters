@@ -1,4 +1,4 @@
-package console;
+package com.infoshareacademy.jbusters.console;
 
 
 import java.io.IOException;

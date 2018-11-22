@@ -1,6 +1,8 @@
-package data;
+package com.infoshareacademy.jbusters.data;
 
-import console.ConsoleReader;
+
+
+import com.infoshareacademy.jbusters.console.ConsoleReader;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
