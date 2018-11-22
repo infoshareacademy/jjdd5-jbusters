@@ -4,6 +4,7 @@ package com.infoshareacademy.jbusters.data;
 // klasa data powinna zawierac metody pozwalajace dodawac rekord do bazy(pliku?)
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 public class Data {
 
@@ -68,9 +70,25 @@ public class Data {
     }
 
 
-    public ArrayList<Transaction> filterData() {
-        //metoda wypluwajca przefiltrowana liste
-        return null;
+    public class filterTest {
+
+        // metoda zwracajaca liste tranzakcji, ktora jest wynikiem wielokrotnego przefiltrowania gwnej bazy tranzakcji
+        //kolejnosc filtrow: miasto/dzielnica/rynek/kategoria budowy/ data tranzakcji/powierzchnia mieszkania
+        public ArrayList<Transaction> filterData(Transaction userTransaction) {
+            List<Transaction> lista = transactionsBase.stream()
+
+                    .filter(transaction -> transaction.getCity().equalsIgnoreCase(userTransaction.getCity()))
+                    .filter(transaction -> transaction.getDistrict().trim().equalsIgnoreCase(userTransaction.getDistrict()))
+                    .filter(transaction -> transaction.getTypeOfMarket().equals(userTransaction.getTypeOfMarket()))
+                    .filter(transaction -> transaction.getConstructionYearCategory()==(userTransaction.getConstructionYearCategory()))
+                    .filter(transaction -> transaction.getTransactionDate().isAfter(userTransaction.getTransactionDate().minusYears(2)))
+                    .filter(transaction -> ((transaction.getFlatArea()).compareTo(userTransaction.getFlatArea().add(new BigDecimal(20.0))))<=0)
+                    .filter(transaction -> ((transaction.getFlatArea()).compareTo(userTransaction.getFlatArea().subtract(new BigDecimal(20.0))))>=0)
+
+                    .collect(Collectors.toList());
+
+            return new ArrayList(lista);
+        }
     }
 
     public void addTransactionToData(Transaction trans) {
