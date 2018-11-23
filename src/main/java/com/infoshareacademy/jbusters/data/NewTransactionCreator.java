@@ -12,6 +12,10 @@ import java.util.Map;
 
 public class NewTransactionCreator {
 
+    public Transaction getNewTransaction() {
+        return newTransaction;
+    }
+
     private Transaction newTransaction = new Transaction();
     private final Data data;
     private final ConsoleReader consoleReader;

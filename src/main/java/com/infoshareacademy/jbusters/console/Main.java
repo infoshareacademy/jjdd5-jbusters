@@ -10,5 +10,6 @@ public class Main {
 
         menu.welcome();
         menu.startProgram();
+
     }
 }

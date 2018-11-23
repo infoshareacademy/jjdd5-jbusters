@@ -2,8 +2,14 @@ package com.infoshareacademy.jbusters.console;
 
 import com.infoshareacademy.jbusters.data.Data;
 import com.infoshareacademy.jbusters.data.NewTransactionCreator;
+import com.infoshareacademy.jbusters.data.Transaction;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Menu {
     //zawiera wszytskie odwoania do funkcji programu
@@ -26,7 +32,7 @@ public class Menu {
                 "Wpisz odpowiedni numer by poruszac sie po menu" + "\n");
     }
 
-    public void startProgram() {
+    public void startProgram() throws FileNotFoundException {
 
         System.out.println("MENU"+ "\n");
         System.out.println("1 - Wycen moje mieszkanie" +"\n" +
@@ -43,6 +49,7 @@ public class Menu {
             }
             case 2: {
                 System.out.println("Under construction");
+                saveSession(newTransactionCreator.getNewTransaction());
                 startProgram();
                 break;
             }
@@ -64,9 +71,30 @@ public class Menu {
     }
 
 
-    public void saveSession() {
+    public void saveSession(Transaction newTransaction) throws FileNotFoundException {
+//        Transaction newTransaction = newTransactionCreator.getNewTransaction();
 
+        String transactionString = Stream.of(
+                newTransaction.getTransactionDate().toString(),
+                newTransaction.getCity(),
+                newTransaction.getDistrict(),
+                newTransaction.getStreet(),
+                newTransaction.getTypeOfMarket(),
+                newTransaction.getPrice().toString(),
+                newTransaction.getFlatArea().toString(),
+                newTransaction.getPricePerM2().toString(),
+                String.valueOf(newTransaction.getLevel()) ,
+                newTransaction.getParkingSpot(),
+                newTransaction.getStandardLevel(),
+                newTransaction.getConstructionYear(),
+                String.valueOf(newTransaction.getConstructionYearCategory()))
+        .collect(Collectors.joining(","));
 
+        PrintWriter fileWriter = new PrintWriter(new File("test.txt"));
+        fileWriter.append(transactionString);
+        fileWriter.close();
+
+        System.out.println(transactionString);
     }
 
     public void exit() {
