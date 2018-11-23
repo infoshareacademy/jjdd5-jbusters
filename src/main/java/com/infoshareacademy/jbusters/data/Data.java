@@ -70,27 +70,6 @@ public class Data {
     }
 
 
-    public class filterTest {
-
-        // metoda zwracajaca liste tranzakcji, ktora jest wynikiem wielokrotnego przefiltrowania gwnej bazy tranzakcji
-        //kolejnosc filtrow: miasto/dzielnica/rynek/kategoria budowy/ data tranzakcji/powierzchnia mieszkania
-        public ArrayList<Transaction> filterData(Transaction userTransaction) {
-            List<Transaction> lista = transactionsBase.stream()
-
-                    .filter(transaction -> transaction.getCity().equalsIgnoreCase(userTransaction.getCity()))
-                    .filter(transaction -> transaction.getDistrict().trim().equalsIgnoreCase(userTransaction.getDistrict()))
-                    .filter(transaction -> transaction.getTypeOfMarket().equals(userTransaction.getTypeOfMarket()))
-                    .filter(transaction -> transaction.getConstructionYearCategory()==(userTransaction.getConstructionYearCategory()))
-                    .filter(transaction -> transaction.getTransactionDate().isAfter(userTransaction.getTransactionDate().minusYears(2)))
-                    .filter(transaction -> ((transaction.getFlatArea()).compareTo(userTransaction.getFlatArea().add(new BigDecimal(20.0))))<=0)
-                    .filter(transaction -> ((transaction.getFlatArea()).compareTo(userTransaction.getFlatArea().subtract(new BigDecimal(20.0))))>=0)
-
-                    .collect(Collectors.toList());
-
-            return new ArrayList(lista);
-        }
-    }
-
     public void addTransactionToData(Transaction trans) {
         //metoda dodajca tranzakcje do bazy danych
     }
