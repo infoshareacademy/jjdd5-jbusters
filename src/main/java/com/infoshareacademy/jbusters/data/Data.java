@@ -16,6 +16,8 @@ public class Data {
 
     private List<Transaction> transactionsBase = new ArrayList<>(fileToData());
 
+
+
     public List<Transaction> fileToData() {
 
         Path pathToFileTransactionCSV = Paths.get("src", "main", "resources", "transaction.csv");
