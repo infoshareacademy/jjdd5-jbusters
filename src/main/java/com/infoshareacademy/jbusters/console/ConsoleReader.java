@@ -44,7 +44,7 @@ public class ConsoleReader {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            while (!scanner.hasNext("[A-Za-z]+")) {
+            while (!scanner.hasNext("[A-Za-zęóąśłżźćń.0-9]+")) {
                 System.out.println("Błąd, wpisz ponownie: ");
                 scanner.nextLine();
             }

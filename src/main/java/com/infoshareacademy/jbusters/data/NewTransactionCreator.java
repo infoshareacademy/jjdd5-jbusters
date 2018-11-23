@@ -12,10 +12,6 @@ import java.util.Map;
 
 public class NewTransactionCreator {
 
-    public Transaction getNewTransaction() {
-        return newTransaction;
-    }
-
     private Transaction newTransaction = new Transaction();
     private final Data data;
     private final ConsoleReader consoleReader;
@@ -141,5 +137,13 @@ public class NewTransactionCreator {
         System.out.println("Podaj rok budowy budynku, w którym jest twoje mieszkaie");
         System.out.println("1 - przed rokiem 1970" + "\n" + "2 - między rokiem 1970 a 1990" + "\n" + "3 - po roku 1990");
         return consoleReader.readInt(1, 3);
+    }
+
+    public Transaction getNewTransaction() {
+        return newTransaction;
+    }
+
+    public void setNewTransaction(Transaction newTransaction) {
+        this.newTransaction = newTransaction;
     }
 }
