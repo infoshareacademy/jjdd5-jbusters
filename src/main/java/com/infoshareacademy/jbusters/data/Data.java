@@ -68,14 +68,5 @@ public class Data {
         return transactionsBase;
     }
 
-
-    public ArrayList<Transaction> filterData() {
-        //metoda wypluwajca przefiltrowana liste
-        return null;
-    }
-
-    public void addTransactionToData(Transaction trans) {
-        //metoda dodajca tranzakcje do bazy danych
-    }
 }
 

@@ -9,6 +9,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -19,14 +20,12 @@ public class Menu {
     private Data data = new Data();
     private NewTransactionCreator newTransactionCreator = new NewTransactionCreator(data, consoleReader);
 
+    private DataLoader dataLoader;
+
     private Path pathToUserFile = Paths.get("test.txt");
 
     public Menu() {
-
-    }
-
-    public void newSearch() {
-
+        this.dataLoader = new DataLoader();
     }
 
     public void welcome() {
@@ -77,7 +76,7 @@ public class Menu {
                 break;
             }
             case 4: {
-                if (createFlatsListFromFile() != null) {
+                if (!dataLoader.createFlatsListFromFile(pathToUserFile).isEmpty()) {
                     newTransactionCreator.setNewTransaction(loadTransaction());
                 }
                 loadMenu();
@@ -96,8 +95,8 @@ public class Menu {
     }
 
     public void saveSession(Transaction newTransaction) throws FileNotFoundException {
-        if (Files.exists(getPathToUserFile())) {
-            if (checkIfFlatExist(createFlatsListFromFile())) {
+        if (Files.exists(pathToUserFile)) {
+            if (checkIfFlatExist(dataLoader.createFlatsListFromFile(pathToUserFile))) {
                 System.out.println("Już istnieje taka transakcja!");
             } else {
                 saveTransaction(newTransaction);
@@ -108,9 +107,9 @@ public class Menu {
     }
 
     public Transaction loadTransaction() {
-        List<Transaction> userList = createFlatsListFromFile();
+        List<Transaction> userList = dataLoader.createFlatsListFromFile(pathToUserFile);
 
-        if (userList != null) {
+        if (!dataLoader.createFlatsListFromFile(pathToUserFile).isEmpty()) {
             for (int i = 0; i < userList.size(); i++) {
                 System.out.println("Mieszkanie nr " + (i + 1) + " " + userList.get(i).toString());
             }
@@ -166,28 +165,7 @@ public class Menu {
         System.out.println("Twoja transakcja została zapisana");
     }
 
-    public List<Transaction> createFlatsListFromFile() {
-        List<String> userFlats;
-        List<Transaction> userList = null;
-        try {
-            userFlats = Files.readAllLines(getPathToUserFile());
-            DataLoader dataLoader = new DataLoader();
-            userList = dataLoader.createTransactionList(userFlats);
-        } catch (IOException e) {
-            System.out.println("Brak pliku z zapisanymi transakcjami użytkownika. Tego nie pomalujesz");
-        }
-        return userList;
-    }
-
     public void exit() {
         System.out.println("Zapraszamy ponownie");
-    }
-
-    public ConsoleReader getConsoleReader() {
-        return consoleReader;
-    }
-
-    public Path getPathToUserFile() {
-        return pathToUserFile;
     }
 }
