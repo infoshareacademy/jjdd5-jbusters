@@ -53,18 +53,18 @@ public class Menu {
                 break;
             }
             case 2: {
-               if (newTransactionCreator.getNewTransaction().getCity() == null) {
-                   System.out.println("Najpierw wprowadź mieszkanie, które chcesz wycenić." + "\n" +
-                           "Możesz je wprowadzić ręcznie, bądz wczytać z pliku, jeśli zostało wcześniej zapisane.");
-                   loadMenu();
-               } else {
-                   // TU WSTAWI SIE WYWOŁANIE FUNKCI WYCENY PODANEGO MIESZKANIA
-                   System.out.println("Dokonano wyceny twojego mieszkania: ");
-                   System.out.println(newTransactionCreator.getNewTransaction().toString());
-                   System.out.println("Wartość twojego mieszkania to - 0zł!");
-                   loadMenu();
-               }
-            break;
+                if (newTransactionCreator.getNewTransaction().getCity() == null) {
+                    System.out.println("Najpierw wprowadź mieszkanie, które chcesz wycenić." + "\n" +
+                            "Możesz je wprowadzić ręcznie, bądz wczytać z pliku, jeśli zostało wcześniej zapisane.");
+                    loadMenu();
+                } else {
+                    // TU WSTAWI SIE WYWOŁANIE FUNKCI WYCENY PODANEGO MIESZKANIA
+                    System.out.println("Dokonano wyceny twojego mieszkania: ");
+                    System.out.println(newTransactionCreator.getNewTransaction().toString());
+                    System.out.println("Wartość twojego mieszkania to - 0zł!");
+                    loadMenu();
+                }
+                break;
             }
             case 3: {
                 try {
@@ -117,22 +117,22 @@ public class Menu {
             System.out.println("Podaj nr mieszkańia, które chcesz załadować");
             int chosenFlat = consoleReader.readInt(1, userList.size());
             System.out.println("Twoje mieszknie zostało załadowane");
-            return userList.get(chosenFlat-1);
+            return userList.get(chosenFlat - 1);
         }
         return null;
     }
 
     public boolean checkIfFlatExist(List<Transaction> userList) {
-        for (int i = 0; i < userList.size(); i++ ) {
+        for (int i = 0; i < userList.size(); i++) {
             if (
-                userList.get(i).getCity().equals(newTransactionCreator.getNewTransaction().getCity()) &&
-                userList.get(i).getDistrict().equals(newTransactionCreator.getNewTransaction().getDistrict()) &&
-                userList.get(i).getStreet().equals(newTransactionCreator.getNewTransaction().getStreet()) &&
-                userList.get(i).getFlatArea().equals(newTransactionCreator.getNewTransaction().getFlatArea()) &&
-                userList.get(i).getConstructionYearCategory() == (newTransactionCreator.getNewTransaction().getConstructionYearCategory()) &&
-                userList.get(i).getParkingSpot().equals(newTransactionCreator.getNewTransaction().getParkingSpot()) &&
-                userList.get(i).getStandardLevel().equals(newTransactionCreator.getNewTransaction().getStandardLevel()) &&
-                userList.get(i).getTypeOfMarket().equals(newTransactionCreator.getNewTransaction().getTypeOfMarket())) {
+                    userList.get(i).getCity().equals(newTransactionCreator.getNewTransaction().getCity()) &&
+                            userList.get(i).getDistrict().equals(newTransactionCreator.getNewTransaction().getDistrict()) &&
+                            userList.get(i).getStreet().equals(newTransactionCreator.getNewTransaction().getStreet()) &&
+                            userList.get(i).getFlatArea().equals(newTransactionCreator.getNewTransaction().getFlatArea()) &&
+                            userList.get(i).getConstructionYearCategory() == (newTransactionCreator.getNewTransaction().getConstructionYearCategory()) &&
+                            userList.get(i).getParkingSpot().equals(newTransactionCreator.getNewTransaction().getParkingSpot()) &&
+                            userList.get(i).getStandardLevel().equals(newTransactionCreator.getNewTransaction().getStandardLevel()) &&
+                            userList.get(i).getTypeOfMarket().equals(newTransactionCreator.getNewTransaction().getTypeOfMarket())) {
                 return true;
             }
         }
@@ -174,7 +174,7 @@ public class Menu {
             DataLoader dataLoader = new DataLoader();
             userList = dataLoader.createTransactionList(userFlats);
         } catch (IOException e) {
-            System.out.println("Brak pliku z zapisanymi transakcjami użytkownika");
+            System.out.println("Brak pliku z zapisanymi transakcjami użytkownika. Tego nie pomalujesz");
         }
         return userList;
     }
@@ -186,6 +186,7 @@ public class Menu {
     public ConsoleReader getConsoleReader() {
         return consoleReader;
     }
+
     public Path getPathToUserFile() {
         return pathToUserFile;
     }
