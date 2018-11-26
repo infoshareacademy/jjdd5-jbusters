@@ -25,9 +25,6 @@ public class Menu {
 
     }
 
-    public void newSearch() {
-
-    }
 
     public void welcome() {
         System.out.println("Witaj! Tu wycenisz swoje mieszkanie w kilku szybkich krokach." + "\n" + "\n" +
