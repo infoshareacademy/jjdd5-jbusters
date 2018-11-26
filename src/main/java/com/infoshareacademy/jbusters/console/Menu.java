@@ -13,14 +13,6 @@ public class Menu {
     private NewTransactionCreator newTransactionCreator = new NewTransactionCreator(data, consoleReader);
 
 
-    public Menu() throws IOException {
-
-    }
-
-    public void newSearch() {
-
-    }
-
     public void welcome() {
         System.out.println("Witaj! Tu wycenisz swoje mieszkanie w kilku szybkich krokach." + "\n" +
                 "Wpisz odpowiedni numer by poruszac sie po menu" + "\n");
@@ -28,13 +20,13 @@ public class Menu {
 
     public void startProgram() {
 
-        System.out.println("MENU"+ "\n");
-        System.out.println("1 - Wycen moje mieszkanie" +"\n" +
-                            "2 - Zapisz moje mieszkanie do pliku" + "\n" +
-                            "3 - Zaladuj moje mieszkanie" + "\n" +
-                            "4 - Wpisz mieszkanie do bazy" + "\n" +
-                            "5 - Wyjscie"+ "\n" + "podaj numer...");
-        int menuChoise = consoleReader.readInt(1,5);
+        System.out.println("MENU" + "\n");
+        System.out.println("1 - Wycen moje mieszkanie" + "\n" +
+                "2 - Zapisz moje mieszkanie do pliku" + "\n" +
+                "3 - Zaladuj moje mieszkanie" + "\n" +
+                "4 - Wpisz mieszkanie do bazy" + "\n" +
+                "5 - Wyjscie" + "\n" + "podaj numer...");
+        int menuChoise = consoleReader.readInt(1, 5);
 
         switch (menuChoise) {
             case 1: {

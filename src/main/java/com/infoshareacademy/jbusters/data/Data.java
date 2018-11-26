@@ -34,6 +34,7 @@ public class Data {
         } catch (IOException e) {
             System.out.println("Error while loading data: ");
             e.printStackTrace();
+            LOGGER.error("Error loading file: "+ pathToFileTransactionCSV);
         }
         return null;
 

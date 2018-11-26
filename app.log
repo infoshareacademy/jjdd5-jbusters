@@ -1,0 +1,5 @@
+2018-11-26 15:31:20,216 INFO com.infoshareacademy.jbusters.console.ConsoleReader [main] Create Console >Reader
+2018-11-26 15:31:20,242 INFO com.infoshareacademy.jbusters.data.Data [main] Load file :src/main/resources/transaction.csv
+2018-11-26 15:33:56,425 INFO com.infoshareacademy.jbusters.data.Data [main] Load file :src/main/resources/transaction.csv
+2018-11-26 15:35:33,797 INFO com.infoshareacademy.jbusters.data.Data [main] Load file :src/main/resources/transaction.csv
+2018-11-26 15:36:02,516 INFO com.infoshareacademy.jbusters.data.Data [main] Load file :src/main/resources/transaction.csv

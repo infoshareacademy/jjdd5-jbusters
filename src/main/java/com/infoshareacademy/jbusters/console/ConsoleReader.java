@@ -1,13 +1,15 @@
 package com.infoshareacademy.jbusters.console;
 
+import com.infoshareacademy.jbusters.data.Data;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class ConsoleReader {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleReader.class);
 
-    public ConsoleReader() {
-
-    }
 
     public int readInt(int minValue, int maxValue) {   // podanie zakresu liczb jakie uzytkownik moze wpisac, sa one pobierane z wielkosci tablicy
         Scanner scanner = new Scanner(System.in);
