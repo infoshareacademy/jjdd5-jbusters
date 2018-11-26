@@ -36,6 +36,7 @@ public class NewTransactionCreator {
         newTransaction.setStandardLevel(loadStandardLevel());
         newTransaction.setConstructionYearCategory(loadConstructionYearCategory());
 
+
         System.out.println(newTransaction);         // Wypisanie podanych przez urzytkownika danych w formie transakcji
         return newTransaction;
     }

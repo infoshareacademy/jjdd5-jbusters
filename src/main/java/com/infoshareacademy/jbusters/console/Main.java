@@ -10,6 +10,7 @@ public class Main {
 
         menu.welcome();
         menu.loadMenu();
+//        menu.newSearch();
 
     }
 }
