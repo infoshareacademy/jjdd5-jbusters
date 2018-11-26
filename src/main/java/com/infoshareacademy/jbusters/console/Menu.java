@@ -22,12 +22,11 @@ public class Menu {
     private Path pathToUserFile = Paths.get("test.txt");
 
     public Menu() {
-//        System.out.println(data.getTransactionsBase().get(2));
 
     }
 
     public void newSearch() {
-        System.out.println(data.getTransactionsBase().get(2));
+
     }
 
     public void welcome() {
