@@ -9,6 +9,9 @@ import java.time.LocalDate;
 
 public class Transaction {
 
+    PropLoader properties = new PropLoader("app.properties");
+
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleReader.class);
     private LocalDate transactionDate;
     private String city;
@@ -16,6 +19,7 @@ public class Transaction {
     private String street;
     private String typeOfMarket;
     private BigDecimal price;
+    private String currency;
     private BigDecimal flatArea;
     private BigDecimal pricePerM2;
     private int level;
@@ -26,15 +30,24 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return String.format("%-18s%-12s%-7s%-8s%-10s%-27s%-9s%-30s%-14s%-17s%-8s%-12s%-7s%-8s%-15s%-10s%-8s%-4s%-15s%-36s%-17s%-30s%-20s%-12s%-16s%-1s",
+
+        BigDecimal exchangeRate = new BigDecimal(properties.getExchangeRate());
+        currency = properties.getCurrency();
+        price = price.divide(exchangeRate, BigDecimal.ROUND_HALF_UP);
+        pricePerM2 = pricePerM2.divide(exchangeRate, BigDecimal.ROUND_HALF_UP);
+        typeOfMarket = typeOfMarket.toLowerCase();
+        parkingSpot = parkingSpot.toLowerCase();
+        standardLevel = standardLevel.toLowerCase();
+
+        return String.format("%-19s%-12s%-7s%-8s%-10s%-27s%-9s%-30s%-14s%-17s%-8s%-12s%-5s%-7s%-8s%-15s%-10s%-5s%-8s%-4s%-15s%-36s%-17s%-30s%-20s%-12s%-16s%-1s",
                 "Transaction date:", transactionDate,
                 "city:", city,
                 "district:", district,
                 "street:", street,
                 "market type:", typeOfMarket,
-                "price:", price,
+                "price:", price, currency,
                 "size:", flatArea,
-                "price per m2:", pricePerM2,
+                "price per m2:", pricePerM2, currency,
                 "level:", level,
                 "parking spot:", parkingSpot,
                 "standard level:", standardLevel,
