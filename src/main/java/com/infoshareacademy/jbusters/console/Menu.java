@@ -4,6 +4,8 @@ import com.infoshareacademy.jbusters.data.Data;
 import com.infoshareacademy.jbusters.data.DataLoader;
 import com.infoshareacademy.jbusters.data.NewTransactionCreator;
 import com.infoshareacademy.jbusters.data.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -15,15 +17,12 @@ import java.util.stream.Stream;
 
 public class Menu {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Menu.class);
     private ConsoleReader consoleReader = new ConsoleReader();
     private Data data = new Data();
     private NewTransactionCreator newTransactionCreator = new NewTransactionCreator(data, consoleReader);
 
     private Path pathToUserFile = Paths.get("test.txt");
-
-    public Menu() {
-
-    }
 
 
     public void welcome() {
@@ -32,7 +31,7 @@ public class Menu {
     }
 
     public void loadMenu() throws FileNotFoundException {
-
+        LOGGER.info("Loading menu");
         System.out.println("\n" + "          M E N U" + "\n");
         System.out.println("1 - Wprowadź nowe mieszkanie" + "\n" +
                 "2 - Dokonaj wyceny" + "\n" +
@@ -113,6 +112,7 @@ public class Menu {
             }
             System.out.println("Podaj nr mieszkańia, które chcesz załadować");
             int chosenFlat = consoleReader.readInt(1, userList.size());
+            LOGGER.info("Load transaction: "+userList);
             System.out.println("Twoje mieszknie zostało załadowane");
             return userList.get(chosenFlat - 1);
         }
@@ -158,7 +158,7 @@ public class Menu {
                 true));
         fileWriter.append(transactionString + "\n");
         fileWriter.close();
-
+        LOGGER.info("Save transaction to file: "+ newTransaction);
         System.out.println(transactionString);
         System.out.println("Twoja transakcja została zapisana");
     }

@@ -2,6 +2,9 @@ package com.infoshareacademy.jbusters.data;
 
 
 import com.infoshareacademy.jbusters.console.ConsoleReader;
+import com.infoshareacademy.jbusters.console.Menu;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,6 +15,7 @@ import java.util.Map;
 
 public class NewTransactionCreator {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(NewTransactionCreator.class);
     private Transaction newTransaction = new Transaction();
     private final Data data;
     private final ConsoleReader consoleReader;
@@ -22,6 +26,7 @@ public class NewTransactionCreator {
     }
 
     public Transaction loadNewTransaction() {
+
 
         newTransaction.setTransactionDate(LocalDate.now());
         newTransaction.setCity(loadCity(data.cityList(data.getTransactionsBase())));
@@ -37,6 +42,7 @@ public class NewTransactionCreator {
         newTransaction.setConstructionYearCategory(loadConstructionYearCategory());
 
 
+        LOGGER.info("Create new transaction: "+newTransaction);
         System.out.println(newTransaction);         // Wypisanie podanych przez urzytkownika danych w formie transakcji
         return newTransaction;
     }

@@ -37,7 +37,6 @@ public class Data {
             LOGGER.error("Error loading file: "+ pathToFileTransactionCSV);
         }
         return null;
-
     }
 
     // Metoda do wyciągania z bazy danych listy miast/dzielnic bez duplikatów + w kolejnkości alfabetycznej
