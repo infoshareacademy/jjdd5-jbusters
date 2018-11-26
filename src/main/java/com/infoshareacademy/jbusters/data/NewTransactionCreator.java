@@ -140,6 +140,15 @@ public class NewTransactionCreator {
         return consoleReader.readInt(1, 3);
     }
 
+    private loadPrice() {
+        System.out.println("Podaj wartość za jaką została sprzedana twoja nieruchomość");
+        newTransaction.setPrice(consoleReader.readBigDecimal());
+    }
+
+    private BigDecimal calculatePPm2(BigDecimal price,BigDecimal size ) {
+        return price.divide(size);
+    }
+
     public Transaction getNewTransaction() {
         return newTransaction;
     }

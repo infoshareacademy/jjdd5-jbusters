@@ -22,7 +22,7 @@ public class Menu {
 
     private DataLoader dataLoader;
 
-    private Path pathToUserFile = Paths.get("test.txt");
+    private Path pathToUserFile = Paths.get( "test.txt");
 
     public Menu() {
         this.dataLoader = new DataLoader();
@@ -124,14 +124,14 @@ public class Menu {
     public boolean checkIfFlatExist(List<Transaction> userList) {
         for (int i = 0; i < userList.size(); i++) {
             if (
-                    userList.get(i).getCity().equals(newTransactionCreator.getNewTransaction().getCity()) &&
-                            userList.get(i).getDistrict().equals(newTransactionCreator.getNewTransaction().getDistrict()) &&
-                            userList.get(i).getStreet().equals(newTransactionCreator.getNewTransaction().getStreet()) &&
+                    userList.get(i).getCity().equalsIgnoreCase(newTransactionCreator.getNewTransaction().getCity()) &&
+                            userList.get(i).getDistrict().equalsIgnoreCase(newTransactionCreator.getNewTransaction().getDistrict()) &&
+                            userList.get(i).getStreet().equalsIgnoreCase(newTransactionCreator.getNewTransaction().getStreet()) &&
                             userList.get(i).getFlatArea().equals(newTransactionCreator.getNewTransaction().getFlatArea()) &&
                             userList.get(i).getConstructionYearCategory() == (newTransactionCreator.getNewTransaction().getConstructionYearCategory()) &&
-                            userList.get(i).getParkingSpot().equals(newTransactionCreator.getNewTransaction().getParkingSpot()) &&
-                            userList.get(i).getStandardLevel().equals(newTransactionCreator.getNewTransaction().getStandardLevel()) &&
-                            userList.get(i).getTypeOfMarket().equals(newTransactionCreator.getNewTransaction().getTypeOfMarket())) {
+                            userList.get(i).getParkingSpot().equalsIgnoreCase(newTransactionCreator.getNewTransaction().getParkingSpot()) &&
+                            userList.get(i).getStandardLevel().equalsIgnoreCase(newTransactionCreator.getNewTransaction().getStandardLevel()) &&
+                            userList.get(i).getTypeOfMarket().equalsIgnoreCase(newTransactionCreator.getNewTransaction().getTypeOfMarket())) {
                 return true;
             }
         }
@@ -163,6 +163,17 @@ public class Menu {
 
         System.out.println(transactionString);
         System.out.println("Twoja transakcja została zapisana");
+    }
+
+    public void addSoldFlatToDataBase(Transaction newTransaction) throws FileNotFoundException {
+        Path pathToFileTransactionCSV = Paths.get("src", "main", "resources", "transaction.csv");
+        newTransactionCreator.load
+
+
+        if (checkIfFlatExist(dataLoader.createFlatsListFromFile(pathToFileTransactionCSV))) {
+            System.out.println("Już istnieje taka transakcja!");
+        } else {
+            saveTransaction(newTransaction);
     }
 
     public void exit() {
