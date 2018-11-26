@@ -40,7 +40,7 @@ public class Menu {
                 "5 - Wpisz mieszkanie do bazy" + "\n" +
                 "6 - Wyjście" + "\n" + "podaj numer...");
         int menuChoise = consoleReader.readInt(1, 6);
-
+        LOGGER.info("User chose menu nr: "+menuChoise);
         switch (menuChoise) {
             case 1: {
                 System.out.println("Będziesz poproszony o podanie kilku podstawowych informacji odnośnie twojego mieszkania" + "\n");
@@ -68,6 +68,7 @@ public class Menu {
                     loadMenu();
                 } catch (java.lang.NullPointerException e) {
                     System.out.println("Błąd! Twoja transakcja jest pusta. Najpierw wprowadź transakcję by móc ją zapisać.");
+                    LOGGER.warn("No transaction to write");
                     loadMenu();
                 }
                 break;
@@ -85,6 +86,7 @@ public class Menu {
                 break;
             }
             case 6: {
+                LOGGER.info("Exit program");
                 exit();
                 break;
             }
@@ -158,7 +160,7 @@ public class Menu {
                 true));
         fileWriter.append(transactionString + "\n");
         fileWriter.close();
-        LOGGER.info("Save transaction to file: "+ newTransaction);
+        LOGGER.info("Save transaction to file.txt: "+ newTransaction);
         System.out.println(transactionString);
         System.out.println("Twoja transakcja została zapisana");
     }

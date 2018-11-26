@@ -1,5 +1,8 @@
 package com.infoshareacademy.jbusters.data;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -9,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DataLoader {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(DataLoader.class);
     private static final int INDEX_TRANSACTION_DATE = 0;
     private static final int INDEX_CITY = 1;
     private static final int INDEX_DISTRICT = 2;
@@ -70,6 +73,7 @@ public class DataLoader {
 
             listOfTransaction.add(newRowOfTransactionList);
         }
+        LOGGER.info("Create list transaction. List size: "+listOfTransaction.size()+" rows");
         return listOfTransaction;
     }
 }

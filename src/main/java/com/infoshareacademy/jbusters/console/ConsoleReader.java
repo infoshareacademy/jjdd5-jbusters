@@ -18,6 +18,7 @@ public class ConsoleReader {
                 int inputInt = scanner.nextInt();
                 if (inputInt > maxValue || inputInt < minValue) {
                     System.out.println("Podano złą wartość");
+                    LOGGER.warn("Incorrect value was provided. User has given: "+inputInt);
                 } else {
                     return inputInt;
                 }
@@ -37,6 +38,7 @@ public class ConsoleReader {
                 return BigDecimal.valueOf(scanner.nextDouble());
             } catch (java.util.InputMismatchException e) {
                 System.out.println("Podaj liczbę ");
+                LOGGER.warn("Incorrect value was provided ");
                 scanner.nextLine();
             }
         }
@@ -48,6 +50,7 @@ public class ConsoleReader {
         while (true) {
             while (!scanner.hasNext("[A-Za-zęóąśłżźćń.0-9]+")) {
                 System.out.println("Błąd, wpisz ponownie: ");
+                LOGGER.warn("Incorrect value was provided ");
                 scanner.nextLine();
             }
             return scanner.nextLine();
@@ -62,6 +65,7 @@ public class ConsoleReader {
                 return scanner.nextInt();
             } catch (java.util.InputMismatchException e) {
                 System.out.println("Podaj liczbę ");
+                LOGGER.warn("Incorrect value was provided ");
                 scanner.nextLine();
             }
         }

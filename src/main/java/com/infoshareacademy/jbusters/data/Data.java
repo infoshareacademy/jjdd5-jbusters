@@ -29,7 +29,7 @@ public class Data {
             listFileTransactionCSV = Files.readAllLines(pathToFileTransactionCSV);
             listFileTransactionCSV.remove(0);
             DataLoader data = new DataLoader();
-            LOGGER.info("Load file :"+ pathToFileTransactionCSV);
+            LOGGER.info("Load file CSV. Path: "+ pathToFileTransactionCSV);
             return data.createTransactionList(listFileTransactionCSV);
         } catch (IOException e) {
             System.out.println("Error while loading data: ");
@@ -49,7 +49,7 @@ public class Data {
         }
         Set<String> noDuplicates = new TreeSet<>(cityList);
         cityList = new ArrayList<>(noDuplicates);
-
+        LOGGER.info("Create city list. List size: "+cityList.size());
         return cityList;
     }
 
@@ -63,7 +63,7 @@ public class Data {
         }
         Set<String> noDuplicates = new TreeSet<>(districtList);
         districtList = new ArrayList<>(noDuplicates);
-
+        LOGGER.info("Creste district list. List size: "+districtList.size());
         return districtList;
     }
 

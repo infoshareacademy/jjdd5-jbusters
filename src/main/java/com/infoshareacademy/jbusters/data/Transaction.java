@@ -12,7 +12,7 @@ public class Transaction {
     PropLoader properties = new PropLoader("app.properties");
 
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleReader.class);
+
     private LocalDate transactionDate;
     private String city;
     private String district;
