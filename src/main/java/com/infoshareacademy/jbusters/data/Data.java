@@ -3,6 +3,9 @@ package com.infoshareacademy.jbusters.data;
 //Klasa zawierajaca dane wczytywane z pliku, kazdy rekord w pliku excel bedzie jedna iinstancja clasy transaction.
 // klasa data powinna zawierac metody pozwalajace dodawac rekord do bazy(pliku?)
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,7 +17,9 @@ import java.util.TreeSet;
 
 public class Data {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Data.class);
     private List<Transaction> transactionsBase = new ArrayList<>(fileToData());
+
 
     public List<Transaction> fileToData() {
 
@@ -24,7 +29,7 @@ public class Data {
             listFileTransactionCSV = Files.readAllLines(pathToFileTransactionCSV);
             listFileTransactionCSV.remove(0);
             DataLoader data = new DataLoader();
-
+            LOGGER.info("Load file :"+ pathToFileTransactionCSV);
             return data.createTransactionList(listFileTransactionCSV);
         } catch (IOException e) {
             System.out.println("Error while loading data: ");
