@@ -2,6 +2,9 @@ package com.infoshareacademy.jbusters.data;
 
 
 import com.infoshareacademy.jbusters.console.ConsoleReader;
+import com.infoshareacademy.jbusters.console.Menu;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -12,6 +15,7 @@ import java.util.Map;
 
 public class NewTransactionCreator {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(NewTransactionCreator.class);
     private Transaction newTransaction = new Transaction();
     private final Data data;
     private final ConsoleReader consoleReader;
@@ -22,7 +26,6 @@ public class NewTransactionCreator {
     }
 
     public Transaction loadNewTransaction() {
-
         newTransaction.setTransactionDate(LocalDate.now());
         newTransaction.setCity(loadCity(data.cityList(data.getTransactionsBase())));
         newTransaction.setDistrict(loadDistrict(data.districtList(data.getTransactionsBase(), newTransaction)));
@@ -36,6 +39,7 @@ public class NewTransactionCreator {
         newTransaction.setStandardLevel(loadStandardLevel());
         newTransaction.setConstructionYearCategory(loadConstructionYearCategory());
 
+        LOGGER.info("Create new transaction: {}", newTransaction);
         System.out.println(newTransaction);         // Wypisanie podanych przez urzytkownika danych w formie transakcji
         return newTransaction;
     }
@@ -58,6 +62,7 @@ public class NewTransactionCreator {
         for (int i = 0; i < printLimit; i++) {
             System.out.println(i + 1 + " - " + sortedDistrictList.get(i));                  // wypisanie na ekran 5 dzielnic z najwiekszym counterem
         }
+        LOGGER.info("load district: {}", sortedDistrictList.get(consoleReader.readInt(1, printLimit) - 1));
         return sortedDistrictList.get(consoleReader.readInt(1, printLimit) - 1);
     }
 
@@ -79,6 +84,7 @@ public class NewTransactionCreator {
         for (int i = 0; i < printLimit; i++) {
             System.out.println(i + 1 + " - " + sortedCityList.get(i));
         }
+        LOGGER.info("load city");
         return sortedCityList.get(consoleReader.readInt(1, printLimit) - 1);
     }
 
@@ -96,17 +102,20 @@ public class NewTransactionCreator {
 
     private String loadStreet() {
         System.out.println("Podaj nazwę ulicy");
+        LOGGER.info("load street");
         return consoleReader.readString();
     }
 
     private String loadMarket() {
         System.out.println("Podaj rodzaj rynku" + "\n" + "1 - Rynek wtórny" + "\n" + "2 - Rynek pierwotny");
         String[] marketList = {"RYNEK WTÓRNY", "RYNEK PIERWOTNY"};
+        LOGGER.info("load market");
         return marketList[consoleReader.readInt(1, 2) - 1];
     }
 
     private BigDecimal loadSize() {
         System.out.println("Podaj wielkość mieszkania w m2");
+        LOGGER.info("load size");
         return consoleReader.readBigDecimal();
     }
 
@@ -116,11 +125,13 @@ public class NewTransactionCreator {
         for (int i = 0; i < parkingSpotList.length; i++) {
             System.out.println(i + 1 + " - " + parkingSpotList[i]);
         }
+        LOGGER.info("load parking spot");
         return parkingSpotList[consoleReader.readInt(1, 4) - 1];
     }
 
     private int loadLevel() {
         System.out.println("Podaj piętro, na którym jest twoje mieszkanie");
+        LOGGER.info("load level");
         return consoleReader.readInt();
     }
 
@@ -130,12 +141,22 @@ public class NewTransactionCreator {
         for (int i = 0; i < standardLevelList.length; i++) {
             System.out.println(i + 1 + " - " + standardLevelList[i]);
         }
+        LOGGER.info("load standard level");
         return standardLevelList[consoleReader.readInt(1, 6) - 1];
     }
 
     private int loadConstructionYearCategory() {
         System.out.println("Podaj rok budowy budynku, w którym jest twoje mieszkaie");
         System.out.println("1 - przed rokiem 1970" + "\n" + "2 - między rokiem 1970 a 1990" + "\n" + "3 - po roku 1990");
+        LOGGER.info("load construction year category");
         return consoleReader.readInt(1, 3);
+    }
+
+    public Transaction getNewTransaction() {
+        return newTransaction;
+    }
+
+    public void setNewTransaction(Transaction newTransaction) {
+        this.newTransaction = newTransaction;
     }
 }

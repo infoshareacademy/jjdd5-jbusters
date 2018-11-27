@@ -3,6 +3,9 @@ package com.infoshareacademy.jbusters.data;
 //Klasa zawierajaca dane wczytywane z pliku, kazdy rekord w pliku excel bedzie jedna iinstancja clasy transaction.
 // klasa data powinna zawierac metody pozwalajace dodawac rekord do bazy(pliku?)
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,24 +17,24 @@ import java.util.TreeSet;
 
 public class Data {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Data.class);
     private List<Transaction> transactionsBase = new ArrayList<>(fileToData());
 
     public List<Transaction> fileToData() {
-
         Path pathToFileTransactionCSV = Paths.get("src", "main", "resources", "transaction.csv");
         List<String> listFileTransactionCSV = null;
         try {
             listFileTransactionCSV = Files.readAllLines(pathToFileTransactionCSV);
             listFileTransactionCSV.remove(0);
             DataLoader data = new DataLoader();
-
+            LOGGER.info("Load file CSV. Path: {}", pathToFileTransactionCSV);
             return data.createTransactionList(listFileTransactionCSV);
         } catch (IOException e) {
             System.out.println("Error while loading data: ");
             e.printStackTrace();
+            LOGGER.error("Error loading file: {}", pathToFileTransactionCSV);
         }
         return null;
-
     }
 
     // Metoda do wyciągania z bazy danych listy miast/dzielnic bez duplikatów + w kolejnkości alfabetycznej
@@ -44,7 +47,7 @@ public class Data {
         }
         Set<String> noDuplicates = new TreeSet<>(cityList);
         cityList = new ArrayList<>(noDuplicates);
-
+        LOGGER.info("Create city list. List size: {}", cityList.size());
         return cityList;
     }
 
@@ -58,10 +61,9 @@ public class Data {
         }
         Set<String> noDuplicates = new TreeSet<>(districtList);
         districtList = new ArrayList<>(noDuplicates);
-
+        LOGGER.info("Creste district list. List size: {}", districtList.size());
         return districtList;
     }
-
 
     public List<Transaction> getTransactionsBase() {
         return transactionsBase;
