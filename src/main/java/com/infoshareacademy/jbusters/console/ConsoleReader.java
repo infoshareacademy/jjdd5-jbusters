@@ -23,6 +23,7 @@ public class ConsoleReader {
                 }
 
             } catch (java.util.InputMismatchException e) {
+                LOGGER.warn("Incorrect value was provided ", e.getMessage());
                 System.out.println("Podaj liczbę ");
                 scanner.nextLine();
             }
@@ -37,7 +38,7 @@ public class ConsoleReader {
                 return BigDecimal.valueOf(scanner.nextDouble());
             } catch (java.util.InputMismatchException e) {
                 System.out.println("Podaj liczbę ");
-                LOGGER.warn("Incorrect value was provided ");
+                LOGGER.warn("Incorrect value was provided ", e.getMessage());
                 scanner.nextLine();
             }
         }
@@ -64,7 +65,7 @@ public class ConsoleReader {
                 return scanner.nextInt();
             } catch (java.util.InputMismatchException e) {
                 System.out.println("Podaj liczbę ");
-                LOGGER.warn("Incorrect value was provided ");
+                LOGGER.warn("Incorrect value was provided ", e.getMessage());
                 scanner.nextLine();
             }
         }

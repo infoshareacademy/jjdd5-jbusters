@@ -171,6 +171,7 @@ public class Menu {
             DataLoader dataLoader = new DataLoader();
             userList = dataLoader.createTransactionList(userFlats);
         } catch (IOException e) {
+            LOGGER.warn("No file", e.getMessage());
             System.out.println("Brak pliku z zapisanymi transakcjami użytkownika. Tego nie pomalujesz");
         }
         return userList;

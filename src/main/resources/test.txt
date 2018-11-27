@@ -1,0 +1,2 @@
+2018 11 27,Gdynia, Pogórze,frefer,rynek pierwotny,0,65.0,0,43,garaż jednostanowiskowy,bardzo dobry,null,3
+2018 11 27,Gdynia, Obłuże,fjfj,rynek pierwotny,0,90.0,0,3,garaż jednostanowiskowy,dobry,null,3
