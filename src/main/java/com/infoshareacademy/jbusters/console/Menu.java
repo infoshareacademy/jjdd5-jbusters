@@ -25,8 +25,8 @@ public class Menu {
 
     private DataLoader dataLoader;
 
-    private Path pathToUserFile = Paths.get("src", "main", "resources", "test.txt");
-    private Path pathToFileTransactionCSV = Paths.get("src", "main", "resources", "transaction.csv");
+    private Path pathToUserFile = Paths.get("data", "test.txt");
+    private Path pathToFileTransactionCSV = Paths.get("data", "transaction.csv");
 
 
     public Menu() {
@@ -124,7 +124,7 @@ public class Menu {
                 for (int i = 0; i < userList.size(); i++) {
                     System.out.println("Mieszkanie nr " + (i + 1) + " " + userList.get(i).toString());
                 }
-                System.out.println("Podaj nr mieszkańia, które chcesz załadować");
+                System.out.println("Podaj nr mieszkania, które chcesz załadować");
                 int chosenFlat = consoleReader.readInt(1, userList.size());
                 System.out.println("Twoje mieszknie zostało załadowane");
                 newTransactionCreator.setNewTransaction(userList.get(chosenFlat - 1));

@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class ConsoleReader {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleReader.class);
@@ -46,9 +47,10 @@ public class ConsoleReader {
 
     public String readString() {
         Scanner scanner = new Scanner(System.in);
+        String pattern = "[A-Za-zęóąśłżźćń.0-9]+";
 
         while (true) {
-            while (!scanner.hasNext("[A-Za-zęóąśłżźćń.0-9]+")) {
+            while (!scanner.hasNext(pattern)) {
                 System.out.println("Błąd, wpisz ponownie: ");
                 scanner.nextLine();
             }
@@ -58,9 +60,10 @@ public class ConsoleReader {
 
     public String readDate() {
         Scanner scanner = new Scanner(System.in);
+        String pattern = "^\\d{4}-\\d{2}-\\d{2}$";
 
         while (true) {
-            while (!scanner.hasNext("^\\d{4}-\\d{2}-\\d{2}$")) {
+            while (!scanner.hasNext(pattern)) {
                 System.out.println("Błąd, wpisz ponownie: ");
                 LOGGER.warn("Incorrect value was provided ");
                 scanner.nextLine();
@@ -121,11 +124,12 @@ public class ConsoleReader {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            while (!scanner.hasNext("^(0|([1-9][0-9]*))(\\.[0-9]+)?$")) {
+            String enteredValue = scanner.nextLine();
+            if (!enteredValue.matches("^(0|([1-9][0-9]*))(\\.[0-9]+)?$")) {
                 System.out.println("Błąd, wpisz ponownie: ");
-                scanner.nextLine();
+            } else {
+                return enteredValue;
             }
-            return scanner.nextLine();
         }
     }
 }

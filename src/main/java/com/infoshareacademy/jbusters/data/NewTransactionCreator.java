@@ -147,14 +147,14 @@ public class NewTransactionCreator {
     }
 
     private int loadConstructionYearCategory() {
-        System.out.println("Podaj rok budowy budynku, w którym jest twoje mieszkaie");
+        System.out.println("Podaj rok budowy budynku, w którym jest Twoje mieszkaie");
         System.out.println("1 - przed rokiem 1970" + "\n" + "2 - między rokiem 1970 a 1990" + "\n" + "3 - po roku 1990");
         LOGGER.info("load construction year category");
         return consoleReader.readInt(1, 3);
     }
 
     public void loadPrice() {
-        System.out.println("Podaj wartość za jaką została sprzedana twoja nieruchomość");
+        System.out.println("Podaj wartość za jaką została sprzedana Twoja nieruchomość");
         newTransaction.setPrice(consoleReader.readBigDecimal());
     }
 
@@ -163,16 +163,16 @@ public class NewTransactionCreator {
     }
 
     public void loadConstructionYear() {
-        System.out.println("Wpisz rok budowy budynku, w ktorym znajduje sie twoja nieruchomosc");
+        System.out.println("Wpisz rok budowy budynku, w którym znajduje się Twoja nieruchomość");
         newTransaction.setConstructionYear(consoleReader.readString());
     }
 
     public void loadTime() {
-        System.out.println("Wpisz date sprzedazy w formacie YYYY-MM-dd");
+        System.out.println("Wpisz datę sprzedazy w formacie YYYY-MM-dd");
         try {
             newTransaction.setTransactionDate(LocalDate.parse(consoleReader.readDate()));
         } catch (java.time.format.DateTimeParseException e) {
-            System.out.println("Zly format daty");
+            System.out.println("Zły format daty");
             loadTime();
         }
     }
