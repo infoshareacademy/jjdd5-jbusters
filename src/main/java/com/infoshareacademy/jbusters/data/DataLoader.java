@@ -73,7 +73,7 @@ public class DataLoader {
 
             listOfTransaction.add(newRowOfTransactionList);
         }
-        LOGGER.info("Create list transaction. List size: "+listOfTransaction.size()+" rows");
+        LOGGER.info("Create list transaction. List size: {}", listOfTransaction.size() + " rows");
         return listOfTransaction;
     }
 }

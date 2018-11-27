@@ -10,7 +10,6 @@ import java.util.Scanner;
 public class ConsoleReader {
     private static final Logger LOGGER = LoggerFactory.getLogger(ConsoleReader.class);
 
-
     public int readInt(int minValue, int maxValue) {   // podanie zakresu liczb jakie uzytkownik moze wpisac, sa one pobierane z wielkosci tablicy
         Scanner scanner = new Scanner(System.in);
         while (true) {
@@ -18,7 +17,7 @@ public class ConsoleReader {
                 int inputInt = scanner.nextInt();
                 if (inputInt > maxValue || inputInt < minValue) {
                     System.out.println("Podano złą wartość");
-                    LOGGER.warn("Incorrect value was provided. User has given: "+inputInt);
+                    LOGGER.warn("Incorrect value was provided. User has given: {}", inputInt);
                 } else {
                     return inputInt;
                 }

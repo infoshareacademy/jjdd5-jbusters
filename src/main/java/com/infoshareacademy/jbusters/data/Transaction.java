@@ -11,8 +11,6 @@ public class Transaction {
 
     PropLoader properties = new PropLoader("app.properties");
 
-
-
     private LocalDate transactionDate;
     private String city;
     private String district;

@@ -1,1 +1,2 @@
 2018 11 26,Sopot, Sopot,3 maj,rynek wtórny,0,100.0,0,4,miejsce postojowe w hali garażowej,wysoki,null,3
+2018 11 27,Gdynia, Chylonia,dejdio,rynek wtórny,0,90.0,0,5,garaż jednostanowiskowy,bardzo dobry,null,3

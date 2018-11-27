@@ -26,8 +26,6 @@ public class NewTransactionCreator {
     }
 
     public Transaction loadNewTransaction() {
-
-
         newTransaction.setTransactionDate(LocalDate.now());
         newTransaction.setCity(loadCity(data.cityList(data.getTransactionsBase())));
         newTransaction.setDistrict(loadDistrict(data.districtList(data.getTransactionsBase(), newTransaction)));
@@ -41,8 +39,7 @@ public class NewTransactionCreator {
         newTransaction.setStandardLevel(loadStandardLevel());
         newTransaction.setConstructionYearCategory(loadConstructionYearCategory());
 
-
-        LOGGER.info("Create new transaction: "+newTransaction);
+        LOGGER.info("Create new transaction: {}", newTransaction);
         System.out.println(newTransaction);         // Wypisanie podanych przez urzytkownika danych w formie transakcji
         return newTransaction;
     }
@@ -65,7 +62,7 @@ public class NewTransactionCreator {
         for (int i = 0; i < printLimit; i++) {
             System.out.println(i + 1 + " - " + sortedDistrictList.get(i));                  // wypisanie na ekran 5 dzielnic z najwiekszym counterem
         }
-        LOGGER.info("load district: "+sortedDistrictList.get(consoleReader.readInt(1, printLimit) - 1));
+        LOGGER.info("load district: {}", sortedDistrictList.get(consoleReader.readInt(1, printLimit) - 1));
         return sortedDistrictList.get(consoleReader.readInt(1, printLimit) - 1);
     }
 

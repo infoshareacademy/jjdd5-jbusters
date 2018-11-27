@@ -21,9 +21,7 @@ public class Menu {
     private ConsoleReader consoleReader = new ConsoleReader();
     private Data data = new Data();
     private NewTransactionCreator newTransactionCreator = new NewTransactionCreator(data, consoleReader);
-
     private Path pathToUserFile = Paths.get("test.txt");
-
 
     public void welcome() {
         System.out.println("Witaj! Tu wycenisz swoje mieszkanie w kilku szybkich krokach." + "\n" + "\n" +
@@ -40,7 +38,7 @@ public class Menu {
                 "5 - Wpisz mieszkanie do bazy" + "\n" +
                 "6 - Wyjście" + "\n" + "podaj numer...");
         int menuChoise = consoleReader.readInt(1, 6);
-        LOGGER.info("User chose menu nr: "+menuChoise);
+        LOGGER.info("User chose menu nr: {}", menuChoise);
         switch (menuChoise) {
             case 1: {
                 System.out.println("Będziesz poproszony o podanie kilku podstawowych informacji odnośnie twojego mieszkania" + "\n");
@@ -114,7 +112,7 @@ public class Menu {
             }
             System.out.println("Podaj nr mieszkańia, które chcesz załadować");
             int chosenFlat = consoleReader.readInt(1, userList.size());
-            LOGGER.info("Load transaction: "+userList);
+            LOGGER.info("Load transaction: {}", userList);
             System.out.println("Twoje mieszknie zostało załadowane");
             return userList.get(chosenFlat - 1);
         }
@@ -160,7 +158,7 @@ public class Menu {
                 true));
         fileWriter.append(transactionString + "\n");
         fileWriter.close();
-        LOGGER.info("Save transaction to file.txt: "+ newTransaction);
+        LOGGER.info("Save transaction to file.txt: {}", newTransaction);
         System.out.println(transactionString);
         System.out.println("Twoja transakcja została zapisana");
     }
