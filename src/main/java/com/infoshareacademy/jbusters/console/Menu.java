@@ -9,7 +9,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -22,7 +21,9 @@ public class Menu {
 
     private DataLoader dataLoader;
 
-    private Path pathToUserFile = Paths.get( "test.txt");
+    private Path pathToUserFile = Paths.get("test.txt");
+    private Path pathToFileTransactionCSV = Paths.get("src", "main", "resources", "transaction.csv");
+
 
     public Menu() {
         this.dataLoader = new DataLoader();
@@ -35,90 +36,91 @@ public class Menu {
 
     public void loadMenu() throws FileNotFoundException {
 
-        System.out.println("\n" + "          M E N U" + "\n");
-        System.out.println("1 - Wprowadź nowe mieszkanie" + "\n" +
-                "2 - Dokonaj wyceny" + "\n" +
-                "3 - Zapisz moje mieszkanie do pliku" + "\n" +
-                "4 - Załaduj moje mieszkanie" + "\n" +
-                "5 - Wpisz mieszkanie do bazy" + "\n" +
-                "6 - Wyjście" + "\n" + "podaj numer...");
-        int menuChoise = consoleReader.readInt(1, 6);
+        int menuChoise = 0;
+        while (menuChoise != 6) {
+            System.out.println("\n" + "          M E N U" + "\n");
+            System.out.println("1 - Wprowadź nowe mieszkanie" + "\n" +
+                    "2 - Dokonaj wyceny" + "\n" +
+                    "3 - Zapisz moje mieszkanie do pliku" + "\n" +
+                    "4 - Załaduj moje mieszkanie" + "\n" +
+                    "5 - Wpisz mieszkanie do bazy" + "\n" +
+                    "6 - Wyjście" + "\n" + "podaj numer...");
+            menuChoise = consoleReader.readInt(1, 6);
+            menuSwitch(menuChoise);
+        }
+        exit();
+    }
 
-        switch (menuChoise) {
+    public void menuSwitch(int Choise) throws FileNotFoundException {
+        switch (Choise) {
             case 1: {
                 System.out.println("Będziesz poproszony o podanie kilku podstawowych informacji odnośnie twojego mieszkania" + "\n");
                 newTransactionCreator.loadNewTransaction();
-                loadMenu();
                 break;
             }
             case 2: {
-                if (newTransactionCreator.getNewTransaction().getCity() == null) {
-                    System.out.println("Najpierw wprowadź mieszkanie, które chcesz wycenić." + "\n" +
-                            "Możesz je wprowadzić ręcznie, bądz wczytać z pliku, jeśli zostało wcześniej zapisane.");
-                    loadMenu();
-                } else {
-                    // TU WSTAWI SIE WYWOŁANIE FUNKCI WYCENY PODANEGO MIESZKANIA
-                    System.out.println("Dokonano wyceny twojego mieszkania: ");
-                    System.out.println(newTransactionCreator.getNewTransaction().toString());
-                    System.out.println("Wartość twojego mieszkania to - 0zł!");
-                    loadMenu();
-                }
+                calculatePrice();
                 break;
             }
             case 3: {
-                try {
-                    saveSession(newTransactionCreator.getNewTransaction());
-                    loadMenu();
-                } catch (java.lang.NullPointerException e) {
-                    System.out.println("Błąd! Twoja transakcja jest pusta. Najpierw wprowadź transakcję by móc ją zapisać.");
-                    loadMenu();
-                }
+                saveSession(newTransactionCreator.getNewTransaction(), pathToUserFile);
                 break;
             }
             case 4: {
-                if (!dataLoader.createFlatsListFromFile(pathToUserFile).isEmpty()) {
-                    newTransactionCreator.setNewTransaction(loadTransaction());
-                }
-                loadMenu();
+                loadTransaction();
                 break;
             }
             case 5: {
-                System.out.println("Under construction");
-                loadMenu();
-                break;
-            }
-            case 6: {
-                exit();
+                addSoldFlatToDataBase(newTransactionCreator.getNewTransaction());
                 break;
             }
         }
     }
 
-    public void saveSession(Transaction newTransaction) throws FileNotFoundException {
-        if (Files.exists(pathToUserFile)) {
-            if (checkIfFlatExist(dataLoader.createFlatsListFromFile(pathToUserFile))) {
-                System.out.println("Już istnieje taka transakcja!");
-            } else {
-                saveTransaction(newTransaction);
-            }
+    public void calculatePrice() {
+        if (newTransactionCreator.getNewTransaction().getCity() == null) {
+            System.out.println("Najpierw wprowadź mieszkanie, które chcesz wycenić." + "\n" +
+                    "Możesz je wprowadzić ręcznie, bądz wczytać z pliku, jeśli zostało wcześniej zapisane.");
         } else {
-            saveTransaction(newTransaction);
+            // TU WSTAWI SIE WYWOŁANIE FUNKCI WYCENY PODANEGO MIESZKANIA
+            System.out.println("Dokonano wyceny twojego mieszkania: ");
+            System.out.println(newTransactionCreator.getNewTransaction().toString());
+            System.out.println("Wartość twojego mieszkania to - 0zł!");
         }
     }
 
-    public Transaction loadTransaction() {
-        List<Transaction> userList = dataLoader.createFlatsListFromFile(pathToUserFile);
+    public void saveSession(Transaction newTransaction, Path pathToFile) throws FileNotFoundException {
+        try {
+            if (Files.exists(pathToFile)) {
+                if (checkIfFlatExist(dataLoader.createFlatsListFromFile(pathToFile))) {
+                    System.out.println("Już istnieje taka transakcja!");
+                } else {
+                    saveTransaction(newTransaction, pathToFile);
+                }
+            } else {
+                saveTransaction(newTransaction, pathToFile);
+            }
+        } catch (java.lang.NullPointerException e) {
+            System.out.println("Błąd! Twoja transakcja jest pusta. Najpierw wprowadź transakcję by móc ją zapisać.");
+        }
+    }
+
+    public void loadTransaction() {
 
         if (!dataLoader.createFlatsListFromFile(pathToUserFile).isEmpty()) {
-            for (int i = 0; i < userList.size(); i++) {
-                System.out.println("Mieszkanie nr " + (i + 1) + " " + userList.get(i).toString());
+
+            List<Transaction> userList = dataLoader.createFlatsListFromFile(pathToUserFile);
+
+            if (!dataLoader.createFlatsListFromFile(pathToUserFile).isEmpty()) {
+                for (int i = 0; i < userList.size(); i++) {
+                    System.out.println("Mieszkanie nr " + (i + 1) + " " + userList.get(i).toString());
+                }
+                System.out.println("Podaj nr mieszkańia, które chcesz załadować");
+                int chosenFlat = consoleReader.readInt(1, userList.size());
+                System.out.println("Twoje mieszknie zostało załadowane");
+                newTransactionCreator.setNewTransaction(userList.get(chosenFlat - 1));
             }
-            System.out.println("Podaj nr mieszkańia, które chcesz załadować");
-            int chosenFlat = consoleReader.readInt(1, userList.size());
-            System.out.println("Twoje mieszknie zostało załadowane");
-            return userList.get(chosenFlat - 1);
         }
-        return null;
     }
 
     public boolean checkIfFlatExist(List<Transaction> userList) {
@@ -138,7 +140,7 @@ public class Menu {
         return false;
     }
 
-    public void saveTransaction(Transaction newTransaction) throws FileNotFoundException {
+    public void saveTransaction(Transaction newTransaction, Path pathToFile) throws FileNotFoundException {
         String transactionString = Stream.of(
                 newTransaction.getTransactionDate().toString().replaceAll("-", " "),
                 newTransaction.getCity(),
@@ -155,8 +157,10 @@ public class Menu {
                 String.valueOf(newTransaction.getConstructionYearCategory()))
                 .collect(Collectors.joining(","));
 
+        String stringPath = pathToFile.toString();
+
         PrintWriter fileWriter = new PrintWriter(new FileOutputStream(
-                new File("test.txt"),
+                new File(stringPath),
                 true));
         fileWriter.append(transactionString + "\n");
         fileWriter.close();
@@ -166,14 +170,15 @@ public class Menu {
     }
 
     public void addSoldFlatToDataBase(Transaction newTransaction) throws FileNotFoundException {
-        Path pathToFileTransactionCSV = Paths.get("src", "main", "resources", "transaction.csv");
-        newTransactionCreator.load
-
-
-        if (checkIfFlatExist(dataLoader.createFlatsListFromFile(pathToFileTransactionCSV))) {
-            System.out.println("Już istnieje taka transakcja!");
+        if (newTransactionCreator.getNewTransaction().getCity() == null) {
+            System.out.println("Nie wprowadzono mieszkania. Wybierz opcje nr 1 z menu by wprowadzic parametry mieszkania.");
         } else {
-            saveTransaction(newTransaction);
+            newTransactionCreator.loadTime();
+            newTransactionCreator.loadPrice();
+            newTransactionCreator.calculatePPm2();
+            newTransactionCreator.loadConstructionYear();
+            saveSession(newTransaction, pathToFileTransactionCSV);
+        }
     }
 
     public void exit() {

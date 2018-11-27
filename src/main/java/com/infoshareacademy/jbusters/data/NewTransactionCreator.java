@@ -140,13 +140,23 @@ public class NewTransactionCreator {
         return consoleReader.readInt(1, 3);
     }
 
-    private loadPrice() {
+    public void loadPrice() {
         System.out.println("Podaj wartość za jaką została sprzedana twoja nieruchomość");
         newTransaction.setPrice(consoleReader.readBigDecimal());
     }
 
-    private BigDecimal calculatePPm2(BigDecimal price,BigDecimal size ) {
-        return price.divide(size);
+    public void calculatePPm2() {
+        newTransaction.setPricePerM2(newTransaction.getPrice().divide(newTransaction.getFlatArea()));
+    }
+
+    public void loadConstructionYear() {
+        System.out.println("Wpisz rok budowy budynku, w ktorym znajduje sie twoja nieruchomosc");
+        newTransaction.setConstructionYear(consoleReader.readString());
+    }
+
+    public void loadTime() {
+        System.out.println("Wpisz date sprzedazy w formacie YYYY-MM-dd");
+        newTransaction.setTransactionDate(LocalDate.parse(consoleReader.readDate()));
     }
 
     public Transaction getNewTransaction() {

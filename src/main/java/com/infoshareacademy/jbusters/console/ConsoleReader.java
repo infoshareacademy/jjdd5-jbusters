@@ -52,6 +52,18 @@ public class ConsoleReader {
         }
     }
 
+    public String readDate() {
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            while (!scanner.hasNext("[0-9-]+")) {
+                System.out.println("Błąd, wpisz ponownie: ");
+                scanner.nextLine();
+            }
+            return scanner.nextLine();
+        }
+    }
+
     public int readInt() {
         Scanner scanner = new Scanner(System.in);
 
