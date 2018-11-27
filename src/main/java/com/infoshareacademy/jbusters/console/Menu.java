@@ -29,12 +29,12 @@ public class Menu {
         this.dataLoader = new DataLoader();
     }
 
-    public void welcome() {
+    void welcome() {
         System.out.println("Witaj! Tu wycenisz swoje mieszkanie w kilku szybkich krokach." + "\n" + "\n" +
                 "Wpisz odpowiedni numer by poruszać się po menu" + "\n");
     }
 
-    public void loadMenu() throws FileNotFoundException {
+    void loadMenu() throws FileNotFoundException {
 
         int menuChoise = 0;
         while (menuChoise != 6) {
@@ -51,7 +51,7 @@ public class Menu {
         exit();
     }
 
-    public void menuSwitch(int Choise) throws FileNotFoundException {
+    private void menuSwitch(int Choise) throws FileNotFoundException {
         switch (Choise) {
             case 1: {
                 System.out.println("Będziesz poproszony o podanie kilku podstawowych informacji odnośnie twojego mieszkania" + "\n");
@@ -77,7 +77,7 @@ public class Menu {
         }
     }
 
-    public void calculatePrice() {
+    private void calculatePrice() {
         if (newTransactionCreator.getNewTransaction().getCity() == null) {
             System.out.println("Najpierw wprowadź mieszkanie, które chcesz wycenić." + "\n" +
                     "Możesz je wprowadzić ręcznie, bądz wczytać z pliku, jeśli zostało wcześniej zapisane.");
@@ -89,7 +89,7 @@ public class Menu {
         }
     }
 
-    public void saveSession(Transaction newTransaction, Path pathToFile) throws FileNotFoundException {
+    private void saveSession(Transaction newTransaction, Path pathToFile) throws FileNotFoundException {
         try {
             if (Files.exists(pathToFile)) {
                 if (checkIfFlatExist(dataLoader.createFlatsListFromFile(pathToFile))) {
@@ -105,7 +105,7 @@ public class Menu {
         }
     }
 
-    public void loadTransaction() {
+    private void loadTransaction() {
 
         if (!dataLoader.createFlatsListFromFile(pathToUserFile).isEmpty()) {
 
@@ -123,24 +123,27 @@ public class Menu {
         }
     }
 
-    public boolean checkIfFlatExist(List<Transaction> userList) {
+    private boolean checkIfFlatExist(List<Transaction> userList) {
         for (int i = 0; i < userList.size(); i++) {
-            if (
-                    userList.get(i).getCity().equalsIgnoreCase(newTransactionCreator.getNewTransaction().getCity()) &&
-                            userList.get(i).getDistrict().equalsIgnoreCase(newTransactionCreator.getNewTransaction().getDistrict()) &&
-                            userList.get(i).getStreet().equalsIgnoreCase(newTransactionCreator.getNewTransaction().getStreet()) &&
-                            userList.get(i).getFlatArea().equals(newTransactionCreator.getNewTransaction().getFlatArea()) &&
-                            userList.get(i).getConstructionYearCategory() == (newTransactionCreator.getNewTransaction().getConstructionYearCategory()) &&
-                            userList.get(i).getParkingSpot().equalsIgnoreCase(newTransactionCreator.getNewTransaction().getParkingSpot()) &&
-                            userList.get(i).getStandardLevel().equalsIgnoreCase(newTransactionCreator.getNewTransaction().getStandardLevel()) &&
-                            userList.get(i).getTypeOfMarket().equalsIgnoreCase(newTransactionCreator.getNewTransaction().getTypeOfMarket())) {
+            if (isSame(newTransactionCreator.getNewTransaction(), userList, i)) {
                 return true;
             }
         }
         return false;
     }
 
-    public void saveTransaction(Transaction newTransaction, Path pathToFile) throws FileNotFoundException {
+    private boolean isSame(Transaction userTransaction, List<Transaction> userList, int i) {
+        return (userList.get(i).getCity().equalsIgnoreCase(userTransaction.getCity()) &&
+                userList.get(i).getDistrict().equalsIgnoreCase(userTransaction.getDistrict()) &&
+                userList.get(i).getStreet().equalsIgnoreCase(userTransaction.getStreet()) &&
+                userList.get(i).getFlatArea().equals(userTransaction.getFlatArea()) &&
+                userList.get(i).getConstructionYearCategory() == (userTransaction.getConstructionYearCategory()) &&
+                userList.get(i).getParkingSpot().equalsIgnoreCase(userTransaction.getParkingSpot()) &&
+                userList.get(i).getStandardLevel().equalsIgnoreCase(userTransaction.getStandardLevel()) &&
+                userList.get(i).getTypeOfMarket().equalsIgnoreCase(userTransaction.getTypeOfMarket()));
+    }
+
+    private void saveTransaction(Transaction newTransaction, Path pathToFile) throws FileNotFoundException {
         String transactionString = Stream.of(
                 newTransaction.getTransactionDate().toString().replaceAll("-", " "),
                 newTransaction.getCity(),
@@ -157,10 +160,8 @@ public class Menu {
                 String.valueOf(newTransaction.getConstructionYearCategory()))
                 .collect(Collectors.joining(","));
 
-        String stringPath = pathToFile.toString();
-
         PrintWriter fileWriter = new PrintWriter(new FileOutputStream(
-                new File(stringPath),
+                new File(String.valueOf(pathToFile)),
                 true));
         fileWriter.append(transactionString + "\n");
         fileWriter.close();
@@ -169,7 +170,7 @@ public class Menu {
         System.out.println("Twoja transakcja została zapisana");
     }
 
-    public void addSoldFlatToDataBase(Transaction newTransaction) throws FileNotFoundException {
+    private void addSoldFlatToDataBase(Transaction newTransaction) throws FileNotFoundException {
         if (newTransactionCreator.getNewTransaction().getCity() == null) {
             System.out.println("Nie wprowadzono mieszkania. Wybierz opcje nr 1 z menu by wprowadzic parametry mieszkania.");
         } else {
@@ -181,7 +182,7 @@ public class Menu {
         }
     }
 
-    public void exit() {
+    private void exit() {
         System.out.println("Zapraszamy ponownie");
     }
 }

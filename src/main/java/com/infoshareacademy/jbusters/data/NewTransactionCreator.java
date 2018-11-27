@@ -4,6 +4,7 @@ package com.infoshareacademy.jbusters.data;
 import com.infoshareacademy.jbusters.console.ConsoleReader;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,7 +63,7 @@ public class NewTransactionCreator {
         return sortedDistrictList.get(consoleReader.readInt(1, printLimit) - 1);
     }
 
-    public String loadCity(List<String> cityList) {
+    private String loadCity(List<String> cityList) {
         int printLimit;
         MapSorter mapSorter = new MapSorter();
         System.out.println("Podaj nazwę miasta, w którym mieszkasz");
@@ -146,7 +147,7 @@ public class NewTransactionCreator {
     }
 
     public void calculatePPm2() {
-        newTransaction.setPricePerM2(newTransaction.getPrice().divide(newTransaction.getFlatArea()));
+        newTransaction.setPricePerM2(newTransaction.getPrice().divide(newTransaction.getFlatArea(), RoundingMode.HALF_UP));
     }
 
     public void loadConstructionYear() {
@@ -156,7 +157,12 @@ public class NewTransactionCreator {
 
     public void loadTime() {
         System.out.println("Wpisz date sprzedazy w formacie YYYY-MM-dd");
-        newTransaction.setTransactionDate(LocalDate.parse(consoleReader.readDate()));
+        try {
+            newTransaction.setTransactionDate(LocalDate.parse(consoleReader.readDate()));
+        } catch (java.time.format.DateTimeParseException e) {
+            System.out.println("Zly format daty");
+            loadTime();
+        }
     }
 
     public Transaction getNewTransaction() {
