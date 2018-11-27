@@ -21,6 +21,7 @@ public class Menu {
     private ConsoleReader consoleReader = new ConsoleReader();
     private Data data = new Data();
     private NewTransactionCreator newTransactionCreator = new NewTransactionCreator(data, consoleReader);
+    private MenuOptions subMenu = new MenuOptions();
 
     private DataLoader dataLoader;
 
@@ -37,24 +38,25 @@ public class Menu {
                 "Wpisz odpowiedni numer by poruszać się po menu" + "\n");
     }
 
-    void loadMenu() throws FileNotFoundException {
+    void loadMenu() throws IOException {
 
         int menuChoise = 0;
-        while (menuChoise != 6) {
+        while (menuChoise != 7) {
             System.out.println("\n" + "          M E N U" + "\n");
             System.out.println("1 - Wprowadź nowe mieszkanie" + "\n" +
                     "2 - Dokonaj wyceny" + "\n" +
                     "3 - Zapisz moje mieszkanie do pliku" + "\n" +
                     "4 - Załaduj moje mieszkanie" + "\n" +
                     "5 - Wpisz mieszkanie do bazy" + "\n" +
-                    "6 - Wyjście" + "\n" + "podaj numer...");
-            menuChoise = consoleReader.readInt(1, 6);
+                    "6 - Opcje" + "\n" +
+                    "7 - Wyjście" + "\n" + "podaj numer...");
+            menuChoise = consoleReader.readInt(1, 7);
             menuSwitch(menuChoise);
         }
         exit();
     }
 
-    private void menuSwitch(int Choise) throws FileNotFoundException {
+    private void menuSwitch(int Choise) throws IOException {
         switch (Choise) {
             case 1: {
                 System.out.println("Będziesz poproszony o podanie kilku podstawowych informacji odnośnie twojego mieszkania" + "\n");
@@ -75,6 +77,10 @@ public class Menu {
             }
             case 5: {
                 addSoldFlatToDataBase(newTransactionCreator.getNewTransaction());
+                break;
+            }
+            case 6: {
+                subMenu.loadOptionsMenu();
                 break;
             }
         }

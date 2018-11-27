@@ -83,4 +83,49 @@ public class ConsoleReader {
         }
     }
 
+    public String readStringDecimalPlaces() {
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            while (!scanner.hasNext("[0-2]{1}")) {
+                System.out.println("Błąd, wpisz ponownie: ");
+                scanner.nextLine();
+            }
+            return scanner.nextLine();
+        }
+    }
+
+    public String readStringCurrency() {
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            //RegExp list from: https://github.com/d4nyll/iso-helper/blob/master/iso-4217-currencies/regex
+            while (!scanner.hasNext("/^AED|AFN|ALL|AMD|ANG|AOA|ARS|AUD|AWG|AZN|BAM|" +
+                    "BBD|BDT|BGN|BHD|BIF|BMD|BND|BOB|BRL|BSD|BTN|BWP|BYR|BZD|CAD|CDF|CHF|" +
+                    "CLP|CNY|COP|CRC|CUC|CUP|CVE|CZK|DJF|DKK|DOP|DZD|EGP|ERN|ETB|EUR|FJD|" +
+                    "FKP|GBP|GEL|GGP|GHS|GIP|GMD|GNF|GTQ|GYD|HKD|HNL|HRK|HTG|HUF|IDR|ILS|" +
+                    "IMP|INR|IQD|IRR|ISK|JEP|JMD|JOD|JPY|KES|KGS|KHR|KMF|KPW|KRW|KWD|KYD|" +
+                    "KZT|LAK|LBP|LKR|LRD|LSL|LYD|MAD|MDL|MGA|MKD|MMK|MNT|MOP|MRO|MUR|MVR|" +
+                    "MWK|MXN|MYR|MZN|NAD|NGN|NIO|NOK|NPR|NZD|OMR|PAB|PEN|PGK|PHP|PKR|PLN|" +
+                    "PYG|QAR|RON|RSD|RUB|RWF|SAR|SBD|SCR|SDG|SEK|SGD|SHP|SLL|SOS|SPL|SRD|" +
+                    "STD|SVC|SYP|SZL|THB|TJS|TMT|TND|TOP|TRY|TTD|TVD|TWD|TZS|UAH|UGX|USD|" +
+                    "UYU|UZS|VEF|VND|VUV|WST|XAF|XCD|XDR|XOF|XPF|YER|ZAR|ZMW|ZWD$/")) {
+                System.out.println("Błąd, wpisz ponownie: ");
+                scanner.nextLine();
+            }
+            return scanner.nextLine();
+        }
+    }
+
+    public String readStringExchangeRate() {
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            while (!scanner.hasNext("^(0|([1-9][0-9]*))(\\.[0-9]+)?$")) {
+                System.out.println("Błąd, wpisz ponownie: ");
+                scanner.nextLine();
+            }
+            return scanner.nextLine();
+        }
+    }
 }
