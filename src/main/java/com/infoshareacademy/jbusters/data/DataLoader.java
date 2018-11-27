@@ -1,9 +1,13 @@
 package com.infoshareacademy.jbusters.data;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -11,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class DataLoader {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(DataLoader.class);
     private static final int INDEX_TRANSACTION_DATE = 0;
     private static final int INDEX_CITY = 1;
     private static final int INDEX_DISTRICT = 2;
@@ -54,6 +58,7 @@ public class DataLoader {
             newRowOfTransactionList.setTransactionDate(transactionDate);
 
             // convert String to BigDecimal
+            DecimalFormat decimalFormat = new DecimalFormat("#.##");
             String price = listTransaction.get(INDEX_PRICE);
             newRowOfTransactionList.setPrice(new BigDecimal(price).setScale(properties.getDecimalPlaces(), BigDecimal.ROUND_UP));
             String flatArea = listTransaction.get(INDEX_FLAT_AREA);
@@ -72,6 +77,7 @@ public class DataLoader {
 
             listOfTransaction.add(newRowOfTransactionList);
         }
+        LOGGER.info("Create list transaction. List size: {}", listOfTransaction.size() + " rows");
         return listOfTransaction;
     }
 

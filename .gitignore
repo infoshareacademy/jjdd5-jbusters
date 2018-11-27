@@ -10,3 +10,6 @@ out
 # Maven
 log/
 target/
+
+#file Logger
+app.log

@@ -4,6 +4,8 @@ import com.infoshareacademy.jbusters.data.Data;
 import com.infoshareacademy.jbusters.data.DataLoader;
 import com.infoshareacademy.jbusters.data.NewTransactionCreator;
 import com.infoshareacademy.jbusters.data.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -15,13 +17,14 @@ import java.util.stream.Stream;
 
 public class Menu {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Menu.class);
     private ConsoleReader consoleReader = new ConsoleReader();
     private Data data = new Data();
     private NewTransactionCreator newTransactionCreator = new NewTransactionCreator(data, consoleReader);
 
     private DataLoader dataLoader;
 
-    private Path pathToUserFile = Paths.get("test.txt");
+    private Path pathToUserFile = Paths.get("src", "main", "resources", "test.txt");
     private Path pathToFileTransactionCSV = Paths.get("src", "main", "resources", "transaction.csv");
 
 
