@@ -103,6 +103,7 @@ public class ConsoleReader {
             } else {
                 return enteredString;
             }
+
         }
     }
 }
