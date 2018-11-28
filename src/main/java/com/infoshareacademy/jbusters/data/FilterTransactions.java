@@ -1,7 +1,9 @@
 package com.infoshareacademy.jbusters.data;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class FilterTransactions {
@@ -21,7 +23,8 @@ public class FilterTransactions {
     //kolejnosc filtrow:  data tranzakcji/miasto/dzielnica/rynek/kategoria budowy/powierzchnia mieszkania
 
     public List<Transaction> theGreatFatFilter(Transaction userTransaction) {
-        return new ArrayList<Transaction>();
+        List<Transaction> basicFilter = basicFilter(userTransaction);
+        return selectorFilter(true,true,basicFilter,userTransaction);
     }
 
 
@@ -41,39 +44,51 @@ public class FilterTransactions {
         return lista;
     }
 
-    //fixme na razie nie dzialam;
-    //TODO wprowadzic rekurencje selectorfilter!!!
-    private List<Transaction> selectorFilter(boolean isSingleDistrict, boolean isAreaDiffSmall, List<Transaction> transactionsList, Transaction userTransaction){
-                if(isSingleDistrict){
-                    List<Transaction> singleDistrictFilter=singleDistrictFilter(transactionsList,userTransaction);
-                    if(isAreaDiffSmall){
-                        List<Transaction> flatAreafilter = flatAreaFilter(singleDistrictFilter,userTransaction,areaDiff);
-                        flatAreafilter = invalidTransactionsRemover(flatAreafilter);
 
-                        if(isEnoughtResults(flatAreafilter,minResultsNumber)){
-                            return flatAreafilter;
-                        }
-                        else{
+    //TODO testy testy testy
+    private List<Transaction> selectorFilter(boolean isSingleDistrict, boolean isAreaDiffSmall, List<Transaction> transactionsList, Transaction userTransaction) {
+        if (isSingleDistrict) {
+            List<Transaction> singleDistrictFilter = singleDistrictFilter(transactionsList, userTransaction);
+            if (isAreaDiffSmall) {
+                List<Transaction> flatAreafilter = flatAreaFilter(singleDistrictFilter, userTransaction, areaDiff);
+                flatAreafilter = invalidTransactionsRemover(flatAreafilter);
 
-                        }
-                    }
-                    else{
-                        return flatAreaFilter(singleDistrictFilter,userTransaction,areaDiffExpanded);
-                    }
+                if (isEnoughtResults(flatAreafilter, minResultsNumber)) {
+                    return flatAreafilter;
+                } else {
+                    return selectorFilter(true, false, singleDistrictFilter, userTransaction);
                 }
-                else{
-                    List<Transaction> MultiDistrictFilter=singleDistrictFilter(transactionsList,userTransaction);
-                    if(isAreaDiffSmall){
-                        return flatAreaFilter(MultiDistrictFilter,userTransaction,areaDiff);
-                    }
-                    else{
-                        return flatAreaFilter(MultiDistrictFilter,userTransaction,areaDiffExpanded);
-                    }
+            } else {
+                List<Transaction> areaExpanded = flatAreaFilter(singleDistrictFilter, userTransaction, areaDiffExpanded);
+                areaExpanded = invalidTransactionsRemover(areaExpanded);
+                if (isEnoughtResults(areaExpanded, minResultsNumber)) {
+                    return areaExpanded;
+                } else {
+                    return selectorFilter(false, true, transactionsList, userTransaction);
                 }
+            }
+        } else {
+            List<Transaction> multiDistrictFilter = multiDistrictFilter(transactionsList, userTransaction);
+            if (isAreaDiffSmall) {
+                List<Transaction> flatAreafilter = flatAreaFilter(multiDistrictFilter, userTransaction, areaDiff);
+                flatAreafilter = invalidTransactionsRemover(flatAreafilter);
 
-        return transactionsList;
+                if (isEnoughtResults(flatAreafilter, minResultsNumber)) {
+                    return flatAreafilter;
+                } else {
+                    return selectorFilter(false, false, multiDistrictFilter, userTransaction);
+                }
+            } else {
+                List<Transaction> areaExpanded = flatAreaFilter(multiDistrictFilter, userTransaction, areaDiffExpanded);
+                areaExpanded = invalidTransactionsRemover(areaExpanded);
+                if (isEnoughtResults(areaExpanded, minResultsNumber)) {
+                    return flatAreaFilter(multiDistrictFilter, userTransaction, areaDiffExpanded);
+                } else {
+                    return notEnoughtResultsAction();
+                }
+            }
+        }
     }
-
 
 
     private List<Transaction> singleDistrictFilter(List<Transaction> transactionsBase, Transaction userTransaction) {
@@ -106,6 +121,15 @@ public class FilterTransactions {
     }
 
 
+    private List<Transaction> invalidTransactionsRemover(List<Transaction> finallySortedList) {
+        finallySortedList = removeOutliers(finallySortedList, priceDiff);
+
+        cheapestNotValidRemover(finallySortedList);
+        mostExpensiveNotValidRemover(finallySortedList);
+
+        return finallySortedList;
+    }
+
     private List<Transaction> removeOutliers(List<Transaction> transToClear, BigDecimal maxDiff) {
 
         List<Transaction> transSortedByPPerM2 = transToClear.stream()
@@ -135,9 +159,7 @@ public class FilterTransactions {
         return secondPrice.subtract(firstPrice).compareTo(maxDiff) > 0;
     }
 
-    private List<Transaction> invalidTransactionsRemover(List<Transaction> finallySortedList) {
-        finallySortedList = removeOutliers(finallySortedList,priceDiff);
-
+    private void cheapestNotValidRemover(List<Transaction> finallySortedList) {
         boolean isRemoved = false;
         while (isRemoved) {
             if (!isCheapestTransactionValid(finallySortedList)) {
@@ -147,6 +169,10 @@ public class FilterTransactions {
                 isRemoved = false;
             }
         }
+    }
+
+    private void mostExpensiveNotValidRemover(List<Transaction> finallySortedList) {
+        boolean isRemoved;
         isRemoved = false;
         while (isRemoved) {
             if (!isMostExpensiveTransactionValid(finallySortedList)) {
@@ -156,11 +182,9 @@ public class FilterTransactions {
                 isRemoved = false;
             }
         }
-
-        return finallySortedList;
     }
 
-    //TODO porownac enumy z danej listy i na ich podastawie wyszanczyc minimalne wartosci pol w danym zbiorze, tania transakcja powinna miec minimalne pola jesli nie to wywalamy ja
+
     private boolean isCheapestTransactionValid(List<Transaction> finallySortedList) {
         Transaction transToCheck = getLessExpensiveFlat(finallySortedList);
 
@@ -172,7 +196,7 @@ public class FilterTransactions {
     }
 
     private boolean isMostExpensiveTransactionValid(List<Transaction> finallySortedList) {
-        Transaction transToCheck = getLessExpensiveFlat(finallySortedList);
+        Transaction transToCheck = getMostExpensiveFlat(finallySortedList);
 
         return isBestFlatArea(finallySortedList, transToCheck) &&
                 isBestLevel(finallySortedList, transToCheck) &&
