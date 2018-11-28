@@ -96,12 +96,14 @@ public class ConsoleReader {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            while (!scanner.hasNext(pattern)) {
+            String enteredString = scanner.nextLine();
+            if (!enteredString.matches(pattern)) {
                 System.out.println("Błąd, wpisz ponownie: ");
                 LOGGER.warn("Incorrect value was provided ");
-                scanner.nextLine();
+            } else {
+                return enteredString;
             }
-            return scanner.nextLine();
+
         }
     }
 }
