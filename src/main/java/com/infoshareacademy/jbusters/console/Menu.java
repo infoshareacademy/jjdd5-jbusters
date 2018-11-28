@@ -70,7 +70,7 @@ public class Menu {
             case 3: {
                 saveSession(newTransactionCreator.getNewTransaction(), pathToUserFile);
                 break;
-            }
+            }   
             case 4: {
                 loadTransaction();
                 break;

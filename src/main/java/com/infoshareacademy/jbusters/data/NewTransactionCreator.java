@@ -63,7 +63,7 @@ public class NewTransactionCreator {
         for (int i = 0; i < printLimit; i++) {
             System.out.println(i + 1 + " - " + sortedDistrictList.get(i));                  // wypisanie na ekran 5 dzielnic z najwiekszym counterem
         }
-        LOGGER.info("load district: {}", sortedDistrictList.get(consoleReader.readInt(1, printLimit) - 1));
+        LOGGER.info("load district: {}");
         return sortedDistrictList.get(consoleReader.readInt(1, printLimit) - 1);
     }
 
@@ -168,7 +168,7 @@ public class NewTransactionCreator {
     }
 
     public void loadTime() {
-        System.out.println("Wpisz datę sprzedazy w formacie YYYY-MM-dd");
+        System.out.println("Wpisz datę sprzedaży w formacie YYYY-MM-dd");
         try {
             newTransaction.setTransactionDate(LocalDate.parse(consoleReader.readDate()));
         } catch (java.time.format.DateTimeParseException e) {
