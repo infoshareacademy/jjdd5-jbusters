@@ -18,7 +18,7 @@ public class ConsoleReader {
             "PYG|QAR|RON|RSD|RUB|RWF|SAR|SBD|SCR|SDG|SEK|SGD|SHP|SLL|SOS|SPL|SRD|" +
             "STD|SVC|SYP|SZL|THB|TJS|TMT|TND|TOP|TRY|TTD|TVD|TWD|TZS|UAH|UGX|USD|" +
             "UYU|UZS|VEF|VND|VUV|WST|XAF|XCD|XDR|XOF|XPF|YER|ZAR|ZMW|ZWD$/";
-    private static final String EXCHANGE_RATE_PATTERN = "^(0|([1-9][0-9]*))(\\.[0-9]+)?$";
+    private static final String EXCHANGE_RATE_PATTERN = "^(0*[1-9][0-9]*(\\.[0-9]+)?|0+\\.[0-9]*[1-9][0-9]*)$";
     public static final String STRING_PATTERN = "[A-Za-zęóąśłżźćń.0-9]+";
     public static final String DATE_PATTERN = "^\\d{4}-\\d{2}-\\d{2}$";
     public static final String DECIMAL_PLACES_PATTERN = "[0-2]{1}";
