@@ -21,7 +21,7 @@ public class Data {
     private List<Transaction> transactionsBase = new ArrayList<>(fileToData());
 
     public List<Transaction> fileToData() {
-        Path pathToFileTransactionCSV = Paths.get("src", "main", "resources", "transaction.csv");
+        Path pathToFileTransactionCSV = Paths.get("data", "transaction.csv");
         List<String> listFileTransactionCSV = null;
         try {
             listFileTransactionCSV = Files.readAllLines(pathToFileTransactionCSV);
@@ -69,14 +69,5 @@ public class Data {
         return transactionsBase;
     }
 
-
-    public ArrayList<Transaction> filterData() {
-        //metoda wypluwajca przefiltrowana liste
-        return null;
-    }
-
-    public void addTransactionToData(Transaction trans) {
-        //metoda dodajca tranzakcje do bazy danych
-    }
 }
 

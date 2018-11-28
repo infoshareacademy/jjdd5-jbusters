@@ -3,7 +3,10 @@ package com.infoshareacademy.jbusters.data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -55,6 +58,7 @@ public class DataLoader {
             newRowOfTransactionList.setTransactionDate(transactionDate);
 
             // convert String to BigDecimal
+            DecimalFormat decimalFormat = new DecimalFormat("#.##");
             String price = listTransaction.get(INDEX_PRICE);
             newRowOfTransactionList.setPrice(new BigDecimal(price).setScale(properties.getDecimalPlaces(), BigDecimal.ROUND_UP));
             String flatArea = listTransaction.get(INDEX_FLAT_AREA);
@@ -75,5 +79,15 @@ public class DataLoader {
         }
         LOGGER.info("Create list transaction. List size: {}", listOfTransaction.size() + " rows");
         return listOfTransaction;
+    }
+
+    public List<Transaction> createFlatsListFromFile(Path path) {
+        try {
+            return createTransactionList(Files.readAllLines(path));
+        } catch (IOException e) {
+            System.out.println("Brak pliku z zapisanymi transakcjami użytkownika. Tego nie pomalujesz");
+        }
+
+        return new ArrayList<>();
     }
 }

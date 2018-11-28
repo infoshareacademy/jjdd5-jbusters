@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,11 +63,11 @@ public class NewTransactionCreator {
         for (int i = 0; i < printLimit; i++) {
             System.out.println(i + 1 + " - " + sortedDistrictList.get(i));                  // wypisanie na ekran 5 dzielnic z najwiekszym counterem
         }
-        LOGGER.info("load district: {}", sortedDistrictList.get(consoleReader.readInt(1, printLimit) - 1));
+        LOGGER.info("load district: {}");
         return sortedDistrictList.get(consoleReader.readInt(1, printLimit) - 1);
     }
 
-    public String loadCity(List<String> cityList) {
+    private String loadCity(List<String> cityList) {
         int printLimit;
         MapSorter mapSorter = new MapSorter();
         System.out.println("Podaj nazwę miasta, w którym mieszkasz");
@@ -146,10 +147,34 @@ public class NewTransactionCreator {
     }
 
     private int loadConstructionYearCategory() {
-        System.out.println("Podaj rok budowy budynku, w którym jest twoje mieszkaie");
+        System.out.println("Podaj rok budowy budynku, w którym jest Twoje mieszkaie");
         System.out.println("1 - przed rokiem 1970" + "\n" + "2 - między rokiem 1970 a 1990" + "\n" + "3 - po roku 1990");
         LOGGER.info("load construction year category");
         return consoleReader.readInt(1, 3);
+    }
+
+    public void loadPrice() {
+        System.out.println("Podaj wartość za jaką została sprzedana Twoja nieruchomość");
+        newTransaction.setPrice(consoleReader.readBigDecimal());
+    }
+
+    public void calculatePPm2() {
+        newTransaction.setPricePerM2(newTransaction.getPrice().divide(newTransaction.getFlatArea(), RoundingMode.HALF_UP));
+    }
+
+    public void loadConstructionYear() {
+        System.out.println("Wpisz rok budowy budynku, w którym znajduje się Twoja nieruchomość");
+        newTransaction.setConstructionYear(consoleReader.readString());
+    }
+
+    public void loadTime() {
+        System.out.println("Wpisz datę sprzedaży w formacie YYYY-MM-dd");
+        try {
+            newTransaction.setTransactionDate(LocalDate.parse(consoleReader.readDate()));
+        } catch (java.time.format.DateTimeParseException e) {
+            System.out.println("Zły format daty");
+            loadTime();
+        }
     }
 
     public Transaction getNewTransaction() {
