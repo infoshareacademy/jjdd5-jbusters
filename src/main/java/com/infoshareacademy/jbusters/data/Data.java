@@ -56,7 +56,7 @@ public class Data {
         List<String> districtList = new ArrayList<>();
         for (int i = 0; i < transactionsBase.size(); i++) {
             if (newTransaction.getCity().equals(transactionsBase.get(i).getCity())) {
-                districtList.add(transactionsBase.get(i).getDistrict());
+                districtList.add(transactionsBase.get(i).getDistrict().trim());
             }
         }
         Set<String> noDuplicates = new TreeSet<>(districtList);

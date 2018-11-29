@@ -20,10 +20,10 @@ public class MenuOptions {
 
         int menuChoice = 0;
         while (menuChoice != 2) {
-            System.out.println("\n" + "         O P C J E" + "\n");
+            System.out.println("\n" + "          O P C J E" + "\n");
             System.out.println("Aktualna ilość miejsc dziesiętnych:\t" + decimalPlaces + "\n" +
-                    "Aktualna waluta:\t\t\t\t\t" + currency + "\n" +
-                    "Aktualny kurs:\t\t\t\t\t\t1 " + currency + " = " + exchangeRate + " PLN\n\n" +
+                    "Aktualna waluta:\t\t\t" + currency + "\n" +
+                    "Aktualny kurs:\t\t\t\t1 " + currency + " = " + exchangeRate + " PLN\n\n" +
                     "1 - Zmiana powyższych ustawień i zapis" + "\n" +
                     "2 - Powrót do menu głównego" + "\n" +
                     "podaj numer:");

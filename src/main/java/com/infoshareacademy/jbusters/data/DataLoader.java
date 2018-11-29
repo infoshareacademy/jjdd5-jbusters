@@ -44,7 +44,7 @@ public class DataLoader {
             Transaction newRowOfTransactionList = new Transaction();
 
             newRowOfTransactionList.setCity(listTransaction.get(INDEX_CITY));
-            newRowOfTransactionList.setDistrict(listTransaction.get(INDEX_DISTRICT));
+            newRowOfTransactionList.setDistrict(listTransaction.get(INDEX_DISTRICT).trim());
             newRowOfTransactionList.setStreet(listTransaction.get(INDEX_STREET));
             newRowOfTransactionList.setTypeOfMarket(listTransaction.get(INDEX_TYPE_OF_MARKET));
             newRowOfTransactionList.setParkingSpot(listTransaction.get(INDEX_PARKING_SPOT));
