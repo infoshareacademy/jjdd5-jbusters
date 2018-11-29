@@ -50,15 +50,17 @@ public class FilterTransactions {
         if (isSingleDistrict) {
             List<Transaction> singleDistrictFilter = singleDistrictFilter(transactionsList, userTransaction);
             if (isAreaDiffSmall) {
+
                 List<Transaction> flatAreafilter = flatAreaFilter(singleDistrictFilter, userTransaction, areaDiff);
                 flatAreafilter = invalidTransactionsRemover(flatAreafilter);
-
                 if (isEnoughtResults(flatAreafilter, minResultsNumber)) {
                     return flatAreafilter;
                 } else {
                     return selectorFilter(true, false, singleDistrictFilter, userTransaction);
                 }
+
             } else {
+
                 List<Transaction> areaExpanded = flatAreaFilter(singleDistrictFilter, userTransaction, areaDiffExpanded);
                 areaExpanded = invalidTransactionsRemover(areaExpanded);
                 if (isEnoughtResults(areaExpanded, minResultsNumber)) {
@@ -66,10 +68,12 @@ public class FilterTransactions {
                 } else {
                     return selectorFilter(false, true, transactionsList, userTransaction);
                 }
+
             }
         } else {
             List<Transaction> multiDistrictFilter = multiDistrictFilter(transactionsList, userTransaction);
             if (isAreaDiffSmall) {
+
                 List<Transaction> flatAreafilter = flatAreaFilter(multiDistrictFilter, userTransaction, areaDiff);
                 flatAreafilter = invalidTransactionsRemover(flatAreafilter);
 
@@ -78,7 +82,9 @@ public class FilterTransactions {
                 } else {
                     return selectorFilter(false, false, multiDistrictFilter, userTransaction);
                 }
+
             } else {
+
                 List<Transaction> areaExpanded = flatAreaFilter(multiDistrictFilter, userTransaction, areaDiffExpanded);
                 areaExpanded = invalidTransactionsRemover(areaExpanded);
                 if (isEnoughtResults(areaExpanded, minResultsNumber)) {
@@ -86,6 +92,7 @@ public class FilterTransactions {
                 } else {
                     return notEnoughtResultsAction();
                 }
+
             }
         }
     }
