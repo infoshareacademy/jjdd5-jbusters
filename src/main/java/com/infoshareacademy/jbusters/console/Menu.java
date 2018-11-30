@@ -34,6 +34,7 @@ public class Menu {
     }
 
     void welcome() {
+        clearScreen();
         System.out.println("Witaj! Tu wycenisz swoje mieszkanie w kilku szybkich krokach." + "\n" + "\n" +
                 "Wpisz odpowiedni numer by poruszać się po menu" + "\n");
     }
@@ -80,6 +81,7 @@ public class Menu {
                 break;
             }
             case 6: {
+                clearScreen();
                 subMenu.loadOptionsMenu();
                 break;
             }
@@ -189,6 +191,11 @@ public class Menu {
             newTransactionCreator.loadConstructionYear();
             saveSession(newTransaction, pathToFileTransactionCSV);
         }
+    }
+
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 
     private void exit() {
