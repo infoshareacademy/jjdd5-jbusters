@@ -8,11 +8,13 @@ import java.util.stream.Collectors;
 
 public class FilterTransactions {
 
+    private PropLoader properties = new PropLoader("app.properties");
+
     private List<Transaction> transactionsBase;
-    BigDecimal areaDiff = new BigDecimal(20);
-    BigDecimal areaDiffExpanded = new BigDecimal(25);
-    int minResultsNumber = 11;
-    BigDecimal priceDiff = new BigDecimal(600.0);
+    BigDecimal areaDiff = properties.getAreaDiff();;
+    BigDecimal areaDiffExpanded = properties.getAreaDiffExpanded();
+    int minResultsNumber = properties.getMinResultsNumber();
+    BigDecimal priceDiff = properties.getPriceDiff();
 
     public FilterTransactions(List<Transaction> transactionsData) {
 
@@ -106,7 +108,8 @@ public class FilterTransactions {
 
         return lista;
     }
-//TODO add district weight evaluation
+
+    //TODO add district weight evaluation
     private List<Transaction> multiDistrictFilter(List<Transaction> transactionsBase, Transaction userTransaction) {
         List<Transaction> lista = transactionsBase.stream()
 
@@ -127,7 +130,7 @@ public class FilterTransactions {
         return new ArrayList(lista);
     }
 
-//TODO wstawic tutaj filtry konglomeraty karolo juanowe worstFlatFilter & bestFlatFilter co by dzialalo
+    //TODO wstawic tutaj filtry konglomeraty karolo juanowe worstFlatFilter & bestFlatFilter co by dzialalo
     public List<Transaction> invalidTransactionsRemover(List<Transaction> finallySortedList) {
         finallySortedList = removeOutliers(finallySortedList, priceDiff);
 
