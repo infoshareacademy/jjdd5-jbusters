@@ -44,7 +44,7 @@ public class FilterTransactions {
 
         return lista;
     }
-    
+
     private List<Transaction> selectorFilter(boolean isSingleDistrict, boolean isAreaDiffSmall, List<Transaction> transactionsList, Transaction userTransaction) {
         if (isSingleDistrict) {
             List<Transaction> singleDistrictFilter = singleDistrictFilter(transactionsList, userTransaction);
