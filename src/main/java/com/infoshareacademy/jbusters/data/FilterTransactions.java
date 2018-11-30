@@ -144,7 +144,7 @@ public class FilterTransactions {
 
     public List<Transaction> removeOutliers(List<Transaction> transToClear, BigDecimal maxDiff) {
 
-        if(transToClear.size()==0) return transToClear;
+        if(transToClear.size()<11) return new ArrayList<Transaction>();
 
         List<Transaction> transSortedByPPerM2 = transToClear.stream()
                 .sorted(Comparator.comparing(Transaction::getPricePerM2))
