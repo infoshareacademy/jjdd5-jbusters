@@ -1,17 +1,16 @@
 package com.infoshareacademy.jbusters.console;
 
-import com.infoshareacademy.jbusters.data.Data;
-import com.infoshareacademy.jbusters.data.DataLoader;
-import com.infoshareacademy.jbusters.data.NewTransactionCreator;
-import com.infoshareacademy.jbusters.data.Transaction;
+import com.infoshareacademy.jbusters.data.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -22,11 +21,13 @@ public class Menu {
     private Data data = new Data();
     private NewTransactionCreator newTransactionCreator = new NewTransactionCreator(data, consoleReader);
     private MenuOptions subMenu = new MenuOptions();
+    private FilterTransactions filterTransactions = new FilterTransactions(data.getTransactionsBase());
 
     private DataLoader dataLoader;
 
     private Path pathToUserFile = Paths.get("data", "test.txt");
     private Path pathToFileTransactionCSV = Paths.get("data", "transaction.csv");
+    private PropLoader properties = new PropLoader("app.properties");
 
 
     public Menu() {
@@ -93,10 +94,11 @@ public class Menu {
             System.out.println("Najpierw wprowadź mieszkanie, które chcesz wycenić." + "\n" +
                     "Możesz je wprowadzić ręcznie, bądz wczytać z pliku, jeśli zostało wcześniej zapisane.");
         } else {
-            // TU WSTAWI SIE WYWOŁANIE FUNKCI WYCENY PODANEGO MIESZKANIA
+            List filteredList = filterTransactions.theGreatFatFilter(newTransactionCreator.getNewTransaction());
+            BigDecimal valueOfFlat = CalculatePrice.calculatePrice(filteredList);
             System.out.println("Dokonano wyceny twojego mieszkania: ");
             System.out.println(newTransactionCreator.getNewTransaction().toString());
-            System.out.println("Wartość twojego mieszkania to - 0zł!");
+            System.out.println("Wartość twojego mieszkania to - " + valueOfFlat.setScale(properties.getDecimalPlaces(), BigDecimal.ROUND_UP));
         }
     }
 
