@@ -122,7 +122,7 @@ public class Menu {
 
             if (!dataLoader.createFlatsListFromFile(pathToUserFile).isEmpty()) {
                 for (int i = 0; i < userList.size(); i++) {
-                    System.out.println("Mieszkanie nr " + (i + 1) + " " + userList.get(i).toString());
+                    System.out.println("\n:: MIESZKANIE NR " + (i + 1) + " ::::::::::::::::::::::::::::\n" + userList.get(i).toString());
                 }
                 System.out.println("Podaj nr mieszkania, które chcesz załadować");
                 int chosenFlat = consoleReader.readInt(1, userList.size());

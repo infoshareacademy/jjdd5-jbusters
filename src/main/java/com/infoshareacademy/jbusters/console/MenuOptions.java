@@ -15,15 +15,23 @@ public class MenuOptions {
     private int decimalPlaces = properties.getDecimalPlaces();
     private String currency = properties.getCurrency();
     private BigDecimal exchangeRate = new BigDecimal(properties.getExchangeRate());
+    private BigDecimal areaDiff = properties.getAreaDiff();
+    private BigDecimal areaDiffExpanded = properties.getAreaDiffExpanded();
+    private int minResults = properties.getMinResultsNumber();
+    private BigDecimal priceDiff = properties.getPriceDiff();
 
     void loadOptionsMenu() throws IOException {
 
         int menuChoice = 0;
         while (menuChoice != 2) {
-            System.out.println("\n" + "         O P C J E" + "\n");
-            System.out.println("Aktualna ilość miejsc dziesiętnych:\t" + decimalPlaces + "\n" +
-                    "Aktualna waluta:\t\t\t\t\t" + currency + "\n" +
-                    "Aktualny kurs:\t\t\t\t\t\t1 " + currency + " = " + exchangeRate + " PLN\n\n" +
+            System.out.println("\n" + "          O P C J E" + "\n");
+            System.out.println("Aktualna ilość miejsc dziesiętnych:\t\t" + decimalPlaces + "\n" +
+                    "Aktualna waluta:\t\t\t\t" + currency + "\n" +
+                    "Aktualny kurs:\t\t\t\t\t1 " + currency + " = " + exchangeRate + " PLN\n" +
+                    "Aktualny parametr różnicy powierzchni:\t\t" + areaDiff + "\n" +
+                    "Aktualny parametr powierzchni rozszerzonej:\t" + areaDiffExpanded + "\n" +
+                    "Aktualny parametr ilości wyników:\t\t" + minResults + "\n" +
+                    "Aktualny parametr różnicy cen:\t\t\t" + priceDiff + "\n\n" +
                     "1 - Zmiana powyższych ustawień i zapis" + "\n" +
                     "2 - Powrót do menu głównego" + "\n" +
                     "podaj numer:");

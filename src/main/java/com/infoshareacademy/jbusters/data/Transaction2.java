@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class Transaction {
+public class Transaction2 {
 
     PropLoader properties = new PropLoader("app.properties");
 
@@ -37,20 +37,20 @@ public class Transaction {
         parkingSpot = parkingSpot.toLowerCase();
         standardLevel = standardLevel.toLowerCase();
 
-        return
-                "Data transakcji:\t" + transactionDate +"\n"+
-                "Miasto:\t\t\t" + city +"\n"+
-                "Dzielnica:\t\t" + district +"\n"+
-                "Ulica:\t\t\t" + street +"\n"+
-                "Rodzaj rynku:\t\t" + typeOfMarket +"\n"+
-                "Cena:\t\t\t" + price + " " + currency +"\n"+
-                "Wielkość:\t\t" + flatArea +" m2\n"+
-                "Cena za m2:\t\t" + pricePerM2 + " " + currency +"\n"+
-                "Piętro:\t\t\t" + level +"\n"+
-                "Miejsce postojowe:\t" + parkingSpot +"\n"+
-                "Standard wykończenia:\t" + standardLevel +"\n"+
-                "Rok budowy:\t\t" + constructionYear +"\n"+
-                "Kategoria roku budowy:\t" + constructionYearCategory;
+        return String.format("%-19s%-12s%-7s%-8s%-10s%-27s%-9s%-30s%-14s%-17s%-8s%-12s%-5s%-7s%-8s%-15s%-10s%-5s%-8s%-4s%-15s%-36s%-17s%-30s%-20s%-12s%-16s%-1s",
+                "Transaction date:", transactionDate,
+                "city:", city,
+                "district:", district,
+                "street:", street,
+                "market type:", typeOfMarket,
+                "price:", price, currency,
+                "size:", flatArea,
+                "price per m2:", pricePerM2, currency,
+                "level:", level,
+                "parking spot:", parkingSpot,
+                "standard level:", standardLevel,
+                "construction year:", constructionYear,
+                "year category:", constructionYearCategory)+"\n";
     }
 
     // ************GETTER AND SETTER***********
