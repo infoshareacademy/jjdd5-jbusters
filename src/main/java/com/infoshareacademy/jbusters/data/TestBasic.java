@@ -29,16 +29,18 @@ public class TestBasic {
 
         FilterTransactions filter= new FilterTransactions(dataSet.getTransactionsBase());
 
-       List<Transaction> basic =  filter.basicFilter(userTrans);
-        System.out.println(basic.size());
-       //basic.stream().forEach(System.out::println);
-        List<Transaction> district = filter.singleDistrictFilter(basic,userTrans);
 
-        List<Transaction> flatArea = filter.flatAreaFilter(district,userTrans, new BigDecimal("20.0"));
+        filter.theGreatFatFilter(userTrans).stream().forEach(System.out::println);
+       //List<Transaction> basic =  filter.basicFilter(userTrans);
+        //System.out.println(basic.size());
+       //basic.stream().forEach(System.out::println);
+        //List<Transaction> district = filter.singleDistrictFilter(basic,userTrans);
+
+        //List<Transaction> flatArea = filter.flatAreaFilter(district,userTrans, new BigDecimal("20.0"));
         //filter.removeOutliers(flatArea,new BigDecimal("600")).stream().forEach(System.out::println);
 
         //flatArea.forEach(System.out::println);
-      List<Transaction> invalidFree = filter.invalidTransactionsRemover(flatArea);
+//      List<Transaction> invalidFree = filter.invalidTransactionsRemover(flatArea);
         //invalidFree.forEach(System.out::println);
 
 

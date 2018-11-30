@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class FilterTransactions {
 
-    private List<Transaction> transactionsBase = new ArrayList<>();
+    private List<Transaction> transactionsBase;
     BigDecimal areaDiff = new BigDecimal(20);
     BigDecimal areaDiffExpanded = new BigDecimal(25);
     int minResultsNumber = 11;
@@ -106,7 +106,7 @@ public class FilterTransactions {
 
         return lista;
     }
-
+//TODO add district weight evaluation
     private List<Transaction> multiDistrictFilter(List<Transaction> transactionsBase, Transaction userTransaction) {
         List<Transaction> lista = transactionsBase.stream()
 
@@ -131,9 +131,11 @@ public class FilterTransactions {
     public List<Transaction> invalidTransactionsRemover(List<Transaction> finallySortedList) {
         finallySortedList = removeOutliers(finallySortedList, priceDiff);
 
+/*
         mostExpensiveNotValidRemover(finallySortedList);
         cheapestNotValidRemover(finallySortedList);
 
+*/
 
         return finallySortedList;
     }
@@ -166,7 +168,7 @@ public class FilterTransactions {
     private boolean isPriceDifferenceToBig(BigDecimal firstPrice, BigDecimal secondPrice, BigDecimal maxDiff) {
         return secondPrice.subtract(firstPrice).compareTo(maxDiff) > 0;
     }
-
+/*
     private void cheapestNotValidRemover(List<Transaction> finallySortedList) {
         boolean isRemoved = true;
         while (isRemoved) {
@@ -314,7 +316,7 @@ public class FilterTransactions {
                 .filter(transaction -> transaction.getLevel() > 1)
                 .sorted(((o1, o2) -> o2.getFlatArea().compareTo(o1.getFlatArea())))
                 .collect(Collectors.toList()).get(0);
-    }
+    }*/
 
     private BigDecimal getPricePerMeter(List<Transaction> transactionsList, int index) {
         return transactionsList.get(index).getPricePerM2();
