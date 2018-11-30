@@ -2,8 +2,8 @@ package com.infoshareacademy.jbusters.data;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class FilterTransactions {
@@ -24,7 +24,7 @@ public class FilterTransactions {
 
     public List<Transaction> theGreatFatFilter(Transaction userTransaction) {
         List<Transaction> basicFilter = basicFilter(userTransaction);
-        return selectorFilter(true,true,basicFilter,userTransaction);
+        return selectorFilter(true, true, basicFilter, userTransaction);
     }
 
 
@@ -98,7 +98,7 @@ public class FilterTransactions {
     }
 
 
-   public List<Transaction> singleDistrictFilter(List<Transaction> transactionsBase, Transaction userTransaction) {
+    public List<Transaction> singleDistrictFilter(List<Transaction> transactionsBase, Transaction userTransaction) {
         List<Transaction> lista = transactionsBase.stream()
 
                 .filter(transaction -> (transaction.getDistrict()).equalsIgnoreCase(userTransaction.getDistrict()))
@@ -127,7 +127,7 @@ public class FilterTransactions {
         return new ArrayList(lista);
     }
 
-
+//TODO wstawic tutaj filtry konglomeraty karolo juanowe worstFlatFilter & bestFlatFilter co by dzialalo
     public List<Transaction> invalidTransactionsRemover(List<Transaction> finallySortedList) {
         finallySortedList = removeOutliers(finallySortedList, priceDiff);
 
@@ -141,7 +141,7 @@ public class FilterTransactions {
     public List<Transaction> removeOutliers(List<Transaction> transToClear, BigDecimal maxDiff) {
 
         List<Transaction> transSortedByPPerM2 = transToClear.stream()
-                .sorted((o1, o2) -> o1.getPricePerM2().compareTo(o2.getPricePerM2()))
+                .sorted(Comparator.comparing(Transaction::getPricePerM2))
                 .collect(Collectors.toList());
 
         removeLeftOutliers(transSortedByPPerM2, maxDiff);
@@ -182,13 +182,13 @@ public class FilterTransactions {
     private void mostExpensiveNotValidRemover(List<Transaction> finallySortedList) {
         while (true) {
             if (!isMostExpensiveTransactionValid(finallySortedList)) {
-                finallySortedList.remove(getLessExpensiveFlat(finallySortedList));
+                finallySortedList.remove(getMostExpensiveFlat(finallySortedList));
             } else {
                 break;
             }
         }
     }
-
+//FIXME metody sprawdzajace isXXX zamienic na metody filtrujace
 
     private boolean isCheapestTransactionValid(List<Transaction> finallySortedList) {
         Transaction transToCheck = getLessExpensiveFlat(finallySortedList);
@@ -238,7 +238,8 @@ public class FilterTransactions {
         ParkingPlace bestParking = finallySortedList.stream()
                 .limit(finallySortedList.size() - 1)
                 .map(x -> ParkingPlace.fromString(x.getParkingSpot()))
-                .distinct().max(new ParkingPlaceComparator())
+                .distinct()
+                .max(new ParkingPlaceComparator())
                 .orElse(ParkingPlace.GARAZ);
         return ParkingPlace.fromString(transToCheck.getParkingSpot()).compareTo(bestParking) >= 0;
 
@@ -261,45 +262,59 @@ public class FilterTransactions {
                 .orElse(StandardLevel.WYSOKI);
         return StandardLevel.fromString(transToCheck.getStandardLevel()).compareTo(bestStandard) >= 0;
     }
-//FIXME najgorsze ma
+
+
     private boolean isWorstLevel(List<Transaction> finallySortedList, Transaction transToCheck) {
-        int worstLevel = finallySortedList.stream()
-                .skip(1)
-                .mapToInt(Transaction::getLevel)
-                .min()
-                .orElse(0);
-        return transToCheck.getLevel() <= worstLevel;
+        return !doesContainGroundLevel(finallySortedList) || transToCheck.getLevel() == 1;
     }
 
     private boolean isBestLevel(List<Transaction> finallySortedList, Transaction transToCheck) {
-        int worstLevel = finallySortedList.stream()
+
+        return !doesContainGroundLevel(finallySortedList) || transToCheck.getLevel() > 1;
+    }
+
+    private boolean doesContainGroundLevel(List<Transaction> finallySortedList) {
+        return finallySortedList.stream()
                 .limit(finallySortedList.size() - 1)
                 .mapToInt(Transaction::getLevel)
-                .min()
-                .orElse(0);
-        return transToCheck.getLevel() > worstLevel;
+                .anyMatch(level -> level == 1);
     }
 
-    private boolean isWorstFlatArea(List<Transaction> finallySortedList, Transaction transToCheck) {
-        BigDecimal worstFlatArea = finallySortedList.stream()
-                .skip(1)
-                .map(Transaction::getFlatArea)
-                .distinct()
-                .max(BigDecimal::compareTo)
-                .orElse(new BigDecimal(0.0));
-        return transToCheck.getFlatArea().compareTo(worstFlatArea) >= 0;
+    private List<Transaction> WorstFlatFilter(List<Transaction> finallySortedList, Transaction transToCheck) {
+        Transaction worstByFlatArea = getWorstByFlatArea(finallySortedList, transToCheck);
+        return finallySortedList.stream()
+
+                .filter(transaction -> transaction.getFlatArea().compareTo(worstByFlatArea.getFlatArea()) <= 0 )
+                .filter(transaction -> transaction.getPricePerM2().compareTo(worstByFlatArea.getPricePerM2()) >= 0)
+                .sorted(Comparator.comparing(Transaction::getPricePerM2))
+                .collect(Collectors.toList());
     }
 
-    private boolean isBestFlatArea(List<Transaction> finallySortedList, Transaction transToCheck) {
-        BigDecimal worstFlatArea = finallySortedList.stream()
-                .limit(finallySortedList.size() - 1)
-                .map(Transaction::getFlatArea)
-                .distinct()
-                .min(BigDecimal::compareTo)
-                .orElse(new BigDecimal(0.0));
-        return transToCheck.getFlatArea().compareTo(worstFlatArea) <= 0;
+    private Transaction getWorstByFlatArea(List<Transaction> finallySortedList, Transaction transToCheck) {
+        return finallySortedList.stream()
+                .filter(transaction -> transaction.getLevel() == 1)
+                .sorted(((o1, o2) -> o2.getFlatArea().compareTo(o1.getFlatArea())))
+                .collect(Collectors.toList()).get(0);
+
     }
 
+
+
+    private List<Transaction> BestFlatFilter(List<Transaction> finallySortedList, Transaction transToCheck) {
+        Transaction bestByFlatArea = getBestByFlatArea(finallySortedList, transToCheck);
+        return finallySortedList.stream()
+                .filter(transaction -> transaction.getFlatArea().compareTo(bestByFlatArea.getFlatArea()) >= 0 )
+                .filter(transaction -> transaction.getPricePerM2().compareTo(bestByFlatArea.getPricePerM2()) <= 0)
+                .sorted(Comparator.comparing(Transaction::getPricePerM2))
+                .collect(Collectors.toList());
+    }
+
+    private Transaction getBestByFlatArea(List<Transaction> finallySortedList, Transaction transToCheck) {
+        return finallySortedList.stream()
+                .filter(transaction -> transaction.getLevel() > 1)
+                .sorted(((o1, o2) -> o2.getFlatArea().compareTo(o1.getFlatArea())))
+                .collect(Collectors.toList()).get(0);
+    }
 
     private BigDecimal getPricePerMeter(List<Transaction> transactionsList, int index) {
         return transactionsList.get(index).getPricePerM2();
@@ -310,6 +325,44 @@ public class FilterTransactions {
         return listToCheck.size() >= minSize;
     }
 
+    /*private boolean isWorstLevel(List<Transaction> finallySortedList, Transaction transToCheck) {
+        int worstLevel = finallySortedList.stream()
+                .skip(1)
+                .mapToInt(Transaction::getLevel)
+                .min()
+                .orElse(0);
+        return transToCheck.getLevel() <= worstLevel;
+    }*/
+
+/*    private boolean isBestLevel(List<Transaction> finallySortedList, Transaction transToCheck) {
+        int worstLevel = finallySortedList.stream()
+                .limit(finallySortedList.size() - 1)
+                .mapToInt(Transaction::getLevel)
+                .min()
+                .orElse(0);
+        return transToCheck.getLevel() > worstLevel;
+    } */
+
+
+/*    private boolean isWorstFlatArea(List<Transaction> finallySortedList, Transaction transToCheck) {
+        BigDecimal worstFlatArea = finallySortedList.stream()
+                .skip(1)
+                .map(Transaction::getFlatArea)
+                .distinct()
+                .max(BigDecimal::compareTo)
+                .orElse(new BigDecimal(0.0));
+        return transToCheck.getFlatArea().compareTo(worstFlatArea) >= 0;
+    }*/
+
+    /*    private boolean isBestFlatArea(List<Transaction> finallySortedList, Transaction transToCheck) {
+        BigDecimal worstFlatArea = finallySortedList.stream()
+                .limit(finallySortedList.size() - 1)
+                .map(Transaction::getFlatArea)
+                .distinct()
+                .min(BigDecimal::compareTo)
+                .orElse(new BigDecimal(0.0));
+        return transToCheck.getFlatArea().compareTo(worstFlatArea) <= 0;
+    }*/
     //TODO:wpisac metode do wypisywania dzielnic
     public List<String> getDistrictsWithSameWeight(String inputDistrict) {
         return new ArrayList<String>();
