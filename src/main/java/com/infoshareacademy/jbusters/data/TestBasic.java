@@ -12,7 +12,7 @@ public class TestBasic {
         Transaction userTrans = new Transaction();
         userTrans.setTransactionDate(LocalDate.now());
         userTrans.setCity("Gdynia");
-        userTrans.setDistrict(" Chylonia");
+        userTrans.setDistrict("Chylonia");
         userTrans.setStreet("Morska");
         userTrans.setTypeOfMarket("RYNEK WTÓRNY");
         userTrans.setFlatArea(new BigDecimal(45.0));

@@ -17,8 +17,7 @@ public class FilterTransactions {
     BigDecimal priceDiff = properties.getPriceDiff();
 
     public FilterTransactions(List<Transaction> transactionsData) {
-
-        transactionsBase = transactionsData;
+        this.transactionsBase = transactionsData;
     }
 
     // metoda zwracajaca liste tranzakcji, ktora jest wynikiem wielokrotnego przefiltrowania gwnej bazy tranzakcji
@@ -39,7 +38,7 @@ public class FilterTransactions {
         List<Transaction> lista = transactionsBase.stream()
                 .filter(transaction -> transaction.getTransactionDate().isAfter(userTransaction.getTransactionDate().minusYears(2)))
                 .filter(transaction -> transaction.getCity().equalsIgnoreCase(userTransaction.getCity()))
-                .filter(transaction -> transaction.getTypeOfMarket().equals(userTransaction.getTypeOfMarket()))
+                .filter(transaction -> transaction.getTypeOfMarket().equalsIgnoreCase(userTransaction.getTypeOfMarket()))
                 .filter(transaction -> transaction.getConstructionYearCategory() == (userTransaction.getConstructionYearCategory()))
                 .collect(Collectors.toList());
 
@@ -144,6 +143,8 @@ public class FilterTransactions {
     }
 
     public List<Transaction> removeOutliers(List<Transaction> transToClear, BigDecimal maxDiff) {
+
+        if(transToClear.size()==0) return transToClear;
 
         List<Transaction> transSortedByPPerM2 = transToClear.stream()
                 .sorted(Comparator.comparing(Transaction::getPricePerM2))
