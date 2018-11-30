@@ -23,7 +23,7 @@ public class Data {
     private List<Transaction> transactionsBase = new ArrayList<>(fileToData());
 
     public List<Transaction> fileToData() {
-        Path pathToFileTransactionCSV = Paths.get("src", "main", "resources", "transaction.csv");
+        Path pathToFileTransactionCSV = Paths.get("data", "transaction.csv");
         List<String> listFileTransactionCSV = null;
         try {
             listFileTransactionCSV = Files.readAllLines(pathToFileTransactionCSV);
@@ -58,7 +58,7 @@ public class Data {
         List<String> districtList = new ArrayList<>();
         for (int i = 0; i < transactionsBase.size(); i++) {
             if (newTransaction.getCity().equals(transactionsBase.get(i).getCity())) {
-                districtList.add(transactionsBase.get(i).getDistrict());
+                districtList.add(transactionsBase.get(i).getDistrict().trim());
             }
         }
         Set<String> noDuplicates = new TreeSet<>(districtList);
@@ -71,9 +71,5 @@ public class Data {
         return transactionsBase;
     }
 
-
-    public void addTransactionToData(Transaction trans) {
-        //metoda dodajca tranzakcje do bazy danych
-    }
 }
 
