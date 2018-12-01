@@ -35,7 +35,7 @@ public class Menu {
     }
 
     void welcome() {
-        clearScreen();
+        ConsoleViewer.clearScreen();
         System.out.println("Witaj! Tu wycenisz swoje mieszkanie w kilku szybkich krokach." + "\n" + "\n" +
                 "Wpisz odpowiedni numer by poruszać się po menu" + "\n");
     }
@@ -82,7 +82,7 @@ public class Menu {
                 break;
             }
             case 6: {
-                clearScreen();
+                ConsoleViewer.clearScreen();
                 subMenu.loadOptionsMenu();
                 break;
             }
