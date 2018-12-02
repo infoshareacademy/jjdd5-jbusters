@@ -2,6 +2,7 @@ package com.infoshareacademy.jbusters.data;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -12,6 +13,10 @@ public class CalculatePrice {
 
     private Transaction userTransaction;
     private List<Transaction> filteredList;
+    private PropLoader properties = new PropLoader("app.properties");
+    private DecimalFormat pf = new DecimalFormat("##.##");
+    private DecimalFormat df = new DecimalFormat("###,###.##");
+    private BigDecimal exchangeRate = properties.getExchangeRateBigDecimal();
 
     public CalculatePrice(Transaction transaction, List<Transaction> filteredList) {
         this.userTransaction = transaction;
@@ -25,7 +30,10 @@ public class CalculatePrice {
                 .mapToDouble(transaction -> transaction.getPricePerM2().doubleValue())
                 .min().orElse((double) 0));
 
-        System.out.println("Cena minimalna przed aktualizacja o trend to: " + min);
+        clearScreen();
+        System.out.println(":: Wybrano wycenę mieszkania ::\n");
+        System.out.println("Statystyki:\n");
+        System.out.println("Cena minimalna przed aktualizacją o trend to:\t\t\t" + df.format(min.divide(exchangeRate, BigDecimal.ROUND_UP)) + " " + properties.getCurrency());
 
         String mostPopularParkingSpot = mapOfParkingSpots(transactions).entrySet().stream()
                 .max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1)
@@ -46,7 +54,7 @@ public class CalculatePrice {
 
         BigDecimal overallTrend = overallTrend(listToCalculateTrend);
 
-        System.out.println("Roczny tręd wzrostu cen mieszkań wynosi: " + overallTrend.multiply(BigDecimal.valueOf(36500)) + "%");
+        System.out.println("Roczny trend wzrostu cen mieszkań wynosi:\t\t\t" + pf.format(overallTrend.multiply(BigDecimal.valueOf(36500))) + "%");
 
         List<Transaction> exportList = transactions.stream()
                 .map(item -> new Transaction(item))
@@ -78,7 +86,7 @@ public class CalculatePrice {
     private BigDecimal trendPerDay(List<Transaction> listToCalculateTrend, int first, int last) {
         long duration = DAYS.between(listToCalculateTrend.get(first).getTransactionDate(), listToCalculateTrend.get(last).getTransactionDate());
 
-        System.out.println(duration + " dni upłyneło między transakcjami, użytymi do obliczenia trędu");
+        System.out.println("Między transakcjami, użytymi do obliczenia trendu upłynęło:\t" + duration + " dni");
 
         BigDecimal priceOfNewest = listToCalculateTrend.get(last).getPricePerM2();
         BigDecimal priceOfOldest = listToCalculateTrend.get(first).getPricePerM2();
@@ -115,9 +123,9 @@ public class CalculatePrice {
                 .mapToDouble(transaction -> transaction.getPricePerM2().doubleValue())
                 .max().orElse((double) 0));
 
-        System.out.println("Średnia cena dla zbioru podobnych mieszkań to " + average.setScale(2, RoundingMode.HALF_UP) + "zł za m2");
-        System.out.println("Cena maksymalna dla dobranego zbioru to " + max + "zł za m2");
-        System.out.println("Cena minimalna dla dobranego zbioru to " + min + "zł za m2");
+        System.out.println("Średnia cena dla zbioru podobnych mieszkań to:\t\t\t" + df.format(average.setScale(2, RoundingMode.HALF_UP).divide(exchangeRate, BigDecimal.ROUND_UP)) + " " + properties.getCurrency() + " za m2");
+        System.out.println("Cena maksymalna dla dobranego zbioru to:\t\t\t" + df.format(max.divide(exchangeRate, BigDecimal.ROUND_UP)) + " " + properties.getCurrency() + " za m2");
+        System.out.println("Cena minimalna dla dobranego zbioru to:\t\t\t\t" + df.format(min.divide(exchangeRate, BigDecimal.ROUND_UP)) + " " + properties.getCurrency() + " za m2");
 
         BigDecimal lowerFactor = min.divide(average, 3, RoundingMode.HALF_UP);
         BigDecimal upperFactor = max.divide(average, 3, RoundingMode.HALF_UP);
@@ -157,10 +165,10 @@ public class CalculatePrice {
 
         BigDecimal finalWeight = weightOne.add(weightTwo).add(weightThree).add(weightFour);
 
-        System.out.println("Współczynnik wagi dla tego mieszkania to " + finalWeight);
+        System.out.println("Współczynnik wagi dla tego mieszkania to:\t\t\t" + finalWeight);
 
         BigDecimal pricePerM2 = average.multiply(finalWeight);
-        System.out.println("Obliczona cena za m2 to " + pricePerM2.setScale(2, RoundingMode.HALF_UP) + "zł");
+        System.out.println("Obliczona cena za m2 to:\t\t\t\t\t" + df.format(pricePerM2.setScale(2, RoundingMode.HALF_UP).divide(exchangeRate, BigDecimal.ROUND_UP)) + " " + properties.getCurrency());
 
         return pricePerM2;
     }
@@ -173,7 +181,7 @@ public class CalculatePrice {
         BigDecimal averageFlatArea = BigDecimal.valueOf(finallySortedList.stream()
                 .mapToDouble(t -> t.getFlatArea().doubleValue())
                 .average().orElse((double) 0));
-        System.out.println("Średnia wielkość mieszkań dla dobranego zbioru to " + averageFlatArea.setScale(2, RoundingMode.HALF_UP) + "m2");
+        System.out.println("Średnia wielkość mieszkań dla dobranego zbioru to:\t\t" + averageFlatArea.setScale(2, RoundingMode.HALF_UP) + " m2");
         return transToCheck.getFlatArea().compareTo(averageFlatArea) < 0;
     }
 
@@ -194,5 +202,10 @@ public class CalculatePrice {
                 .max(new ParkingPlaceComparator())
                 .orElse(ParkingPlace.GARAZ);
         return ParkingPlace.fromString(transToCheck.getParkingSpot()).compareTo(bestParking) >= 0;
+    }
+
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 }

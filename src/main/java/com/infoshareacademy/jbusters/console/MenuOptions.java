@@ -24,14 +24,14 @@ public class MenuOptions {
 
         int menuChoice = 0;
         while (menuChoice != 2) {
-            System.out.println("\n" + "          O P C J E" + "\n");
-            System.out.println("Aktualna ilość miejsc dziesiętnych:\t" + decimalPlaces + "\n" +
-                    "Aktualna waluta:\t\t\t" + currency + "\n" +
-                    "Aktualny kurs:\t\t\t\t1 " + currency + " = " + exchangeRate + " PLN\n" +
-                    "Filtrowanie m2 - zakres podstawowy:\t" + areaDiff + "\n" +
-                    "Filtrowanie m2 - zakres rozszerzony:\t" + areaDiffExpanded + "\n" +
-                    "Aktualny parametr ilości wyników:\t" + minResults + "\n" +
-                    "Aktualny parametr różnicy cen:\t\t" + priceDiff + "\n\n" +
+            System.out.println("\n          O P C J E\n");
+            System.out.println("Aktualna ilość miejsc dziesiętnych:\t\t\t\t" + decimalPlaces + "\n" +
+                    "Aktualna waluta:\t\t\t\t\t\t" + currency + "\n" +
+                    "Aktualny kurs:\t\t\t\t\t\t\t1 " + currency + " = " + exchangeRate + " PLN\n" +
+                    "Aktualna podstawa zakresu filtrowania powierzchni:\t\t" + areaDiff + " m2\n" +
+                    "Aktualne rozszerzenie zakresu filtrowania powierzchni:\t\t" + areaDiffExpanded + " m2\n" +
+                    "Aktualna, minimalna ilość transakcji potrzebnych do wyceny:\t" + minResults + "\n" +
+                    "Aktualny parametr maksymalnego odchylenia ceny skrajnej:\t" + priceDiff + " " + currency + " za m2\n\n" +
                     "1 - Zmiana powyższych ustawień i zapis" + "\n" +
                     "2 - Powrót do menu głównego" + "\n" +
                     "podaj numer:");
@@ -63,19 +63,19 @@ public class MenuOptions {
                 String exchangeRate = consoleReader.readStringExchangeRate();
                 properties.setProperty("exchangeRate", exchangeRate);
 
-                System.out.println("Podaj nowy zakres filtrowania m2 - zakres podstawowy:");
+                System.out.println("Podaj nowy, podstawowy zakres filtrowania powierzchni (m2):");
                 String areaDiff = consoleReader.readStringExchangeRate();
                 properties.setProperty("areaDiff", areaDiff);
 
-                System.out.println("Podaj nowy zakres filtrowania m2 - zakres rozszerzony:");
+                System.out.println("Podaj nowy, rozszerzony zakres filtrowania powierzchni (m2):");
                 String areaDiffExpanded = consoleReader.readStringExchangeRate();
                 properties.setProperty("areaDiffExpanded", areaDiffExpanded);
 
-                System.out.println("Podaj nowy parametr ilości wyników:");
+                System.out.println("Podaj nową, minimalną ilość transakcji potrzebnych do wyceny:");
                 String minResults = consoleReader.readStringExchangeRate();
                 properties.setProperty("minResults", minResults);
 
-                System.out.println("Podaj nowy parametr różnicy cen:");
+                System.out.println("Podaj nowy parametr maksymalnego odchylenia ceny skrajnej (" + currency + " za m2):");
                 String priceDiff = consoleReader.readStringExchangeRate();
                 properties.setProperty("priceDiff", priceDiff);
 
@@ -89,7 +89,6 @@ public class MenuOptions {
                 break;
             }
             case 2: {
-                System.out.println("\n" + ":: Wybrano powrót do menu głównego ::" + "\n");
                 Menu menu = new Menu();
                 clearScreen();
                 menu.loadMenu();

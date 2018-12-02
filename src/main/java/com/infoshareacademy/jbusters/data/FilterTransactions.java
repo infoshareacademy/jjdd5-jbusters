@@ -30,7 +30,8 @@ public class FilterTransactions {
 
 
     private List<Transaction> notEnoughtResultsAction() {
-        System.out.println("Baza zawiera zbyt mala ilosc pasujacych transakcji");
+        clearScreen();
+        System.out.println(":: Wycena niemożliwa, baza zawiera zbyt małą ilość pasujących transakcji ::\n");
         return new ArrayList<Transaction>();
     }
 
@@ -170,5 +171,10 @@ public class FilterTransactions {
 
     private boolean isEnoughtResults(List<Transaction> listToCheck, int minSize) {
         return listToCheck.size() >= minSize;
+    }
+
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 }

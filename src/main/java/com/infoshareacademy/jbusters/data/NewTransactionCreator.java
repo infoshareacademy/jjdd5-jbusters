@@ -38,14 +38,17 @@ public class NewTransactionCreator {
         newTransaction.setConstructionYearCategory(loadConstructionYearCategory());
 
         LOGGER.info("Create new transaction: {}", newTransaction);
+        clearScreen();
+        System.out.println(":: Podsumowanie wprowadzonych parametrów mieszkania ::\n");
         System.out.println(newTransaction);         // Wypisanie podanych przez urzytkownika danych w formie transakcji
+        System.out.println("\n:: Wybierz z poniższego menu co chesz dalej zrobić? ::\n");
         return newTransaction;
     }
 
     private String loadDistrict(List<String> districtList) {
         int printLimit;
         MapSorter mapSorter = new MapSorter();
-        System.out.println("Podaj w jakiej dzielnicy jest twoje mieszkanie");
+        System.out.println("\nPodaj w jakiej dzielnicy jest twoje mieszkanie");
         char[] charsArray = consoleReader.readString().toCharArray();                      // urzytkownik wpisuje dzielnice jako string i zamieniany jest na charArray
         Map<String, Integer> districtMap = new HashMap<>();
         compare(districtList, charsArray, districtMap);
@@ -99,26 +102,26 @@ public class NewTransactionCreator {
     }
 
     private String loadStreet() {
-        System.out.println("Podaj nazwę ulicy");
+        System.out.println("\nPodaj nazwę ulicy");
         LOGGER.info("load street");
         return consoleReader.readString();
     }
 
     private String loadMarket() {
-        System.out.println("Podaj rodzaj rynku" + "\n" + "1 - Rynek wtórny" + "\n" + "2 - Rynek pierwotny");
+        System.out.println("\nPodaj rodzaj rynku" + "\n" + "1 - Rynek wtórny" + "\n" + "2 - Rynek pierwotny");
         String[] marketList = {"RYNEK WTÓRNY", "RYNEK PIERWOTNY"};
         LOGGER.info("load market");
         return marketList[consoleReader.readInt(1, 2) - 1];
     }
 
     private BigDecimal loadSize() {
-        System.out.println("Podaj wielkość mieszkania w m2");
+        System.out.println("\nPodaj wielkość mieszkania w m2");
         LOGGER.info("load size");
         return consoleReader.readBigDecimal();
     }
 
     private String loadParkingSpot() {
-        System.out.println("Czy do mieszkania jest przypisane miejsce postojowe?");
+        System.out.println("\nCzy do mieszkania jest przypisane miejsce postojowe?");
         String[] parkingSpotList = {"BRAK MP", "MIEJSCE NAZIEMNE", "GARAŻ JEDNOSTANOWISKOWY", "MIEJSCE POSTOJOWE W HALI GARAŻOWEJ"};
         for (int i = 0; i < parkingSpotList.length; i++) {
             System.out.println(i + 1 + " - " + parkingSpotList[i]);
@@ -128,13 +131,13 @@ public class NewTransactionCreator {
     }
 
     private int loadLevel() {
-        System.out.println("Podaj piętro, na którym jest twoje mieszkanie");
+        System.out.println("\nPodaj piętro, na którym jest twoje mieszkanie");
         LOGGER.info("load level");
         return consoleReader.readInt();
     }
 
     private String loadStandardLevel() {
-        System.out.println("Podaj poziom wykończenia twojego mieszkania");
+        System.out.println("\nPodaj poziom wykończenia twojego mieszkania");
         String[] standardLevelList = {"WYSOKI", "BARDZO DOBRY", "DOBRY", "PRZECIĘTNY", "NISKI", "DEWELOPERSKI/DO WYKOŃCZENIA"};
         for (int i = 0; i < standardLevelList.length; i++) {
             System.out.println(i + 1 + " - " + standardLevelList[i]);
@@ -144,14 +147,14 @@ public class NewTransactionCreator {
     }
 
     private int loadConstructionYearCategory() {
-        System.out.println("Podaj rok budowy budynku, w którym jest Twoje mieszkaie");
+        System.out.println("\nPodaj rok budowy budynku, w którym znajduje się Twoje mieszkaie");
         System.out.println("1 - przed rokiem 1970" + "\n" + "2 - między rokiem 1970 a 1990" + "\n" + "3 - po roku 1990");
         LOGGER.info("load construction year category");
         return consoleReader.readInt(1, 3);
     }
 
     public void loadPrice() {
-        System.out.println("Podaj wartość za jaką została sprzedana Twoja nieruchomość");
+        System.out.println("\nPodaj wartość za jaką została sprzedana Twoja nieruchomość");
         newTransaction.setPrice(consoleReader.readBigDecimal());
     }
 
@@ -160,18 +163,25 @@ public class NewTransactionCreator {
     }
 
     public void loadConstructionYear() {
-        System.out.println("Wpisz rok budowy budynku, w którym znajduje się Twoja nieruchomość");
+        System.out.println("\nWpisz rok budowy budynku, w którym znajduje się Twoja nieruchomość");
         newTransaction.setConstructionYear(consoleReader.readString());
     }
 
     public void loadTime() {
-        System.out.println("Wpisz datę sprzedaży w formacie YYYY-MM-dd");
+        clearScreen();
+        System.out.println(":: Wybrano opcję wpisania transakcji do bazy ::\n");
+        System.out.println("Wpisz datę sprzedaży nieruchomości w formacie YYYY-MM-dd");
         try {
             newTransaction.setTransactionDate(LocalDate.parse(consoleReader.readDate()));
         } catch (java.time.format.DateTimeParseException e) {
-            System.out.println("Zły format daty");
+            System.out.println("\nZły format daty!");
             loadTime();
         }
+    }
+
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 
     public Transaction getNewTransaction() {
