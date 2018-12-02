@@ -10,7 +10,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -95,13 +94,16 @@ public class Menu {
                     "Możesz je wprowadzić ręcznie, bądz wczytać z pliku, jeśli zostało wcześniej zapisane.");
         } else {
             List<Transaction> filteredList = filterTransactions.theGreatFatFilter(newTransactionCreator.getNewTransaction());
-            CalculatePrice calc = new CalculatePrice(newTransactionCreator.getNewTransaction());
-            BigDecimal valueOfFlat = newTransactionCreator.getNewTransaction().getFlatArea().multiply(calc.calculatePrice(filteredList));
-            calc.betterPrice(filteredList);
+            if (filteredList.size() >= 11) {
+                CalculatePrice calc = new CalculatePrice(newTransactionCreator.getNewTransaction(), filteredList);
+                BigDecimal valueOfFlat = newTransactionCreator.getNewTransaction().getFlatArea().multiply(calc.calculatePrice());
 
-            System.out.println("Dokonano wyceny twojego mieszkania: ");
-            System.out.println(newTransactionCreator.getNewTransaction().toString());
-            System.out.println("Wartość twojego mieszkania to - " + valueOfFlat.setScale(properties.getDecimalPlaces(), BigDecimal.ROUND_UP));
+                System.out.println("Dokonano wyceny twojego mieszkania: ");
+                System.out.println(newTransactionCreator.getNewTransaction().toString());
+                System.out.println("Wartość twojego mieszkania to - " + valueOfFlat.setScale(properties.getDecimalPlaces(), BigDecimal.ROUND_UP));
+            } else {
+                System.out.println("Przykro nam");
+            }
         }
     }
 

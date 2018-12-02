@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.function.DoubleUnaryOperator;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -13,20 +11,21 @@ import static java.time.temporal.ChronoUnit.DAYS;
 public class CalculatePrice {
 
     private Transaction userTransaction;
+    private List<Transaction> filteredList;
 
-    public CalculatePrice(Transaction transaction) {
+    public CalculatePrice(Transaction transaction, List<Transaction> filteredList) {
         this.userTransaction = transaction;
+        this.filteredList = filteredList;
     }
 
-    public BigDecimal calculatePrice(List<Transaction> filteredList) {
-        List<Transaction> updatedPricesList = updatePricesInList(filteredList);
+    private List<Transaction> updatePricesInList() {
+        List<Transaction> transactions = filteredList;
 
-        return BigDecimal.valueOf(updatedPricesList.stream()
+        BigDecimal min = BigDecimal.valueOf(transactions.stream()
                 .mapToDouble(transaction -> transaction.getPricePerM2().doubleValue())
-                .average().orElse(Double.valueOf(0)));
-    }
+                .min().orElse((double) 0));
 
-    private List<Transaction> updatePricesInList(List<Transaction> transactions) {
+        System.out.println("Cena minimalna przed aktualizacja o trend to: " + min);
 
         String mostPopularParkingSpot = mapOfParkingSpots(transactions).entrySet().stream()
                 .max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1)
@@ -53,7 +52,7 @@ public class CalculatePrice {
                 .map(item -> new Transaction(item))
                 .collect(Collectors.toList());
 
-        exportList.forEach(t -> t.setPrice(updatePrice(t, overallTrend)));
+        exportList.forEach(t -> t.setPricePerM2(updatePrice(t, overallTrend)));
 
         return exportList;
     }
@@ -73,7 +72,7 @@ public class CalculatePrice {
 
     private BigDecimal updatePrice(Transaction transaction, BigDecimal trend) {
         long duration = DAYS.between(transaction.getTransactionDate(), LocalDate.now());
-        return transaction.getPrice().multiply(BigDecimal.ONE.add(BigDecimal.valueOf(duration).multiply(trend))).setScale(2, RoundingMode.HALF_UP);
+        return transaction.getPricePerM2().multiply(BigDecimal.ONE.add(BigDecimal.valueOf(duration).multiply(trend))).setScale(2, RoundingMode.HALF_UP);
     }
 
     private BigDecimal trendPerDay(List<Transaction> listToCalculateTrend, int first, int last) {
@@ -86,7 +85,11 @@ public class CalculatePrice {
 
         BigDecimal trendPerDay = (((priceOfNewest.subtract(priceOfOldest)).divide(priceOfOldest, 6, RoundingMode.HALF_UP)).divide(BigDecimal.valueOf(duration), 6, RoundingMode.HALF_UP));
 
-        return trendPerDay;
+        if (trendPerDay.compareTo(BigDecimal.valueOf(0.000274)) > 0) {
+            return BigDecimal.valueOf(0.000274);
+        } else {
+            return trendPerDay;
+        }
     }
 
     private BigDecimal overallTrend(List<Transaction> listToCalculateTrend) {
@@ -94,10 +97,11 @@ public class CalculatePrice {
         BigDecimal pairTwo = trendPerDay(listToCalculateTrend, 1, listToCalculateTrend.size() - 2);
         BigDecimal pairThree = trendPerDay(listToCalculateTrend, 2, listToCalculateTrend.size() - 3);
 
-        return (pairOne.add(pairTwo).add(pairThree)).divide(BigDecimal.valueOf(3), 4, RoundingMode.HALF_UP);
+        return (pairOne.add(pairTwo).add(pairThree)).divide(BigDecimal.valueOf(3), 6, RoundingMode.HALF_UP);
     }
 
-    public void betterPrice(List<Transaction> transactions) {
+    public BigDecimal calculatePrice() {
+        List<Transaction> transactions = updatePricesInList();
 
         BigDecimal average = BigDecimal.valueOf(transactions.stream()
                 .mapToDouble(transaction -> transaction.getPricePerM2().doubleValue())
@@ -131,7 +135,7 @@ public class CalculatePrice {
             weightOne = BigDecimal.valueOf(0.4);
         }
 
-        if (isBestLevel(transactions, userTransaction)) {
+        if (isBestLevel(userTransaction)) {
             weightTwo = upperFactor.multiply(BigDecimal.valueOf(0.2));
         } else {
             weightTwo = lowerFactor.multiply(BigDecimal.valueOf(0.2));
@@ -157,9 +161,11 @@ public class CalculatePrice {
 
         BigDecimal pricePerM2 = average.multiply(finalWeight);
         System.out.println("Obliczona cena za m2 to " + pricePerM2.setScale(2, RoundingMode.HALF_UP) + "zł");
+
+        return pricePerM2;
     }
 
-    private boolean isBestLevel(List<Transaction> finallySortedList, Transaction transToCheck) {
+    private boolean isBestLevel(Transaction transToCheck) {
         return transToCheck.getLevel() > 1;
     }
 
