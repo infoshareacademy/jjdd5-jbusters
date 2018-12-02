@@ -9,10 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class NewTransactionCreator {
 
@@ -20,6 +17,7 @@ public class NewTransactionCreator {
     private Transaction newTransaction = new Transaction();
     private final Data data;
     private final ConsoleReader consoleReader;
+
 
     public NewTransactionCreator(Data data, ConsoleReader consoleReader) {
         this.data = data;

@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 public class Data {
 
@@ -56,7 +58,7 @@ public class Data {
         List<String> districtList = new ArrayList<>();
         for (int i = 0; i < transactionsBase.size(); i++) {
             if (newTransaction.getCity().equals(transactionsBase.get(i).getCity())) {
-                districtList.add(transactionsBase.get(i).getDistrict());
+                districtList.add(transactionsBase.get(i).getDistrict().trim());
             }
         }
         Set<String> noDuplicates = new TreeSet<>(districtList);
