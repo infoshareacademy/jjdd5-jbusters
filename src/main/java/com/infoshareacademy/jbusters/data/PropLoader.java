@@ -54,6 +54,12 @@ public class PropLoader {
         return exchangeRate;
     }
 
+    public BigDecimal getExchangeRateBigDecimal() {
+        String exchangeRateString = properties.getProperty(EXCHANGE_RATE_KEY, EXCHANGE_RATE_DEFAULT_VALUE);
+        BigDecimal exchangeRateBigDecimal = new BigDecimal(exchangeRateString);
+        return exchangeRateBigDecimal;
+    }
+
     public BigDecimal getAreaDiff() {
         String areaDiffString = properties.getProperty(AREA_DIFF_KEY, AREA_DIFF_DEFAULT_VALUE);
         BigDecimal areaDiff = new BigDecimal(areaDiffString);

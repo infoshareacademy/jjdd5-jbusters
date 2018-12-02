@@ -1,5 +1,7 @@
 package com.infoshareacademy.jbusters.data;
 
+import com.infoshareacademy.jbusters.console.ConsoleViewer;
+
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -32,7 +34,9 @@ public class FilterTransactions {
 
 
     private List<Transaction> notEnoughtResultsAction() {
-        System.out.println("Baza zawiera zbyt małą ilość transakcji adekwatnych do przeprowadzenia wyceny.");
+
+        ConsoleViewer.clearScreen();
+        System.out.println(":: Wycena niemożliwa, baza zawiera zbyt małą ilość pasujących transakcji ::\n");
         return new ArrayList<Transaction>();
     }
 
