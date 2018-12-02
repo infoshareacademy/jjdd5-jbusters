@@ -2,7 +2,6 @@ package com.infoshareacademy.jbusters.data;
 
 
 import com.infoshareacademy.jbusters.console.ConsoleReader;
-import com.infoshareacademy.jbusters.console.Menu;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -95,8 +95,9 @@ public class Menu {
                     "Możesz je wprowadzić ręcznie, bądz wczytać z pliku, jeśli zostało wcześniej zapisane.");
         } else {
             List<Transaction> filteredList = filterTransactions.theGreatFatFilter(newTransactionCreator.getNewTransaction());
-            CalculatePrice calc = new CalculatePrice();
-            BigDecimal valueOfFlat = calc.calculatePrice(filteredList);
+            CalculatePrice calc = new CalculatePrice(newTransactionCreator.getNewTransaction());
+            BigDecimal valueOfFlat = newTransactionCreator.getNewTransaction().getFlatArea().multiply(calc.calculatePrice(filteredList));
+            calc.betterPrice(filteredList);
 
             System.out.println("Dokonano wyceny twojego mieszkania: ");
             System.out.println(newTransactionCreator.getNewTransaction().toString());
