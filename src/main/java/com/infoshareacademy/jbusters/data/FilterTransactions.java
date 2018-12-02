@@ -24,6 +24,9 @@ public class FilterTransactions {
 
     public List<Transaction> theGreatFatFilter(Transaction userTransaction) {
         List<Transaction> basicFilter = basicFilter(userTransaction);
+        if(basicFilter.size()<11){
+            return new ArrayList<>();
+        }
         return selectorFilter(true, true, basicFilter, userTransaction);
     }
 
