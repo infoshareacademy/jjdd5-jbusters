@@ -46,7 +46,7 @@ public class CalculatePrice {
 
         BigDecimal overallTrend = overallTrend(listToCalculateTrend);
 
-        System.out.println("Roczny tręd wzrostu cen mieszkań wynosi: " + overallTrend.multiply(BigDecimal.valueOf(36500)) + "%");
+        System.out.println("Roczny trend wzrostu cen mieszkań wynosi: " + overallTrend.multiply(BigDecimal.valueOf(36500)) + "%");
 
         List<Transaction> exportList = transactions.stream()
                 .map(item -> new Transaction(item))
@@ -78,7 +78,7 @@ public class CalculatePrice {
     private BigDecimal trendPerDay(List<Transaction> listToCalculateTrend, int first, int last) {
         long duration = DAYS.between(listToCalculateTrend.get(first).getTransactionDate(), listToCalculateTrend.get(last).getTransactionDate());
 
-        System.out.println(duration + " dni upłyneło między transakcjami, użytymi do obliczenia trędu");
+        System.out.println(duration + " dni upłyneło między transakcjami, użytymi do obliczenia trendu");
 
         BigDecimal priceOfNewest = listToCalculateTrend.get(last).getPricePerM2();
         BigDecimal priceOfOldest = listToCalculateTrend.get(first).getPricePerM2();
