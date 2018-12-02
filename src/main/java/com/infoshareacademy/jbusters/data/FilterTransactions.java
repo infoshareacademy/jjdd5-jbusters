@@ -30,7 +30,7 @@ public class FilterTransactions {
 
 
     private List<Transaction> notEnoughtResultsAction() {
-        System.out.println("Baza zawiera zbyt mala ilosc pasujacych transakcji");
+        System.out.println("Baza zawiera zbyt małą ilość transakcji adekwatnych do przeprowadzenia wyceny.");
         return new ArrayList<Transaction>();
     }
 
@@ -121,7 +121,6 @@ public class FilterTransactions {
 
                 .filter(transaction -> ((transaction.getFlatArea()).compareTo(userTransaction.getFlatArea().add(areaDiff))) <= 0)
                 .filter(transaction -> ((transaction.getFlatArea()).compareTo(userTransaction.getFlatArea().subtract(areaDiff))) >= 0)
-
                 .collect(Collectors.toList());
 
         return new ArrayList(lista);
@@ -166,7 +165,6 @@ public class FilterTransactions {
     private BigDecimal getPricePerMeter(List<Transaction> transactionsList, int index) {
         return transactionsList.get(index).getPricePerM2();
     }
-
 
     private boolean isEnoughtResults(List<Transaction> listToCheck, int minSize) {
         return listToCheck.size() >= minSize;
