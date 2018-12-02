@@ -19,7 +19,7 @@ public class ConsoleReader {
             "STD|SVC|SYP|SZL|THB|TJS|TMT|TND|TOP|TRY|TTD|TVD|TWD|TZS|UAH|UGX|USD|" +
             "UYU|UZS|VEF|VND|VUV|WST|XAF|XCD|XDR|XOF|XPF|YER|ZAR|ZMW|ZWD$/";
     private static final String EXCHANGE_RATE_PATTERN = "^(0*[1-9][0-9]*(\\.[0-9]+)?|0+\\.[0-9]*[1-9][0-9]*)$";
-    public static final String STRING_PATTERN = "[A-Za-zęóąśłżźćń.0-9]+";
+    public static final String STRING_PATTERN = "[A-Za-ŁÓŚŹŻĆĘĄĆŃzęóąśłżźćń.0-9 -]+";
     public static final String DATE_PATTERN = "^\\d{4}-\\d{2}-\\d{2}$";
     public static final String DECIMAL_PLACES_PATTERN = "[0-2]{1}";
 
@@ -51,7 +51,7 @@ public class ConsoleReader {
             try {
                 return BigDecimal.valueOf(scanner.nextDouble());
             } catch (java.util.InputMismatchException e) {
-                System.out.println("Podaj liczbę ");
+                System.out.println("Podaj liczbę, a jeśli użyłeś kropki, zastąp go przecinkiem");
                 LOGGER.warn("Incorrect value was provided ", e.getMessage());
                 scanner.nextLine();
             }
