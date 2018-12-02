@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class Data {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Data.class);
-    private List<Transaction> transactionsBase = new ArrayList<>(fileToData());
+    private final List<Transaction> transactionsBase = new ArrayList<>(fileToData());
 
     public List<Transaction> fileToData() {
         Path pathToFileTransactionCSV = Paths.get("data", "transaction.csv");

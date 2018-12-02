@@ -26,6 +26,29 @@ public class Transaction {
     private String constructionYear;
     private int constructionYearCategory;
 
+
+    public Transaction() {
+
+    }
+
+    public Transaction(Transaction transaction) {
+        this.transactionDate = transaction.transactionDate;
+        this.city = transaction.city;
+        this.district = transaction.district;
+        this.street = transaction.street;
+        this.typeOfMarket = transaction.typeOfMarket;
+        this.price = transaction.price;
+        this.currency = transaction.currency;
+        this.flatArea = transaction.flatArea;
+        this.pricePerM2 = transaction.pricePerM2;
+        this.level = transaction.level;
+        this.parkingSpot = transaction.parkingSpot;
+        this.standardLevel = transaction.standardLevel;
+        this.constructionYear = transaction.constructionYear;
+        this.constructionYearCategory = transaction.constructionYearCategory;
+
+    }
+
     @Override
     public String toString() {
 

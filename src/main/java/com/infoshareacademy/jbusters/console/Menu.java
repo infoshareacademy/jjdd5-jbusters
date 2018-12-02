@@ -72,7 +72,7 @@ public class Menu {
             case 3: {
                 saveSession(newTransactionCreator.getNewTransaction(), pathToUserFile);
                 break;
-            }   
+            }
             case 4: {
                 loadTransaction();
                 break;
@@ -94,11 +94,17 @@ public class Menu {
             System.out.println("Najpierw wprowadź mieszkanie, które chcesz wycenić." + "\n" +
                     "Możesz je wprowadzić ręcznie, bądz wczytać z pliku, jeśli zostało wcześniej zapisane.");
         } else {
-            List filteredList = filterTransactions.theGreatFatFilter(newTransactionCreator.getNewTransaction());
-            BigDecimal valueOfFlat = CalculatePrice.calculatePrice(filteredList);
-            System.out.println("Dokonano wyceny twojego mieszkania: ");
-            System.out.println(newTransactionCreator.getNewTransaction().toString());
-            System.out.println("Wartość twojego mieszkania to - " + valueOfFlat.setScale(properties.getDecimalPlaces(), BigDecimal.ROUND_UP));
+            List<Transaction> filteredList = filterTransactions.theGreatFatFilter(newTransactionCreator.getNewTransaction());
+            if (filteredList.size() >= 11) {
+                CalculatePrice calc = new CalculatePrice(newTransactionCreator.getNewTransaction(), filteredList);
+                BigDecimal valueOfFlat = newTransactionCreator.getNewTransaction().getFlatArea().multiply(calc.calculatePrice());
+
+                System.out.println("Dokonano wyceny twojego mieszkania: ");
+                System.out.println(newTransactionCreator.getNewTransaction().toString());
+                System.out.println("Wartość twojego mieszkania to - " + valueOfFlat.setScale(properties.getDecimalPlaces(), BigDecimal.ROUND_UP));
+            } else {
+                System.out.println("Przykro nam");
+            }
         }
     }
 
