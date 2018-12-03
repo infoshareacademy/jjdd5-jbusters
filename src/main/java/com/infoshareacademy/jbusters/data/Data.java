@@ -30,7 +30,7 @@ public class Data {
             listFileTransactionCSV.remove(0);
             DataLoader data = new DataLoader();
             LOGGER.info("Load file CSV. Path: {}", pathToFileTransactionCSV);
-            return data.createTransactionList(listFileTransactionCSV);
+            return data.createTransactionList(listFileTransactionCSV, "no");
         } catch (IOException e) {
             System.out.println("Error while loading data: ");
             e.printStackTrace();

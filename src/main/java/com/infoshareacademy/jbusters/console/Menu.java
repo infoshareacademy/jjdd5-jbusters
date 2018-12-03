@@ -11,7 +11,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
 import java.util.List;
-import java.util.OptionalDouble;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -74,7 +73,7 @@ public class Menu {
                 break;
             }
             case 3: {
-                saveSession(newTransactionCreator.getNewTransaction(), pathToUserFile);
+                saveSession(newTransactionCreator.getNewTransaction(), pathToUserFile, "yes");
                 break;
             }
             case 4: {
@@ -105,7 +104,7 @@ public class Menu {
                 BigDecimal valueOfFlat = newTransactionCreator.getNewTransaction().getFlatArea().multiply(calc.calculatePrice());
 
                 System.out.println("\nWycena: \n");
-                System.out.println(newTransactionCreator.getNewTransaction().toString());
+                System.out.println(newTransactionCreator.getNewTransaction().toStringNoPrice());
                 System.out.println("\nWARTOŚĆ TWOJEGO MIESZKANIA: " + df.format(valueOfFlat.divide(exchangeRate, BigDecimal.ROUND_UP)) + " " + properties.getCurrency() + "\n");
             } else {
                 System.out.println("Wybierz z poniższego menu co chcesz dalej zrobić?\n");
@@ -113,17 +112,17 @@ public class Menu {
         }
     }
 
-    private void saveSession(Transaction newTransaction, Path pathToFile) throws FileNotFoundException {
+    private void saveSession(Transaction newTransaction, Path pathToFile, String toUserFile) throws FileNotFoundException {
         try {
             if (Files.exists(pathToFile)) {
-                if (checkIfFlatExist(dataLoader.createFlatsListFromFile(pathToFile))) {
+                if (checkIfFlatExist(dataLoader.createFlatsListFromFile(pathToFile, toUserFile))) {
                     ConsoleViewer.clearScreen();
                     System.out.println(":: Dodanie transakcji niemożliwe, baza już zawiera identyczny wpis ::\n");
                 } else {
-                    saveTransaction(newTransaction, pathToFile);
+                    saveTransaction(newTransaction, pathToFile, toUserFile);
                 }
             } else {
-                saveTransaction(newTransaction, pathToFile);
+                saveTransaction(newTransaction, pathToFile, toUserFile);
             }
         } catch (java.lang.NullPointerException e) {
             ConsoleViewer.clearScreen();
@@ -133,19 +132,22 @@ public class Menu {
 
     private void loadTransaction() {
 
-        if (!dataLoader.createFlatsListFromFile(pathToUserFile).isEmpty()) {
+        if (!dataLoader.createFlatsListFromFile(pathToUserFile, "yes").isEmpty()) {
 
-            List<Transaction> userList = dataLoader.createFlatsListFromFile(pathToUserFile);
+            List<Transaction> userList = dataLoader.createFlatsListFromFile(pathToUserFile, "yes");
 
-            if (!dataLoader.createFlatsListFromFile(pathToUserFile).isEmpty()) {
+            if (!dataLoader.createFlatsListFromFile(pathToUserFile, "yes").isEmpty()) {
                 for (int i = 0; i < userList.size(); i++) {
-                    System.out.println("\n:: MIESZKANIE NR " + (i + 1) + " ::::::::::::::::::::::::::::\n" + userList.get(i).toString());
+                    System.out.println("\n:: MIESZKANIE NR " + (i + 1) + " " +
+                            userList.get(i).getTransactionName() +
+                            " ::::::::::::::::::::::::::::\n" + userList.get(i).toStringNoPrice());
                 }
                 System.out.println("\nPodaj nr mieszkania, które chcesz załadować");
                 int chosenFlat = consoleReader.readInt(1, userList.size());
                 ConsoleViewer.clearScreen();
-                System.out.println(":: Mieskzanie nr " + chosenFlat + " zostało załadowane ::");
                 newTransactionCreator.setNewTransaction(userList.get(chosenFlat - 1));
+                System.out.println(":: Mieskzanie nr " + chosenFlat + " o nazwie " +
+                        newTransactionCreator.getNewTransaction().getTransactionName() + " zostało załadowane ::");
             }
         }
     }
@@ -170,7 +172,11 @@ public class Menu {
                 userList.get(i).getTypeOfMarket().equalsIgnoreCase(userTransaction.getTypeOfMarket()));
     }
 
-    private void saveTransaction(Transaction newTransaction, Path pathToFile) throws FileNotFoundException {
+    private void saveTransaction(Transaction newTransaction, Path pathToFile, String toUserFile) throws FileNotFoundException {
+        String transactionName = "brak";
+        if (toUserFile.equals("yes")) {
+            transactionName = newTransaction.getTransactionName();
+        }
         String transactionString = Stream.of(
                 newTransaction.getTransactionDate().toString().replaceAll("-", " "),
                 newTransaction.getCity(),
@@ -190,12 +196,16 @@ public class Menu {
         PrintWriter fileWriter = new PrintWriter(new FileOutputStream(
                 new File(String.valueOf(pathToFile)),
                 true));
-        fileWriter.append(transactionString + "\n");
+        if (!transactionName.equals("brak")) {
+            fileWriter.append(transactionString + "," + transactionName + "\n");
+        } else {
+            fileWriter.append(transactionString + "\n");
+        }
         fileWriter.close();
 
         ConsoleViewer.clearScreen();
         System.out.println(":: Twoja transakcja została zapisana do pliku ::\n");
-        System.out.println("Nowy wpis: " + transactionString);
+        System.out.println("Nowy wpis: " + newTransaction.toStringNoPrice());
         System.out.println("\nWybierz z poniższego menu co chcesz dalej zrobić?\n");
     }
 
@@ -209,13 +219,8 @@ public class Menu {
             newTransactionCreator.loadPrice();
             newTransactionCreator.calculatePPm2();
             newTransactionCreator.loadConstructionYear();
-            saveSession(newTransaction, pathToFileTransactionCSV);
+            saveSession(newTransaction, pathToFileTransactionCSV, "no");
         }
-    }
-
-    public static void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
     }
 
     private void exit() {
