@@ -1,5 +1,7 @@
 package com.infoshareacademy.jbusters.data;
 
+import com.infoshareacademy.jbusters.console.ConsoleViewer;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -30,7 +32,7 @@ public class CalculatePrice {
                 .mapToDouble(transaction -> transaction.getPricePerM2().doubleValue())
                 .min().orElse((double) 0));
 
-        clearScreen();
+        ConsoleViewer.clearScreen();
         System.out.println(":: Wybrano wycenę mieszkania ::\n");
         System.out.println("Statystyki:\n");
         System.out.println("Cena minimalna przed aktualizacją o trend to:\t\t\t" + df.format(min.divide(exchangeRate, BigDecimal.ROUND_UP)) + " " + properties.getCurrency());
@@ -204,10 +206,5 @@ public class CalculatePrice {
                 .max(new ParkingPlaceComparator())
                 .orElse(ParkingPlace.GARAZ);
         return ParkingPlace.fromString(transToCheck.getParkingSpot()).compareTo(bestParking) >= 0;
-    }
-
-    public static void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
     }
 }

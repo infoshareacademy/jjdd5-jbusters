@@ -61,19 +61,19 @@ public class Transaction {
         standardLevel = standardLevel.toLowerCase();
 
         return
-                "Data transakcji:\t" + transactionDate +"\n"+
-                "Miasto:\t\t\t" + city +"\n"+
-                "Dzielnica:\t\t" + district +"\n"+
-                "Ulica:\t\t\t" + street +"\n"+
-                "Rodzaj rynku:\t\t" + typeOfMarket +"\n"+
-                "Cena:\t\t\t" + price + " " + currency +"\n"+
-                "Wielkość:\t\t" + flatArea +" m2\n"+
-                "Cena za m2:\t\t" + pricePerM2 + " " + currency +"\n"+
-                "Piętro:\t\t\t" + level +"\n"+
-                "Miejsce postojowe:\t" + parkingSpot +"\n"+
-                "Standard wykończenia:\t" + standardLevel +"\n"+
-                "Rok budowy:\t\t" + constructionYear +"\n"+
-                "Kategoria roku budowy:\t" + constructionYearCategory;
+                "Data transakcji:\t" + transactionDate + "\n" +
+                        "Miasto:\t\t\t" + city + "\n" +
+                        "Dzielnica:\t\t" + district + "\n" +
+                        "Ulica:\t\t\t" + street + "\n" +
+                        "Rodzaj rynku:\t\t" + typeOfMarket + "\n" +
+                        "Cena:\t\t\t" + price + " " + currency + "\n" +
+                        "Wielkość:\t\t" + flatArea + " m2\n" +
+                        "Cena za m2:\t\t" + pricePerM2 + " " + currency + "\n" +
+                        "Piętro:\t\t\t" + level + "\n" +
+                        "Miejsce postojowe:\t" + parkingSpot + "\n" +
+                        "Standard wykończenia:\t" + standardLevel + "\n" +
+                        "Rok budowy:\t\t" + constructionYear + "\n" +
+                        "Kategoria roku budowy:\t" + constructionYearCategory;
     }
 
     // ************GETTER AND SETTER***********

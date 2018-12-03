@@ -2,6 +2,7 @@ package com.infoshareacademy.jbusters.data;
 
 
 import com.infoshareacademy.jbusters.console.ConsoleReader;
+import com.infoshareacademy.jbusters.console.ConsoleViewer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +39,7 @@ public class NewTransactionCreator {
         newTransaction.setConstructionYearCategory(loadConstructionYearCategory());
 
         LOGGER.info("Create new transaction: {}", newTransaction);
-        clearScreen();
+        ConsoleViewer.clearScreen();
         System.out.println(":: Podsumowanie wprowadzonych parametrów mieszkania ::\n");
         System.out.println(newTransaction);         // Wypisanie podanych przez urzytkownika danych w formie transakcji
         System.out.println("\n:: Wybierz z poniższego menu co chesz dalej zrobić? ::\n");
@@ -168,7 +169,7 @@ public class NewTransactionCreator {
     }
 
     public void loadTime() {
-        clearScreen();
+        ConsoleViewer.clearScreen();
         System.out.println(":: Wybrano opcję wpisania transakcji do bazy ::\n");
         System.out.println("Wpisz datę sprzedaży nieruchomości w formacie YYYY-MM-dd");
         try {
@@ -177,11 +178,6 @@ public class NewTransactionCreator {
             System.out.println("\nZły format daty!");
             loadTime();
         }
-    }
-
-    public static void clearScreen() {
-        System.out.print("\033[H\033[2J");
-        System.out.flush();
     }
 
     public Transaction getNewTransaction() {

@@ -63,7 +63,7 @@ public class Menu {
     private void menuSwitch(int Choise) throws IOException {
         switch (Choise) {
             case 1: {
-                clearScreen();
+                ConsoleViewer.clearScreen();
                 System.out.println(":: Wybrano wprowadzenie nowego mieszkania ::\n");
                 System.out.println("Podaj proszę kilka podstawowych informacji dotyczących twojego mieszkania:\n");
                 newTransactionCreator.loadNewTransaction();
@@ -95,7 +95,7 @@ public class Menu {
 
     private void calculatePrice() {
         if (newTransactionCreator.getNewTransaction().getCity() == null) {
-            clearScreen();
+            ConsoleViewer.clearScreen();
             System.out.println(":: Wycena niemożliwa, najpierw wprowadź mieszkanie, które chcesz wycenić ::\n\n" +
                     "Mieszkanie możesz wprowadzić ręcznie, bądź wczytać z pliku, jeśli zostało wcześniej zapisane.\n");
         } else {
@@ -117,7 +117,7 @@ public class Menu {
         try {
             if (Files.exists(pathToFile)) {
                 if (checkIfFlatExist(dataLoader.createFlatsListFromFile(pathToFile))) {
-                    clearScreen();
+                    ConsoleViewer.clearScreen();
                     System.out.println(":: Dodanie transakcji niemożliwe, baza już zawiera identyczny wpis ::\n");
                 } else {
                     saveTransaction(newTransaction, pathToFile);
@@ -126,7 +126,7 @@ public class Menu {
                 saveTransaction(newTransaction, pathToFile);
             }
         } catch (java.lang.NullPointerException e) {
-            clearScreen();
+            ConsoleViewer.clearScreen();
             System.out.println(":: Błąd! Twoja transakcja jest pusta. Najpierw wprowadź transakcję by móc ją zapisać ::\n");
         }
     }
@@ -143,7 +143,7 @@ public class Menu {
                 }
                 System.out.println("\nPodaj nr mieszkania, które chcesz załadować");
                 int chosenFlat = consoleReader.readInt(1, userList.size());
-                clearScreen();
+                ConsoleViewer.clearScreen();
                 System.out.println(":: Mieskzanie nr " + chosenFlat + " zostało załadowane ::");
                 newTransactionCreator.setNewTransaction(userList.get(chosenFlat - 1));
             }
@@ -193,7 +193,7 @@ public class Menu {
         fileWriter.append(transactionString + "\n");
         fileWriter.close();
 
-        clearScreen();
+        ConsoleViewer.clearScreen();
         System.out.println(":: Twoja transakcja została zapisana do pliku ::\n");
         System.out.println("Nowy wpis: " + transactionString);
         System.out.println("\nWybierz z poniższego menu co chcesz dalej zrobić?\n");
@@ -201,7 +201,7 @@ public class Menu {
 
     private void addSoldFlatToDataBase(Transaction newTransaction) throws FileNotFoundException {
         if (newTransactionCreator.getNewTransaction().getCity() == null) {
-            clearScreen();
+            ConsoleViewer.clearScreen();
             System.out.println(":: Wpisanie mieszkania do bazy niemożliwe, nie wprowadzono mieszkania ::\n");
             System.out.println("Wybierz opcję nr 1 z menu by wprowadzić parametry mieszkania\n");
         } else {
@@ -219,7 +219,7 @@ public class Menu {
     }
 
     private void exit() {
-        clearScreen();
+        ConsoleViewer.clearScreen();
         System.out.println(":: Zapraszamy ponownie ::\n");
     }
 }

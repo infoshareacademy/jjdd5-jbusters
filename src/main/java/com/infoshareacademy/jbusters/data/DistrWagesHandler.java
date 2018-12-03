@@ -24,8 +24,8 @@ public class DistrWagesHandler {
         }
     }
 
-    public Map<String,Integer> getDistrictWages(){
-       return new HashMap<String,Integer>((Map)properties);
+    public Map<String, Integer> getDistrictWages() {
+        return new HashMap<String, Integer>((Map) properties);
     }
 
 }
