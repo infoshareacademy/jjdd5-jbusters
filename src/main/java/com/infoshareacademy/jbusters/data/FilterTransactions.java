@@ -1,15 +1,15 @@
 package com.infoshareacademy.jbusters.data;
 
+import com.infoshareacademy.jbusters.console.ConsoleViewer;
+
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class FilterTransactions {
 
     private PropLoader properties = new PropLoader("app.properties");
-
+    private Map<String, Integer> districtProperties;
     private List<Transaction> transactionsBase;
     private BigDecimal areaDiff = properties.getAreaDiff();
     private BigDecimal areaDiffExpanded = properties.getAreaDiffExpanded();
@@ -17,7 +17,9 @@ public class FilterTransactions {
     private BigDecimal priceDiff = properties.getPriceDiff();
 
     public FilterTransactions(List<Transaction> transactionsData) {
+
         this.transactionsBase = transactionsData;
+        districtProperties = new DistrWagesHandler("districts.properties").getDistrictWages();
     }
 
     // metoda zwracajaca liste tranzakcji, ktora jest wynikiem wielokrotnego przefiltrowania gwnej bazy tranzakcji
@@ -25,12 +27,17 @@ public class FilterTransactions {
 
     public List<Transaction> theGreatFatFilter(Transaction userTransaction) {
         List<Transaction> basicFilter = basicFilter(userTransaction);
+        if (basicFilter.size() < 11) {
+            return new ArrayList<>();
+        }
         return selectorFilter(true, true, basicFilter, userTransaction);
     }
 
 
     private List<Transaction> notEnoughtResultsAction() {
-        System.out.println("Baza zawiera zbyt małą ilość transakcji adekwatnych do przeprowadzenia wyceny.");
+
+        ConsoleViewer.clearScreen();
+        System.out.println(":: Wycena niemożliwa, baza zawiera zbyt małą ilość pasujących transakcji ::\n");
         return new ArrayList<Transaction>();
     }
 
@@ -110,9 +117,8 @@ public class FilterTransactions {
     private List<Transaction> multiDistrictFilter(List<Transaction> transactionsBase, Transaction userTransaction) {
         List<Transaction> lista = transactionsBase.stream()
 
-                .filter(transaction -> transaction.getDistrict().equalsIgnoreCase(userTransaction.getDistrict()))
+                .filter(transaction -> districtWageComparator(transaction, userTransaction))
                 .collect(Collectors.toList());
-
         return new ArrayList(lista);
     }
 
@@ -168,5 +174,20 @@ public class FilterTransactions {
 
     private boolean isEnoughtResults(List<Transaction> listToCheck, int minSize) {
         return listToCheck.size() >= minSize;
+    }
+
+    private boolean districtWageComparator(Transaction checkedTransaction, Transaction userTransaction) {
+        String checkedTransactionDistrict = districtStringParser(checkedTransaction.getDistrict());
+        String userTransactionDistrict = districtStringParser(userTransaction.getDistrict());
+
+        if (districtProperties.containsKey(userTransactionDistrict)) {
+            return (districtProperties.get(checkedTransactionDistrict).equals(districtProperties.get(userTransactionDistrict)));
+        }
+
+        return false;
+    }
+
+    private String districtStringParser(String districtName) {
+        return districtName.trim().replace(" ", "_").toLowerCase();
     }
 }

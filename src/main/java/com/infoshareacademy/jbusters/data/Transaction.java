@@ -26,6 +26,29 @@ public class Transaction {
     private String constructionYear;
     private int constructionYearCategory;
 
+
+    public Transaction() {
+
+    }
+
+    public Transaction(Transaction transaction) {
+        this.transactionDate = transaction.transactionDate;
+        this.city = transaction.city;
+        this.district = transaction.district;
+        this.street = transaction.street;
+        this.typeOfMarket = transaction.typeOfMarket;
+        this.price = transaction.price;
+        this.currency = transaction.currency;
+        this.flatArea = transaction.flatArea;
+        this.pricePerM2 = transaction.pricePerM2;
+        this.level = transaction.level;
+        this.parkingSpot = transaction.parkingSpot;
+        this.standardLevel = transaction.standardLevel;
+        this.constructionYear = transaction.constructionYear;
+        this.constructionYearCategory = transaction.constructionYearCategory;
+
+    }
+
     @Override
     public String toString() {
 
@@ -38,19 +61,19 @@ public class Transaction {
         standardLevel = standardLevel.toLowerCase();
 
         return
-                "Data transakcji:\t" + transactionDate +"\n"+
-                "Miasto:\t\t\t" + city +"\n"+
-                "Dzielnica:\t\t" + district +"\n"+
-                "Ulica:\t\t\t" + street +"\n"+
-                "Rodzaj rynku:\t\t" + typeOfMarket +"\n"+
-                "Cena:\t\t\t" + price + " " + currency +"\n"+
-                "Wielkość:\t\t" + flatArea +" m2\n"+
-                "Cena za m2:\t\t" + pricePerM2 + " " + currency +"\n"+
-                "Piętro:\t\t\t" + level +"\n"+
-                "Miejsce postojowe:\t" + parkingSpot +"\n"+
-                "Standard wykończenia:\t" + standardLevel +"\n"+
-                "Rok budowy:\t\t" + constructionYear +"\n"+
-                "Kategoria roku budowy:\t" + constructionYearCategory;
+                "Data transakcji:\t" + transactionDate + "\n" +
+                        "Miasto:\t\t\t" + city + "\n" +
+                        "Dzielnica:\t\t" + district + "\n" +
+                        "Ulica:\t\t\t" + street + "\n" +
+                        "Rodzaj rynku:\t\t" + typeOfMarket + "\n" +
+                        "Cena:\t\t\t" + price + " " + currency + "\n" +
+                        "Wielkość:\t\t" + flatArea + " m2\n" +
+                        "Cena za m2:\t\t" + pricePerM2 + " " + currency + "\n" +
+                        "Piętro:\t\t\t" + level + "\n" +
+                        "Miejsce postojowe:\t" + parkingSpot + "\n" +
+                        "Standard wykończenia:\t" + standardLevel + "\n" +
+                        "Rok budowy:\t\t" + constructionYear + "\n" +
+                        "Kategoria roku budowy:\t" + constructionYearCategory;
     }
 
     // ************GETTER AND SETTER***********

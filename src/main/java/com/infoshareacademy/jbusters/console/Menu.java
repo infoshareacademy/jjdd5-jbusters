@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.OptionalDouble;
 import java.util.stream.Collectors;
@@ -28,7 +29,8 @@ public class Menu {
     private Path pathToUserFile = Paths.get("data", "test.txt");
     private Path pathToFileTransactionCSV = Paths.get("data", "transaction.csv");
     private PropLoader properties = new PropLoader("app.properties");
-
+    private DecimalFormat df = new DecimalFormat("###,###,###.##");
+    private BigDecimal exchangeRate = properties.getExchangeRateBigDecimal();
 
     public Menu() {
         this.dataLoader = new DataLoader();
@@ -51,7 +53,7 @@ public class Menu {
                     "4 - Załaduj moje mieszkanie" + "\n" +
                     "5 - Wpisz mieszkanie do bazy" + "\n" +
                     "6 - Opcje" + "\n" +
-                    "7 - Wyjście" + "\n" + "podaj numer...");
+                    "7 - Wyjście" + "\n\n" + "Podaj numer:");
             menuChoise = consoleReader.readInt(1, 7);
             menuSwitch(menuChoise);
         }
@@ -61,7 +63,9 @@ public class Menu {
     private void menuSwitch(int Choise) throws IOException {
         switch (Choise) {
             case 1: {
-                System.out.println("Będziesz poproszony o podanie kilku podstawowych informacji odnośnie twojego mieszkania" + "\n");
+                ConsoleViewer.clearScreen();
+                System.out.println(":: Wybrano wprowadzenie nowego mieszkania ::\n");
+                System.out.println("Podaj proszę kilka podstawowych informacji dotyczących twojego mieszkania:\n");
                 newTransactionCreator.loadNewTransaction();
                 break;
             }
@@ -72,7 +76,7 @@ public class Menu {
             case 3: {
                 saveSession(newTransactionCreator.getNewTransaction(), pathToUserFile);
                 break;
-            }   
+            }
             case 4: {
                 loadTransaction();
                 break;
@@ -91,14 +95,21 @@ public class Menu {
 
     private void calculatePrice() {
         if (newTransactionCreator.getNewTransaction().getCity() == null) {
-            System.out.println("Najpierw wprowadź mieszkanie, które chcesz wycenić." + "\n" +
-                    "Możesz je wprowadzić ręcznie, bądz wczytać z pliku, jeśli zostało wcześniej zapisane.");
+            ConsoleViewer.clearScreen();
+            System.out.println(":: Wycena niemożliwa, najpierw wprowadź mieszkanie, które chcesz wycenić ::\n\n" +
+                    "Mieszkanie możesz wprowadzić ręcznie, bądź wczytać z pliku, jeśli zostało wcześniej zapisane.\n");
         } else {
-            List filteredList = filterTransactions.theGreatFatFilter(newTransactionCreator.getNewTransaction());
-            BigDecimal valueOfFlat = CalculatePrice.calculatePrice(filteredList);
-            System.out.println("Dokonano wyceny twojego mieszkania: ");
-            System.out.println(newTransactionCreator.getNewTransaction().toString());
-            System.out.println("Wartość twojego mieszkania to - " + valueOfFlat.setScale(properties.getDecimalPlaces(), BigDecimal.ROUND_UP));
+            List<Transaction> filteredList = filterTransactions.theGreatFatFilter(newTransactionCreator.getNewTransaction());
+            if (filteredList.size() >= 11) {
+                CalculatePrice calc = new CalculatePrice(newTransactionCreator.getNewTransaction(), filteredList);
+                BigDecimal valueOfFlat = newTransactionCreator.getNewTransaction().getFlatArea().multiply(calc.calculatePrice());
+
+                System.out.println("\nWycena: \n");
+                System.out.println(newTransactionCreator.getNewTransaction().toString());
+                System.out.println("\nWARTOŚĆ TWOJEGO MIESZKANIA: " + df.format(valueOfFlat.divide(exchangeRate, BigDecimal.ROUND_UP)) + " " + properties.getCurrency() + "\n");
+            } else {
+                System.out.println("Wybierz z poniższego menu co chcesz dalej zrobić?\n");
+            }
         }
     }
 
@@ -106,7 +117,8 @@ public class Menu {
         try {
             if (Files.exists(pathToFile)) {
                 if (checkIfFlatExist(dataLoader.createFlatsListFromFile(pathToFile))) {
-                    System.out.println("Już istnieje taka transakcja!");
+                    ConsoleViewer.clearScreen();
+                    System.out.println(":: Dodanie transakcji niemożliwe, baza już zawiera identyczny wpis ::\n");
                 } else {
                     saveTransaction(newTransaction, pathToFile);
                 }
@@ -114,7 +126,8 @@ public class Menu {
                 saveTransaction(newTransaction, pathToFile);
             }
         } catch (java.lang.NullPointerException e) {
-            System.out.println("Błąd! Twoja transakcja jest pusta. Najpierw wprowadź transakcję by móc ją zapisać.");
+            ConsoleViewer.clearScreen();
+            System.out.println(":: Błąd! Twoja transakcja jest pusta. Najpierw wprowadź transakcję by móc ją zapisać ::\n");
         }
     }
 
@@ -128,9 +141,10 @@ public class Menu {
                 for (int i = 0; i < userList.size(); i++) {
                     System.out.println("\n:: MIESZKANIE NR " + (i + 1) + " ::::::::::::::::::::::::::::\n" + userList.get(i).toString());
                 }
-                System.out.println("Podaj nr mieszkania, które chcesz załadować");
+                System.out.println("\nPodaj nr mieszkania, które chcesz załadować");
                 int chosenFlat = consoleReader.readInt(1, userList.size());
-                System.out.println("Twoje mieszknie zostało załadowane");
+                ConsoleViewer.clearScreen();
+                System.out.println(":: Mieskzanie nr " + chosenFlat + " zostało załadowane ::");
                 newTransactionCreator.setNewTransaction(userList.get(chosenFlat - 1));
             }
         }
@@ -179,13 +193,17 @@ public class Menu {
         fileWriter.append(transactionString + "\n");
         fileWriter.close();
 
-        System.out.println(transactionString);
-        System.out.println("Twoja transakcja została zapisana");
+        ConsoleViewer.clearScreen();
+        System.out.println(":: Twoja transakcja została zapisana do pliku ::\n");
+        System.out.println("Nowy wpis: " + transactionString);
+        System.out.println("\nWybierz z poniższego menu co chcesz dalej zrobić?\n");
     }
 
     private void addSoldFlatToDataBase(Transaction newTransaction) throws FileNotFoundException {
         if (newTransactionCreator.getNewTransaction().getCity() == null) {
-            System.out.println("Nie wprowadzono mieszkania. Wybierz opcje nr 1 z menu by wprowadzic parametry mieszkania.");
+            ConsoleViewer.clearScreen();
+            System.out.println(":: Wpisanie mieszkania do bazy niemożliwe, nie wprowadzono mieszkania ::\n");
+            System.out.println("Wybierz opcję nr 1 z menu by wprowadzić parametry mieszkania\n");
         } else {
             newTransactionCreator.loadTime();
             newTransactionCreator.loadPrice();
@@ -201,6 +219,7 @@ public class Menu {
     }
 
     private void exit() {
-        System.out.println("Zapraszamy ponownie");
+        ConsoleViewer.clearScreen();
+        System.out.println(":: Zapraszamy ponownie ::\n");
     }
 }
