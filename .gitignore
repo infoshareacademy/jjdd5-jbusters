@@ -1,8 +1,7 @@
-# Intellij
+# IntelliJ
 .idea/
 *.iml
 *.iws
-out
 
 # Mac
 .DS_Store
@@ -10,6 +9,3 @@ out
 # Maven
 log/
 target/
-
-#file Logger
-app.log

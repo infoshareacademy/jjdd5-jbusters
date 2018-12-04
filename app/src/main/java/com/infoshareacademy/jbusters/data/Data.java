@@ -23,7 +23,7 @@ public class Data {
     private final List<Transaction> transactionsBase = new ArrayList<>(fileToData());
 
     public List<Transaction> fileToData() {
-        Path pathToFileTransactionCSV = Paths.get("data", "transaction.csv");
+        Path pathToFileTransactionCSV = Paths.get("app", "data", "transaction.csv");
         List<String> listFileTransactionCSV = null;
         try {
             listFileTransactionCSV = Files.readAllLines(pathToFileTransactionCSV);

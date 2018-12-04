@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 public class Transaction {
 
-    PropLoader properties = new PropLoader("app.properties");
+    PropLoader properties = new PropLoader("app/app.properties");
 
     private LocalDate transactionDate;
     private String city;

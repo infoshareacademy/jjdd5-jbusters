@@ -27,7 +27,7 @@ public class Menu {
 
     private Path pathToUserFile = Paths.get("data", "test.txt");
     private Path pathToFileTransactionCSV = Paths.get("data", "transaction.csv");
-    private PropLoader properties = new PropLoader("app.properties");
+    private PropLoader properties = new PropLoader("app/app.properties");
     private DecimalFormat df = new DecimalFormat("###,###,###.##");
     private BigDecimal exchangeRate = properties.getExchangeRateBigDecimal();
 

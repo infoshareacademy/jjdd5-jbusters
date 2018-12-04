@@ -34,7 +34,7 @@ public class DataLoader {
 
     public List<Transaction> createTransactionList(List<String> listFileTransakcjeCSV, String fromUserFile) {
 
-        PropLoader properties = new PropLoader("app.properties");
+        PropLoader properties = new PropLoader("app/app.properties");
 
         List<Transaction> listOfTransaction = new ArrayList<>();
 

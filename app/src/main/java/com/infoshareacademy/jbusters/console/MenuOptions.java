@@ -10,7 +10,7 @@ import java.util.Properties;
 public class MenuOptions {
 
     private ConsoleReader consoleReader = new ConsoleReader();
-    private PropLoader properties = new PropLoader("app.properties");
+    private PropLoader properties = new PropLoader("app/app.properties");
 
     private int decimalPlaces = properties.getDecimalPlaces();
     private String currency = properties.getCurrency();
@@ -46,7 +46,7 @@ public class MenuOptions {
         switch (Choice) {
             case 1: {
                 Properties properties = new Properties();
-                FileWriter write = new FileWriter("app.properties");
+                FileWriter write = new FileWriter("app/app.properties");
 
                 System.out.println("\n" + ":: Wybrano zmianę ustawień ::" + "\n");
 

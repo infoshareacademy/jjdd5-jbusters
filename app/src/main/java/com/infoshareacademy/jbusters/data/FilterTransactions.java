@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 
 public class FilterTransactions {
 
-    private PropLoader properties = new PropLoader("app.properties");
+    private PropLoader properties = new PropLoader("app/app.properties");
     private Map<String, Integer> districtProperties;
     private List<Transaction> transactionsBase;
     private BigDecimal areaDiff = properties.getAreaDiff();
@@ -19,7 +19,7 @@ public class FilterTransactions {
     public FilterTransactions(List<Transaction> transactionsData) {
 
         this.transactionsBase = transactionsData;
-        districtProperties = new DistrWagesHandler("districts.properties").getDistrictWages();
+        districtProperties = new DistrWagesHandler("app/districts.properties").getDistrictWages();
     }
 
     // metoda zwracajaca liste tranzakcji, ktora jest wynikiem wielokrotnego przefiltrowania gwnej bazy tranzakcji
