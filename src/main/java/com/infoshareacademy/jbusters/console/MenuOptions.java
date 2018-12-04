@@ -33,8 +33,8 @@ public class MenuOptions {
                     "Aktualna, minimalna ilość transakcji potrzebnych do wyceny:\t" + minResults + "\n" +
                     "Aktualny parametr maksymalnego odchylenia ceny skrajnej:\t" + priceDiff + " " + currency + " za m2\n\n" +
                     "1 - Zmiana powyższych ustawień i zapis" + "\n" +
-                    "2 - Powrót do menu głównego" + "\n" +
-                    "podaj numer:");
+                    "2 - Powrót do menu głównego" + "\n\n" +
+                    "Podaj numer:");
             menuChoice = consoleReader.readInt(1, 2);
             optionsMenuSwitch(menuChoice);
         }
