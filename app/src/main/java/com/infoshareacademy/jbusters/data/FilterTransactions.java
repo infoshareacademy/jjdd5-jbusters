@@ -2,10 +2,12 @@ package com.infoshareacademy.jbusters.data;
 
 import com.infoshareacademy.jbusters.console.ConsoleViewer;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@ApplicationScoped
 public class FilterTransactions {
 
     private PropLoader properties = new PropLoader("app/app.properties");
