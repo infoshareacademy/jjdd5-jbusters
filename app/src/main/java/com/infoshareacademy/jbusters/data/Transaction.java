@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 public class Transaction {
 
-    PropLoader properties = new PropLoader("app.properties");
+    PropLoader properties = new PropLoader("app/app.properties");
 
     private LocalDate transactionDate;
     private String city;
@@ -25,6 +25,7 @@ public class Transaction {
     private String standardLevel;
     private String constructionYear;
     private int constructionYearCategory;
+    private String transactionName;
 
 
     public Transaction() {
@@ -74,6 +75,40 @@ public class Transaction {
                         "Standard wykończenia:\t" + standardLevel + "\n" +
                         "Rok budowy:\t\t" + constructionYear + "\n" +
                         "Kategoria roku budowy:\t" + constructionYearCategory;
+    }
+
+    public String toStringNoPrice() {
+
+        BigDecimal exchangeRate = new BigDecimal(properties.getExchangeRate());
+        currency = properties.getCurrency();
+        price = price.divide(exchangeRate, BigDecimal.ROUND_HALF_UP);
+        pricePerM2 = pricePerM2.divide(exchangeRate, BigDecimal.ROUND_HALF_UP);
+        typeOfMarket = typeOfMarket.toLowerCase();
+        parkingSpot = parkingSpot.toLowerCase();
+        standardLevel = standardLevel.toLowerCase();
+
+        return
+
+                "Nazwa transakcji:\t" + transactionName + "\n" +
+                        "Miasto:\t\t\t" + city + "\n" +
+                        "Dzielnica:\t\t" + district + "\n" +
+                        "Ulica:\t\t\t" + street + "\n" +
+                        "Rodzaj rynku:\t\t" + typeOfMarket + "\n" +
+                        "Wielkość:\t\t" + flatArea + " m2\n" +
+                        "Piętro:\t\t\t" + level + "\n" +
+                        "Miejsce postojowe:\t" + parkingSpot + "\n" +
+                        "Standard wykończenia:\t" + standardLevel + "\n" +
+                        "Kategoria roku budowy:\t" + getConstructionYearCategoryString(getConstructionYearCategory());
+    }
+
+    private String getConstructionYearCategoryString(int constructionYearCategory) {
+        if (constructionYearCategory == 1) {
+            return "przed rokiem 1970";
+        } else if (constructionYearCategory == 2) {
+            return "między rokiem 1970 a 1990";
+        } else if (constructionYearCategory == 3) {
+            return "po roku 1990";
+        } else return "nie podano";
     }
 
     // ************GETTER AND SETTER***********
@@ -180,5 +215,13 @@ public class Transaction {
 
     public void setConstructionYearCategory(int constructionYearCategory) {
         this.constructionYearCategory = constructionYearCategory;
+    }
+
+    public void setTransactionName(String transactionName) {
+        this.transactionName = transactionName;
+    }
+
+    public String getTransactionName() {
+        return transactionName;
     }
 }

@@ -23,14 +23,14 @@ public class Data {
     private final List<Transaction> transactionsBase = new ArrayList<>(fileToData());
 
     public List<Transaction> fileToData() {
-        Path pathToFileTransactionCSV = Paths.get("data", "transaction.csv");
+        Path pathToFileTransactionCSV = Paths.get("app", "data", "transaction.csv");
         List<String> listFileTransactionCSV = null;
         try {
             listFileTransactionCSV = Files.readAllLines(pathToFileTransactionCSV);
             listFileTransactionCSV.remove(0);
             DataLoader data = new DataLoader();
             LOGGER.info("Load file CSV. Path: {}", pathToFileTransactionCSV);
-            return data.createTransactionList(listFileTransactionCSV);
+            return data.createTransactionList(listFileTransactionCSV, "no");
         } catch (IOException e) {
             System.out.println("Error while loading data: ");
             e.printStackTrace();

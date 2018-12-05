@@ -37,6 +37,7 @@ public class NewTransactionCreator {
         newTransaction.setParkingSpot(loadParkingSpot());
         newTransaction.setStandardLevel(loadStandardLevel());
         newTransaction.setConstructionYearCategory(loadConstructionYearCategory());
+        newTransaction.setTransactionName(loadTransactionName());
 
         LOGGER.info("Create new transaction: {}", newTransaction);
         ConsoleViewer.clearScreen();
@@ -178,6 +179,11 @@ public class NewTransactionCreator {
             System.out.println("\nZły format daty!");
             loadTime();
         }
+    }
+
+    private String loadTransactionName() {
+        System.out.println("Wpisz nazwę swojej nieruchomości, by móc ja łatwiej identyfikować");
+        return consoleReader.readString();
     }
 
     public Transaction getNewTransaction() {

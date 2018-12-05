@@ -1,0 +1,4 @@
+2018-12-04 23:52:03,415 INFO com.infoshareacademy.jbusters.data.Data [main] Load file CSV. Path: data/transaction.csv
+2018-12-04 23:52:03,839 INFO com.infoshareacademy.jbusters.data.DataLoader [main] Create list transaction. List size: 3363 rows
+2018-12-04 23:52:09,787 INFO com.infoshareacademy.jbusters.data.Data [main] Load file CSV. Path: data/transaction.csv
+2018-12-04 23:52:09,991 INFO com.infoshareacademy.jbusters.data.DataLoader [main] Create list transaction. List size: 3363 rows

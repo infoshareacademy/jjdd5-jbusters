@@ -29,11 +29,12 @@ public class DataLoader {
     private static final int INDEX_STANDARD_LEVEL = 10;
     private static final int INDEX_CONSTRUCTION_YEAR = 11;
     private static final int INDEX_CONSTRUCTION_YEAR_CATEGORY = 12;
+    private static final int INDEX_TRANSACTION_NAME = 13;
     private static final String separator = ",";
 
-    public List<Transaction> createTransactionList(List<String> listFileTransakcjeCSV) {
+    public List<Transaction> createTransactionList(List<String> listFileTransakcjeCSV, String fromUserFile) {
 
-        PropLoader properties = new PropLoader("app.properties");
+        PropLoader properties = new PropLoader("app/app.properties");
 
         List<Transaction> listOfTransaction = new ArrayList<>();
 
@@ -75,19 +76,22 @@ public class DataLoader {
             int constructionYearCategory = Integer.valueOf(constructionYearCategoryString);
             newRowOfTransactionList.setConstructionYearCategory(constructionYearCategory);
 
+            if (fromUserFile.equals("yes")) {
+                newRowOfTransactionList.setTransactionName(listTransaction.get(INDEX_TRANSACTION_NAME));
+            }
+
             listOfTransaction.add(newRowOfTransactionList);
         }
         LOGGER.info("Create list transaction. List size: {}", listOfTransaction.size() + " rows");
         return listOfTransaction;
     }
 
-    public List<Transaction> createFlatsListFromFile(Path path) {
+    public List<Transaction> createFlatsListFromFile(Path path, String fromUserFile) {
         try {
-            return createTransactionList(Files.readAllLines(path));
+            return createTransactionList(Files.readAllLines(path), fromUserFile);
         } catch (IOException e) {
             System.out.println("Brak pliku z zapisanymi transakcjami użytkownika. Tego nie pomalujesz");
         }
-
         return new ArrayList<>();
     }
 }
