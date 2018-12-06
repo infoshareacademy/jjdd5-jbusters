@@ -1,0 +1,5 @@
+2018 11 27,Gdynia, Pogórze,frefer,rynek pierwotny,0,65.0,0,43,garaż jednostanowiskowy,bardzo dobry,null,3,BALTIC PLAZA
+2018 11 27,Gdynia, Obłuże,fjfj,rynek pierwotny,0,90.0,0,3,garaż jednostanowiskowy,dobry,null,3,BUNKRY
+2018 11 30,Gdynia, Chylonia,Morska,rynek wtórny,0,50.0,0,5,brak mp,przeciętny,null,2,POD LASEM
+2018 12 02,Gdynia,Oksywie,Wittekówny,rynek wtórny,0,44.5,0,7,miejsce postojowe w hali garażowej,wysoki,null,3,Przy TESCO
+2018 12 02,Sopot,Sopot,Myśliwska,rynek wtórny,0,63.0,0,5,brak mp,dobry,null,2,MELINA

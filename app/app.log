@@ -1,0 +1,38 @@
+2018-12-04 23:52:03,415 INFO com.infoshareacademy.jbusters.data.Data [main] Load file CSV. Path: data/transaction.csv
+2018-12-04 23:52:03,839 INFO com.infoshareacademy.jbusters.data.DataLoader [main] Create list transaction. List size: 3363 rows
+2018-12-04 23:52:09,787 INFO com.infoshareacademy.jbusters.data.Data [main] Load file CSV. Path: data/transaction.csv
+2018-12-04 23:52:09,991 INFO com.infoshareacademy.jbusters.data.DataLoader [main] Create list transaction. List size: 3363 rows
+2018-12-06 00:31:41,358 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null
+2018-12-06 00:38:47,040 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null
+2018-12-06 00:39:03,047 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null
+2018-12-06 00:39:32,303 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null
+2018-12-06 00:41:23,987 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null
+2018-12-06 00:42:34,751 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null
+2018-12-06 00:47:26,509 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null input
+2018-12-06 00:54:16,659 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null input
+2018-12-06 00:54:39,585 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null input
+2018-12-06 00:59:57,354 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null input
+2018-12-06 01:01:20,575 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null input
+2018-12-06 01:02:25,046 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null input
+2018-12-06 11:37:59,916 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null input
+2018-12-06 13:04:33,977 ERROR com.infoshareacademy.jbusters.data.Data [main] Error - wrong filetype, .properties expected
+2018-12-06 13:04:33,980 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 13:27:41,360 ERROR com.infoshareacademy.jbusters.data.Data [main] Error - wrong filetype, .properties expected
+2018-12-06 13:27:41,363 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:10:55,613 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:13:10,760 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:14:14,531 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:15:13,373 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:16:41,953 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:20:25,734 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:32:18,706 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:42:36,662 ERROR com.infoshareacademy.jbusters.data.Data [main] Error - wrong filetype, .properties expected
+2018-12-06 16:42:36,666 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:42:36,667 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null input
+2018-12-06 16:42:36,722 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:42:53,860 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:50:20,621 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:50:58,457 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:51:21,744 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:51:27,540 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:53:20,937 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
