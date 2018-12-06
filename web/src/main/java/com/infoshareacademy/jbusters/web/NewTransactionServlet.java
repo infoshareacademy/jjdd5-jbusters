@@ -18,11 +18,11 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet(urlPatterns = "/home")
-public class HomeServlet extends HttpServlet {
+@WebServlet(urlPatterns = "/new-transaction")
+public class NewTransactionServlet extends HttpServlet {
 
-    private static final Logger LOG = LoggerFactory.getLogger(HomeServlet.class);
-    private static final String TEMPLATE_NAME = "home";
+    private static final Logger LOG = LoggerFactory.getLogger(NewTransactionServlet.class);
+    private static final String TEMPLATE_NAME = "new-transaction";
 
     @Inject
     private TemplateProvider templateProvider;
