@@ -40,10 +40,9 @@ public class HomeServlet extends HttpServlet {
 
         try {
             template.process(model, out);
+            LOG.info("zalloggowany!!!");
         } catch (TemplateException e) {
-            e.printStackTrace();
+            LOG.error("Error while processing template: " + e);
         }
-
-
     }
 }

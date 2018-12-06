@@ -1,5 +1,6 @@
 package com.infoshareacademy.jbusters.web;
 
+import com.infoshareacademy.jbusters.data.Transaction;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -14,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,20 +30,23 @@ public class NewTransactionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
-
         PrintWriter out = resp.getWriter();
 
         Map<String, Object> model = new HashMap<>();
-        model.put("date", LocalDateTime.now());
+        model.put("new-transaction", "transaction");
 
         Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
-
         try {
+            LOG.info("testsssss");
             template.process(model, out);
         } catch (TemplateException e) {
-            e.printStackTrace();
+            LOG.error("Error while processing template: " + e);
         }
-
-
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Transaction transaction = new Transaction();
+    }
+
 }
