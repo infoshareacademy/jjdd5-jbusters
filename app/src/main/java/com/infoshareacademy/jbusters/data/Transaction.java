@@ -29,7 +29,6 @@ public class Transaction {
 
 
     public Transaction() {
-
     }
 
     public Transaction(Transaction transaction) {

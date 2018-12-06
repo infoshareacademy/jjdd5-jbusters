@@ -2,6 +2,7 @@ package com.infoshareacademy.jbusters.web;
 
 import com.infoshareacademy.jbusters.data.Transaction;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
+import com.sun.xml.internal.ws.api.ha.StickyFeature;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.slf4j.Logger;
@@ -47,6 +48,12 @@ public class NewTransactionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Transaction transaction = new Transaction();
+
+        transaction.setCity(req.getParameter("city"));
+        transaction.setDistrict(req.getParameter("district"));
+        transaction.setStreet(req.getParameter("street"));
+
+
     }
 
 }
