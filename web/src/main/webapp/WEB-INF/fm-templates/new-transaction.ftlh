@@ -1,44 +1,7 @@
-<html>
-<head>
-    <title>JBusters</title>
+<#include "header.ftlh">
 
-    <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-
-</head>
-<body>
-
-    <header>
-        <div class="container-fluid">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <a class="navbar-brand" href="#">JBuster</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/new-transaction">Wycen mieszkanie</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Historia</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link disabled" href="#">Zaloguj</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </div>
-    </header>
-
-        <div class="container bg-white">
-            <br>
-            <br>
+        <div class="container  container-form">
+            <h1 class="display-4">Wpisz dane swojego mieszkania: </h1>
             <br>
             <form>
                 <div class="form-group">
@@ -61,7 +24,7 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="exampleFormControlSelect3">Wpisz nazwe ulicy</label>
+                    <label for="exampleFormControlSelect3">Wpisz nazwę ulicy</label>
                     <input name="street" type="text" class="form-control" id="exampleFormControlSelect3">
                 </div>
 
@@ -75,11 +38,12 @@
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
                     <label class="form-check-label" for="defaultCheck2">
-                        Rynek wtorny
+                        Rynek wtórny
                     </label>
                 </div>
+                <br>
                 <div class="form-group">
-                    <label for="exampleFormControlSelect4">Wpisz wielkosc mieszkania w m2</label>
+                    <label for="exampleFormControlSelect4">Wpisz wielkość mieszkania w m2</label>
                     <input name="loadSize" type="text" class="form-control" id="exampleFormControlSelect4" ">
                 </div>
 
@@ -99,7 +63,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="exampleFormControlSelect6">Wybierz poziom wykonczenia twojego mieszkania</label>
+                    <label for="exampleFormControlSelect6">Wybierz poziom wykończenia twojego mieszkania</label>
                     <select class="form-control" id="exampleFormControlSelect6">
                         <option></option>
                         <option>Wysoki</option>
@@ -134,17 +98,5 @@
                 <button type="submit" class="btn btn-primary">Wycen</button>
             </form>
         </div>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
 
-
-<footer>&copy; 2018 JBusters</footer>
-
-<script src="js/jquery-3.3.1.slim.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-</body>
-</html>
+<#include "footer.ftlh">

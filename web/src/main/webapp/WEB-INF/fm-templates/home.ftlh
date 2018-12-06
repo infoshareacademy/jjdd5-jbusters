@@ -1,53 +1,13 @@
-<html>
-<head>
-    <title>JBusters</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-
-</head>
-<body>
-    <div class="wrap">
-        <header>
-            <div class="container-fluid">
-                <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                    <a class="navbar-brand" href="#">JBuster</a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav">
-                            <li class="nav-item active">
-                                <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="/new-transaction">Wycen mieszkanie</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Historia</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link disabled" href="#">Zaloguj</a>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-            </div>
-        </header>
+<#include "header.ftlh" >
 
         <div class="container">
             <div class="jumbotron jumbotron-opacity">
-                <h1 class="display-4">Myslisz o sprzedazy mieszkania?</h1>
-                <p class="lead">Skorzystaj z naszej wyceniarki i sprawdz ile moze byc warte</p>
+                <h1 class="display-4">Myślisz o sprzedaży mieszkania?</h1>
+                <p class="lead">Skorzystaj z naszej wyceniarki i sprawdż ile może być warte</p>
                 <hr class="my-4">
-                <a class="btn btn-primary btn-lg btn-dark" href="/new-transaction" role="button">Wycen mieszkanie</a>
+                <a class="btn btn-primary btn-lg btn-dark" href="/new-transaction" role="button">Wyceń mieszkanie</a>
             </div>
         </div>
-    </div>
-    <footer>&copy; 2018 JBusters</footer>
 
-    <script src="js/jquery-3.3.1.slim.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-</body>
-</html>
+<#include "footer.ftlh">
+
