@@ -28,14 +28,7 @@ public class WycenaServlet extends HttpServlet {
 
     @Inject
     private TemplateProvider templateProvider;
-    @Inject
-    private CalculatePrice calculatePrice;
-    @Inject
-    private NewTransactionCreator newTransactionCreator;
-    @Inject
-    private Transaction newTransaction;
-    @Inject
-    private Data data;
+
     @Inject
     private FilterTransactions filterTransactions;
 
@@ -43,15 +36,16 @@ public class WycenaServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        Transaction newTransaction = new Transaction();
         newTransaction.setTransactionDate(LocalDate.now());
         newTransaction.setCity(req.getParameter("city"));
         newTransaction.setDistrict(req.getParameter("district"));
-        newTransaction.setTypeOfMarket(req.getParameter("market-type"));
+        newTransaction.setTypeOfMarket(req.getParameter("market-type").replaceAll("_", " "));
         int flatArea = Integer.parseInt(req.getParameter("flat-area"));
         newTransaction.setFlatArea(BigDecimal.valueOf(flatArea));
         newTransaction.setLevel(Integer.valueOf(req.getParameter("level")));
-        newTransaction.setParkingSpot(req.getParameter("parking-spot"));
-        newTransaction.setStandardLevel(req.getParameter("standard-level"));
+        newTransaction.setParkingSpot(req.getParameter("parking-spot").replaceAll("_", " "));
+        newTransaction.setStandardLevel(req.getParameter("standard-level").replaceAll("_", " "));
         newTransaction.setConstructionYearCategory(Integer.valueOf(req.getParameter("construction")));
 
         List<Transaction> filteredList = filterTransactions.theGreatFatFilter(newTransaction);

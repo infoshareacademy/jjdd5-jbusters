@@ -6,6 +6,7 @@ package com.infoshareacademy.jbusters.data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
@@ -17,13 +18,19 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
+@ApplicationScoped
 public class Data {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Data.class);
     private final List<Transaction> transactionsBase = new ArrayList<>(fileToData());
 
+    public Data() {
+    }
+
     public List<Transaction> fileToData() {
-        Path pathToFileTransactionCSV = Paths.get("app", "data", "transaction.csv");
+//        Path pathToFileTransactionCSV = Paths.get("app", "data", "transaction.csv");
+        Path pathToFileTransactionCSV = Paths.get("/home/karolbemka/IdeaProjects/jjdd5-jbusters/app/data/transaction.csv");
+
         List<String> listFileTransactionCSV = null;
         try {
             listFileTransactionCSV = Files.readAllLines(pathToFileTransactionCSV);
