@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet(urlPatterns = "/new-transaction")
+@WebServlet(urlPatterns = "/valuation")
 public class NewTransactionServlet extends HttpServlet {
 
     private static final Logger LOG = LoggerFactory.getLogger(NewTransactionServlet.class);

@@ -1,13 +1,4 @@
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>JBusters</title>
-    <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-
-</head>
-<body>
+<#include "header.ftlh">
 <div class="wrap">
     <header>
         <div class="container-fluid">
@@ -39,15 +30,22 @@
 
     <div class="container  container-form">
         <p class="lead">Wczytaj plik z mieszkaniami: </p>
-        <form>
-            <div class="form-group">
-                <input type="file" class="form-control-file" id="exampleFormControlFile1">
-            </div>
+        <#--<form>-->
+            <#--<div class="form-group">-->
+                <#--<input type="file" class="form-control-file" id="exampleFormControlFile1">-->
+            <#--</div>            -->
+        <#--</form>-->
+        <form method="POST" action="/new-transaction" enctype="multipart/form-data" >
+            File:
+            <input type="file" name="file" id="file" /> <br/>
+            </br>
+            <input type="submit" value="Upload" name="upload" id="upload" />
         </form>
+
         <hr class="my-4">
         <h1 class="display-4">Wpisz dane swojego mieszkania: </h1>
         <br>
-        <form method="get" action="/valuation">
+        <form method="get" action="/new-transaction">
 
             <div class="form-group">
                 <label for="exampleFormControlSelect1">Wybierz miasto</label>
@@ -131,9 +129,4 @@
     </div>
 
 </div>
-<footer>&copy; 2018 JBusters</footer>
-
-<script src="js/jquery-3.3.1.slim.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-</body>
-</html>
+<#include "footer.ftlh">
