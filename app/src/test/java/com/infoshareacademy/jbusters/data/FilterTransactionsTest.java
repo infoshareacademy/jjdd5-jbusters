@@ -14,60 +14,51 @@ import java.util.stream.Collectors;
 public class FilterTransactionsTest {
 
     private List<Transaction> tempTransactions = new ArrayList<>();
-private Transaction trans = new Transaction();
     @Test
     public void removeOutliersTest() {
         for (int i = 0; i < 30; i++){
-            trans.setCity("Gdynia");
-        trans.setDistrict("Witomino");
-        trans.setTransactionDate(LocalDate.of(2018, 06, 20));
-        trans.setStreet("Morska");
-        trans.setTypeOfMarket("RYNEK WTÓRNY");
-        trans.setPrice(BigDecimal.valueOf(Math.random() * (350000 - 10000) + 10000));
-        trans.setFlatArea(BigDecimal.valueOf(Math.random() * (50 - 35) + 35));
-        trans.setPricePerM2(trans.getPrice().divide(trans.getFlatArea(), RoundingMode.HALF_UP));
-        trans.setLevel(3);
-        trans.setParkingSpot(ParkingPlace.BRAK_MP.getName());
-        trans.setStandardLevel(StandardLevel.DOBRY.getName());
-        trans.setConstructionYear("1980");
-        trans.setConstructionYearCategory(2);
-        tempTransactions.add(trans);
+
+            tempTransactions.add(createTransaction(new BigDecimal(270000)));
+
     }
+        tempTransactions.add(createTransaction(new BigDecimal(5400*45)));
+        tempTransactions.add(createTransaction(new BigDecimal(6600*45)));
+        tempTransactions.add(createTransaction(new BigDecimal(4000*45)));
+
+        tempTransactions.add(createTransaction(new BigDecimal(4100*45)));
+        tempTransactions.add(createTransaction(new BigDecimal(4200*45)));
+        tempTransactions.add(createTransaction(new BigDecimal(4300*45)));
+        tempTransactions.add(createTransaction(new BigDecimal(7700*45)));
+        tempTransactions.add(createTransaction(new BigDecimal(7800*45)));
+        tempTransactions.add(createTransaction(new BigDecimal(7900*45)));
+        tempTransactions.add(createTransaction(new BigDecimal(8000*45)));
+
+        FilterTransactions ft = new FilterTransactions(tempTransactions);
+        tempTransactions=ft.removeOutliers(tempTransactions,new BigDecimal(600));
+
+        Assert.assertEquals(36,tempTransactions.size());
+
+
+    }
+
+    public Transaction createTransaction(BigDecimal price){
+
+        Transaction trans = new Transaction();
         trans.setCity("Gdynia");
         trans.setDistrict("Witomino");
         trans.setTransactionDate(LocalDate.of(2018, 06, 20));
-        trans.setStreet("Morska");
+        trans.setStreet("Dabrowkowska");
         trans.setTypeOfMarket("RYNEK WTÓRNY");
-        trans.setPrice(new BigDecimal(200));
-        trans.setFlatArea(new BigDecimal(40));
-        trans.setPricePerM2(trans.getPrice().divide(trans.getFlatArea()));
+        trans.setPrice(price);
+        trans.setFlatArea(new BigDecimal(45));
+        trans.setPricePerM2(trans.getPrice().divide(trans.getFlatArea(),RoundingMode.HALF_UP));
         trans.setLevel(3);
         trans.setParkingSpot(ParkingPlace.BRAK_MP.getName());
         trans.setStandardLevel(StandardLevel.DOBRY.getName());
         trans.setConstructionYear("1980");
         trans.setConstructionYearCategory(2);
-        tempTransactions.add(trans);
 
-
-        trans.setCity("Gdynia");
-        trans.setDistrict("Witomino");
-        trans.setTransactionDate(LocalDate.of(2018, 06, 20));
-        trans.setStreet("Morska");
-        trans.setTypeOfMarket("RYNEK WTÓRNY");
-        trans.setPrice(new BigDecimal(10000000));
-        trans.setFlatArea(new BigDecimal(40));
-        trans.setPricePerM2(trans.getPrice().divide(trans.getFlatArea()));
-        trans.setLevel(3);
-        trans.setParkingSpot(ParkingPlace.BRAK_MP.getName());
-        trans.setStandardLevel(StandardLevel.DOBRY.getName());
-        trans.setConstructionYear("1980");
-        trans.setConstructionYearCategory(2);
-        tempTransactions.add(trans);
-
-        FilterTransactions ft =new FilterTransactions(tempTransactions);
-
-        Assert.assertEquals(30, ft.removeOutliers(tempTransactions,BigDecimal.valueOf(600)).size());
-
+        return trans;
     }
 
 

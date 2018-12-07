@@ -145,18 +145,19 @@ public class FilterTransactions {
                 .sorted(Comparator.comparing(Transaction::getPricePerM2))
                 .collect(Collectors.toList());
 
-        removeLeftOutliers(transSortedByPPerM2, maxDiff);
-        removeRightOutliers(transSortedByPPerM2, maxDiff);
+       // removeLeftOutliers(transSortedByPPerM2, maxDiff);
+        //removeRightOutliers(transSortedByPPerM2, maxDiff);
 
         BigDecimal sumPPM2 = transSortedByPPerM2.stream()
                 .map(x -> x.getPricePerM2())
                 .reduce(BigDecimal.ZERO,BigDecimal::add);
+        System.out.println(sumPPM2);
 
         BigDecimal avg = sumPPM2.divide(new BigDecimal(transSortedByPPerM2.size()));
 
         transSortedByPPerM2 = transSortedByPPerM2.stream()
-                .filter(x -> x.getPricePerM2().compareTo(avg.multiply(BigDecimal.valueOf(0.7)))>0)
-                .filter(x -> x.getPricePerM2().compareTo(avg.multiply(BigDecimal.valueOf(1.3)))<0)
+                .filter(x -> x.getPricePerM2().compareTo(avg.multiply(BigDecimal.valueOf(0.7)))>=0)
+                .filter(x -> x.getPricePerM2().compareTo(avg.multiply(BigDecimal.valueOf(1.3)))<=0)
                 .collect(Collectors.toList());
 
         return transSortedByPPerM2;
