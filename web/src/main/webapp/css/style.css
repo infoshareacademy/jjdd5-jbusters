@@ -39,3 +39,7 @@ footer {
 #price{
     color: #34ce57;
 }
+
+.hidden{
+    visibility: hidden; !important;
+}

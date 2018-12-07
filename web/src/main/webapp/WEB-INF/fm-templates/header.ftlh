@@ -21,7 +21,7 @@
                             <a class="nav-link" href="/index.html">Home <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/new-transaction.html">Wyceń mieszkanie</a>
+                            <a class="nav-link" href="/load-city">Wyceń mieszkanie</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Załaduj plik</a>
