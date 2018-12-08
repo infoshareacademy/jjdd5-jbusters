@@ -45,6 +45,8 @@ public class UsersTransactionsServlet extends HttpServlet {
         final String path = System.getProperty("jboss.home.dir") + "/upload";
         final Part filePart = request.getPart("file");
         final String fileName = getFileName(filePart);
+        LOG.info("Uploaded file with name: " + fileName);
+        LOG.info("Directory to " + fileName + " is " + path);
 
         DataLoader dataLoader = new DataLoader();
 
@@ -68,6 +70,7 @@ public class UsersTransactionsServlet extends HttpServlet {
 
             List<Transaction> usersTransactions = dataLoader.createTransactionList(Files.readAllLines(path2), "yes");
 
+            System.out.println(usersTransactions.get(0));
             Template template = templateProvider.getTemplate(
                     getServletContext(),
                     TEMPLATE_NAME);

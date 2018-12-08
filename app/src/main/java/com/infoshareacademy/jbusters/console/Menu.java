@@ -31,6 +31,7 @@ public class Menu {
     private DecimalFormat df = new DecimalFormat("###,###,###.##");
     private BigDecimal exchangeRate = properties.getExchangeRateBigDecimal();
 
+
     public Menu() {
         filterTransactions.setData(data);
         filterTransactions.init();
@@ -174,7 +175,7 @@ public class Menu {
                 userList.get(i).getTypeOfMarket().equalsIgnoreCase(userTransaction.getTypeOfMarket()));
     }
 
-    private void saveTransaction(Transaction newTransaction, Path pathToFile, String toUserFile) throws FileNotFoundException {
+    public void saveTransaction(Transaction newTransaction, Path pathToFile, String toUserFile) throws FileNotFoundException {
         String transactionName = "brak";
         if (toUserFile.equals("yes")) {
             transactionName = newTransaction.getTransactionName();
@@ -194,6 +195,10 @@ public class Menu {
                 newTransaction.getConstructionYear(),
                 String.valueOf(newTransaction.getConstructionYearCategory()))
                 .collect(Collectors.joining(","));
+
+        File file = new File(String.valueOf(pathToFile));
+
+        FileWriter fw = new FileWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
 
         PrintWriter fileWriter = new PrintWriter(new FileOutputStream(
                 new File(String.valueOf(pathToFile)),
