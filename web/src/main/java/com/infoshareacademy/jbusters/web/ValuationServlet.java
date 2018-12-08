@@ -87,7 +87,7 @@ public class ValuationServlet extends HttpServlet {
 
         PrintWriter out = resp.getWriter();
         Menu menu = new Menu();
-        final Path path = Paths.get(System.getProperty("jboss.home.dir") + "/upload/flats.csv");
+        final Path path = Paths.get(System.getProperty("jboss.home.dir") + "/upload/flats.txt");
 
         menu.saveTransaction(newTransaction, path, "yes" );
 

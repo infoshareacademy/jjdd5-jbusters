@@ -31,7 +31,6 @@ public class Menu {
     private DecimalFormat df = new DecimalFormat("###,###,###.##");
     private BigDecimal exchangeRate = properties.getExchangeRateBigDecimal();
 
-
     public Menu() {
         filterTransactions.setData(data);
         filterTransactions.init();
@@ -127,7 +126,7 @@ public class Menu {
             } else {
                 saveTransaction(newTransaction, pathToFile, toUserFile);
             }
-        } catch (java.lang.NullPointerException e) {
+        } catch (NullPointerException | IOException e) {
             ConsoleViewer.clearScreen();
             System.out.println(":: Błąd! Twoja transakcja jest pusta. Najpierw wprowadź transakcję by móc ją zapisać ::\n");
         }
@@ -175,7 +174,7 @@ public class Menu {
                 userList.get(i).getTypeOfMarket().equalsIgnoreCase(userTransaction.getTypeOfMarket()));
     }
 
-    public void saveTransaction(Transaction newTransaction, Path pathToFile, String toUserFile) throws FileNotFoundException {
+    public void saveTransaction(Transaction newTransaction, Path pathToFile, String toUserFile) throws IOException {
         String transactionName = "brak";
         if (toUserFile.equals("yes")) {
             transactionName = newTransaction.getTransactionName();
@@ -196,19 +195,25 @@ public class Menu {
                 String.valueOf(newTransaction.getConstructionYearCategory()))
                 .collect(Collectors.joining(","));
 
-        File file = new File(String.valueOf(pathToFile));
 
-        FileWriter fw = new FileWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"));
-
-        PrintWriter fileWriter = new PrintWriter(new FileOutputStream(
-                new File(String.valueOf(pathToFile)),
-                true));
-        if (!transactionName.equals("brak")) {
-            fileWriter.append(transactionString + "," + transactionName + "\n");
-        } else {
-            fileWriter.append(transactionString + "\n");
+        Writer out = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream(String.valueOf(pathToFile), true), "UTF-8"));
+        try {
+            out.append(transactionString + "," + transactionName + "\n");
+        } finally {
+            out.close();
         }
-        fileWriter.close();
+
+
+//        PrintWriter fileWriter = new PrintWriter(new FileOutputStream(
+//                new File(String.valueOf(pathToFile)),
+//                true));
+//        if (!transactionName.equals("brak")) {
+//            fileWriter.append(transactionString + "," + transactionName + "\n");
+//        } else {
+//            fileWriter.append(transactionString + "\n");
+//        }
+//        fileWriter.close();
 
         ConsoleViewer.clearScreen();
         System.out.println(":: Twoja transakcja została zapisana do pliku ::\n");
