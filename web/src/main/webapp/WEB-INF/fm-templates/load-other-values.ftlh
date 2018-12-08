@@ -3,7 +3,7 @@
         <div class="container  container-form">
             <h2>Podaj szczegółowe parametry mieszkania: </h2>
             <hr class="my-4">
-            <form method="get" action="new-transaction">
+            <form method="get" action="valuation">
                 <div class="form-group">
                     <label for="Select1">Wybierz rodzaj rynku</label>
                     <select name="market-type" class="form-control" id="Select1">

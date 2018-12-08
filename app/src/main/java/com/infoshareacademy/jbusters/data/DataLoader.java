@@ -33,8 +33,8 @@ public class DataLoader {
     private static final String separator = ",";
 
     public List<Transaction> createTransactionList(List<String> listFileTransakcjeCSV, String fromUserFile) {
-        PropLoader properties = new PropLoader("/home/tomo/IdeaProjects/jjdd5-jbusters/app/app.properties");
 
+        PropLoader properties = new PropLoader(System.getProperty("jboss.home.dir") + "/data/app.properties");
 
         List<Transaction> listOfTransaction = new ArrayList<>();
 

@@ -24,7 +24,7 @@
                             <a class="nav-link" href="/load-city">Wyceń mieszkanie</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Załaduj plik</a>
+                            <a class="nav-link" href="/new-transaction">Załaduj plik</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link disabled" href="#">Zaloguj</a>

@@ -1,12 +1,12 @@
 <#include "header.ftlh">
-
-<div class="container">
-        <div class="jumbotron jumbotron-opacity">
-            <h1 class="display-4">Wartość twojego mieszkania to:</h1>
-            <h1 id="price" class="display-4">${cena}</h1>
-            <hr class="my-4">
-            <a class="btn btn-primary btn-lg btn-dark" href="#" role="button">Zapisz mieszkanie</a>
-        </div>
+    <div class="container  container-form">
+        <p class="lead">Wczytaj plik z mieszkaniami: </p>
+        <form method="POST" action="/users-transactions" enctype="multipart/form-data">
+            <input class="btn btn-primary" type="file" name="file" id="file"/> <br/>
+            </br>
+            <input class="btn btn-primary" type="submit" value="Załaduj" name="upload" id="upload"/>
+        </form>
     </div>
 
+    </div>
 <#include "footer.ftlh">
