@@ -5,11 +5,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 
 public class Transaction {
 
-    PropLoader properties = new PropLoader("app/app.properties");
+    PropLoader properties = new PropLoader(System.getProperty("jboss.home.dir") + "/data/app.properties");
 
     private LocalDate transactionDate;
     private String city;

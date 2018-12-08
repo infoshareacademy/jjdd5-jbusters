@@ -10,7 +10,7 @@ import java.util.Properties;
 public class MenuOptions {
 
     private ConsoleReader consoleReader = new ConsoleReader();
-    private PropLoader properties = new PropLoader("app/app.properties");
+    private PropLoader properties = new PropLoader(System.getProperty("jboss.home.dir") + "/data/app.properties");
 
     private int decimalPlaces = properties.getDecimalPlaces();
     private String currency = properties.getCurrency();

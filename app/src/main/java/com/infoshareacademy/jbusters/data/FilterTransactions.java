@@ -12,7 +12,8 @@ import java.util.stream.Collectors;
 @ApplicationScoped
 public class FilterTransactions {
 
-    private PropLoader properties = new PropLoader("app/app.properties");
+    private PropLoader properties = new PropLoader(System.getProperty("jboss.home.dir") + "/data/app.properties");
+
     private Map<String, Integer> districtProperties;
     private List<Transaction> transactionsBase;
     private BigDecimal areaDiff = properties.getAreaDiff();
@@ -24,7 +25,7 @@ public class FilterTransactions {
     private Data data;
 
     public FilterTransactions() {
-        districtProperties = new DistrWagesHandler("app/districts.properties").getDistrictWages();
+        districtProperties = new DistrWagesHandler(System.getProperty("jboss.home.dir") + "/data/districts.properties").getDistrictWages();
     }
 
     @PostConstruct

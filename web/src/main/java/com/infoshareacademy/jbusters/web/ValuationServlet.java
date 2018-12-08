@@ -44,7 +44,7 @@ public class ValuationServlet extends HttpServlet {
         newTransaction.setCity(req.getParameter("city"));
         newTransaction.setDistrict(req.getParameter("district"));
         newTransaction.setTypeOfMarket(req.getParameter("market-type").replaceAll("_", " "));
-        int flatArea = Integer.parseInt(req.getParameter("flat-area"));
+        double flatArea = Double.parseDouble(req.getParameter("flat-area").replaceAll(",", "."));
         newTransaction.setFlatArea(BigDecimal.valueOf(flatArea));
         newTransaction.setLevel(Integer.valueOf(req.getParameter("level")));
         newTransaction.setParkingSpot(req.getParameter("parking-spot").replaceAll("_", " "));
