@@ -1,7 +1,6 @@
 package com.infoshareacademy.jbusters.web;
 
 import com.infoshareacademy.jbusters.data.DataLoader;
-import com.infoshareacademy.jbusters.data.FilterTransactions;
 import com.infoshareacademy.jbusters.data.Transaction;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import freemarker.template.Template;
@@ -38,37 +37,6 @@ public class UsersTransactionsServlet extends HttpServlet {
     @Inject
     private TemplateProvider templateProvider;
 
-    @Inject
-    private FilterTransactions filterTransactions;
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.addHeader("Content-Type", "text/html; charset=utf-8");
-
-        DataLoader dataLoader = new DataLoader();
-
-        Path path = Paths.get(System.getProperty("jboss.home.dir") + "/upload/test.txt");
-
-        List<Transaction> usersTransactions = dataLoader.createTransactionList(Files.readAllLines(path), "yes");
-
-        PrintWriter out = resp.getWriter();
-
-
-        Template template = templateProvider.getTemplate(
-                getServletContext(),
-                TEMPLATE_NAME);
-
-
-        Map<String, Object> model = new HashMap<>();
-        model.put("flats", usersTransactions);
-
-        try {
-            template.process(model, out);
-        } catch (TemplateException e) {
-            e.printStackTrace();
-        }
-
-    }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -130,6 +98,7 @@ public class UsersTransactionsServlet extends HttpServlet {
             }
         }
     }
+
     private String getFileName(final Part part) {
         final String partHeader = part.getHeader("content-disposition");
         for (String content : part.getHeader("content-disposition").split(";")) {

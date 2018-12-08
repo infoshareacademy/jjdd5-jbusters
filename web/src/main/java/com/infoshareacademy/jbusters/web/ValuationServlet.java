@@ -61,7 +61,6 @@ public class ValuationServlet extends HttpServlet {
                 getServletContext(),
                 TEMPLATE_NAME);
 
-
         Map<String, Object> model = new HashMap<>();
         model.put("cena", flatPrice);
 
@@ -70,7 +69,5 @@ public class ValuationServlet extends HttpServlet {
         } catch (TemplateException e) {
             e.printStackTrace();
         }
-
     }
-
 }
