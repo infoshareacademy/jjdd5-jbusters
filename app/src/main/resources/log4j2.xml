@@ -15,6 +15,7 @@
     </Appenders>
     <Loggers>
         <Root level="ALL">
+            <AppenderRef ref="Console" level="ALL"/>
             <AppenderRef ref="Async"/>
         </Root>
     </Loggers>

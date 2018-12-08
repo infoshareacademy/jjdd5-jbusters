@@ -2,13 +2,18 @@ package com.infoshareacademy.jbusters.data;
 
 import com.infoshareacademy.jbusters.console.ConsoleViewer;
 
+import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@ApplicationScoped
 public class FilterTransactions {
 
-    private PropLoader properties = new PropLoader("app/app.properties");
+    private PropLoader properties = new PropLoader(System.getProperty("jboss.home.dir") + "/data/app.properties");
+
     private Map<String, Integer> districtProperties;
     private List<Transaction> transactionsBase;
     private BigDecimal areaDiff = properties.getAreaDiff();
@@ -16,13 +21,22 @@ public class FilterTransactions {
     private int minResultsNumber = properties.getMinResultsNumber();
     private BigDecimal priceDiff = properties.getPriceDiff();
 
-    public FilterTransactions(List<Transaction> transactionsData) {
+    @Inject
+    private Data data;
 
-        this.transactionsBase = transactionsData;
-        districtProperties = new DistrWagesHandler("app/districts.properties").getDistrictWages();
+    public FilterTransactions() {
+        districtProperties = new DistrWagesHandler(System.getProperty("jboss.home.dir") + "/data/districts.properties").getDistrictWages();
     }
 
-    // metoda zwracajaca liste tranzakcji, ktora jest wynikiem wielokrotnego przefiltrowania gwnej bazy tranzakcji
+    @PostConstruct
+    public void init() {
+        transactionsBase = data.getTransactionsBase();
+    }
+
+    public void setData(Data data) {
+        this.data = data;
+    }
+// metoda zwracajaca liste tranzakcji, ktora jest wynikiem wielokrotnego przefiltrowania gwnej bazy tranzakcji
     //kolejnosc filtrow:  data tranzakcji/miasto/dzielnica/rynek/kategoria budowy/powierzchnia mieszkania
 
     public List<Transaction> theGreatFatFilter(Transaction userTransaction) {

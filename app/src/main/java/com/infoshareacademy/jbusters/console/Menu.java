@@ -21,7 +21,7 @@ public class Menu {
     private Data data = new Data();
     private NewTransactionCreator newTransactionCreator = new NewTransactionCreator(data, consoleReader);
     private MenuOptions subMenu = new MenuOptions();
-    private FilterTransactions filterTransactions = new FilterTransactions(data.getTransactionsBase());
+    private FilterTransactions filterTransactions = new FilterTransactions();
 
     private DataLoader dataLoader;
 
@@ -32,6 +32,8 @@ public class Menu {
     private BigDecimal exchangeRate = properties.getExchangeRateBigDecimal();
 
     public Menu() {
+        filterTransactions.setData(data);
+        filterTransactions.init();
         this.dataLoader = new DataLoader();
     }
 
