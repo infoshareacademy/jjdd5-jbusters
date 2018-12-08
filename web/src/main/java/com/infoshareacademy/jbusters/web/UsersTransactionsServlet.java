@@ -1,10 +1,9 @@
 package com.infoshareacademy.jbusters.web;
 
-import com.infoshareacademy.jbusters.data.CalculatePrice;
+import com.infoshareacademy.jbusters.data.DataLoader;
 import com.infoshareacademy.jbusters.data.FilterTransactions;
 import com.infoshareacademy.jbusters.data.Transaction;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
-import com.sun.xml.internal.ws.api.ha.StickyFeature;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.slf4j.Logger;
@@ -19,25 +18,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.*;
-import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 
-
-
-
-@WebServlet(urlPatterns = "/new-transaction")
+@WebServlet(urlPatterns = "/users-transactions")
 @MultipartConfig(location = "/tmp"
         , fileSizeThreshold = 1024 * 1024
         , maxFileSize = 1024 * 1024 * 5
         , maxRequestSize = 1024 * 1024 * 5 * 5)
-public class UploadFileServlet extends HttpServlet {
+public class UsersTransactionsServlet extends HttpServlet {
 
-    private static final Logger LOG = LoggerFactory.getLogger(NewTransactionServlet.class);
-    private static final String TEMPLATE_NAME = "upload";
+    private static final Logger LOG = LoggerFactory.getLogger(UsersTransactionsServlet.class);
+    private static final String TEMPLATE_NAME = "users-transactions";
 
     @Inject
     private TemplateProvider templateProvider;
@@ -49,6 +45,11 @@ public class UploadFileServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
 
+        DataLoader dataLoader = new DataLoader();
+
+        Path path = Paths.get(System.getProperty("jboss.home.dir") + "/upload/test.txt");
+
+        List<Transaction> usersTransactions = dataLoader.createTransactionList(Files.readAllLines(path), "yes");
 
         PrintWriter out = resp.getWriter();
 
@@ -59,7 +60,7 @@ public class UploadFileServlet extends HttpServlet {
 
 
         Map<String, Object> model = new HashMap<>();
-
+        model.put("flats", usersTransactions);
 
         try {
             template.process(model, out);
@@ -68,7 +69,6 @@ public class UploadFileServlet extends HttpServlet {
         }
 
     }
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -77,6 +77,8 @@ public class UploadFileServlet extends HttpServlet {
         final String path = System.getProperty("jboss.home.dir") + "/upload";
         final Part filePart = request.getPart("file");
         final String fileName = getFileName(filePart);
+
+        DataLoader dataLoader = new DataLoader();
 
         OutputStream out = null;
         InputStream filecontent = null;
@@ -93,7 +95,23 @@ public class UploadFileServlet extends HttpServlet {
             while ((read = filecontent.read(bytes)) != -1) {
                 out.write(bytes, 0, read);
             }
-            writer.println("New file " + fileName + " created at " + path);
+
+            Path path2 = Paths.get(System.getProperty("jboss.home.dir") + "/upload/" + fileName);
+
+            List<Transaction> usersTransactions = dataLoader.createTransactionList(Files.readAllLines(path2), "yes");
+
+            Template template = templateProvider.getTemplate(
+                    getServletContext(),
+                    TEMPLATE_NAME);
+
+            Map<String, Object> model = new HashMap<>();
+            model.put("flats", usersTransactions);
+
+            try {
+                template.process(model, writer);
+            } catch (TemplateException e) {
+                e.printStackTrace();
+            }
 
         } catch (FileNotFoundException fne) {
             writer.println("You either did not specify a file to upload or are "
@@ -122,5 +140,5 @@ public class UploadFileServlet extends HttpServlet {
         }
         return null;
     }
-}
 
+}

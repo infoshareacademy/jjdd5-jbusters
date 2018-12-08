@@ -29,7 +29,7 @@ public class Data {
 
     public List<Transaction> fileToData() {
 //        Path pathToFileTransactionCSV = Paths.get("app", "data", "transaction.csv");
-        Path pathToFileTransactionCSV = Paths.get("/home/karolbemka/IdeaProjects/jjdd5-jbusters/app/data/transaction.csv");
+        Path pathToFileTransactionCSV = Paths.get(System.getProperty("jboss.home.dir") + "/data/transaction.csv");
 
         List<String> listFileTransactionCSV = null;
         try {

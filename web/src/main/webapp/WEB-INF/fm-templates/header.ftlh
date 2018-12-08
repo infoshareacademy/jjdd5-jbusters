@@ -4,6 +4,8 @@
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+    <!-- DataTables core CSS -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.css">
 </head>
 <body>
 <div class="wrap">
@@ -21,7 +23,7 @@
                             <a class="nav-link" href="/index.html">Home <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/new-transaction.html">Wyceń mieszkanie</a>
+                            <a class="nav-link" href="/new-transaction">Wyceń mieszkanie</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Załaduj plik</a>

@@ -1,4 +1,13 @@
-<#include "header.ftlh">
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>JBusters</title>
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+</head>
+<body>
 <div class="wrap">
     <header>
         <div class="container-fluid">
@@ -14,7 +23,7 @@
                             <a class="nav-link" href="/index.html">Home <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item active">
-                            <a class="nav-link" href="/new-transaction.html">Wyceń mieszkanie</a>
+                            <a class="nav-link" href="/OLD-new-transaction.html">Wyceń mieszkanie</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Załaduj plik</a>
@@ -30,22 +39,15 @@
 
     <div class="container  container-form">
         <p class="lead">Wczytaj plik z mieszkaniami: </p>
-        <#--<form>-->
-            <#--<div class="form-group">-->
-                <#--<input type="file" class="form-control-file" id="exampleFormControlFile1">-->
-            <#--</div>            -->
-        <#--</form>-->
-        <form method="POST" action="/new-transaction" enctype="multipart/form-data" >
-            File:
-            <input type="file" name="file" id="file" /> <br/>
-            </br>
-            <input type="submit" value="Upload" name="upload" id="upload" />
+        <form>
+            <div class="form-group">
+                <input type="file" class="form-control-file" id="exampleFormControlFile1">
+            </div>
         </form>
-
         <hr class="my-4">
         <h1 class="display-4">Wpisz dane swojego mieszkania: </h1>
         <br>
-        <form method="get" action="/new-transaction">
+        <form method="get" action="/valuation">
 
             <div class="form-group">
                 <label for="exampleFormControlSelect1">Wybierz miasto</label>
@@ -129,4 +131,9 @@
     </div>
 
 </div>
-<#include "footer.ftlh">
+<footer>&copy; 2018 JBusters</footer>
+
+<script src="js/jquery-3.3.1.slim.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+</body>
+</html>
