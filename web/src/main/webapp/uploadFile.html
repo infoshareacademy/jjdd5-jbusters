@@ -39,12 +39,17 @@
 
     <div class="container">
         <div class="jumbotron jumbotron-opacity">
-            <h1 class="display-4">Myślisz o sprzedaży mieszkania?</h1>
-            <p class="lead">Skorzystaj z naszej wyceniarki i sprawdż ile może być warte</p>
+            <h1 class="display-10">Wybier plik, z którego chcesz załadować swoją listę mieszkań do wyceny. Plik powinien być w formacie CSV.</h1>
             <hr class="my-4">
-            <a class="btn btn-primary btn-lg btn-dark" href="/load-city" role="button">Wyceń mieszkanie</a>
+            <form method="POST" action="/users-transactions" enctype="multipart/form-data">
+                <input class="btn btn-primary" type="file" name="file" id="file"/> <br/>
+                </br>
+                <input class="btn btn-primary" type="submit" value="Załaduj" name="upload" id="upload"/>
+            </form>
+            <!--<p class="lead">Skorzystaj z naszej wyceniarki i sprawdż ile może być warte</p>-->
         </div>
     </div>
+
 </div>
 <footer>&copy; 2018 JBusters</footer>
 

@@ -12,8 +12,6 @@
         } );
     </script>
 
-    Total flats: ${flats?size}
-
 <table id="flats" class="display nowrap" style="width: 100%">
     <thead>
     <th></th>
@@ -40,7 +38,7 @@
         <td>${flat.district}</td>
         <td>${flat.street}</td>
         <td>${flat.typeOfMarket}</td>
-        <td>${flat.flatArea}m2</td>
+        <td>${flat.flatArea}m<sup>2</sup></td>
         <td>${flat.level}</td>
         <td>${flat.parkingSpot}</td>
         <td>${flat.standardLevel}</td>
