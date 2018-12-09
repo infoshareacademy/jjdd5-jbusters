@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import javax.enterprise.context.ApplicationScoped;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -33,7 +34,7 @@ public class Data {
 
         List<String> listFileTransactionCSV = null;
         try {
-            listFileTransactionCSV = Files.readAllLines(pathToFileTransactionCSV);
+            listFileTransactionCSV = Files.readAllLines(pathToFileTransactionCSV, StandardCharsets.UTF_8);
             listFileTransactionCSV.remove(0);
             DataLoader data = new DataLoader();
             LOGGER.info("Load file CSV. Path: {}", pathToFileTransactionCSV);
