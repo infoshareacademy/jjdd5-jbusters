@@ -7,7 +7,7 @@ body{
 .wrap{
     min-height: 1000px;
     background-color: #adb5bd;
-    background-image: url("/img/background_img.jpg");
+    background-image: url("../img/background_img.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -38,6 +38,10 @@ footer {
 
 #price{
     color: #34ce57;
+}
+
+.hidden{
+    visibility: hidden; !important;
 }
 
 div.dataTables_length {

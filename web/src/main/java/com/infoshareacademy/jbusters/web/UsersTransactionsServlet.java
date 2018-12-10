@@ -70,7 +70,6 @@ public class UsersTransactionsServlet extends HttpServlet {
 
             List<Transaction> usersTransactions = dataLoader.createTransactionList(Files.readAllLines(path2), "yes");
 
-            System.out.println(usersTransactions.get(0));
             Template template = templateProvider.getTemplate(
                     getServletContext(),
                     TEMPLATE_NAME);

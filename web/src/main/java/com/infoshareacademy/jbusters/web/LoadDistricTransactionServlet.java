@@ -1,9 +1,7 @@
 package com.infoshareacademy.jbusters.web;
 
-import com.infoshareacademy.jbusters.data.Data;
-import com.infoshareacademy.jbusters.data.DataLoader;
+
 import com.infoshareacademy.jbusters.data.SearchOfData;
-import com.infoshareacademy.jbusters.data.Transaction;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -20,11 +18,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet(urlPatterns = "/load-city")
-public class LoadCityTransactionServlet extends HttpServlet {
+@WebServlet(urlPatterns = ("/load-district"))
+public class LoadDistricTransactionServlet extends HttpServlet {
 
-    private static final String TEMPLATE_NAME = "load-city";
-
+    private static final String TEMPLATE_NAME = "load-district";
 
     @Inject
     private TemplateProvider templateProvider;
@@ -35,10 +32,12 @@ public class LoadCityTransactionServlet extends HttpServlet {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
         PrintWriter out = resp.getWriter();
 
-        List<String> cities = new SearchOfData().showCity();
+        String city = req.getParameter("city");
+        List<String> districtsList = new SearchOfData().showDistrict(city);
 
         Map<String, Object> model = new HashMap<>();
-        model.put("cities", cities);
+        model.put("city", city);
+        model.put("district", districtsList);
 
         Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
 
@@ -47,5 +46,7 @@ public class LoadCityTransactionServlet extends HttpServlet {
         } catch (TemplateException e) {
             e.printStackTrace();
         }
+
+
     }
 }
