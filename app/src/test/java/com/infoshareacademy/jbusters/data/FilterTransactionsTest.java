@@ -18,15 +18,14 @@ public class FilterTransactionsTest {
 
     @Test
     public void removeOutliersTest() {
-        for (int i = 0; i < 30; i++){
 
-            tempTransactions.add(createTransaction(new BigDecimal(270000)));
+        //avg flat
+        tempTransactions.add(createTransaction(new BigDecimal(6000*45)));
 
-    }
+        //transactions around avg+-30%
         tempTransactions.add(createTransaction(new BigDecimal(5400*45)));
         tempTransactions.add(createTransaction(new BigDecimal(6600*45)));
         tempTransactions.add(createTransaction(new BigDecimal(4000*45)));
-
         tempTransactions.add(createTransaction(new BigDecimal(4100*45)));
         tempTransactions.add(createTransaction(new BigDecimal(4200*45)));
         tempTransactions.add(createTransaction(new BigDecimal(4300*45)));
@@ -35,10 +34,32 @@ public class FilterTransactionsTest {
         tempTransactions.add(createTransaction(new BigDecimal(7900*45)));
         tempTransactions.add(createTransaction(new BigDecimal(8000*45)));
 
-        FilterTransactions ft = new FilterTransactions(tempTransactions);
+        FilterTransactions ft = new FilterTransactions();
         tempTransactions=ft.removeOutliers(tempTransactions,new BigDecimal(600));
 
-        Assert.assertEquals(36,tempTransactions.size());
+        Assert.assertEquals(7,tempTransactions.size());
+
+
+    }
+
+    @Test
+    public void BasicFilterOldTransactionCheckTest(){
+        tempTransactions=new ArrayList<Transaction>();
+        LocalDate now = LocalDate.now();
+        tempTransactions.add(createTransactionByDate(now));
+        tempTransactions.add(createTransactionByDate(now.minusYears(2).plusDays(1)));
+        tempTransactions.add(createTransactionByDate(now.minusYears(2)));
+        tempTransactions.add(createTransactionByDate(now.minusYears(2).minusDays(1)));
+        tempTransactions.add(createTransactionByDate(now.minusYears(3)));
+        tempTransactions.add(createTransactionByDate(now.minusYears(4)));
+        tempTransactions.add(createTransactionByDate(now.minusYears(5)));
+        tempTransactions.add(createTransactionByDate(now.minusYears(6)));
+
+        FilterTransactions ft = new FilterTransactions();
+        ft.init();
+        tempTransactions = ft.basicFilter(createTransactionByDate(now));
+
+        Assert.assertEquals(3,tempTransactions.size());
 
 
     }
@@ -52,6 +73,25 @@ public class FilterTransactionsTest {
         trans.setStreet("Dabrowkowska");
         trans.setTypeOfMarket("RYNEK WTÓRNY");
         trans.setPrice(price);
+        trans.setFlatArea(new BigDecimal(45));
+        trans.setPricePerM2(trans.getPrice().divide(trans.getFlatArea(),RoundingMode.HALF_UP));
+        trans.setLevel(3);
+        trans.setParkingSpot(ParkingPlace.BRAK_MP.getName());
+        trans.setStandardLevel(StandardLevel.DOBRY.getName());
+        trans.setConstructionYear("1980");
+        trans.setConstructionYearCategory(2);
+
+        return trans;
+    }
+    public Transaction createTransactionByDate(LocalDate date){
+
+        Transaction trans = new Transaction();
+        trans.setCity("Gdynia");
+        trans.setDistrict("Witomino");
+        trans.setTransactionDate(date);
+        trans.setStreet("Dabrowkowska");
+        trans.setTypeOfMarket("RYNEK WTÓRNY");
+        trans.setPrice(new BigDecimal(100000));
         trans.setFlatArea(new BigDecimal(45));
         trans.setPricePerM2(trans.getPrice().divide(trans.getFlatArea(),RoundingMode.HALF_UP));
         trans.setLevel(3);

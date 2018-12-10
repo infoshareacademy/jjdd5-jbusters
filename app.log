@@ -114,7 +114,7 @@ Kategoria roku budowy:	2
 2018-12-02 21:14:28,852 INFO com.infoshareacademy.jbusters.data.Data [main] Creste district list. List size: 21
 2018-12-02 21:14:41,920 INFO com.infoshareacademy.jbusters.data.MapSorter [main] Function sorter. Sort date {Chwarzno-Wiczlino=4, Chylonia=3, Cisowa=3, Grabówek=2, Dąbrowa=2, Karwiny=2, Pustki Cisowskie=2, Wzgórze Św. Maksymiliana=2, Kamienna Góra=1, Oksywie=1, Orłowo=1, Wielki Kack=1, Mały Kack=1, Babie Doły=1, Redłowo=1, Działki Leśne=1, Leszczynki=0, Obłuże=0, Pogórze=0, Śródmieście z Portem=0, Witomino=0}
 2018-12-02 21:14:41,921 INFO com.infoshareacademy.jbusters.data.NewTransactionCreator [main] load district: {}
-2018-12-02 21:14:43,368 WARN com.infoshareacademy.jbusters.console.ConsoleReader [main] Incorrect value was provided 
+2018-12-02 21:14:43,368 WARN com.infoshareacademy.jbusters.console.ConsoleReader [main] Incorrect value was provided
 2018-12-02 21:14:46,644 INFO com.infoshareacademy.jbusters.data.NewTransactionCreator [main] load street
 2018-12-02 21:14:50,261 INFO com.infoshareacademy.jbusters.data.NewTransactionCreator [main] load market
 2018-12-02 21:14:51,465 INFO com.infoshareacademy.jbusters.data.NewTransactionCreator [main] load size
@@ -215,3 +215,16 @@ Miejsce postojowe:	brak mp
 Standard wykończenia:	dobry
 Rok budowy:		null
 Kategoria roku budowy:	2
+2018-12-06 14:29:27,961 INFO com.infoshareacademy.jbusters.data.Data [main] Load file CSV. Path: app/data/transaction.csv
+2018-12-06 14:29:28,481 INFO com.infoshareacademy.jbusters.data.DataLoader [main] Create list transaction. List size: 3363 rows
+2018-12-06 14:29:36,596 INFO com.infoshareacademy.jbusters.data.Data [main] Create city list. List size: 2
+2018-12-06 14:29:43,894 INFO com.infoshareacademy.jbusters.data.MapSorter [main] Function sorter. Sort date {Gdynia=0, Sopot=0}
+2018-12-06 14:29:43,896 INFO com.infoshareacademy.jbusters.data.NewTransactionCreator [main] load city
+2018-12-06 14:29:45,446 INFO com.infoshareacademy.jbusters.data.Data [main] Creste district list. List size: 21
+2018-12-06 14:29:46,332 INFO com.infoshareacademy.jbusters.data.MapSorter [main] Function sorter. Sort date {Kamienna Góra=0, Oksywie=0, Orłowo=0, Grabówek=0, Wielki Kack=0, Leszczynki=0, Obłuże=0, Pogórze=0, Dąbrowa=0, Mały Kack=0, Karwiny=0, Chwarzno-Wiczlino=0, Śródmieście z Portem=0, Babie Doły=0, Chylonia=0, Pustki Cisowskie=0, Redłowo=0, Witomino=0, Wzgórze Św. Maksymiliana=0, Cisowa=0, Działki Leśne=0}
+2018-12-06 14:29:46,333 INFO com.infoshareacademy.jbusters.data.NewTransactionCreator [main] load district: {}
+2018-12-06 14:30:55,104 INFO com.infoshareacademy.jbusters.data.Data [main] Load file CSV. Path: app/data/transaction.csv
+2018-12-06 14:30:55,566 INFO com.infoshareacademy.jbusters.data.DataLoader [main] Create list transaction. List size: 3363 rows
+2018-12-06 14:31:11,894 INFO com.infoshareacademy.jbusters.data.Data [main] Create city list. List size: 2
+2018-12-06 14:42:41,802 INFO com.infoshareacademy.jbusters.data.Data [main] Load file CSV. Path: app/data/transaction.csv
+2018-12-06 14:42:42,454 INFO com.infoshareacademy.jbusters.data.DataLoader [main] Create list transaction. List size: 3363 rows

@@ -67,3 +67,10 @@
 2018-12-06 19:02:28,249 ERROR com.infoshareacademy.jbusters.data.Data [main] Error - wrong filetype, .properties expected
 2018-12-06 19:02:28,254 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
 2018-12-06 19:02:28,255 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null input
+2018-12-10 15:34:03,389 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-10 15:49:29,786 ERROR com.infoshareacademy.jbusters.data.Data [main] Error - wrong filetype, .properties expected
+2018-12-10 15:49:29,794 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-10 16:12:44,555 ERROR com.infoshareacademy.jbusters.data.Data [main] Error - wrong filetype, .properties expected
+2018-12-10 16:12:44,564 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-10 16:36:05,549 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-10 16:37:14,294 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}

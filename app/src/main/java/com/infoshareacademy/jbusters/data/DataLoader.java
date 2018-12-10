@@ -34,7 +34,7 @@ public class DataLoader {
 
     public List<Transaction> createTransactionList(List<String> listFileTransakcjeCSV, String fromUserFile) {
 
-        PropLoader properties = new PropLoader("app/app.properties");
+        PropLoader properties = new PropLoader(System.getProperty("jboss.home.dir") + "/data/app.properties");
 
         List<Transaction> listOfTransaction = new ArrayList<>();
 

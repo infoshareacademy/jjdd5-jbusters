@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -21,8 +22,8 @@ public class DistrWagesHandlerTest {
     public void wrongFileTypeInputTest(){
 
         DistrWagesHandler distr = new DistrWagesHandler("pom.xml");
-
         Assert.assertEquals(new HashMap<String,Integer>(), distr.getDistrictWages());
+
     }
 
 
