@@ -58,6 +58,7 @@ public class ValuationServlet extends HttpServlet {
         newTransaction.setPrice(BigDecimal.valueOf(0));
         newTransaction.setPricePerM2(BigDecimal.valueOf(0));
 
+
         List<Transaction> filteredList = filterTransactions.theGreatFatFilter(newTransaction);
         BigDecimal flatPrice = BigDecimal.valueOf(0);
         PrintWriter out = resp.getWriter();
@@ -71,7 +72,7 @@ public class ValuationServlet extends HttpServlet {
 
             flatPrice = calc.calculatePrice();
 
-        }else{
+        } else {
             template = templateProvider.getTemplate(
                     getServletContext(),
                     "no-valuation");
@@ -79,7 +80,15 @@ public class ValuationServlet extends HttpServlet {
 
 
         Map<String, Object> model = new HashMap<>();
-        model.put("cena", flatPrice);
+        model.put("price", flatPrice);
+        model.put("city", newTransaction.getCity());
+        model.put("district1", newTransaction.getDistrict());
+        model.put("market_type", newTransaction.getTypeOfMarket());
+        model.put("flat_area", newTransaction.getFlatArea());
+        model.put("level", newTransaction.getLevel());
+        model.put("parking_spot", newTransaction.getParkingSpot());
+        model.put("standard_level", newTransaction.getStandardLevel());
+        model.put("construction", newTransaction.getConstructionYearCategory());
 
         try {
             template.process(model, out);
@@ -90,12 +99,14 @@ public class ValuationServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        newTransaction.setTransactionName(("NOWA"));
-        newTransaction.setStreet("Kartuska");
-        newTransaction.setConstructionYear("2010");
 
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
         PrintWriter out = resp.getWriter();
+
+        newTransaction.setTransactionName(req.getParameter("description"));
+        newTransaction.setStreet(req.getParameter("street"));
+        newTransaction.setConstructionYear(req.getParameter("construction-year"));
+
         Menu menu = new Menu();
         final Path path = Paths.get(System.getProperty("jboss.home.dir") + "/upload/flats.txt");
 
@@ -108,7 +119,7 @@ public class ValuationServlet extends HttpServlet {
         String plik = "Zapisane";
 
         Map<String, String> model = new HashMap<>();
-        model.put("cena", plik);
+        model.put("price", plik);
 
         try {
             template.process(model, out);
