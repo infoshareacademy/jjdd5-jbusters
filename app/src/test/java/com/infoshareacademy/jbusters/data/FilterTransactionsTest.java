@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 public class FilterTransactionsTest {
 
     private List<Transaction> tempTransactions = new ArrayList<>();
+
     @Test
     public void removeOutliersTest() {
         for (int i = 0; i < 30; i++){

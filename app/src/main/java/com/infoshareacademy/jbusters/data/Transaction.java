@@ -5,11 +5,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.net.URL;
 import java.time.LocalDate;
 
 public class Transaction {
 
-    PropLoader properties = new PropLoader("app/app.properties");
+    URL url = FilterTransactions.class.getResource("/app.properties");
+    private PropLoader properties = new PropLoader(url.getPath());
 
     private LocalDate transactionDate;
     private String city;
