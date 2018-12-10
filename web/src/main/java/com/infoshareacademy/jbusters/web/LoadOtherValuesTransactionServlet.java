@@ -3,6 +3,8 @@ package com.infoshareacademy.jbusters.web;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -21,6 +23,7 @@ import java.util.Map;
 public class LoadOtherValuesTransactionServlet extends HttpServlet {
 
     private static final String TEMPLATE_NAME = "load-other-values";
+    private static final Logger LOG = LoggerFactory.getLogger(ValuationServlet.class);
 
     @Inject
     private TemplateProvider templateProvider;
@@ -43,8 +46,9 @@ public class LoadOtherValuesTransactionServlet extends HttpServlet {
 
         try {
             template.process(model, out);
+            LOG.info("Sending city of {} and district of {} to template", city, district);
         } catch (TemplateException e) {
-            e.printStackTrace();
+            LOG.error("Failed to export data to tamplate {} {}", city, district);
         }
     }
 }

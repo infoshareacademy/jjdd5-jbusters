@@ -79,8 +79,9 @@ public class UsersTransactionsServlet extends HttpServlet {
 
             try {
                 template.process(model, writer);
+                LOG.info("Loaded users flats. Number of flats: []", usersTransactions.size());
             } catch (TemplateException e) {
-                e.printStackTrace();
+                LOG.error("Failed to load users flats. Number of flats: {}", usersTransactions.size());
             }
 
         } catch (FileNotFoundException fne) {
@@ -88,6 +89,7 @@ public class UsersTransactionsServlet extends HttpServlet {
                     + "trying to upload a file to a protected or nonexistent "
                     + "location.");
             writer.println("<br/> ERROR: " + fne.getMessage());
+            LOG.error("Error with loading file. {}", fne.getMessage());
         } finally {
             if (out != null) {
                 out.close();

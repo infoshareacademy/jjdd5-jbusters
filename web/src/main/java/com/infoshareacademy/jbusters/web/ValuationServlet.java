@@ -65,13 +65,24 @@ public class ValuationServlet extends HttpServlet {
                 getServletContext(),
                 TEMPLATE_NAME);
 
+        Map<String, Object> model = new HashMap<>();
+
         if (filteredList.size() >= 11) {
             CalculatePrice calc = new CalculatePrice(newTransaction, filteredList);
+            BigDecimal yearlyTrendOfPriceChange = calc.overallTrend(filteredList);
+            model.put("trend", yearlyTrendOfPriceChange);
+
+            BigDecimal minimumPriceInList = calc.getMinimumPriceInList(filteredList);
+            BigDecimal averagePriceInList = calc.getAvaragePriceInList(filteredList);
+            BigDecimal maxPriceInList = calc.getMaxPriceInList(filteredList);
+
+            model.put("minimumPrice", minimumPriceInList);
+            model.put("averagePrice", averagePriceInList);
+            model.put("maxPrice", maxPriceInList);
 
             flatPrice = calc.calculatePrice();
         }
 
-        Map<String, Object> model = new HashMap<>();
         model.put("cena", flatPrice);
 
         try {
@@ -105,10 +116,9 @@ public class ValuationServlet extends HttpServlet {
 
         try {
             template.process(model, out);
-            LOG.info("Saved user transaction to file", path);
+            LOG.info("Saved user transaction to file {}", path);
         } catch (TemplateException e) {
-            e.printStackTrace();
-            LOG.error("Failed to save user file to", path);
+            LOG.error("Failed to save user file to {}", path);
         }
     }
 }

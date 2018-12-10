@@ -28,34 +28,16 @@ public class CalculatePrice {
     private List<Transaction> updatePricesInList() {
         List<Transaction> transactions = filteredList;
 
-        BigDecimal min = BigDecimal.valueOf(transactions.stream()
-                .mapToDouble(transaction -> transaction.getPricePerM2().doubleValue())
-                .min().orElse((double) 0));
+        BigDecimal min = getMinimumPriceInList(transactions);
 
         ConsoleViewer.clearScreen();
         System.out.println(":: Wybrano wycenę mieszkania ::\n");
         System.out.println("Statystyki:\n");
         System.out.println("Cena minimalna przed aktualizacją o trend to:\t\t\t" + df.format(min.divide(exchangeRate, BigDecimal.ROUND_UP)) + " " + properties.getCurrency());
 
-        String mostPopularParkingSpot = mapOfParkingSpots(transactions).entrySet().stream()
-                .max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1)
-                .get()
-                .getKey();
-
-        String mostPopularStandardLevel = mapOfStandardLevel(transactions).entrySet().stream()
-                .max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1)
-                .get()
-                .getKey();
-
-        List<Transaction> listToCalculateTrend = transactions.stream()
-                .filter(transaction -> transaction.getStandardLevel().equalsIgnoreCase(mostPopularStandardLevel))
-                .filter(transaction -> transaction.getParkingSpot().equalsIgnoreCase(mostPopularParkingSpot))
-                .filter(transaction -> transaction.getLevel() != 1)
-                .sorted((o1, o2) -> o1.getTransactionDate().compareTo(o2.getTransactionDate()))
-                .collect(Collectors.toList());
+        List<Transaction> listToCalculateTrend = getListToCalculateTrend(transactions);
 
         BigDecimal overallTrend = overallTrend(listToCalculateTrend);
-
 
         System.out.println("Roczny trend wzrostu cen mieszkań wynosi:\t\t\t" + pf.format(overallTrend.multiply(BigDecimal.valueOf(36500))) + "%");
 
@@ -67,6 +49,25 @@ public class CalculatePrice {
         exportList.forEach(t -> t.setPricePerM2(updatePrice(t, overallTrend)));
 
         return exportList;
+    }
+
+    private List<Transaction> getListToCalculateTrend(List<Transaction> transactions) {
+        String mostPopularParkingSpot = mapOfParkingSpots(transactions).entrySet().stream()
+                .max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1)
+                .get()
+                .getKey();
+
+        String mostPopularStandardLevel = mapOfStandardLevel(transactions).entrySet().stream()
+                .max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1)
+                .get()
+                .getKey();
+
+        return transactions.stream()
+                .filter(transaction -> transaction.getStandardLevel().equalsIgnoreCase(mostPopularStandardLevel))
+                .filter(transaction -> transaction.getParkingSpot().equalsIgnoreCase(mostPopularParkingSpot))
+                .filter(transaction -> transaction.getLevel() != 1)
+                .sorted((o1, o2) -> o1.getTransactionDate().compareTo(o2.getTransactionDate()))
+                .collect(Collectors.toList());
     }
 
     private Map<String, Long> mapOfParkingSpots(List<Transaction> transactions) {
@@ -89,8 +90,10 @@ public class CalculatePrice {
 
     private BigDecimal trendPerDay(List<Transaction> listToCalculateTrend, int first, int last) {
         long duration = DAYS.between(listToCalculateTrend.get(first).getTransactionDate(), listToCalculateTrend.get(last).getTransactionDate());
-
-
+        if (duration < 1) {
+            duration= 1;
+        }
+        
         System.out.println("Między transakcjami, użytymi do obliczenia trendu upłynęło:\t" + duration + " dni");
         BigDecimal priceOfNewest = listToCalculateTrend.get(last).getPricePerM2();
         BigDecimal priceOfOldest = listToCalculateTrend.get(first).getPricePerM2();
@@ -104,28 +107,24 @@ public class CalculatePrice {
         }
     }
 
-    private BigDecimal overallTrend(List<Transaction> listToCalculateTrend) {
-        BigDecimal pairOne = trendPerDay(listToCalculateTrend, 0, listToCalculateTrend.size() - 1);
-        BigDecimal pairTwo = trendPerDay(listToCalculateTrend, 1, listToCalculateTrend.size() - 2);
-        BigDecimal pairThree = trendPerDay(listToCalculateTrend, 2, listToCalculateTrend.size() - 3);
+    public BigDecimal overallTrend(List<Transaction> filteredList) {
+        List<Transaction> listToCalculateTrend = getListToCalculateTrend(filteredList);
 
-        return (pairOne.add(pairTwo).add(pairThree)).divide(BigDecimal.valueOf(3), 6, RoundingMode.HALF_UP);
+        BigDecimal pairOneTrend = trendPerDay(listToCalculateTrend, 0, listToCalculateTrend.size() - 1);
+        BigDecimal pairTwoTrend = trendPerDay(listToCalculateTrend, 1, listToCalculateTrend.size() - 2);
+        BigDecimal pairThreeTrend = trendPerDay(listToCalculateTrend, 2, listToCalculateTrend.size() - 3);
+
+        return (pairOneTrend.add(pairTwoTrend).add(pairThreeTrend)).divide(BigDecimal.valueOf(3), 6, RoundingMode.HALF_UP);
     }
 
     public BigDecimal calculatePrice() {
         List<Transaction> transactions = updatePricesInList();
 
-        BigDecimal average = BigDecimal.valueOf(transactions.stream()
-                .mapToDouble(transaction -> transaction.getPricePerM2().doubleValue())
-                .average().orElse((double) 0));
+        BigDecimal average = getAvaragePriceInList(transactions);
 
-        BigDecimal min = BigDecimal.valueOf(transactions.stream()
-                .mapToDouble(transaction -> transaction.getPricePerM2().doubleValue())
-                .min().orElse((double) 0));
+        BigDecimal min = getMinimumPriceInList(transactions);
 
-        BigDecimal max = BigDecimal.valueOf(transactions.stream()
-                .mapToDouble(transaction -> transaction.getPricePerM2().doubleValue())
-                .max().orElse((double) 0));
+        BigDecimal max = getMaxPriceInList(transactions);
 
         System.out.println("Średnia cena dla zbioru podobnych mieszkań to:\t\t\t" + df.format(average.setScale(2, RoundingMode.HALF_UP).divide(exchangeRate, BigDecimal.ROUND_UP)) + " " + properties.getCurrency() + " za m2");
         System.out.println("Cena maksymalna dla dobranego zbioru to:\t\t\t" + df.format(max.divide(exchangeRate, BigDecimal.ROUND_UP)) + " " + properties.getCurrency() + " za m2");
@@ -175,6 +174,24 @@ public class CalculatePrice {
         System.out.println("Obliczona cena za m2 to:\t\t\t\t\t" + df.format(pricePerM2.setScale(2, RoundingMode.HALF_UP).divide(exchangeRate, BigDecimal.ROUND_UP)) + " " + properties.getCurrency());
 
         return pricePerM2;
+    }
+
+    public BigDecimal getMaxPriceInList(List<Transaction> transactions) {
+        return BigDecimal.valueOf(transactions.stream()
+                    .mapToDouble(transaction -> transaction.getPricePerM2().doubleValue())
+                    .max().orElse((double) 0));
+    }
+
+    public BigDecimal getMinimumPriceInList(List<Transaction> transactions) {
+        return BigDecimal.valueOf(transactions.stream()
+                .mapToDouble(transaction -> transaction.getPricePerM2().doubleValue())
+                .min().orElse((double) 0));
+    }
+
+    public BigDecimal getAvaragePriceInList(List<Transaction> transactions) {
+        return BigDecimal.valueOf(transactions.stream()
+                    .mapToDouble(transaction -> transaction.getPricePerM2().doubleValue())
+                    .average().orElse((double) 0));
     }
 
     private boolean isBestLevel(Transaction transToCheck) {

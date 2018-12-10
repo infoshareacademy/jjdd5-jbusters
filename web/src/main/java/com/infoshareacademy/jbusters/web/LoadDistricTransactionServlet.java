@@ -47,12 +47,9 @@ public class LoadDistricTransactionServlet extends HttpServlet {
 
         try {
             template.process(model, out);
-            LOG.info("Loaded district list", districtsList.size());
+            LOG.info("Loaded district list of size {}", districtsList.size());
         } catch (TemplateException e) {
-            e.printStackTrace();
-            LOG.error("Unable to load district list", districtsList.size());
+            LOG.error("Failed to load district list. Size of list: {}", districtsList.size());
         }
-
-
     }
 }
