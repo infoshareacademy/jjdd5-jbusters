@@ -6,7 +6,7 @@
             <form method="get" action="valuation">
                 <div class="form-group">
                     <label for="Select1">Wybierz rodzaj rynku</label>
-                    <select name="market-type" class="form-control" id="Select1">
+                    <select name="market-type" class="form-control" id="Select1" required>
                         <option></option>
                         <option>RYNEK WTÓRNY</option>
                         <option>RYNEK PIERWOTNY</option>
@@ -15,17 +15,17 @@
 
                 <div class="form-group">
                     <label for="Select2">Wpisz wielkość mieszkania w m2</label>
-                    <input name="flat-area" type="text" class="form-control" id="Select2">
+                    <input name="flat-area" type="text" class="form-control" id="Select2" required pattern="^[1-9][0-9]?[0-9]?$" title="błąd">
                 </div>
 
                 <div class="form-group">
                     <label for="Select3">Wpisz numer pietra</label>
-                    <input name="level" type="text" class="form-control" id="Select3">
+                    <input name="level" type="text" class="form-control" id="Select3" required pattern="^[0-1]?[0-9]?[0-9]?$" title="blad">
                 </div>
 
                 <div class="form-group">
                     <label for="Select4">Czy posiadasz miejsce parkingowe ?</label>
-                    <select name="parking-spot" class="form-control" id="Select4">
+                    <select name="parking-spot" class="form-control" id="Select4" required>
                         <option></option>
                         <option>BRAK MP</option>
                         <option>MIEJSCE NAZIEMNE</option>
@@ -36,7 +36,7 @@
 
                 <div class="form-group">
                     <label for="Select5">Wybierz poziom wykończenia twojego mieszkania</label>
-                    <select name="standard-level" class="form-control" id="Select5">
+                    <select name="standard-level" class="form-control" id="Select5" required>
                         <option></option>
                         <option>WYSOKI</option>
                         <option>BARDZO DOBRY</option>
@@ -52,7 +52,7 @@
                     <p class="small">1 - przed rokiem 1970</p>
                     <p class="small">2 - między rokiem 1970 a 1990</p>
                     <p class="small">3 - po roku 1990</p>
-                    <select name="construction" class="form-control" id="Select6">
+                    <select name="construction" class="form-control" id="Select6" required>
                         <option></option>
                         <option>1</option>
                         <option>2</option>
