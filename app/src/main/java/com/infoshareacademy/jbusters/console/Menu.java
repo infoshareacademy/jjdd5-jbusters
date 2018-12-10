@@ -126,7 +126,7 @@ public class Menu {
             } else {
                 saveTransaction(newTransaction, pathToFile, toUserFile);
             }
-        } catch (NullPointerException | IOException e) {
+        } catch (Exception e) {
             ConsoleViewer.clearScreen();
             System.out.println(":: Błąd! Twoja transakcja jest pusta. Najpierw wprowadź transakcję by móc ją zapisać ::\n");
         }
@@ -203,17 +203,6 @@ public class Menu {
         } finally {
             out.close();
         }
-
-
-//        PrintWriter fileWriter = new PrintWriter(new FileOutputStream(
-//                new File(String.valueOf(pathToFile)),
-//                true));
-//        if (!transactionName.equals("brak")) {
-//            fileWriter.append(transactionString + "," + transactionName + "\n");
-//        } else {
-//            fileWriter.append(transactionString + "\n");
-//        }
-//        fileWriter.close();
 
         ConsoleViewer.clearScreen();
         System.out.println(":: Twoja transakcja została zapisana do pliku ::\n");

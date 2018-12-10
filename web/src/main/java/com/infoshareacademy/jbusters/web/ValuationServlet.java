@@ -57,20 +57,19 @@ public class ValuationServlet extends HttpServlet {
         newTransaction.setConstructionYearCategory(Integer.valueOf(req.getParameter("construction")));
         newTransaction.setPrice(BigDecimal.valueOf(0));
         newTransaction.setPricePerM2(BigDecimal.valueOf(0));
-        newTransaction.setTransactionName("NOWE");
-        newTransaction.setStreet("Kartuska");
-        newTransaction.setConstructionYear("2010");
-
 
         List<Transaction> filteredList = filterTransactions.theGreatFatFilter(newTransaction);
-        CalculatePrice calc = new CalculatePrice(newTransaction, filteredList);
+        BigDecimal flatPrice = BigDecimal.valueOf(0);
         PrintWriter out = resp.getWriter();
-
-        BigDecimal flatPrice = calc.calculatePrice();
-
         Template template = templateProvider.getTemplate(
                 getServletContext(),
                 TEMPLATE_NAME);
+
+        if (filteredList.size() >= 11) {
+            CalculatePrice calc = new CalculatePrice(newTransaction, filteredList);
+
+            flatPrice = calc.calculatePrice();
+        }
 
         Map<String, Object> model = new HashMap<>();
         model.put("cena", flatPrice);
@@ -84,12 +83,16 @@ public class ValuationServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        newTransaction.setTransactionName(("NOWA"));
+        newTransaction.setStreet("Kartuska");
+        newTransaction.setConstructionYear("2010");
 
+        resp.addHeader("Content-Type", "text/html; charset=utf-8");
         PrintWriter out = resp.getWriter();
         Menu menu = new Menu();
         final Path path = Paths.get(System.getProperty("jboss.home.dir") + "/upload/flats.txt");
 
-        menu.saveTransaction(newTransaction, path, "yes" );
+        menu.saveTransaction(newTransaction, path, "yes");
 
         Template template = templateProvider.getTemplate(
                 getServletContext(),
@@ -102,8 +105,10 @@ public class ValuationServlet extends HttpServlet {
 
         try {
             template.process(model, out);
+            LOG.info("Saved user transaction to file", path);
         } catch (TemplateException e) {
             e.printStackTrace();
+            LOG.error("Failed to save user file to", path);
         }
     }
 }
