@@ -31,7 +31,7 @@ import java.util.Map;
 public class ValuationServlet extends HttpServlet {
 
     private static final Logger LOG = LoggerFactory.getLogger(ValuationServlet.class);
-    private static final String TEMPLATE_NAME = "valuation";
+    private static String TEMPLATE_NAME = "valuation";
 
     private Transaction newTransaction = new Transaction();
 
@@ -61,7 +61,8 @@ public class ValuationServlet extends HttpServlet {
         List<Transaction> filteredList = filterTransactions.theGreatFatFilter(newTransaction);
         BigDecimal flatPrice = BigDecimal.valueOf(0);
         PrintWriter out = resp.getWriter();
-        Template template = templateProvider.getTemplate(
+        Template template;
+        template = templateProvider.getTemplate(
                 getServletContext(),
                 TEMPLATE_NAME);
 
@@ -69,7 +70,13 @@ public class ValuationServlet extends HttpServlet {
             CalculatePrice calc = new CalculatePrice(newTransaction, filteredList);
 
             flatPrice = calc.calculatePrice();
+
+        }else{
+            template = templateProvider.getTemplate(
+                    getServletContext(),
+                    "no-valuation");
         }
+
 
         Map<String, Object> model = new HashMap<>();
         model.put("cena", flatPrice);
