@@ -20,6 +20,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,7 +69,12 @@ public class UsersTransactionsServlet extends HttpServlet {
 
             Path path2 = Paths.get(System.getProperty("jboss.home.dir") + "/upload/" + fileName);
 
-            List<Transaction> usersTransactions = dataLoader.createTransactionList(Files.readAllLines(path2), "yes");
+            List<Transaction> usersTransactions = new ArrayList<>();
+            try {
+                usersTransactions = dataLoader.createTransactionList(Files.readAllLines(path2), true);
+            } catch (Exception e) {
+                LOG.error("Błąd ładowania pliku {}", e.getMessage());
+            }
 
             Template template = templateProvider.getTemplate(
                     getServletContext(),

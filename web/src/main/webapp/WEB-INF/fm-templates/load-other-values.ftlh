@@ -15,12 +15,12 @@
 
                 <div class="form-group">
                     <label for="Select2">Wpisz wielkość mieszkania w m2</label>
-                    <input name="flat-area" type="text" class="form-control" id="Select2" required pattern="^[1-9][0-9]?[0-9]?$" title="błąd">
+                    <input name="flat-area" type="text" class="form-control" id="Select2" required pattern="^[1-9][0-9]?[0-9]?$" title="Podaj wartość od 1 do 999">
                 </div>
 
                 <div class="form-group">
                     <label for="Select3">Wpisz numer pietra</label>
-                    <input name="level" type="text" class="form-control" id="Select3" required pattern="^[0-1]?[0-9]?[0-9]?$" title="blad">
+                    <input name="level" type="text" class="form-control" id="Select3" required pattern="^[0-1]?[0-9]?[0-9]?$" title="Podaj wartość od 0 do 199">
                 </div>
 
                 <div class="form-group">

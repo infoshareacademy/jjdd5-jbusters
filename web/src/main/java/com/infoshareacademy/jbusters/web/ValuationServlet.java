@@ -31,7 +31,7 @@ import java.util.Map;
 public class ValuationServlet extends HttpServlet {
 
     private static final Logger LOG = LoggerFactory.getLogger(ValuationServlet.class);
-    private static final String TEMPLATE_NAME = "valuation";
+    private static String TEMPLATE_NAME = "valuation";
 
     private Transaction newTransaction = new Transaction();
 
@@ -61,7 +61,8 @@ public class ValuationServlet extends HttpServlet {
         List<Transaction> filteredList = filterTransactions.theGreatFatFilter(newTransaction);
         BigDecimal flatPrice = BigDecimal.valueOf(0);
         PrintWriter out = resp.getWriter();
-        Template template = templateProvider.getTemplate(
+        Template template;
+        template = templateProvider.getTemplate(
                 getServletContext(),
                 TEMPLATE_NAME);
 
@@ -81,7 +82,13 @@ public class ValuationServlet extends HttpServlet {
             model.put("maxPrice", maxPriceInList);
 
             flatPrice = calc.calculatePrice();
+
+        }else{
+            template = templateProvider.getTemplate(
+                    getServletContext(),
+                    "no-valuation");
         }
+
 
         model.put("cena", flatPrice);
 
@@ -103,7 +110,7 @@ public class ValuationServlet extends HttpServlet {
         Menu menu = new Menu();
         final Path path = Paths.get(System.getProperty("jboss.home.dir") + "/upload/flats.txt");
 
-        menu.saveTransaction(newTransaction, path, "yes");
+        menu.saveTransaction(newTransaction, path, true);
 
         Template template = templateProvider.getTemplate(
                 getServletContext(),

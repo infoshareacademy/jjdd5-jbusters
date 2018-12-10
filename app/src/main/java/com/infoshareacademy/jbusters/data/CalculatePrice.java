@@ -91,9 +91,9 @@ public class CalculatePrice {
     private BigDecimal trendPerDay(List<Transaction> listToCalculateTrend, int first, int last) {
         long duration = DAYS.between(listToCalculateTrend.get(first).getTransactionDate(), listToCalculateTrend.get(last).getTransactionDate());
         if (duration < 1) {
-            duration= 1;
+            duration = 1;
         }
-        
+
         System.out.println("Między transakcjami, użytymi do obliczenia trendu upłynęło:\t" + duration + " dni");
         BigDecimal priceOfNewest = listToCalculateTrend.get(last).getPricePerM2();
         BigDecimal priceOfOldest = listToCalculateTrend.get(first).getPricePerM2();
@@ -178,8 +178,8 @@ public class CalculatePrice {
 
     public BigDecimal getMaxPriceInList(List<Transaction> transactions) {
         return BigDecimal.valueOf(transactions.stream()
-                    .mapToDouble(transaction -> transaction.getPricePerM2().doubleValue())
-                    .max().orElse((double) 0));
+                .mapToDouble(transaction -> transaction.getPricePerM2().doubleValue())
+                .max().orElse((double) 0));
     }
 
     public BigDecimal getMinimumPriceInList(List<Transaction> transactions) {
@@ -190,8 +190,8 @@ public class CalculatePrice {
 
     public BigDecimal getAvaragePriceInList(List<Transaction> transactions) {
         return BigDecimal.valueOf(transactions.stream()
-                    .mapToDouble(transaction -> transaction.getPricePerM2().doubleValue())
-                    .average().orElse((double) 0));
+                .mapToDouble(transaction -> transaction.getPricePerM2().doubleValue())
+                .average().orElse((double) 0));
     }
 
     private boolean isBestLevel(Transaction transToCheck) {
