@@ -3,9 +3,13 @@
 <div class="container">
         <div class="jumbotron jumbotron-opacity">
             <h1 class="display-4">Wartość twojego mieszkania to:</h1>
-            <h1 id="price" class="display-4">${cena}zł </h1><h1>za m2</h1>
+            <h1 id="price" class="display-4">${cena}zł </h1><h1>za m<sup>2</sup></h1>
             <hr class="my-4">
-            <a class="btn btn-primary btn-lg btn-dark" href="/valuation" role="button">Zapisz mieszkanie</a>
+
+    <form method="POST" action="/valuation">
+        <input class="btn btn-primary" type="submit" value="Zapisz mieszkanie" name="upload" id="upload"/>
+    </form>
+
         </div>
     </div>
 

@@ -53,7 +53,7 @@ public class DataLoader {
             newRowOfTransactionList.setConstructionYear(listTransaction.get(INDEX_CONSTRUCTION_YEAR));
 
             // convert String to LocalData
-            String transactionDateString = listTransaction.get(INDEX_TRANSACTION_DATE);
+            String transactionDateString = listTransaction.get(INDEX_TRANSACTION_DATE).replaceAll("\uFEFF", "");
             DateTimeFormatter transactionDateFormat = DateTimeFormatter.ofPattern("yyyy MM dd");
             LocalDate transactionDate = LocalDate.parse(transactionDateString, transactionDateFormat);
             newRowOfTransactionList.setTransactionDate(transactionDate);

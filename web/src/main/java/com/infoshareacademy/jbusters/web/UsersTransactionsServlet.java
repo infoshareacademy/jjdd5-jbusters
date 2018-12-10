@@ -45,6 +45,8 @@ public class UsersTransactionsServlet extends HttpServlet {
         final String path = System.getProperty("jboss.home.dir") + "/upload";
         final Part filePart = request.getPart("file");
         final String fileName = getFileName(filePart);
+        LOG.info("Uploaded file with name: " + fileName);
+        LOG.info("Directory to " + fileName + " is " + path);
 
         DataLoader dataLoader = new DataLoader();
 
