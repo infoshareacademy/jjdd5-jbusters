@@ -20,6 +20,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,8 @@ public class UsersTransactionsServlet extends HttpServlet {
         final String path = System.getProperty("jboss.home.dir") + "/upload";
         final Part filePart = request.getPart("file");
         final String fileName = getFileName(filePart);
+        LOG.info("Uploaded file with name: " + fileName);
+        LOG.info("Directory to " + fileName + " is " + path);
 
         DataLoader dataLoader = new DataLoader();
 
@@ -66,7 +69,12 @@ public class UsersTransactionsServlet extends HttpServlet {
 
             Path path2 = Paths.get(System.getProperty("jboss.home.dir") + "/upload/" + fileName);
 
-            List<Transaction> usersTransactions = dataLoader.createTransactionList(Files.readAllLines(path2), "yes");
+            List<Transaction> usersTransactions = new ArrayList<>();
+            try {
+                usersTransactions = dataLoader.createTransactionList(Files.readAllLines(path2), true);
+            } catch (Exception e) {
+                LOG.error("File loading error {}", e.getMessage());
+            }
 
             Template template = templateProvider.getTemplate(
                     getServletContext(),
@@ -77,8 +85,9 @@ public class UsersTransactionsServlet extends HttpServlet {
 
             try {
                 template.process(model, writer);
+                LOG.info("Loaded users flats. Number of flats: []", usersTransactions.size());
             } catch (TemplateException e) {
-                e.printStackTrace();
+                LOG.error("Failed to load users flats. Number of flats: {}", usersTransactions.size());
             }
 
         } catch (FileNotFoundException fne) {
@@ -86,6 +95,7 @@ public class UsersTransactionsServlet extends HttpServlet {
                     + "trying to upload a file to a protected or nonexistent "
                     + "location.");
             writer.println("<br/> ERROR: " + fne.getMessage());
+            LOG.error("Error with loading file. {}", fne.getMessage());
         } finally {
             if (out != null) {
                 out.close();

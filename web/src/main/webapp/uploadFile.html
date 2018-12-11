@@ -1,9 +1,11 @@
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>JBusters</title>
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+
 </head>
 <body>
 <div class="wrap">
@@ -17,7 +19,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
-                        <li class="nav-item">
+                        <li class="nav-item active">
                             <a class="nav-link" href="/index.html">Home <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
@@ -34,3 +36,23 @@
             </nav>
         </div>
     </header>
+
+    <div class="container">
+        <div class="jumbotron jumbotron-opacity">
+            <h1 class="display-10">Wybierz plik, z którego chcesz załadować swoją listę mieszkań do wyceny. Plik powinien być w formacie CSV.</h1>
+            <hr class="my-4">
+            <form method="POST" action="/users-transactions" enctype="multipart/form-data">
+                <input class="btn btn-primary" type="file" name="file" id="file"/> <br/>
+                </br>
+                <input class="btn btn-primary" type="submit" value="Załaduj" name="upload" id="upload"/>
+            </form>
+        </div>
+    </div>
+
+</div>
+<footer>&copy; 2018 JBusters</footer>
+
+<script src="js/jquery-3.3.1.slim.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+</body>
+</html>
