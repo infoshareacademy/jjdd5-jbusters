@@ -59,6 +59,7 @@ public class ValuationServlet extends HttpServlet {
         newTransaction.setPricePerM2(BigDecimal.valueOf(0));
 
 
+
         List<Transaction> filteredList = filterTransactions.theGreatFatFilter(newTransaction);
         BigDecimal flatPrice = BigDecimal.valueOf(0);
         PrintWriter out = resp.getWriter();
@@ -117,6 +118,17 @@ public class ValuationServlet extends HttpServlet {
         newTransaction.setTransactionName(req.getParameter("description"));
         newTransaction.setStreet(req.getParameter("street"));
         newTransaction.setConstructionYear(req.getParameter("construction-year"));
+//        newTransaction.setImportant(req.getParameter("important"));
+        String important = req.getParameter("important");
+
+        if("nie".equals(important)){
+            newTransaction.setImportant(false);
+        }
+        if ("tak".equals(important)){
+            newTransaction.setImportant(true);
+        }
+
+
 
         Menu menu = new Menu();
         final Path path = Paths.get(System.getProperty("jboss.home.dir") + "/upload/flats.txt");

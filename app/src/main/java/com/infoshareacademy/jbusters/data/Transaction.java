@@ -27,6 +27,7 @@ public class Transaction {
     private String constructionYear;
     private int constructionYearCategory;
     private String transactionName;
+    private Boolean important = false;
 
 
     public Transaction() {
@@ -215,6 +216,14 @@ public class Transaction {
 
     public void setConstructionYearCategory(int constructionYearCategory) {
         this.constructionYearCategory = constructionYearCategory;
+    }
+
+    public Boolean getImportant() {
+        return important;
+    }
+
+    public void setImportant(Boolean important) {
+        this.important = important;
     }
 
     public void setTransactionName(String transactionName) {

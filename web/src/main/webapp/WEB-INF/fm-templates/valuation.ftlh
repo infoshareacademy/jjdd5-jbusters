@@ -81,22 +81,33 @@
                     <div class="jumbotron jumbotron-opacity-1">
                     <form method="POST" action="/valuation">
                         <div class="form-group">
-                            <label for="Select9">Ustaw opis mieszkania</label>
-                            <input name="description" type="text" class="form-control" id="Select9" required>
+                            <label for="Select10">Ustaw opis mieszkania</label>
+                            <input name="description" type="text" class="form-control" id="Select10" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="Select9">Podaj nazwę ulicy</label>
-                            <input name="street" type="text" class="form-control" id="Select9" required>
+                            <label for="Select11">Podaj nazwę ulicy</label>
+                            <input name="street" type="text" class="form-control" id="Select11" required>
                         </div>
 
                         <div class="form-group">
-                            <label for="Select9">Podaj rok budowy</label>
-                            <input name="construction-year" type="text" class="form-control" id="Select9" required >
+                            <label for="Select12">Podaj rok budowy</label>
+                            <input name="construction-year" type="text" class="form-control" id="Select12" required >
                         </div>
 
+                        <div class="form-group">
+                            <label for="Select13">Chcesz wyróżnić mieszkanie ?</label>
+                            <select name="important" class="form-control" id="Select13" required>
+                                <option>nie</option>
+                                <option>tak</option>
+                            </select>
+                        </div>
                         <input class="btn btn-primary" type="submit" value="Zapisz w pliku" name="upload" id="upload"/>
+
                     </form>
+                        </div>
+
+
                     </div>
                 </div>
             </div>
