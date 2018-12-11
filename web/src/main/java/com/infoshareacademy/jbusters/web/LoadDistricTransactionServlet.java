@@ -24,7 +24,7 @@ import java.util.Map;
 public class LoadDistricTransactionServlet extends HttpServlet {
 
     private static final String TEMPLATE_NAME = "load-district";
-    private static final Logger LOG = LoggerFactory.getLogger(ValuationServlet.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LoadDistricTransactionServlet.class);
 
 
     @Inject
@@ -49,7 +49,7 @@ public class LoadDistricTransactionServlet extends HttpServlet {
             template.process(model, out);
             LOG.info("Loaded district list of size {}", districtsList.size());
         } catch (TemplateException e) {
-            LOG.error("Failed to load district list. Size of list: {}", districtsList.size());
+            LOG.error("Failed to load district list. Size of list: {}" + districtsList.size());
         }
     }
 }

@@ -104,7 +104,7 @@ public class ValuationServlet extends HttpServlet {
         try {
             template.process(model, out);
         } catch (TemplateException e) {
-            e.printStackTrace();
+            LOG.error("Failed to Valuation transaction district list.");
         }
     }
 
