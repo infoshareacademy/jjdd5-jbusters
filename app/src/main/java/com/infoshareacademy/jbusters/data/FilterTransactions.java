@@ -194,8 +194,11 @@ public class FilterTransactions {
         String checkedTransactionDistrict = districtStringParser(checkedTransaction.getDistrict());
         String userTransactionDistrict = districtStringParser(userTransaction.getDistrict());
 
-        if (districtProperties.containsKey(userTransactionDistrict)) {
-            return (districtProperties.get(checkedTransactionDistrict).equals(districtProperties.get(userTransactionDistrict)));
+        DistrWagesHandler districtPropnew = new DistrWagesHandler(System.getProperty("jboss.home.dir") + "/data/districts.properties");
+
+
+        if(districtPropnew.getProperties().containsKey(userTransactionDistrict)){
+            return (districtPropnew.getProperties().getProperty(checkedTransactionDistrict).equals(districtPropnew.getProperties().getProperty(userTransactionDistrict)));
         }
 
         return false;

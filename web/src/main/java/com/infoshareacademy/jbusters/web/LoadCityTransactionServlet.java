@@ -7,6 +7,8 @@ import com.infoshareacademy.jbusters.data.Transaction;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -24,7 +26,7 @@ import java.util.Map;
 public class LoadCityTransactionServlet extends HttpServlet {
 
     private static final String TEMPLATE_NAME = "load-city";
-
+    private static final Logger LOG = LoggerFactory.getLogger(LoadCityTransactionServlet.class);
 
     @Inject
     private TemplateProvider templateProvider;
@@ -44,8 +46,9 @@ public class LoadCityTransactionServlet extends HttpServlet {
 
         try {
             template.process(model, out);
+            LOG.info("Loaded city list of size {}", cities.size());
         } catch (TemplateException e) {
-            e.printStackTrace();
+            LOG.error("Failed to load city list. Size of list: {}", cities.size());
         }
     }
 }

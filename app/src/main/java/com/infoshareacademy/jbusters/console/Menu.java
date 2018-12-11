@@ -25,7 +25,7 @@ public class Menu {
 
     private DataLoader dataLoader;
 
-    private Path pathToUserFile = Paths.get("data", "test.txt");
+    private Path pathisUserFile = Paths.get("data", "test.txt");
     private Path pathToFileTransactionCSV = Paths.get("data", "transaction.csv");
     private PropLoader properties = new PropLoader("app/app.properties");
     private DecimalFormat df = new DecimalFormat("###,###,###.##");
@@ -75,7 +75,7 @@ public class Menu {
                 break;
             }
             case 3: {
-                saveSession(newTransactionCreator.getNewTransaction(), pathToUserFile, "yes");
+                saveSession(newTransactionCreator.getNewTransaction(), pathisUserFile, true);
                 break;
             }
             case 4: {
@@ -114,19 +114,19 @@ public class Menu {
         }
     }
 
-    private void saveSession(Transaction newTransaction, Path pathToFile, String toUserFile) throws FileNotFoundException {
+    private void saveSession(Transaction newTransaction, Path pathToFile, boolean isUserFile) throws FileNotFoundException {
         try {
             if (Files.exists(pathToFile)) {
-                if (checkIfFlatExist(dataLoader.createFlatsListFromFile(pathToFile, toUserFile))) {
+                if (checkIfFlatExist(dataLoader.createFlatsListFromFile(pathToFile, isUserFile))) {
                     ConsoleViewer.clearScreen();
                     System.out.println(":: Dodanie transakcji niemożliwe, baza już zawiera identyczny wpis ::\n");
                 } else {
-                    saveTransaction(newTransaction, pathToFile, toUserFile);
+                    saveTransaction(newTransaction, pathToFile, isUserFile);
                 }
             } else {
-                saveTransaction(newTransaction, pathToFile, toUserFile);
+                saveTransaction(newTransaction, pathToFile, isUserFile);
             }
-        } catch (java.lang.NullPointerException e) {
+        } catch (Exception e) {
             ConsoleViewer.clearScreen();
             System.out.println(":: Błąd! Twoja transakcja jest pusta. Najpierw wprowadź transakcję by móc ją zapisać ::\n");
         }
@@ -134,11 +134,11 @@ public class Menu {
 
     private void loadTransaction() {
 
-        if (!dataLoader.createFlatsListFromFile(pathToUserFile, "yes").isEmpty()) {
+        if (!dataLoader.createFlatsListFromFile(pathisUserFile, true).isEmpty()) {
 
-            List<Transaction> userList = dataLoader.createFlatsListFromFile(pathToUserFile, "yes");
+            List<Transaction> userList = dataLoader.createFlatsListFromFile(pathisUserFile, true);
 
-            if (!dataLoader.createFlatsListFromFile(pathToUserFile, "yes").isEmpty()) {
+            if (!dataLoader.createFlatsListFromFile(pathisUserFile, true).isEmpty()) {
                 for (int i = 0; i < userList.size(); i++) {
                     System.out.println("\n:: MIESZKANIE NR " + (i + 1) + " " +
                             userList.get(i).getTransactionName() +
@@ -174,9 +174,9 @@ public class Menu {
                 userList.get(i).getTypeOfMarket().equalsIgnoreCase(userTransaction.getTypeOfMarket()));
     }
 
-    private void saveTransaction(Transaction newTransaction, Path pathToFile, String toUserFile) throws FileNotFoundException {
+    public void saveTransaction(Transaction newTransaction, Path pathToFile, boolean isUserFile) throws IOException {
         String transactionName = "brak";
-        if (toUserFile.equals("yes")) {
+        if (isUserFile) {
             transactionName = newTransaction.getTransactionName();
         }
         String transactionString = Stream.of(
@@ -195,15 +195,14 @@ public class Menu {
                 String.valueOf(newTransaction.getConstructionYearCategory()))
                 .collect(Collectors.joining(","));
 
-        PrintWriter fileWriter = new PrintWriter(new FileOutputStream(
-                new File(String.valueOf(pathToFile)),
-                true));
-        if (!transactionName.equals("brak")) {
-            fileWriter.append(transactionString + "," + transactionName + "\n");
-        } else {
-            fileWriter.append(transactionString + "\n");
+
+        Writer out = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream(String.valueOf(pathToFile), true), "UTF-8"));
+        try {
+            out.append(transactionString + "," + transactionName + "\n");
+        } finally {
+            out.close();
         }
-        fileWriter.close();
 
         ConsoleViewer.clearScreen();
         System.out.println(":: Twoja transakcja została zapisana do pliku ::\n");
@@ -221,7 +220,7 @@ public class Menu {
             newTransactionCreator.loadPrice();
             newTransactionCreator.calculatePPm2();
             newTransactionCreator.loadConstructionYear();
-            saveSession(newTransaction, pathToFileTransactionCSV, "no");
+            saveSession(newTransaction, pathToFileTransactionCSV, false);
         }
     }
 
