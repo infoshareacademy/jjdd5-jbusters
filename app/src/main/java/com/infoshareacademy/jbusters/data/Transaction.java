@@ -4,13 +4,19 @@ import com.infoshareacademy.jbusters.console.ConsoleReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 
 public class Transaction {
 
-    PropLoader properties = new PropLoader(System.getProperty("jboss.home.dir") + "/data/app.properties");
+    private static final URL APP_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("app.properties");
+    private static final Logger LOGGER = LoggerFactory.getLogger(DataLoader.class);
+
+    // PropLoader properties = new PropLoader(System.getProperty("jboss.home.dir") + "/data/app.properties");
 
     private LocalDate transactionDate;
     private String city;
@@ -27,12 +33,21 @@ public class Transaction {
     private String constructionYear;
     private int constructionYearCategory;
     private String transactionName;
-
+    private PropLoader properties;
 
     public Transaction() {
+        properties = new PropLoader();
+        //TODO zasanowić się jak obsłużyćsytuację, gdy nie ma pliku app.properties. -> np. zrobic return pustej listy, czy użyć jakiś domyślnych wartości?
+        try {
+            InputStream is =APP_PROPERTIES_FILE.openStream();
+            properties = new PropLoader(APP_PROPERTIES_FILE.openStream());
+        } catch (IOException e) {
+            LOGGER.error("Missing properties file in path {}", APP_PROPERTIES_FILE.toString());
+        }
     }
 
     public Transaction(Transaction transaction) {
+        super();
         this.transactionDate = transaction.transactionDate;
         this.city = transaction.city;
         this.district = transaction.district;

@@ -28,21 +28,16 @@ public class Data {
 
     public List<Transaction> fileToData() {
 //        Path pathToFileTransactionCSV = Paths.get("app", "data", "transaction.csv");
-//        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("transaction.csv");//"app/src/main/resources/transaction.csv");
-
-//        File file = new File(Thread.currentThread().getContextClassLoader().getResource("transaction.csv").getFile());//"app/src/main/resources/transaction.csv");
-
-        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("transaction.csv");
-//        List<String> lorem = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8)).lines().collect(Collectors.toList());
-
 //        Path pathToFileTransactionCSV = file.toPath();
 //        Path pathToFileTransactionCSV = Paths.get("src/main/resources/transaction.csv");
 
         List<String> listFileTransactionCSV = null;
+
+        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("transaction.csv");
         listFileTransactionCSV = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8)).lines().collect(Collectors.toList());
         listFileTransactionCSV.remove(0);
         DataLoader data = new DataLoader();
-//            LOGGER.info("Load file CSV. Path: {}", pathToFileTransactionCSV);
+        LOGGER.info("Load file CSV. Number of loaded transactions: {}", listFileTransactionCSV.size());
         return data.createTransactionList(listFileTransactionCSV, "no");
     }
 
