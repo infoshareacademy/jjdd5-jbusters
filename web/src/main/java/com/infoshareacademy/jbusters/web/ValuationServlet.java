@@ -104,7 +104,7 @@ public class ValuationServlet extends HttpServlet {
         try {
             template.process(model, out);
         } catch (TemplateException e) {
-            LOG.error("Failed to send model {}.", e);
+            LOG.error("Failed to Valuation transaction district list.");
         }
     }
 
@@ -125,7 +125,7 @@ public class ValuationServlet extends HttpServlet {
 
         Template template = templateProvider.getTemplate(
                 getServletContext(),
-                TEMPLATE_NAME);
+                "save-info");
 
         String plik = "Zapisane";
 

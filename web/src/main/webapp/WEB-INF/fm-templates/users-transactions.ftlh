@@ -15,6 +15,8 @@
     });
 </script>
 
+    Total flats: ${flats?size}
+
 <table id="flats" class="display nowrap" style="width: 100%">
     <thead>
     <th></th>
