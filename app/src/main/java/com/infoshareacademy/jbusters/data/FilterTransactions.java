@@ -15,8 +15,9 @@ import java.util.stream.Collectors;
 public class FilterTransactions {
 
     private PropLoader properties = new PropLoader(System.getProperty("jboss.home.dir") + "/data/app.properties");
+    private DistrWagesHandler distrWagesHandler = new DistrWagesHandler(System.getProperty("jboss.home.dir") + "/data/app.properties");
 
-    private Map<String, Integer> districtProperties;
+    //private Properties districtProperties;
     private List<Transaction> transactionsBase;
     private BigDecimal areaDiff = properties.getAreaDiff();
     private BigDecimal areaDiffExpanded = properties.getAreaDiffExpanded();
@@ -27,7 +28,6 @@ public class FilterTransactions {
     private Data data;
 
     public FilterTransactions() {
-        districtProperties = new DistrWagesHandler(System.getProperty("jboss.home.dir") + "/data/districts.properties").getDistrictWages();
     }
 
     @PostConstruct
@@ -38,8 +38,6 @@ public class FilterTransactions {
     public void setData(Data data) {
         this.data = data;
     }
-// metoda zwracajaca liste tranzakcji, ktora jest wynikiem wielokrotnego przefiltrowania gwnej bazy tranzakcji
-    //kolejnosc filtrow:  data tranzakcji/miasto/dzielnica/rynek/kategoria budowy/powierzchnia mieszkania
 
     public List<Transaction> theGreatFatFilter(Transaction userTransaction) {
         List<Transaction> basicFilter = basicFilter(userTransaction);
@@ -54,7 +52,7 @@ public class FilterTransactions {
 
         ConsoleViewer.clearScreen();
         System.out.println(":: Wycena niemożliwa, baza zawiera zbyt małą ilość pasujących transakcji ::\n");
-        return new ArrayList<Transaction>();
+        return new ArrayList<>();
     }
 
     public List<Transaction> basicFilter(Transaction userTransaction) {
@@ -133,7 +131,7 @@ public class FilterTransactions {
     private List<Transaction> multiDistrictFilter(List<Transaction> transactionsBase, Transaction userTransaction) {
         List<Transaction> lista = transactionsBase.stream()
 
-                .filter(transaction -> districtWageComparator(transaction, userTransaction))
+                .filter(transaction -> distrWagesHandler.districtWageComparator(transaction, userTransaction))
                 .collect(Collectors.toList());
         return new ArrayList(lista);
     }
@@ -205,26 +203,4 @@ public class FilterTransactions {
         return listToCheck.size() >= minSize;
     }
 
-    private boolean districtWageComparator(Transaction checkedTransaction, Transaction userTransaction) {
-        String checkedTransactionDistrict = districtStringParser(checkedTransaction.getDistrict());
-        String userTransactionDistrict = districtStringParser(userTransaction.getDistrict());
-
-        DistrWagesHandler districtPropnew = new DistrWagesHandler(System.getProperty("jboss.home.dir") + "/data/districts.properties");
-
-        //========================================UWAGA UWAGA UWAGA TUTAJ ZMIANA!!!!====================================================================
-
-        if(districtPropnew.getProperties().containsKey(userTransactionDistrict)){
-            return (districtPropnew.getProperties().getProperty(checkedTransactionDistrict).equals(districtPropnew.getProperties().getProperty(userTransactionDistrict)));
-        }
-
-/*        if (districtProperties.containsKey(userTransactionDistrict)) {
-            return (districtProperties.get(checkedTransactionDistrict).equals(districtProperties.get(userTransactionDistrict)));
-        }*/
-//=======================================================KONIEC ZMIANY========================================================================
-        return false;
-    }
-
-    private String districtStringParser(String districtName) {
-        return districtName.trim().replace(" ", "_").toLowerCase();
-    }
 }

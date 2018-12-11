@@ -20,12 +20,11 @@ public class DistrWagesHandler {
         this.properties = new Properties();
         loadProperties(file);
     }
-//====================================== UWAGA UWAGA UWAGA ZMIANA========================================================
-    public Properties getProperties() {
+
+   public Properties getProperties() {
         return properties;
     }
 
-    //======================================== KONIEC ZMIANY ==============================================================
     private void loadProperties(String file) {
         try {
             Path path = Paths.get(file);
@@ -43,8 +42,26 @@ public class DistrWagesHandler {
         }
     }
 
-    public Map<String, Integer> getDistrictWages() {
+/*    public Map<String, Integer> getDistrictWages() {
         return new HashMap<String, Integer>((Map) properties);
+    }*/
+
+    public boolean districtWageComparator(Transaction checkedTransaction, Transaction userTransaction) {
+        String checkedTransactionDistrict = districtStringParser(checkedTransaction.getDistrict());
+        String userTransactionDistrict = districtStringParser(userTransaction.getDistrict());
+
+        if(properties.containsKey(userTransactionDistrict)){
+            return (isDistrictWageEqual(checkedTransactionDistrict,userTransactionDistrict));
+        }
+
+        return false;
+    }
+
+    private boolean isDistrictWageEqual(String districtChecked, String userDistrict){
+        return properties.getProperty(districtChecked).equals(userDistrict);
+    }
+    private String districtStringParser(String districtName) {
+        return districtName.trim().replace(" ", "_").toLowerCase();
     }
 
 }
