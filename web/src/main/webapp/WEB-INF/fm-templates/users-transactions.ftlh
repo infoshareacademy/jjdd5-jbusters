@@ -4,9 +4,7 @@
     <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script type="text/javascript" charset="utf8"
             src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-<#if error?has_content>
-    <p>${error}</p>
-</#if>
+
 
 <#if flats?has_content>
 <script>
@@ -16,6 +14,8 @@
         });
     });
 </script>
+
+    Total flats: ${flats?size}
 
 <table id="flats" class="display nowrap" style="width: 100%">
     <thead>

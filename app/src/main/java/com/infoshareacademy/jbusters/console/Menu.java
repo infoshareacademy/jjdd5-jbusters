@@ -114,17 +114,17 @@ public class Menu {
         }
     }
 
-    private void saveSession(Transaction newTransaction, Path pathToFile, boolean userFile) throws FileNotFoundException {
+    private void saveSession(Transaction newTransaction, Path pathToFile, boolean isUserFile) throws FileNotFoundException {
         try {
             if (Files.exists(pathToFile)) {
-                if (checkIfFlatExist(dataLoader.createFlatsListFromFile(pathToFile, userFile))) {
+                if (checkIfFlatExist(dataLoader.createFlatsListFromFile(pathToFile, isUserFile))) {
                     ConsoleViewer.clearScreen();
                     System.out.println(":: Dodanie transakcji niemożliwe, baza już zawiera identyczny wpis ::\n");
                 } else {
-                    saveTransaction(newTransaction, pathToFile, userFile);
+                    saveTransaction(newTransaction, pathToFile, isUserFile);
                 }
             } else {
-                saveTransaction(newTransaction, pathToFile, userFile);
+                saveTransaction(newTransaction, pathToFile, isUserFile);
             }
         } catch (Exception e) {
             ConsoleViewer.clearScreen();
@@ -135,21 +135,25 @@ public class Menu {
     private void loadTransaction() {
 
         if (!dataLoader.createFlatsListFromFile(pathToUserFile, true).isEmpty()) {
-
-            List<Transaction> userList = dataLoader.createFlatsListFromFile(pathToUserFile, true);
-
             if (!dataLoader.createFlatsListFromFile(pathToUserFile, true).isEmpty()) {
-                for (int i = 0; i < userList.size(); i++) {
-                    System.out.println("\n:: MIESZKANIE NR " + (i + 1) + " " +
-                            userList.get(i).getTransactionName() +
-                            " ::::::::::::::::::::::::::::\n" + userList.get(i).toStringNoPrice());
+
+                List<Transaction> userList = dataLoader.createFlatsListFromFile(pathToUserFile, true);
+
+                if (!dataLoader.createFlatsListFromFile(pathToUserFile, true).isEmpty()) {
+                    if (!dataLoader.createFlatsListFromFile(pathToUserFile, true).isEmpty()) {
+                        for (int i = 0; i < userList.size(); i++) {
+                            System.out.println("\n:: MIESZKANIE NR " + (i + 1) + " " +
+                                    userList.get(i).getTransactionName() +
+                                    " ::::::::::::::::::::::::::::\n" + userList.get(i).toStringNoPrice());
+                        }
+                        System.out.println("\nPodaj nr mieszkania, które chcesz załadować");
+                        int chosenFlat = consoleReader.readInt(1, userList.size());
+                        ConsoleViewer.clearScreen();
+                        newTransactionCreator.setNewTransaction(userList.get(chosenFlat - 1));
+                        System.out.println(":: Mieskzanie nr " + chosenFlat + " o nazwie " +
+                                newTransactionCreator.getNewTransaction().getTransactionName() + " zostało załadowane ::");
+                    }
                 }
-                System.out.println("\nPodaj nr mieszkania, które chcesz załadować");
-                int chosenFlat = consoleReader.readInt(1, userList.size());
-                ConsoleViewer.clearScreen();
-                newTransactionCreator.setNewTransaction(userList.get(chosenFlat - 1));
-                System.out.println(":: Mieskzanie nr " + chosenFlat + " o nazwie " +
-                        newTransactionCreator.getNewTransaction().getTransactionName() + " zostało załadowane ::");
             }
         }
     }
@@ -174,9 +178,9 @@ public class Menu {
                 userList.get(i).getTypeOfMarket().equalsIgnoreCase(userTransaction.getTypeOfMarket()));
     }
 
-    public void saveTransaction(Transaction newTransaction, Path pathToFile, boolean userFile) throws IOException {
+    public void saveTransaction(Transaction newTransaction, Path pathToFile, boolean isUserFile) throws IOException {
         String transactionName = "brak";
-        if (userFile) {
+        if (isUserFile) {
             transactionName = newTransaction.getTransactionName();
         }
         String transactionString = Stream.of(
@@ -203,7 +207,7 @@ public class Menu {
         } finally {
             out.close();
         }
-
+        
         ConsoleViewer.clearScreen();
         System.out.println(":: Twoja transakcja została zapisana do pliku ::\n");
         System.out.println("Nowy wpis: " + newTransaction.toStringNoPrice());

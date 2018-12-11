@@ -73,7 +73,7 @@ public class UsersTransactionsServlet extends HttpServlet {
             try {
                 usersTransactions = dataLoader.createTransactionList(Files.readAllLines(path2), true);
             } catch (Exception e) {
-                LOG.error("Błąd ładowania pliku {}", e.getMessage());
+                LOG.error("File loading error {}", e.getMessage());
             }
 
             Template template = templateProvider.getTemplate(
@@ -91,9 +91,10 @@ public class UsersTransactionsServlet extends HttpServlet {
             }
 
         } catch (FileNotFoundException fne) {
-            String info = "You either did not specify a file to upload or are trying to upload a file to " +
-                    "a protected or nonexistent location. <br/> ERROR: "+ fne.getMessage();
-            
+            writer.println("You either did not specify a file to upload or are "
+                    + "trying to upload a file to a protected or nonexistent "
+                    + "location.");
+            writer.println("<br/> ERROR: " + fne.getMessage());
             LOG.error("Error with loading file. {}", fne.getMessage());
         } finally {
             if (out != null) {
