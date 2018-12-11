@@ -16,6 +16,10 @@ public class DistrWagesHandler {
         loadProperties(file);
     }
 
+    public Properties getProperties() {
+        return properties;
+    }
+
     private void loadProperties(String file) {
         try {
             this.properties.load(new FileReader(file));

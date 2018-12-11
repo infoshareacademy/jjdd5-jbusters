@@ -91,7 +91,6 @@ public class ValuationServlet extends HttpServlet {
         }
 
 
-        Map<String, Object> model = new HashMap<>();
         model.put("price", flatPrice);
         model.put("city", newTransaction.getCity());
         model.put("district1", newTransaction.getDistrict());
@@ -105,7 +104,7 @@ public class ValuationServlet extends HttpServlet {
         try {
             template.process(model, out);
         } catch (TemplateException e) {
-            e.printStackTrace();
+            LOG.error("Failed to Valuation transaction district list.");
         }
     }
 
