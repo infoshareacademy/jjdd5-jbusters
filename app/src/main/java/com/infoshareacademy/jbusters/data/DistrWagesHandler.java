@@ -20,7 +20,12 @@ public class DistrWagesHandler {
         this.properties = new Properties();
         loadProperties(file);
     }
+//====================================== UWAGA UWAGA UWAGA ZMIANA========================================================
+    public Properties getProperties() {
+        return properties;
+    }
 
+    //======================================== KONIEC ZMIANY ==============================================================
     private void loadProperties(String file) {
         try {
             Path path = Paths.get(file);
