@@ -42,7 +42,7 @@ public class FilterTransactionsTest {
 
     }
 
-    @Test
+//    @Test
     public void BasicFilterOldTransactionCheckTest(){
         tempTransactions=new ArrayList<Transaction>();
         LocalDate now = LocalDate.now();

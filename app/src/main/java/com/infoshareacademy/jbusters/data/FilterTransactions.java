@@ -14,8 +14,14 @@ import java.util.stream.Collectors;
 @ApplicationScoped
 public class FilterTransactions {
 
+/*
     private PropLoader properties = new PropLoader(System.getProperty("jboss.home.dir") + "/data/app.properties");
     private DistrWagesHandler distrWagesHandler = new DistrWagesHandler(System.getProperty("jboss.home.dir") + "/data/app.properties");
+*/
+
+    private PropLoader properties = new PropLoader("app/src/main/resources/app.properties");
+    private DistrWagesHandler distrWagesHandler = new DistrWagesHandler("app/src/main/resources/districts.properties");
+
 
     //private Properties districtProperties;
     private List<Transaction> transactionsBase;

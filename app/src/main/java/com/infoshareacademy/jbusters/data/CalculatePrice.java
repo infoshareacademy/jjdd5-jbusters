@@ -15,7 +15,7 @@ public class CalculatePrice {
 
     private Transaction userTransaction;
     private List<Transaction> filteredList;
-    private PropLoader properties = new PropLoader(System.getProperty("jboss.home.dir") + "/data/app.properties");
+    private PropLoader properties = new PropLoader("app/src/main/resources/app.properties");
     private DecimalFormat pf = new DecimalFormat("##.##");
     private DecimalFormat df = new DecimalFormat("###,###.##");
     private BigDecimal exchangeRate = properties.getExchangeRateBigDecimal();

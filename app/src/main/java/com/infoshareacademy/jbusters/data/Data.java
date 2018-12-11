@@ -7,12 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
-import java.io.IOException;
-import java.math.BigDecimal;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -30,21 +28,22 @@ public class Data {
 
     public List<Transaction> fileToData() {
 //        Path pathToFileTransactionCSV = Paths.get("app", "data", "transaction.csv");
-        Path pathToFileTransactionCSV = Paths.get(System.getProperty("jboss.home.dir") + "/data/transaction.csv");
+//        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("transaction.csv");//"app/src/main/resources/transaction.csv");
+
+//        File file = new File(Thread.currentThread().getContextClassLoader().getResource("transaction.csv").getFile());//"app/src/main/resources/transaction.csv");
+
+        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("transaction.csv");
+//        List<String> lorem = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8)).lines().collect(Collectors.toList());
+
+//        Path pathToFileTransactionCSV = file.toPath();
+//        Path pathToFileTransactionCSV = Paths.get("src/main/resources/transaction.csv");
 
         List<String> listFileTransactionCSV = null;
-        try {
-            listFileTransactionCSV = Files.readAllLines(pathToFileTransactionCSV, StandardCharsets.UTF_8);
-            listFileTransactionCSV.remove(0);
-            DataLoader data = new DataLoader();
-            LOGGER.info("Load file CSV. Path: {}", pathToFileTransactionCSV);
-            return data.createTransactionList(listFileTransactionCSV, "no");
-        } catch (IOException e) {
-            System.out.println("Error while loading data: ");
-            e.printStackTrace();
-            LOGGER.error("Error loading file: {}", pathToFileTransactionCSV);
-        }
-        return null;
+        listFileTransactionCSV = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8)).lines().collect(Collectors.toList());
+        listFileTransactionCSV.remove(0);
+        DataLoader data = new DataLoader();
+//            LOGGER.info("Load file CSV. Path: {}", pathToFileTransactionCSV);
+        return data.createTransactionList(listFileTransactionCSV, "no");
     }
 
     // Metoda do wyciągania z bazy danych listy miast/dzielnic bez duplikatów + w kolejnkości alfabetycznej
