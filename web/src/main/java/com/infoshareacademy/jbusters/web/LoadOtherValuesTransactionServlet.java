@@ -23,7 +23,7 @@ import java.util.Map;
 public class LoadOtherValuesTransactionServlet extends HttpServlet {
 
     private static final String TEMPLATE_NAME = "load-other-values";
-    private static final Logger LOG = LoggerFactory.getLogger(ValuationServlet.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LoadOtherValuesTransactionServlet.class);
 
     @Inject
     private TemplateProvider templateProvider;

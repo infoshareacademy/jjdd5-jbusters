@@ -125,7 +125,7 @@ public class ValuationServlet extends HttpServlet {
 
         Template template = templateProvider.getTemplate(
                 getServletContext(),
-                TEMPLATE_NAME);
+                "save-info");
 
         String plik = "Zapisane";
 

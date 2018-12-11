@@ -26,7 +26,7 @@ import java.util.Map;
 public class LoadCityTransactionServlet extends HttpServlet {
 
     private static final String TEMPLATE_NAME = "load-city";
-    private static final Logger LOG = LoggerFactory.getLogger(ValuationServlet.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LoadCityTransactionServlet.class);
 
     @Inject
     private TemplateProvider templateProvider;
@@ -48,7 +48,6 @@ public class LoadCityTransactionServlet extends HttpServlet {
             template.process(model, out);
             LOG.info("Loaded city list of size {}", cities.size());
         } catch (TemplateException e) {
-            e.printStackTrace();
             LOG.error("Failed to load city list. Size of list: {}", cities.size());
         }
     }

@@ -25,7 +25,7 @@ public class Menu {
 
     private DataLoader dataLoader;
 
-    private Path pathuserFile = Paths.get("data", "test.txt");
+    private Path pathToUserFile = Paths.get("data", "test.txt");
     private Path pathToFileTransactionCSV = Paths.get("data", "transaction.csv");
     private PropLoader properties = new PropLoader("app/app.properties");
     private DecimalFormat df = new DecimalFormat("###,###,###.##");
@@ -75,7 +75,7 @@ public class Menu {
                 break;
             }
             case 3: {
-                saveSession(newTransactionCreator.getNewTransaction(), pathuserFile, true);
+                saveSession(newTransactionCreator.getNewTransaction(), pathToUserFile, true);
                 break;
             }
             case 4: {
@@ -134,11 +134,11 @@ public class Menu {
 
     private void loadTransaction() {
 
-        if (!dataLoader.createFlatsListFromFile(pathuserFile, true).isEmpty()) {
+        if (!dataLoader.createFlatsListFromFile(pathToUserFile, true).isEmpty()) {
 
-            List<Transaction> userList = dataLoader.createFlatsListFromFile(pathuserFile, true);
+            List<Transaction> userList = dataLoader.createFlatsListFromFile(pathToUserFile, true);
 
-            if (!dataLoader.createFlatsListFromFile(pathuserFile, true).isEmpty()) {
+            if (!dataLoader.createFlatsListFromFile(pathToUserFile, true).isEmpty()) {
                 for (int i = 0; i < userList.size(); i++) {
                     System.out.println("\n:: MIESZKANIE NR " + (i + 1) + " " +
                             userList.get(i).getTransactionName() +
