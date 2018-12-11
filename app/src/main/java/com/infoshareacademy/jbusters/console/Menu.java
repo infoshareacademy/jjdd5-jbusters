@@ -134,12 +134,10 @@ public class Menu {
 
     private void loadTransaction() {
 
-        if (!dataLoader.createFlatsListFromFile(pathToUserFile, true).isEmpty()) {
             if (!dataLoader.createFlatsListFromFile(pathToUserFile, true).isEmpty()) {
 
                 List<Transaction> userList = dataLoader.createFlatsListFromFile(pathToUserFile, true);
 
-                if (!dataLoader.createFlatsListFromFile(pathToUserFile, true).isEmpty()) {
                     if (!dataLoader.createFlatsListFromFile(pathToUserFile, true).isEmpty()) {
                         for (int i = 0; i < userList.size(); i++) {
                             System.out.println("\n:: MIESZKANIE NR " + (i + 1) + " " +
@@ -155,8 +153,6 @@ public class Menu {
                     }
                 }
             }
-        }
-    }
 
     private boolean checkIfFlatExist(List<Transaction> userList) {
         for (int i = 0; i < userList.size(); i++) {

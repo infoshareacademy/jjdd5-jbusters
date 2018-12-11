@@ -45,7 +45,6 @@ public class ValuationServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
 
-        Transaction newTransaction = new Transaction();
         newTransaction.setTransactionDate(LocalDate.now());
         newTransaction.setCity(req.getParameter("city"));
         newTransaction.setDistrict(req.getParameter("district"));
