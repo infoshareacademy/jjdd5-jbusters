@@ -48,12 +48,19 @@ public class UsersTransactionsServlet extends HttpServlet {
         final String fileName = getFileName(filePart);
         LOG.info("Uploaded file with name: " + fileName);
         LOG.info("Directory to " + fileName + " is " + path);
+        List<Transaction> usersTransactions = new ArrayList<>();
 
         DataLoader dataLoader = new DataLoader();
 
         OutputStream out = null;
         InputStream filecontent = null;
         final PrintWriter writer = response.getWriter();
+
+        Map<String, Object> model = new HashMap<>();
+
+        Template template = templateProvider.getTemplate(
+                getServletContext(),
+                TEMPLATE_NAME);
 
         try {
             out = new FileOutputStream(new File(path + File.separator
@@ -69,20 +76,25 @@ public class UsersTransactionsServlet extends HttpServlet {
 
             Path path2 = Paths.get(System.getProperty("jboss.home.dir") + "/upload/" + fileName);
 
-            List<Transaction> usersTransactions = new ArrayList<>();
+
             try {
                 usersTransactions = dataLoader.createTransactionList(Files.readAllLines(path2), true);
             } catch (Exception e) {
                 LOG.error("File loading error {}", e.getMessage());
             }
 
-            Template template = templateProvider.getTemplate(
-                    getServletContext(),
-                    TEMPLATE_NAME);
 
-            Map<String, Object> model = new HashMap<>();
             model.put("flats", usersTransactions);
 
+        } catch (FileNotFoundException fne) {
+
+           String info = "You either did not specify a file to upload or are "
+                    + "trying to upload a file to a protected or nonexistent "
+                    + "location.";
+            model.put("error", info);
+
+            LOG.error("Error with loading file. {}", fne.getMessage());
+        } finally {
             try {
                 template.process(model, writer);
                 LOG.info("Loaded users flats. Number of flats: []", usersTransactions.size());
@@ -90,13 +102,6 @@ public class UsersTransactionsServlet extends HttpServlet {
                 LOG.error("Failed to load users flats. Number of flats: {}", usersTransactions.size());
             }
 
-        } catch (FileNotFoundException fne) {
-            writer.println("You either did not specify a file to upload or are "
-                    + "trying to upload a file to a protected or nonexistent "
-                    + "location.");
-            writer.println("<br/> ERROR: " + fne.getMessage());
-            LOG.error("Error with loading file. {}", fne.getMessage());
-        } finally {
             if (out != null) {
                 out.close();
             }
