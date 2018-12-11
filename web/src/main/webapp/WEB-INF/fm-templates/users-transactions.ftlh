@@ -5,8 +5,16 @@
     <script type="text/javascript" charset="utf8"
             src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
+<#if error?? >
 
-<#if flats?has_content>
+ <div class="container">
+     <div class="jumbotron jumbotron-opacity">
+         <h1 class="display-10"><p>${error} </p></h1>
+         <hr class="my-4">
+     </div>
+ </div>
+
+<#elseif flats?has_content>
 <script>
     $(document).ready(function () {
         $('#flats').DataTable({
