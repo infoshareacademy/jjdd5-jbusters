@@ -91,10 +91,9 @@ public class UsersTransactionsServlet extends HttpServlet {
             }
 
         } catch (FileNotFoundException fne) {
-            writer.println("You either did not specify a file to upload or are "
-                    + "trying to upload a file to a protected or nonexistent "
-                    + "location.");
-            writer.println("<br/> ERROR: " + fne.getMessage());
+            String info = "You either did not specify a file to upload or are trying to upload a file to " +
+                    "a protected or nonexistent location. <br/> ERROR: "+ fne.getMessage();
+            
             LOG.error("Error with loading file. {}", fne.getMessage());
         } finally {
             if (out != null) {
