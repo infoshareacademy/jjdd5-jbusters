@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.nio.file.*;
@@ -20,6 +21,10 @@ public class DistrWagesHandler {
         this.properties = new Properties();
         loadProperties(file);
     }
+    public DistrWagesHandler(InputStream is) {
+        this.properties = new Properties();
+        loadProperties(is);
+    }
 
    public Properties getProperties() {
         return properties;
@@ -33,6 +38,19 @@ public class DistrWagesHandler {
                 throw new IOException();
             }
             this.properties.load(new FileReader(file));
+            LOGGER.info("district property file loaded successfully");
+        } catch (IOException e) {
+            System.out.println("Plik zawierający parametry potrzebne do porównywania dzielnic nie istnieje.");
+            LOGGER.error("Error loading file: {}");
+        } catch (NullPointerException e){
+            LOGGER.error("Error loading file: null input");
+        }
+    }
+
+    private void loadProperties(InputStream is) {
+        try {
+            this.properties.load(is);
+            is.close();
             LOGGER.info("district property file loaded successfully");
         } catch (IOException e) {
             System.out.println("Plik zawierający parametry potrzebne do porównywania dzielnic nie istnieje.");

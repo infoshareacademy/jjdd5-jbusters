@@ -42,8 +42,8 @@ public class FilterTransactionsTest {
 
     }
 
-//    @Test
-    public void BasicFilterOldTransactionCheckTest(){
+   @Test
+    public void BasicFilterTest(){
         tempTransactions=new ArrayList<Transaction>();
         LocalDate now = LocalDate.now();
         tempTransactions.add(createTransactionByDate(now));
@@ -64,7 +64,7 @@ public class FilterTransactionsTest {
 
     }
 
-    public Transaction createTransaction(BigDecimal price){
+    private Transaction createTransaction(BigDecimal price){
 
         Transaction trans = new Transaction();
         trans.setCity("Gdynia");
@@ -83,7 +83,7 @@ public class FilterTransactionsTest {
 
         return trans;
     }
-    public Transaction createTransactionByDate(LocalDate date){
+    private Transaction createTransactionByDate(LocalDate date){
 
         Transaction trans = new Transaction();
         trans.setCity("Gdynia");

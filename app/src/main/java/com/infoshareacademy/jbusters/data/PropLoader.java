@@ -2,6 +2,7 @@ package com.infoshareacademy.jbusters.data;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -26,14 +27,30 @@ public class PropLoader {
 
     private Properties properties;
 
+public PropLoader(){};
+
     public PropLoader(String file) {
         this.properties = new Properties();
         loadProperties(file);
     }
 
+    public PropLoader(InputStream is){
+        this.properties = new Properties();
+        loadProperties(is);
+    }
+
     private void loadProperties(String file) {
         try {
             this.properties.load(new FileReader(file));
+        } catch (IOException e) {
+            System.out.println("Missing properties file.");
+        }
+    }
+
+    private void loadProperties(InputStream is){
+        try {
+            this.properties.load(is);
+            is.close();
         } catch (IOException e) {
             System.out.println("Missing properties file.");
         }
