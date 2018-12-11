@@ -73,7 +73,7 @@ public class UsersTransactionsServlet extends HttpServlet {
             try {
                 usersTransactions = dataLoader.createTransactionList(Files.readAllLines(path2), true);
             } catch (Exception e) {
-                LOG.error("Błąd ładowania pliku {}", e.getMessage());
+                LOG.error("File loading error {}", e.getMessage());
             }
 
             Template template = templateProvider.getTemplate(
