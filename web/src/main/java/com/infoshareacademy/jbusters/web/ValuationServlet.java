@@ -2,7 +2,6 @@ package com.infoshareacademy.jbusters.web;
 
 import com.infoshareacademy.jbusters.console.Menu;
 import com.infoshareacademy.jbusters.data.CalculatePrice;
-import com.infoshareacademy.jbusters.data.Data;
 import com.infoshareacademy.jbusters.data.FilterTransactions;
 import com.infoshareacademy.jbusters.data.Transaction;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
@@ -12,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -42,21 +40,13 @@ public class ValuationServlet extends HttpServlet {
     private FilterTransactions filterTransactions;
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
 
-        newTransaction.setTransactionDate(LocalDate.now());
-        newTransaction.setCity(req.getParameter("city"));
-        newTransaction.setDistrict(req.getParameter("district"));
-        newTransaction.setTypeOfMarket(req.getParameter("market-type").replaceAll("_", " "));
-        double flatArea = Double.parseDouble(req.getParameter("flat-area").replaceAll(",", "."));
-        newTransaction.setFlatArea(BigDecimal.valueOf(flatArea));
-        newTransaction.setLevel(Integer.valueOf(req.getParameter("level")));
-        newTransaction.setParkingSpot(req.getParameter("parking-spot").replaceAll("_", " "));
-        newTransaction.setStandardLevel(req.getParameter("standard-level").replaceAll("_", " "));
-        newTransaction.setConstructionYearCategory(Integer.valueOf(req.getParameter("construction")));
-        newTransaction.setPrice(BigDecimal.valueOf(0));
-        newTransaction.setPricePerM2(BigDecimal.valueOf(0));
+        Map<String, Object> model = new HashMap<>();
+        Map<String, String> errorsMap = saveTransactionDetails(req);
+        model.put("errors", errorsMap);
+
 
 
         List<Transaction> filteredList = filterTransactions.theGreatFatFilter(newTransaction);
@@ -67,7 +57,6 @@ public class ValuationServlet extends HttpServlet {
                 getServletContext(),
                 TEMPLATE_NAME);
 
-        Map<String, Object> model = new HashMap<>();
 
         if (filteredList.size() >= 11) {
             CalculatePrice calc = new CalculatePrice(newTransaction, filteredList);
@@ -104,12 +93,12 @@ public class ValuationServlet extends HttpServlet {
         try {
             template.process(model, out);
         } catch (TemplateException e) {
-            LOG.error("Failed to Valuation transaction district list.");
+            LOG.error("Failed to send model due to {}", e.getMessage());
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
         PrintWriter out = resp.getWriter();
@@ -127,10 +116,10 @@ public class ValuationServlet extends HttpServlet {
                 getServletContext(),
                 "save-info");
 
-        String plik = "Zapisane";
+        String saved = "Zapisane";
 
         Map<String, String> model = new HashMap<>();
-        model.put("price", plik);
+        model.put("price", saved);
 
         try {
             template.process(model, out);
@@ -138,5 +127,56 @@ public class ValuationServlet extends HttpServlet {
         } catch (TemplateException e) {
             LOG.error("Failed to save user file to {}", path);
         }
+    }
+
+    private Map<String, String> saveTransactionDetails (HttpServletRequest req) {
+        Map<String, String> errorsMap = new HashMap<>();
+
+        try {
+            newTransaction.setTransactionDate(LocalDate.now());
+            newTransaction.setCity(req.getParameter("city"));
+            newTransaction.setDistrict(req.getParameter("district"));
+            newTransaction.setParkingSpot(req.getParameter("parking-spot").replaceAll("_", " "));
+            newTransaction.setStandardLevel(req.getParameter("standard-level").replaceAll("_", " "));
+            newTransaction.setPrice(BigDecimal.valueOf(0));
+            newTransaction.setPricePerM2(BigDecimal.valueOf(0));
+        } catch (Exception e) {
+            LOG.error("Failed to save user's due to: {}", e.getMessage());
+            String errorMessage = e.getMessage();
+            errorsMap.put("overalError", errorMessage);
+        }
+
+        if (req.getParameter("market-type").matches("RYNEK WTÓRNY") ||
+                req.getParameter("market-type").matches("RYNEK PIERWOTNY")) {
+            try {
+                newTransaction.setTypeOfMarket(req.getParameter("market-type").replaceAll("_", " "));
+            } catch (Exception e) {
+                LOG.error("Failed to save market type due to {}", e.getMessage());
+                errorsMap.put("marketError", "Błąd podczas zapisu rodzaju rynku!");
+            }
+        } else {
+            errorsMap.put("marketError", "Błąd podczas zapisu rodzaju rynku!");
+        }
+
+        try {
+            double flatArea = Double.parseDouble(req.getParameter("flat-area").replaceAll(",", "."));
+            newTransaction.setFlatArea(BigDecimal.valueOf(flatArea));
+        } catch (Exception e) {
+            LOG.error("Failed to save flat size due to {}", e.getMessage());
+            errorsMap.put("flatAreaError", "Błąd podczas zapisu wielkości mieszkania!");
+        }
+        try {
+            newTransaction.setLevel(Integer.valueOf(req.getParameter("level")));
+        } catch (Exception e) {
+            LOG.error("Failed to save level due to {}", e.getMessage());
+            errorsMap.put("levelError", "Błąd podczas zapisu piętra!");
+        }
+        try {
+            newTransaction.setConstructionYearCategory(Integer.valueOf(req.getParameter("construction")));
+        } catch (Exception e) {
+            LOG.error("Failed to save construction year category due to {}", e.getMessage());
+            errorsMap.put("dateError", "Zła kategoria roku budowy!");
+        }
+        return errorsMap;
     }
 }
