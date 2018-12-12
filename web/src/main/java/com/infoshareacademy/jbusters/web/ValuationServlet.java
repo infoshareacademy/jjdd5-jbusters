@@ -3,6 +3,7 @@ package com.infoshareacademy.jbusters.web;
 import com.infoshareacademy.jbusters.console.Menu;
 import com.infoshareacademy.jbusters.data.CalculatePrice;
 import com.infoshareacademy.jbusters.data.FilterTransactions;
+import com.infoshareacademy.jbusters.data.StatisticsManager;
 import com.infoshareacademy.jbusters.data.Transaction;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import freemarker.template.Template;
@@ -39,9 +40,14 @@ public class ValuationServlet extends HttpServlet {
     @Inject
     private FilterTransactions filterTransactions;
 
+    @Inject
+    private StatisticsManager statisticsManager;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
+
+        statisticsManager.captureNameFromServlet(req.getParameter("district"));
 
         Map<String, Object> model = new HashMap<>();
         Map<String, String> errorsMap = saveTransactionDetails(req);
