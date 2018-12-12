@@ -4,16 +4,7 @@
     <br>
     <br>
     <br>
-    <#if errors??>
-    <#list errors as k, v>
-    <#if k == "overalError" && v??>
-    <p>${v}</p>
-    </#if>
-    <#if k == "flatAreaError" && v??>
-    <p>${v}</p>
-    </#if>
-    </#list>
-    </#if>
+
 
 
         <div class="row">

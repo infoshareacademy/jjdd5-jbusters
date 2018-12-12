@@ -1,6 +1,9 @@
 <#include "header.ftlh">
 
+
+
         <div class="container  container-form">
+
             <h2>Podaj szczegółowe parametry mieszkania: </h2>
             <hr class="my-4">
             <form method="get" action="valuation">
@@ -22,6 +25,14 @@
                     <label for="Select3">Wpisz numer pietra</label>
                     <input name="level" type="text" class="form-control" id="Select3" required pattern="^[0-1]?[0-9]?[0-9]?$" title="Podaj wartość od 0 do 199">
                 </div>
+
+                <#if errors??>
+                    <#list errors as k, v>
+                        <#if k == "flatAreaError">
+                                <div class="p-3 mb-2 bg-danger text-white">${v}</div>
+                        </#if>
+                    </#list>
+                </#if>
 
                 <div class="form-group">
                     <label for="Select4">Czy posiadasz miejsce parkingowe ?</label>

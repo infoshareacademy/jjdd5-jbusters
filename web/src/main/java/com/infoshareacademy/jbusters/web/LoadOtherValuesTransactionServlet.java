@@ -30,14 +30,21 @@ public class LoadOtherValuesTransactionServlet extends HttpServlet {
 
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
         PrintWriter out = resp.getWriter();
+        Map<String, Object> model = new HashMap<>();
+        Map<String, String> errorsMap;
 
         String city = req.getParameter("city");
         String district = req.getParameter("district");
 
+        if (req.getAttribute("errorsMap") != null) {
+            errorsMap = (Map<String, String>) req.getAttribute("errorsMap");
+            model.put("errors", errorsMap);
+        }
 
-        Map<String, Object> model = new HashMap<>();
         model.put("city", city);
         model.put("district1", district);
+
+
 
         Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
 

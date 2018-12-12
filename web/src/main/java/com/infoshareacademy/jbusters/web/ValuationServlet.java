@@ -11,6 +11,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +26,8 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
+import java.util.regex.Pattern;
 
 @WebServlet(urlPatterns = "/valuation")
 public class ValuationServlet extends HttpServlet {
@@ -43,11 +47,10 @@ public class ValuationServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
 
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/load-other-values");
         Map<String, Object> model = new HashMap<>();
         Map<String, String> errorsMap = saveTransactionDetails(req);
         model.put("errors", errorsMap);
-
-
 
         List<Transaction> filteredList = filterTransactions.theGreatFatFilter(newTransaction);
         BigDecimal flatPrice = BigDecimal.valueOf(0);
@@ -57,43 +60,54 @@ public class ValuationServlet extends HttpServlet {
                 getServletContext(),
                 TEMPLATE_NAME);
 
-
-        if (filteredList.size() >= 11) {
-            CalculatePrice calc = new CalculatePrice(newTransaction, filteredList);
-            BigDecimal yearlyTrendOfPriceChange = calc.overallTrend(filteredList);
-            model.put("trend", yearlyTrendOfPriceChange);
-
-            BigDecimal minimumPriceInList = calc.getMinimumPriceInList(filteredList);
-            BigDecimal averagePriceInList = calc.getAvaragePriceInList(filteredList);
-            BigDecimal maxPriceInList = calc.getMaxPriceInList(filteredList);
-
-            model.put("minimumPrice", minimumPriceInList);
-            model.put("averagePrice", averagePriceInList);
-            model.put("maxPrice", maxPriceInList);
-
-            flatPrice = calc.calculatePrice();
+        if (errorsMap.size() != 0) {
+            try {
+                req.setAttribute("errorsMap", errorsMap);
+                requestDispatcher.forward(req, resp);
+            } catch (ServletException e) {
+                e.printStackTrace();
+            }
 
         } else {
-            template = templateProvider.getTemplate(
-                    getServletContext(),
-                    "no-valuation");
-        }
 
 
-        model.put("price", flatPrice);
-        model.put("city", newTransaction.getCity());
-        model.put("district1", newTransaction.getDistrict());
-        model.put("market_type", newTransaction.getTypeOfMarket());
-        model.put("flat_area", newTransaction.getFlatArea());
-        model.put("level", newTransaction.getLevel());
-        model.put("parking_spot", newTransaction.getParkingSpot());
-        model.put("standard_level", newTransaction.getStandardLevel());
-        model.put("construction", newTransaction.getConstructionYearCategory());
+            if (filteredList.size() >= 11) {
+                CalculatePrice calc = new CalculatePrice(newTransaction, filteredList);
+                BigDecimal yearlyTrendOfPriceChange = calc.overallTrend(filteredList);
+                model.put("trend", yearlyTrendOfPriceChange);
 
-        try {
-            template.process(model, out);
-        } catch (TemplateException e) {
-            LOG.error("Failed to send model due to {}", e.getMessage());
+                BigDecimal minimumPriceInList = calc.getMinimumPriceInList(filteredList);
+                BigDecimal averagePriceInList = calc.getAvaragePriceInList(filteredList);
+                BigDecimal maxPriceInList = calc.getMaxPriceInList(filteredList);
+
+                model.put("minimumPrice", minimumPriceInList);
+                model.put("averagePrice", averagePriceInList);
+                model.put("maxPrice", maxPriceInList);
+
+                flatPrice = calc.calculatePrice();
+
+            } else {
+                template = templateProvider.getTemplate(
+                        getServletContext(),
+                        "no-valuation");
+            }
+
+
+            model.put("price", flatPrice);
+            model.put("city", newTransaction.getCity());
+            model.put("district1", newTransaction.getDistrict());
+            model.put("market_type", newTransaction.getTypeOfMarket());
+            model.put("flat_area", newTransaction.getFlatArea());
+            model.put("level", newTransaction.getLevel());
+            model.put("parking_spot", newTransaction.getParkingSpot());
+            model.put("standard_level", newTransaction.getStandardLevel());
+            model.put("construction", newTransaction.getConstructionYearCategory());
+
+            try {
+                template.process(model, out);
+            } catch (TemplateException e) {
+                LOG.error("Failed to send model due to {}", e.getMessage());
+            }
         }
     }
 
@@ -146,8 +160,8 @@ public class ValuationServlet extends HttpServlet {
             errorsMap.put("overalError", errorMessage);
         }
 
-        if (req.getParameter("market-type").matches("RYNEK WTÓRNY") ||
-                req.getParameter("market-type").matches("RYNEK PIERWOTNY")) {
+        if (req.getParameter("market-type").equalsIgnoreCase("RYNEK WTÓRNY") ||
+                req.getParameter("market-type").equalsIgnoreCase("RYNEK PIERWOTNY")) {
             try {
                 newTransaction.setTypeOfMarket(req.getParameter("market-type").replaceAll("_", " "));
             } catch (Exception e) {
@@ -158,25 +172,38 @@ public class ValuationServlet extends HttpServlet {
             errorsMap.put("marketError", "Błąd podczas zapisu rodzaju rynku!");
         }
 
-        try {
-            double flatArea = Double.parseDouble(req.getParameter("flat-area").replaceAll(",", "."));
-            newTransaction.setFlatArea(BigDecimal.valueOf(flatArea));
-        } catch (Exception e) {
-            LOG.error("Failed to save flat size due to {}", e.getMessage());
-            errorsMap.put("flatAreaError", "Błąd podczas zapisu wielkości mieszkania!");
-        }
+        newTransaction.setFlatArea(
+                validateData(errorsMap,
+                        () -> BigDecimal.valueOf(Double.parseDouble(req.getParameter("flat-area").replaceAll(",", "."))),
+                        "flatAreaError",
+                        "Błąd podczas zapisu wielkości mieszkania!",
+                        new BigDecimal(0)));
+
         try {
             newTransaction.setLevel(Integer.valueOf(req.getParameter("level")));
         } catch (Exception e) {
             LOG.error("Failed to save level due to {}", e.getMessage());
             errorsMap.put("levelError", "Błąd podczas zapisu piętra!");
         }
-        try {
-            newTransaction.setConstructionYearCategory(Integer.valueOf(req.getParameter("construction")));
-        } catch (Exception e) {
-            LOG.error("Failed to save construction year category due to {}", e.getMessage());
-            errorsMap.put("dateError", "Zła kategoria roku budowy!");
-        }
+
+
+        newTransaction.setConstructionYearCategory(
+                validateData(errorsMap,
+                        () -> Integer.valueOf(req.getParameter("construction")),
+                        "dateError", "Zła kategoria roku budowy!", 0));
+
+
         return errorsMap;
+    }
+
+    private <T> T validateData(Map<String, String> errors, Supplier<T> supplier, String errorKey, String errorMessage, T defaultValue) {
+        try {
+            T value = supplier.get();
+            return value;
+        } catch (Exception e) {
+            LOG.error(errorMessage, e);
+            errors.put(errorKey, errorMessage);
+            return defaultValue;
+        }
     }
 }
