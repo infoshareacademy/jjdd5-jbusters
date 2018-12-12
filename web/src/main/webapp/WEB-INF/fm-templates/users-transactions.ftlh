@@ -45,16 +45,16 @@
 
     <#list flats as flat>
 
+        <#if flat.important>
+            <tr style="background: lawngreen">
+        <#else>
+            <tr>
+        </#if>
 
-        <tr>
         <td>
         <a class="btn btn-primary btn-lg active" role="button" aria-pressed="true" href="/valuation?city=${flat.city}&district=${flat.district}&market-type=${flat.typeOfMarket}&flat-area=${flat.flatArea}&level=${flat.level}&parking-spot=${flat.parkingSpot}&standard-level=${flat.standardLevel}&construction=${flat.constructionYearCategory}">
             Wyceń</a>
         </td>
-
-        <#if flat.important>
-            <td>${flat.important}</td>
-        </#if>
 
         <td>${flat.transactionName}</td>
         <td>${flat.city}</td>

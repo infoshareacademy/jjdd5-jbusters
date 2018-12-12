@@ -83,7 +83,7 @@ public class UsersTransactionsServlet extends HttpServlet {
                 LOG.error("File loading error {}", e.getMessage());
             }
 
-
+            
             model.put("flats", usersTransactions);
 
         } catch (FileNotFoundException fne) {

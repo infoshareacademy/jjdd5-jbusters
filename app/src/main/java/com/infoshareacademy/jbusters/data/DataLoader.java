@@ -30,6 +30,7 @@ public class DataLoader {
     private static final int INDEX_CONSTRUCTION_YEAR = 11;
     private static final int INDEX_CONSTRUCTION_YEAR_CATEGORY = 12;
     private static final int INDEX_TRANSACTION_NAME = 13;
+    private static final int INDEX_IMPORTANT = 14;
     private static final String separator = ",";
 
     public List<Transaction> createTransactionList(List<String> listFileTransakcjeCSV, boolean userFile) {
@@ -78,6 +79,7 @@ public class DataLoader {
 
             if (userFile) {
                 newRowOfTransactionList.setTransactionName(listTransaction.get(INDEX_TRANSACTION_NAME));
+                newRowOfTransactionList.setImportant(Boolean.valueOf(listTransaction.get(INDEX_IMPORTANT)));
             }
 
             listOfTransaction.add(newRowOfTransactionList);

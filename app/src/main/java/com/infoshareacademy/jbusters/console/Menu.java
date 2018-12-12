@@ -176,8 +176,12 @@ public class Menu {
 
     public void saveTransaction(Transaction newTransaction, Path pathToFile, boolean isUserFile) throws IOException {
         String transactionName = "brak";
+        boolean transactionImportant = false;
+
         if (isUserFile) {
             transactionName = newTransaction.getTransactionName();
+            transactionImportant = newTransaction.isImportant();
+
         }
         String transactionString = Stream.of(
                 newTransaction.getTransactionDate().toString().replaceAll("-", " "),
@@ -199,7 +203,9 @@ public class Menu {
         Writer out = new BufferedWriter(new OutputStreamWriter(
                 new FileOutputStream(String.valueOf(pathToFile), true), "UTF-8"));
         try {
-            out.append(transactionString + "," + transactionName + "\n");
+            out.append(transactionString + "," + transactionName + "," + transactionImportant+"\n");
+//            out.append(transactionString + "," + transactionImportant + "\n");
+
         } finally {
             out.close();
         }

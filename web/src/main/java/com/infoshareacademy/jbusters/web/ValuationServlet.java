@@ -121,13 +121,12 @@ public class ValuationServlet extends HttpServlet {
 //        newTransaction.setImportant(req.getParameter("important"));
         String important = req.getParameter("important");
 
-        if("nie".equals(important)){
+        if ("nie".equals(important)){
             newTransaction.setImportant(false);
         }
         if ("tak".equals(important)){
             newTransaction.setImportant(true);
         }
-
 
 
         Menu menu = new Menu();
