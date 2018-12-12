@@ -38,13 +38,17 @@ public class LoadOtherValuesTransactionServlet extends HttpServlet {
 
         if (req.getAttribute("errorsMap") != null) {
             errorsMap = (Map<String, String>) req.getAttribute("errorsMap");
+            model.put("marketType", req.getParameter("market-type"));
+            model.put("flatArea", req.getParameter("flat-area"));
+            model.put("level", req.getParameter("level"));
+            model.put("parkingSpot", req.getParameter("parking-spot"));
+            model.put("standardLevel", req.getParameter("standard-level"));
+            model.put("construction", req.getParameter("construction"));
             model.put("errors", errorsMap);
         }
 
         model.put("city", city);
         model.put("district1", district);
-
-
 
         Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
 

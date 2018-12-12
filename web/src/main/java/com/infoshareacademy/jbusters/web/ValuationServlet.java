@@ -5,8 +5,10 @@ import com.infoshareacademy.jbusters.data.CalculatePrice;
 import com.infoshareacademy.jbusters.data.FilterTransactions;
 import com.infoshareacademy.jbusters.data.Transaction;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
+import com.sun.deploy.net.HttpRequest;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -116,23 +118,23 @@ public class ValuationServlet extends HttpServlet {
 
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
         PrintWriter out = resp.getWriter();
-
-        newTransaction.setTransactionName(req.getParameter("description"));
-        newTransaction.setStreet(req.getParameter("street"));
-        newTransaction.setConstructionYear(req.getParameter("construction-year"));
-
-        Menu menu = new Menu();
-        final Path path = Paths.get(System.getProperty("jboss.home.dir") + "/upload/flats.txt");
-
-        menu.saveTransaction(newTransaction, path, true);
-
+        Map<String, String> model = new HashMap<>();
         Template template = templateProvider.getTemplate(
                 getServletContext(),
                 "save-info");
 
+        newTransaction.setTransactionName(req.getParameter("description"));
+        newTransaction.setStreet(req.getParameter("street"));
+        newTransaction.setConstructionYear(req.getParameter("construction"));
+        newTransaction.setConstructionYear(req.getParameter("construction-year"));
+
+
+        Menu menu = new Menu();
+        final Path path = Paths.get(System.getProperty("jboss.home.dir") + "/upload/flats.txt");
+        menu.saveTransaction(newTransaction, path, true);
+
         String saved = "Zapisane";
 
-        Map<String, String> model = new HashMap<>();
         model.put("price", saved);
 
         try {
@@ -143,9 +145,39 @@ public class ValuationServlet extends HttpServlet {
         }
     }
 
-    private Map<String, String> saveTransactionDetails (HttpServletRequest req) {
+
+    private Map<String, String> saveTransactionDetails(HttpServletRequest req) {
         Map<String, String> errorsMap = new HashMap<>();
 
+        validateData(req, errorsMap);
+        validateMarketType(req, errorsMap);
+
+        newTransaction.setFlatArea(
+                validateNumericData(req.getParameter("flat-area").replaceAll(",", "."),
+                        errorsMap,
+                        () -> BigDecimal.valueOf(Double.parseDouble(req.getParameter("flat-area").replaceAll(",", "."))),
+                        "flatAreaError",
+                        "Błąd podczas zapisu wielkości mieszkania!",
+                        new BigDecimal(0)));
+
+        newTransaction.setLevel(
+                validateNumericData(req.getParameter("level"),
+                        errorsMap,
+                        () -> Integer.valueOf(req.getParameter("level")),
+                        "levelError",
+                        "Błąd podczas zapisu piętra!",
+                        0));
+
+        newTransaction.setConstructionYearCategory(
+                validateNumericData(req.getParameter("construction"),
+                        errorsMap,
+                        () -> Integer.valueOf(req.getParameter("construction")),
+                        "constructionYearError", "Zła kategoria roku budowy!", 0));
+
+        return errorsMap;
+    }
+
+    private void validateData(HttpServletRequest req, Map<String, String> errorsMap) {
         try {
             newTransaction.setTransactionDate(LocalDate.now());
             newTransaction.setCity(req.getParameter("city"));
@@ -157,9 +189,11 @@ public class ValuationServlet extends HttpServlet {
         } catch (Exception e) {
             LOG.error("Failed to save user's due to: {}", e.getMessage());
             String errorMessage = e.getMessage();
-            errorsMap.put("overalError", errorMessage);
+            errorsMap.put("overallError", errorMessage);
         }
+    }
 
+    private void validateMarketType(HttpServletRequest req, Map<String, String> errorsMap) {
         if (req.getParameter("market-type").equalsIgnoreCase("RYNEK WTÓRNY") ||
                 req.getParameter("market-type").equalsIgnoreCase("RYNEK PIERWOTNY")) {
             try {
@@ -171,37 +205,19 @@ public class ValuationServlet extends HttpServlet {
         } else {
             errorsMap.put("marketError", "Błąd podczas zapisu rodzaju rynku!");
         }
-
-        newTransaction.setFlatArea(
-                validateData(errorsMap,
-                        () -> BigDecimal.valueOf(Double.parseDouble(req.getParameter("flat-area").replaceAll(",", "."))),
-                        "flatAreaError",
-                        "Błąd podczas zapisu wielkości mieszkania!",
-                        new BigDecimal(0)));
-
-        try {
-            newTransaction.setLevel(Integer.valueOf(req.getParameter("level")));
-        } catch (Exception e) {
-            LOG.error("Failed to save level due to {}", e.getMessage());
-            errorsMap.put("levelError", "Błąd podczas zapisu piętra!");
-        }
-
-
-        newTransaction.setConstructionYearCategory(
-                validateData(errorsMap,
-                        () -> Integer.valueOf(req.getParameter("construction")),
-                        "dateError", "Zła kategoria roku budowy!", 0));
-
-
-        return errorsMap;
     }
-
-    private <T> T validateData(Map<String, String> errors, Supplier<T> supplier, String errorKey, String errorMessage, T defaultValue) {
-        try {
-            T value = supplier.get();
-            return value;
-        } catch (Exception e) {
-            LOG.error(errorMessage, e);
+// TODO CHECK WHY isNumeric returns false for values with dot ex. double
+    private <T> T validateNumericData(String parameter, Map<String, String> errors, Supplier<T> supplier, String errorKey, String errorMessage, T defaultValue) {
+        if (StringUtils.isNumeric(parameter) && !parameter.isEmpty()) {
+            try {
+                T value = supplier.get();
+                return value;
+            } catch (Exception e) {
+                LOG.error(errorMessage, e);
+                errors.put(errorKey, errorMessage);
+                return defaultValue;
+            }
+        } else {
             errors.put(errorKey, errorMessage);
             return defaultValue;
         }

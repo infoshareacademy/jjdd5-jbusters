@@ -101,6 +101,10 @@
                         <input name="construction-year" type="text" class="form-control" id="Select9" required>
                     </div>
 
+                    <#if constructionYearError??>
+                        <div class="p-3 mb-2 bg-danger text-white">${constructionYearError}</div>
+                    </#if>
+
                     <input class="btn btn-primary" type="submit" value="Zapisz w pliku" name="upload" id="upload"/>
                 </form>
             </div>
