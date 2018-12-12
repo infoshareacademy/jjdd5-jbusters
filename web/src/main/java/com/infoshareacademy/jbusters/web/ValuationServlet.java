@@ -118,7 +118,6 @@ public class ValuationServlet extends HttpServlet {
         newTransaction.setTransactionName(req.getParameter("description"));
         newTransaction.setStreet(req.getParameter("street"));
         newTransaction.setConstructionYear(req.getParameter("construction-year"));
-//        newTransaction.setImportant(req.getParameter("important"));
         String important = req.getParameter("important");
 
         if ("nie".equals(important)){

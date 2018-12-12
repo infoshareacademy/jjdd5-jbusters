@@ -204,7 +204,6 @@ public class Menu {
                 new FileOutputStream(String.valueOf(pathToFile), true), "UTF-8"));
         try {
             out.append(transactionString + "," + transactionName + "," + transactionImportant+"\n");
-//            out.append(transactionString + "," + transactionImportant + "\n");
 
         } finally {
             out.close();

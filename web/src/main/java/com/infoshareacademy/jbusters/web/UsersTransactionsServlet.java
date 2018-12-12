@@ -48,7 +48,7 @@ public class UsersTransactionsServlet extends HttpServlet {
         final String fileName = getFileName(filePart);
         LOG.info("Uploaded file with name: " + fileName);
         LOG.info("Directory to " + fileName + " is " + path);
-        List<Transaction> usersTransactions = new ArrayList<>();
+
 
         DataLoader dataLoader = new DataLoader();
 
@@ -61,6 +61,7 @@ public class UsersTransactionsServlet extends HttpServlet {
         Template template = templateProvider.getTemplate(
                 getServletContext(),
                 TEMPLATE_NAME);
+        List<Transaction> usersTransactions = new ArrayList<>();
 
         try {
             out = new FileOutputStream(new File(path + File.separator
@@ -83,7 +84,7 @@ public class UsersTransactionsServlet extends HttpServlet {
                 LOG.error("File loading error {}", e.getMessage());
             }
 
-            
+
             model.put("flats", usersTransactions);
 
         } catch (FileNotFoundException fne) {
