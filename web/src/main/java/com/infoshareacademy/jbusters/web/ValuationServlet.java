@@ -3,6 +3,7 @@ package com.infoshareacademy.jbusters.web;
 import com.infoshareacademy.jbusters.console.Menu;
 import com.infoshareacademy.jbusters.data.CalculatePrice;
 import com.infoshareacademy.jbusters.data.FilterTransactions;
+import com.infoshareacademy.jbusters.data.StatisticsManager;
 import com.infoshareacademy.jbusters.data.Transaction;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import freemarker.template.Template;
@@ -29,7 +30,8 @@ import java.util.Map;
 public class ValuationServlet extends HttpServlet {
 
     private static final Logger LOG = LoggerFactory.getLogger(ValuationServlet.class);
-    private static String TEMPLATE_NAME = "valuation";
+    private static final String TEMPLATE_NAME = "valuation";
+    private static final String MARKET_TYPE = "market-type";
 
     private Transaction newTransaction = new Transaction();
 
@@ -39,6 +41,10 @@ public class ValuationServlet extends HttpServlet {
     @Inject
     private FilterTransactions filterTransactions;
 
+    @Inject
+    private StatisticsManager statisticsManager;
+
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
@@ -47,7 +53,7 @@ public class ValuationServlet extends HttpServlet {
         Map<String, String> errorsMap = saveTransactionDetails(req);
         model.put("errors", errorsMap);
 
-
+        statisticsManager.captureNameFromServlet(req.getParameter("district"));
 
 
         List<Transaction> filteredList = filterTransactions.theGreatFatFilter(newTransaction);
@@ -156,10 +162,10 @@ public class ValuationServlet extends HttpServlet {
             errorsMap.put("overalError", errorMessage);
         }
 
-        if (req.getParameter("market-type").matches("RYNEK WTÓRNY") ||
-                req.getParameter("market-type").matches("RYNEK PIERWOTNY")) {
+        if (req.getParameter(MARKET_TYPE).matches("RYNEK WTÓRNY") ||
+                req.getParameter(MARKET_TYPE).matches("RYNEK PIERWOTNY")) {
             try {
-                newTransaction.setTypeOfMarket(req.getParameter("market-type").replaceAll("_", " "));
+                newTransaction.setTypeOfMarket(req.getParameter("MARKET_TYPE").replaceAll("_", " "));
             } catch (Exception e) {
                 LOG.error("Failed to save market type due to {}", e.getMessage());
                 errorsMap.put("marketError", "Błąd podczas zapisu rodzaju rynku!");
