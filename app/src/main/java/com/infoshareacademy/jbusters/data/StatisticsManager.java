@@ -13,7 +13,7 @@ import java.util.List;
 @ApplicationScoped
 public class StatisticsManager {
 
-    private static Path pathToStatisticsFile = Paths.get(System.getProperty("jboss.home.dir"), "data", "statistics.txt");
+    private static final Path PATH_TO_STATISTICS_FILE = Paths.get(System.getProperty("jboss.home.dir"), "data", "statistics.txt");
 
     public void captureNameFromServlet(String name) throws IOException {
         addOrUpdateStatistics(name);
@@ -25,8 +25,8 @@ public class StatisticsManager {
 
     private void addOrUpdateStatistics(String name) throws IOException {
 
-        if (!Files.exists(pathToStatisticsFile)) {
-            Files.createFile(pathToStatisticsFile);
+        if (!Files.exists(PATH_TO_STATISTICS_FILE)) {
+            Files.createFile(PATH_TO_STATISTICS_FILE);
         }
 
         List<Statistics> existingList = generateStatisticsList();
@@ -57,12 +57,12 @@ public class StatisticsManager {
 
         String statisticsString = name + ",1";
 
-        Files.write(Paths.get(String.valueOf(pathToStatisticsFile)), statisticsString.getBytes(), StandardOpenOption.APPEND);
+        Files.write(Paths.get(String.valueOf(PATH_TO_STATISTICS_FILE)), statisticsString.getBytes(), StandardOpenOption.APPEND);
     }
 
     private void overwriteExistingLine(int lineNumber, String data) throws IOException {
 
-        Path path = pathToStatisticsFile;
+        Path path = PATH_TO_STATISTICS_FILE;
 
         List<String> existingLine = Files.readAllLines(path);
 
@@ -73,7 +73,7 @@ public class StatisticsManager {
 
     private List<Statistics> generateStatisticsList() throws IOException {
 
-        List<String> existingList = Files.readAllLines(pathToStatisticsFile);
+        List<String> existingList = Files.readAllLines(PATH_TO_STATISTICS_FILE);
 
         List<Statistics> listOfStatistics = new ArrayList<>();
 

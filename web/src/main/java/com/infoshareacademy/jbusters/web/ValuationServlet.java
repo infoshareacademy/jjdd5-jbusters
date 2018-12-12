@@ -30,8 +30,8 @@ import java.util.Map;
 public class ValuationServlet extends HttpServlet {
 
     private static final Logger LOG = LoggerFactory.getLogger(ValuationServlet.class);
-    private static String TEMPLATE_NAME = "valuation";
-    private static String MARKET_TYPE = "market-type";
+    private static final String TEMPLATE_NAME = "valuation";
+    private static final String MARKET_TYPE = "market-type";
 
     private Transaction newTransaction = new Transaction();
 
