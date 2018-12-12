@@ -2,6 +2,7 @@ package com.infoshareacademy.jbusters.web;
 
 import com.infoshareacademy.jbusters.data.DataLoader;
 import com.infoshareacademy.jbusters.data.Transaction;
+import com.infoshareacademy.jbusters.data.UploadFileFromUser;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -38,90 +39,60 @@ public class UsersTransactionsServlet extends HttpServlet {
     @Inject
     private TemplateProvider templateProvider;
 
+    @Inject
+    private UploadFileFromUser uploadFileFromUser;
+
+    @Inject
+    private DataLoader dataLoader;
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        // Create path components to save the file
-        final String path = System.getProperty("jboss.home.dir") + "/upload";
-        final Part filePart = request.getPart("file");
-        final String fileName = getFileName(filePart);
-        LOG.info("Uploaded file with name: " + fileName);
-        LOG.info("Directory to " + fileName + " is " + path);
 
-
-        DataLoader dataLoader = new DataLoader();
-
-        OutputStream out = null;
-        InputStream filecontent = null;
         final PrintWriter writer = response.getWriter();
-
+        final Part filePart = request.getPart("file");
+        List<Transaction> usersTransactions = new ArrayList<>();
         Map<String, Object> model = new HashMap<>();
 
         Template template = templateProvider.getTemplate(
                 getServletContext(),
                 TEMPLATE_NAME);
-        List<Transaction> usersTransactions = new ArrayList<>();
 
+        String fileName;
         try {
-            out = new FileOutputStream(new File(path + File.separator
-                    + fileName));
-            filecontent = filePart.getInputStream();
-
-            int read = 0;
-            final byte[] bytes = new byte[1024];
-
-            while ((read = filecontent.read(bytes)) != -1) {
-                out.write(bytes, 0, read);
-            }
-
+            File file = uploadFileFromUser.uploadFile(filePart);
+            fileName = file.getName();
             Path path2 = Paths.get(System.getProperty("jboss.home.dir") + "/upload/" + fileName);
 
 
             try {
                 usersTransactions = dataLoader.createTransactionList(Files.readAllLines(path2), true);
+                LOG.info("Loading file with name {}", fileName);
             } catch (Exception e) {
                 LOG.error("File loading error {}", e.getMessage());
             }
 
 
             model.put("flats", usersTransactions);
+        } catch (Exception e) {
 
-        } catch (FileNotFoundException fne) {
+            String errorMasage = "You either did not specify a file to upload or are "
+                    + "trying to upload a file to a protected or nonexistent "
+                    + "location.";
+            model.put("error", errorMasage);
 
-           String info = "Wybierz plik do załadowania";
-            model.put("error", info);
-
-            LOG.error("Error with loading file. {}", fne.getMessage());
+            LOG.error("Error with loading file. {}", e.getMessage());
         } finally {
             try {
                 template.process(model, writer);
-                LOG.info("Loaded users flats. Number of flats: []", usersTransactions.size());
+                LOG.info("Loaded users flats. Number of flats: {}", usersTransactions.size());
             } catch (TemplateException e) {
                 LOG.error("Failed to load users flats. Number of flats: {}", usersTransactions.size());
-            }
-
-            if (out != null) {
-                out.close();
-            }
-            if (filecontent != null) {
-                filecontent.close();
             }
             if (writer != null) {
                 writer.close();
             }
         }
     }
-
-    private String getFileName(final Part part) {
-        final String partHeader = part.getHeader("content-disposition");
-        for (String content : part.getHeader("content-disposition").split(";")) {
-            if (content.trim().startsWith("filename")) {
-                return content.substring(
-                        content.indexOf('=') + 1).trim().replace("\"", "");
-            }
-        }
-        return null;
-    }
-
 }

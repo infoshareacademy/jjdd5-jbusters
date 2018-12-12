@@ -3,6 +3,7 @@ package com.infoshareacademy.jbusters.data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.enterprise.context.RequestScoped;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@RequestScoped
 public class DataLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(DataLoader.class);
     private static final int INDEX_TRANSACTION_DATE = 0;
