@@ -106,8 +106,8 @@
                 </div>
                 <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
                     <div class="jumbotron jumbotron-opacity">
-                    <hr class="my-4">
-                    <p class="lead">Szczegółowe informacje wyceny</p>
+                        <p class="lead">Szczegółowe informacje wyceny</p>
+                        <hr class="my-4">
                     <br>
                     <table class="table table-striped table-dark">
                         <thead>
@@ -125,6 +125,7 @@
                         </tr>
                         </tbody>
                     </table>
+                        <hr class="my-4">
                     </div>
                 </div>
             </div>
@@ -133,6 +134,7 @@
         <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
 
         <div class="jumbotron jumbotron-opacity-1">
+            <p class="lead"><b>Twoje mieszkanie:</b> </p>
         <form method="get" action="valuation">
 
         <div class="form-group">
