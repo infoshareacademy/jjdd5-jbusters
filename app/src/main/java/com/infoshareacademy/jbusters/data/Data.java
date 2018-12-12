@@ -38,7 +38,7 @@ public class Data {
         listFileTransactionCSV.remove(0);
         DataLoader data = new DataLoader();
         LOGGER.info("Load file CSV. Number of loaded transactions: {}", listFileTransactionCSV.size());
-        return data.createTransactionList(listFileTransactionCSV, "no");
+        return data.createTransactionList(listFileTransactionCSV, false);
     }
 
     // Metoda do wyciągania z bazy danych listy miast/dzielnic bez duplikatów + w kolejnkości alfabetycznej
