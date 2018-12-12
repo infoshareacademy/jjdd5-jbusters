@@ -86,7 +86,7 @@ public class StatisticsManager {
             newLine.setStatisticName(listTransaction.get(0));
 
             String counterString = listTransaction.get(1);
-            int counter = Integer.valueOf(counterString);
+            int counter = Integer.parseInt(counterString);
             newLine.setCounter(counter);
 
             listOfStatistics.add(newLine);
