@@ -165,7 +165,7 @@ public class ValuationServlet extends HttpServlet {
         if (req.getParameter(MARKET_TYPE).matches("RYNEK WTÓRNY") ||
                 req.getParameter(MARKET_TYPE).matches("RYNEK PIERWOTNY")) {
             try {
-                newTransaction.setTypeOfMarket(req.getParameter("market-type").replaceAll("_", " "));
+                newTransaction.setTypeOfMarket(req.getParameter("MARKET_TYPE").replaceAll("_", " "));
             } catch (Exception e) {
                 LOG.error("Failed to save market type due to {}", e.getMessage());
                 errorsMap.put("marketError", "Błąd podczas zapisu rodzaju rynku!");
