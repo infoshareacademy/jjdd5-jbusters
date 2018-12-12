@@ -30,6 +30,10 @@ public class DistrWagesHandler {
         return properties;
     }
 
+    public Properties getProperties() {
+        return properties;
+    }
+
     private void loadProperties(String file) {
         try {
             Path path = Paths.get(file);

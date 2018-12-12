@@ -35,7 +35,7 @@ public class DataLoader {
     private static final int INDEX_TRANSACTION_NAME = 13;
     private static final String separator = ",";
 
-    public List<Transaction> createTransactionList(List<String> listFileTransakcjeCSV, String fromUserFile) {
+    public List<Transaction> createTransactionList(List<String> listFileTransakcjeCSV, boolean userFile) {
 
         PropLoader properties = new PropLoader();
         //TODO zasanowić się jak obsłużyćsytuację, gdy nie ma pliku app.properties. -> np. zrobic return pustej listy, czy użyć jakiś domyślnych wartości?
@@ -88,7 +88,7 @@ public class DataLoader {
             int constructionYearCategory = Integer.valueOf(constructionYearCategoryString);
             newRowOfTransactionList.setConstructionYearCategory(constructionYearCategory);
 
-            if (fromUserFile.equals("yes")) {
+            if (userFile) {
                 newRowOfTransactionList.setTransactionName(listTransaction.get(INDEX_TRANSACTION_NAME));
             }
 
@@ -98,9 +98,9 @@ public class DataLoader {
         return listOfTransaction;
     }
 
-    public List<Transaction> createFlatsListFromFile(Path path, String fromUserFile) {
+    public List<Transaction> createFlatsListFromFile(Path path, boolean userFile) {
         try {
-            return createTransactionList(Files.readAllLines(path), fromUserFile);
+            return createTransactionList(Files.readAllLines(path), userFile);
         } catch (IOException e) {
             System.out.println("Brak pliku z zapisanymi transakcjami użytkownika. Tego nie pomalujesz");
         }

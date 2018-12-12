@@ -28,7 +28,7 @@ public class Menu {
 
     private Path pathToUserFile = Paths.get("data", "test.txt");
     private Path pathToFileTransactionCSV = Paths.get("data", "transaction.csv");
-    //private PropLoader properties = new PropLoader("app/app.properties");
+
     private PropLoader properties;
 
     private DecimalFormat df = new DecimalFormat("###,###,###.##");
@@ -87,7 +87,7 @@ public class Menu {
                 break;
             }
             case 3: {
-                saveSession(newTransactionCreator.getNewTransaction(), pathToUserFile, "yes");
+                saveSession(newTransactionCreator.getNewTransaction(), pathToUserFile, true);
                 break;
             }
             case 4: {
@@ -126,17 +126,17 @@ public class Menu {
         }
     }
 
-    private void saveSession(Transaction newTransaction, Path pathToFile, String toUserFile) throws FileNotFoundException {
+    private void saveSession(Transaction newTransaction, Path pathToFile, boolean isUserFile) throws FileNotFoundException {
         try {
             if (Files.exists(pathToFile)) {
-                if (checkIfFlatExist(dataLoader.createFlatsListFromFile(pathToFile, toUserFile))) {
+                if (checkIfFlatExist(dataLoader.createFlatsListFromFile(pathToFile, isUserFile))) {
                     ConsoleViewer.clearScreen();
                     System.out.println(":: Dodanie transakcji niemożliwe, baza już zawiera identyczny wpis ::\n");
                 } else {
-                    saveTransaction(newTransaction, pathToFile, toUserFile);
+                    saveTransaction(newTransaction, pathToFile, isUserFile);
                 }
             } else {
-                saveTransaction(newTransaction, pathToFile, toUserFile);
+                saveTransaction(newTransaction, pathToFile, isUserFile);
             }
         } catch (Exception e) {
             ConsoleViewer.clearScreen();
@@ -146,25 +146,25 @@ public class Menu {
 
     private void loadTransaction() {
 
-        if (!dataLoader.createFlatsListFromFile(pathToUserFile, "yes").isEmpty()) {
+            if (!dataLoader.createFlatsListFromFile(pathToUserFile, true).isEmpty()) {
 
-            List<Transaction> userList = dataLoader.createFlatsListFromFile(pathToUserFile, "yes");
+                List<Transaction> userList = dataLoader.createFlatsListFromFile(pathToUserFile, true);
 
-            if (!dataLoader.createFlatsListFromFile(pathToUserFile, "yes").isEmpty()) {
-                for (int i = 0; i < userList.size(); i++) {
-                    System.out.println("\n:: MIESZKANIE NR " + (i + 1) + " " +
-                            userList.get(i).getTransactionName() +
-                            " ::::::::::::::::::::::::::::\n" + userList.get(i).toStringNoPrice());
+                    if (!dataLoader.createFlatsListFromFile(pathToUserFile, true).isEmpty()) {
+                        for (int i = 0; i < userList.size(); i++) {
+                            System.out.println("\n:: MIESZKANIE NR " + (i + 1) + " " +
+                                    userList.get(i).getTransactionName() +
+                                    " ::::::::::::::::::::::::::::\n" + userList.get(i).toStringNoPrice());
+                        }
+                        System.out.println("\nPodaj nr mieszkania, które chcesz załadować");
+                        int chosenFlat = consoleReader.readInt(1, userList.size());
+                        ConsoleViewer.clearScreen();
+                        newTransactionCreator.setNewTransaction(userList.get(chosenFlat - 1));
+                        System.out.println(":: Mieskzanie nr " + chosenFlat + " o nazwie " +
+                                newTransactionCreator.getNewTransaction().getTransactionName() + " zostało załadowane ::");
+                    }
                 }
-                System.out.println("\nPodaj nr mieszkania, które chcesz załadować");
-                int chosenFlat = consoleReader.readInt(1, userList.size());
-                ConsoleViewer.clearScreen();
-                newTransactionCreator.setNewTransaction(userList.get(chosenFlat - 1));
-                System.out.println(":: Mieskzanie nr " + chosenFlat + " o nazwie " +
-                        newTransactionCreator.getNewTransaction().getTransactionName() + " zostało załadowane ::");
             }
-        }
-    }
 
     private boolean checkIfFlatExist(List<Transaction> userList) {
         for (int i = 0; i < userList.size(); i++) {
@@ -186,9 +186,9 @@ public class Menu {
                 userList.get(i).getTypeOfMarket().equalsIgnoreCase(userTransaction.getTypeOfMarket()));
     }
 
-    public void saveTransaction(Transaction newTransaction, Path pathToFile, String toUserFile) throws IOException {
+    public void saveTransaction(Transaction newTransaction, Path pathToFile, boolean isUserFile) throws IOException {
         String transactionName = "brak";
-        if (toUserFile.equals("yes")) {
+        if (isUserFile) {
             transactionName = newTransaction.getTransactionName();
         }
         String transactionString = Stream.of(
@@ -232,7 +232,7 @@ public class Menu {
             newTransactionCreator.loadPrice();
             newTransactionCreator.calculatePPm2();
             newTransactionCreator.loadConstructionYear();
-            saveSession(newTransaction, pathToFileTransactionCSV, "no");
+            saveSession(newTransaction, pathToFileTransactionCSV, false);
         }
     }
 

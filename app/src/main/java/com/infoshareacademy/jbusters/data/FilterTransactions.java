@@ -18,18 +18,11 @@ import java.util.stream.Collectors;
 @ApplicationScoped
 public class FilterTransactions {
 
-/*
-    private PropLoader properties = new PropLoader(System.getProperty("jboss.home.dir") + "/data/app.properties");
-    private DistrWagesHandler distrWagesHandler = new DistrWagesHandler(System.getProperty("jboss.home.dir") + "/data/app.properties");
-*/  private static final Logger LOGGER = LoggerFactory.getLogger(DataLoader.class);
+ private static final Logger LOGGER = LoggerFactory.getLogger(DataLoader.class);
     private static final URL APP_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("app.properties");
     private static final URL DISTR_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("districts.properties");
 
-   // private PropLoader properties = new PropLoader("app/src/main/resources/app.properties");
-    //private DistrWagesHandler distrWagesHandler = new DistrWagesHandler("app/src/main/resources/districts.properties");
 
-
-    //private Properties districtProperties;
     private DistrWagesHandler distrWagesHandler;
     private List<Transaction> transactionsBase;
     private BigDecimal areaDiff;
@@ -66,6 +59,8 @@ public class FilterTransactions {
     public void setData(Data data) {
         this.data = data;
     }
+// metoda zwracajaca liste tranzakcji, ktora jest wynikiem wielokrotnego przefiltrowania gwnej bazy tranzakcji
+    //kolejnosc filtrow:  data tranzakcji/miasto/dzielnica/rynek/kategoria budowy/powierzchnia mieszkania
 
     public List<Transaction> theGreatFatFilter(Transaction userTransaction) {
         List<Transaction> basicFilter = basicFilter(userTransaction);
@@ -180,7 +175,7 @@ public class FilterTransactions {
     }
 
     public List<Transaction> removeOutliers(List<Transaction> transToClear, BigDecimal maxDiff) {
-        final BigDecimal MAX_PERCENT_DIFF = new BigDecimal("0.3");
+
         if (transToClear.size() < 11) return new ArrayList<>();
 
         List<Transaction> transSortedByPPerM2 = transToClear.stream()

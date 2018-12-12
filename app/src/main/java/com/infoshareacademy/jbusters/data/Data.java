@@ -1,16 +1,17 @@
 package com.infoshareacademy.jbusters.data;
 
-//Klasa zawierajaca dane wczytywane z pliku, kazdy rekord w pliku excel bedzie jedna iinstancja clasy transaction.
-// klasa data powinna zawierac metody pozwalajace dodawac rekord do bazy(pliku?)
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -28,8 +29,7 @@ public class Data {
 
     public List<Transaction> fileToData() {
 //        Path pathToFileTransactionCSV = Paths.get("app", "data", "transaction.csv");
-//        Path pathToFileTransactionCSV = file.toPath();
-//        Path pathToFileTransactionCSV = Paths.get("src/main/resources/transaction.csv");
+        Path pathToFileTransactionCSV = Paths.get(System.getProperty("jboss.home.dir") + "/data/transaction.csv");
 
         List<String> listFileTransactionCSV = null;
 

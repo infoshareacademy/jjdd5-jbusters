@@ -31,7 +31,7 @@ import java.util.Map;
 public class ValuationServlet extends HttpServlet {
 
     private static final Logger LOG = LoggerFactory.getLogger(ValuationServlet.class);
-    private static final String TEMPLATE_NAME = "valuation";
+    private static String TEMPLATE_NAME = "valuation";
 
     private Transaction newTransaction = new Transaction();
 
@@ -58,57 +58,85 @@ public class ValuationServlet extends HttpServlet {
         newTransaction.setPrice(BigDecimal.valueOf(0));
         newTransaction.setPricePerM2(BigDecimal.valueOf(0));
 
+
         List<Transaction> filteredList = filterTransactions.theGreatFatFilter(newTransaction);
         BigDecimal flatPrice = BigDecimal.valueOf(0);
         PrintWriter out = resp.getWriter();
-        Template template = templateProvider.getTemplate(
+        Template template;
+        template = templateProvider.getTemplate(
                 getServletContext(),
                 TEMPLATE_NAME);
 
+        Map<String, Object> model = new HashMap<>();
+
         if (filteredList.size() >= 11) {
             CalculatePrice calc = new CalculatePrice(newTransaction, filteredList);
+            BigDecimal yearlyTrendOfPriceChange = calc.overallTrend(filteredList);
+            model.put("trend", yearlyTrendOfPriceChange);
+
+            BigDecimal minimumPriceInList = calc.getMinimumPriceInList(filteredList);
+            BigDecimal averagePriceInList = calc.getAvaragePriceInList(filteredList);
+            BigDecimal maxPriceInList = calc.getMaxPriceInList(filteredList);
+
+            model.put("minimumPrice", minimumPriceInList);
+            model.put("averagePrice", averagePriceInList);
+            model.put("maxPrice", maxPriceInList);
 
             flatPrice = calc.calculatePrice();
+
+        } else {
+            template = templateProvider.getTemplate(
+                    getServletContext(),
+                    "no-valuation");
         }
 
-        Map<String, Object> model = new HashMap<>();
-        model.put("cena", flatPrice);
+
+        model.put("price", flatPrice);
+        model.put("city", newTransaction.getCity());
+        model.put("district1", newTransaction.getDistrict());
+        model.put("market_type", newTransaction.getTypeOfMarket());
+        model.put("flat_area", newTransaction.getFlatArea());
+        model.put("level", newTransaction.getLevel());
+        model.put("parking_spot", newTransaction.getParkingSpot());
+        model.put("standard_level", newTransaction.getStandardLevel());
+        model.put("construction", newTransaction.getConstructionYearCategory());
 
         try {
             template.process(model, out);
         } catch (TemplateException e) {
-            e.printStackTrace();
+            LOG.error("Failed to Valuation transaction district list.");
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        newTransaction.setTransactionName(("NOWA"));
-        newTransaction.setStreet("Kartuska");
-        newTransaction.setConstructionYear("2010");
 
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
         PrintWriter out = resp.getWriter();
+
+        newTransaction.setTransactionName(req.getParameter("description"));
+        newTransaction.setStreet(req.getParameter("street"));
+        newTransaction.setConstructionYear(req.getParameter("construction-year"));
+
         Menu menu = new Menu();
         final Path path = Paths.get(System.getProperty("jboss.home.dir") + "/upload/flats.txt");
 
-        menu.saveTransaction(newTransaction, path, "yes");
+        menu.saveTransaction(newTransaction, path, true);
 
         Template template = templateProvider.getTemplate(
                 getServletContext(),
-                TEMPLATE_NAME);
+                "save-info");
 
         String plik = "Zapisane";
 
         Map<String, String> model = new HashMap<>();
-        model.put("cena", plik);
+        model.put("price", plik);
 
         try {
             template.process(model, out);
-            LOG.info("Saved user transaction to file", path);
+            LOG.info("Saved user transaction to file {}", path);
         } catch (TemplateException e) {
-            e.printStackTrace();
-            LOG.error("Failed to save user file to", path);
+            LOG.error("Failed to save user file to {}", path);
         }
     }
 }
