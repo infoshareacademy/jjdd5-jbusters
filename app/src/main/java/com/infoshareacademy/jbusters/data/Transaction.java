@@ -27,6 +27,7 @@ public class Transaction {
     private String constructionYear;
     private int constructionYearCategory;
     private String transactionName;
+    private boolean important;
 
 
     public Transaction() {
@@ -74,6 +75,8 @@ public class Transaction {
                         "Miejsce postojowe:\t" + parkingSpot + "\n" +
                         "Standard wykończenia:\t" + standardLevel + "\n" +
                         "Rok budowy:\t\t" + constructionYear + "\n" +
+                        "ważna:\t\t" + important + "\n" +
+                        "Nazwa transakcji:\t" + transactionName + "\n" +
                         "Kategoria roku budowy:\t" + constructionYearCategory;
     }
 
@@ -98,6 +101,7 @@ public class Transaction {
                         "Piętro:\t\t\t" + level + "\n" +
                         "Miejsce postojowe:\t" + parkingSpot + "\n" +
                         "Standard wykończenia:\t" + standardLevel + "\n" +
+                        "Ważna:\t" + important + "\n" +
                         "Kategoria roku budowy:\t" + getConstructionYearCategoryString(getConstructionYearCategory());
     }
 
@@ -215,6 +219,14 @@ public class Transaction {
 
     public void setConstructionYearCategory(int constructionYearCategory) {
         this.constructionYearCategory = constructionYearCategory;
+    }
+
+    public boolean isImportant() {
+        return important;
+    }
+
+    public void setImportant(boolean important) {
+        this.important = important;
     }
 
     public void setTransactionName(String transactionName) {
