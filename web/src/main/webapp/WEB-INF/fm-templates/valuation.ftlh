@@ -31,14 +31,103 @@
         <div class="tab-content" id="v-pills-tabContent">
         <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
 
-        <div class="jumbotron jumbotron-opacity">
 
-        <h1 class="display-4">Wartość Twojego mieszkania za m<sup>2</sup> to:</h1>
-        <hr class="my-4">
-        <h1 id="price" class="display-4">${price} zł</h1>
-    <hr class="my-4">
 
-        </div>
+
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Wartość</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Lista transakcji</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Sczegóły</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+
+                    <div class="jumbotron jumbotron-opacity">
+
+                        <h1 class="display-4">Wartość Twojego mieszkania za m<sup>2</sup> to:</h1>
+                        <hr class="my-4">
+                        <h1 id="price" class="display-4">${price} zł</h1>
+                        <hr class="my-4">
+
+                    </div>
+
+
+                </div>
+                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+
+                    <hr class="my-4">
+                    <p class="lead">Do wyceny Twojego mieszkania wykorzystano <b>${listTransactionUseValuation?size}</b> transakcje</p>
+                    <br>
+                    <p>Lista wykorzystanych transakcji:</p>
+                    <table class="table table-striped table-dark">
+                        <thead>
+                        <tr>
+                            <th scope="col">Miasto</th>
+                            <th scope="col">Dzielnica</th>
+                            <th scope="col">Ulica</th>
+                            <th scope="col">Rodzaj rynku</th>
+                            <th scope="col">Metraż</th>
+                            <th scope="col">Piętro</th>
+                            <th scope="col">Parking</th>
+                            <th scope="col">Standard</th>
+                            <th scope="col">Rok budowy</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <#list listTransactionUseValuation as transaction >
+                            <tr>
+                                <td>${transaction.city}</td>
+                                <td>${transaction.district}</td>
+                                <td>${transaction.street}</td>
+                                <td>${transaction.typeOfMarket}</td>
+                                <td>${transaction.flatArea}</td>
+                                <td>${transaction.level}</td>
+                                <td>${transaction.parkingSpot}</td>
+                                <td>${transaction.standardLevel}</td>
+                            <#if transaction.constructionYearCategory = 1>
+                                <td>przed 1970r</td>
+                            <#elseif  transaction.constructionYearCategory = 2>
+                                <td>1970 - 1990r</td>
+                            <#elseif  transaction.constructionYearCategory = 3>
+                                <td>po roku 1990</td>
+                            </#if>
+                            </tr>
+
+                        </#list>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                    <div class="jumbotron jumbotron-opacity">
+                    <hr class="my-4">
+                    <p class="lead">Szczegółowe informacje wyceny</p>
+                    <br>
+                    <table class="table table-striped table-dark">
+                        <thead>
+                        <tr>
+                            <th scope="col">minimalna wartość wyceny</th>
+                            <th scope="col">maksymalna wartość wyceny</th>
+                            <th scope="col">średnia wartość wyceny</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>${minimumPrice}</td>
+                            <td>${maxPrice}</td>
+                            <td>${averagePrice}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
 
         </div>
         <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
@@ -93,6 +182,7 @@
         </div>
 
                 <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+
                     <div class="jumbotron jumbotron-opacity-1">
                     <form method="POST" action="/valuation">
                         <div class="form-group">
@@ -128,8 +218,6 @@
             </div>
         </div>
         </div>
-
-</div>
 
 <script src="js/jquery-3.3.1.slim.min.js"></script>
 <#include "footer.ftlh">

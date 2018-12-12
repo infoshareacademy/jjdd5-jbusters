@@ -71,6 +71,7 @@ public class ValuationServlet extends HttpServlet {
             model.put("minimumPrice", minimumPriceInList);
             model.put("averagePrice", averagePriceInList);
             model.put("maxPrice", maxPriceInList);
+            model.put("listTransactionUseValuation", filteredList);
 
             flatPrice = calc.calculatePrice();
 
