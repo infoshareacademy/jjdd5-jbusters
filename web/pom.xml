@@ -18,6 +18,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <itext.version>RELEASE</itext.version>
     </properties>
 
     <dependencies>
@@ -35,6 +36,40 @@
             <artifactId>freemarker</artifactId>
             <version>2.3.28</version>
         </dependency>
+
+        <!-- iText -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>kernel</artifactId>
+            <version>${itext.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>io</artifactId>
+            <version>${itext.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>layout</artifactId>
+            <version>${itext.version}</version>
+        </dependency>
+
+        <!-- only needed for forms -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>forms</artifactId>
+            <version>${itext.version}</version>
+        </dependency>
+
+        <!-- only needed for PDF/A -->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>pdfa</artifactId>
+            <version>${itext.version}</version>
+        </dependency>
+
 
         <dependency>
             <groupId>com.infoshareacademy.jbusters</groupId>

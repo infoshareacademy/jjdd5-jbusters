@@ -17,24 +17,20 @@ public class DistrWagesHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(Data.class);
     private Properties properties;
 
-    public DistrWagesHandler(String file) {
+/*    public DistrWagesHandler(String file) {
         this.properties = new Properties();
         loadProperties(file);
-    }
+    }*/
     public DistrWagesHandler(InputStream is) {
         this.properties = new Properties();
         loadProperties(is);
-    }
-
-   public Properties getProperties() {
-        return properties;
     }
 
     public Properties getProperties() {
         return properties;
     }
 
-    private void loadProperties(String file) {
+/*    private void loadProperties(String file) {
         try {
             Path path = Paths.get(file);
             if(!file.contains(".properties")){
@@ -49,7 +45,7 @@ public class DistrWagesHandler {
         } catch (NullPointerException e){
             LOGGER.error("Error loading file: null input");
         }
-    }
+    }*/
 
     private void loadProperties(InputStream is) {
         try {
@@ -59,8 +55,6 @@ public class DistrWagesHandler {
         } catch (IOException e) {
             System.out.println("Plik zawierający parametry potrzebne do porównywania dzielnic nie istnieje.");
             LOGGER.error("Error loading file: {}");
-        } catch (NullPointerException e){
-            LOGGER.error("Error loading file: null input");
         }
     }
 

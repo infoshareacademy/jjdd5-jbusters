@@ -4,6 +4,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.net.URL;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
@@ -50,7 +52,7 @@ public PropLoader(){}
     private void loadProperties(InputStream is){
         try {
             this.properties.load(is);
-            //is.close();
+            is.close();
         } catch (IOException e) {
             System.out.println("Missing properties file.");
         }

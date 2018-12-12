@@ -100,3 +100,7 @@
 2018-12-12 00:39:06,697 INFO com.infoshareacademy.jbusters.data.Data [main] district property file loaded successfully
 2018-12-12 00:40:41,992 INFO com.infoshareacademy.jbusters.data.Data [main] district property file loaded successfully
 2018-12-12 00:41:26,255 INFO com.infoshareacademy.jbusters.data.Data [main] district property file loaded successfully
+2018-12-12 14:47:55,854 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null input
+2018-12-12 14:58:15,785 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null input
+2018-12-12 15:00:43,686 INFO com.infoshareacademy.jbusters.data.Data [main] district property file loaded successfully
+2018-12-12 15:01:07,758 INFO com.infoshareacademy.jbusters.data.Data [main] district property file loaded successfully
