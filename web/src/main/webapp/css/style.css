@@ -55,3 +55,8 @@ div.dataTables_length,
 div.dataTables_filter {
     padding-top: 0.55em;
 }
+
+.table-bordered {
+    border: 1px solid #dee2e6;
+    background: #adb5bd;
+}
