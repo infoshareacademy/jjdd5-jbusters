@@ -232,3 +232,12 @@ Kategoria roku budowy:	2
 2018-12-12 14:58:37,305 INFO com.infoshareacademy.jbusters.data.DataLoader [main] Create list transaction. List size: 3363 rows
 2018-12-12 14:58:37,311 INFO com.infoshareacademy.jbusters.data.Data [main] district property file loaded successfully
 2018-12-12 14:59:25,136 INFO com.infoshareacademy.jbusters.data.Data [main] Load file CSV. Number of loaded transactions: 3363
+2018-12-13 14:58:52,262 INFO com.infoshareacademy.jbusters.data.Data [main] Load file CSV. Number of loaded transactions: 3363
+2018-12-13 14:58:52,655 INFO com.infoshareacademy.jbusters.data.DataLoader [main] Create list transaction. List size: 3363 rows
+2018-12-13 14:58:52,660 INFO com.infoshareacademy.jbusters.data.Data [main] district property file loaded successfully
+2018-12-13 15:00:44,880 INFO com.infoshareacademy.jbusters.data.Data [main] Load file CSV. Number of loaded transactions: 3363
+2018-12-13 15:00:45,315 INFO com.infoshareacademy.jbusters.data.DataLoader [main] Create list transaction. List size: 3363 rows
+2018-12-13 15:00:45,321 INFO com.infoshareacademy.jbusters.data.Data [main] district property file loaded successfully
+2018-12-13 15:07:33,612 INFO com.infoshareacademy.jbusters.data.Data [main] Load file CSV. Number of loaded transactions: 3363
+2018-12-13 15:07:34,087 INFO com.infoshareacademy.jbusters.data.DataLoader [main] Create list transaction. List size: 3363 rows
+2018-12-13 15:07:34,091 INFO com.infoshareacademy.jbusters.data.Data [main] district property file loaded successfully

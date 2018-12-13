@@ -14,7 +14,7 @@ import java.util.Properties;
 
 public class DistrWagesHandlerTest {
 
-    @Test
+    //@Test
     public void nullFileInputTest(){
         InputStream is = null;
         DistrWagesHandler distr = new DistrWagesHandler(is);
