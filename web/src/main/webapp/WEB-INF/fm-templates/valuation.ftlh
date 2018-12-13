@@ -20,8 +20,6 @@
         <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
 
 
-
-
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                 <li class="nav-item">
                     <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Wartość</a>
@@ -175,8 +173,6 @@
 
                     <div class="jumbotron jumbotron-opacity-1">
 
-                        <#if errors
-
                     <form method="POST" action="/valuation">
                         <div class="form-group">
                             <label for="Select10">Ustaw opis mieszkania</label>
@@ -203,6 +199,8 @@
                         <input class="btn btn-primary" type="submit" value="Zapisz w pliku" name="upload" id="upload"/>
 
                     </form>
+
+
                         </div>
 
 

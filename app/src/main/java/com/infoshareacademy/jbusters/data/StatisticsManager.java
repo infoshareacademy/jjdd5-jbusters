@@ -2,6 +2,8 @@ package com.infoshareacademy.jbusters.data;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -64,16 +66,16 @@ public class StatisticsManager {
 
         Path path = PATH_TO_STATISTICS_FILE;
 
-        List<String> existingLine = Files.readAllLines(path);
+        List<String> existingLine = Files.readAllLines(path, StandardCharsets.UTF_8);
 
         existingLine.set(lineNumber, data);
 
-        Files.write(path, existingLine);
+        Files.write(path, existingLine, StandardCharsets.UTF_8);
     }
 
     private List<Statistics> generateStatisticsList() throws IOException {
 
-        List<String> existingList = Files.readAllLines(PATH_TO_STATISTICS_FILE);
+        List<String> existingList = Files.readAllLines(PATH_TO_STATISTICS_FILE, StandardCharsets.UTF_8);
 
         List<Statistics> listOfStatistics = new ArrayList<>();
 
