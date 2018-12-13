@@ -18,7 +18,7 @@ public class StatisticsManager {
 
     public void captureNameFromServlet(String cityName, String districtName, String value) throws IOException {
 
-        if(Objects.nonNull(value)) {
+        if(Objects.nonNull(value) && Double.parseDouble(value) > 0) {
 
             addOrUpdateStatistics(cityName, districtName, value);
         }
@@ -63,7 +63,7 @@ public class StatisticsManager {
 
     private void addNewLine(String cityName, String districtName, String value) throws IOException {
 
-        String statisticsString = cityName + "," + districtName + ",1," + value;
+        String statisticsString = cityName + "," + districtName + ",1," + value + System.lineSeparator();
 
         Files.write(Paths.get(String.valueOf(PATH_TO_STATISTICS_FILE)), statisticsString.getBytes(), StandardOpenOption.APPEND);
     }
