@@ -25,7 +25,7 @@ public class Menu {
 
     private DataLoader dataLoader;
 
-    private Path pathisUserFile = Paths.get("data", "test.txt");
+    private Path pathToUserFile = Paths.get("data", "test.txt");
     private Path pathToFileTransactionCSV = Paths.get("data", "transaction.csv");
     private PropLoader properties = new PropLoader("app/app.properties");
     private DecimalFormat df = new DecimalFormat("###,###,###.##");
@@ -75,7 +75,7 @@ public class Menu {
                 break;
             }
             case 3: {
-                saveSession(newTransactionCreator.getNewTransaction(), pathisUserFile, true);
+                saveSession(newTransactionCreator.getNewTransaction(), pathToUserFile, true);
                 break;
             }
             case 4: {
@@ -134,25 +134,25 @@ public class Menu {
 
     private void loadTransaction() {
 
-        if (!dataLoader.createFlatsListFromFile(pathisUserFile, true).isEmpty()) {
+            if (!dataLoader.createFlatsListFromFile(pathToUserFile, true).isEmpty()) {
 
-            List<Transaction> userList = dataLoader.createFlatsListFromFile(pathisUserFile, true);
+                List<Transaction> userList = dataLoader.createFlatsListFromFile(pathToUserFile, true);
 
-            if (!dataLoader.createFlatsListFromFile(pathisUserFile, true).isEmpty()) {
-                for (int i = 0; i < userList.size(); i++) {
-                    System.out.println("\n:: MIESZKANIE NR " + (i + 1) + " " +
-                            userList.get(i).getTransactionName() +
-                            " ::::::::::::::::::::::::::::\n" + userList.get(i).toStringNoPrice());
+                    if (!dataLoader.createFlatsListFromFile(pathToUserFile, true).isEmpty()) {
+                        for (int i = 0; i < userList.size(); i++) {
+                            System.out.println("\n:: MIESZKANIE NR " + (i + 1) + " " +
+                                    userList.get(i).getTransactionName() +
+                                    " ::::::::::::::::::::::::::::\n" + userList.get(i).toStringNoPrice());
+                        }
+                        System.out.println("\nPodaj nr mieszkania, które chcesz załadować");
+                        int chosenFlat = consoleReader.readInt(1, userList.size());
+                        ConsoleViewer.clearScreen();
+                        newTransactionCreator.setNewTransaction(userList.get(chosenFlat - 1));
+                        System.out.println(":: Mieskzanie nr " + chosenFlat + " o nazwie " +
+                                newTransactionCreator.getNewTransaction().getTransactionName() + " zostało załadowane ::");
+                    }
                 }
-                System.out.println("\nPodaj nr mieszkania, które chcesz załadować");
-                int chosenFlat = consoleReader.readInt(1, userList.size());
-                ConsoleViewer.clearScreen();
-                newTransactionCreator.setNewTransaction(userList.get(chosenFlat - 1));
-                System.out.println(":: Mieskzanie nr " + chosenFlat + " o nazwie " +
-                        newTransactionCreator.getNewTransaction().getTransactionName() + " zostało załadowane ::");
             }
-        }
-    }
 
     private boolean checkIfFlatExist(List<Transaction> userList) {
         for (int i = 0; i < userList.size(); i++) {
@@ -176,8 +176,12 @@ public class Menu {
 
     public void saveTransaction(Transaction newTransaction, Path pathToFile, boolean isUserFile) throws IOException {
         String transactionName = "brak";
+        boolean transactionImportant = false;
+
         if (isUserFile) {
             transactionName = newTransaction.getTransactionName();
+            transactionImportant = newTransaction.isImportant();
+
         }
         String transactionString = Stream.of(
                 newTransaction.getTransactionDate().toString().replaceAll("-", " "),
@@ -199,11 +203,12 @@ public class Menu {
         Writer out = new BufferedWriter(new OutputStreamWriter(
                 new FileOutputStream(String.valueOf(pathToFile), true), "UTF-8"));
         try {
-            out.append(transactionString + "," + transactionName + "\n");
+            out.append(transactionString + "," + transactionName + "," + transactionImportant+"\n");
+
         } finally {
             out.close();
         }
-
+        
         ConsoleViewer.clearScreen();
         System.out.println(":: Twoja transakcja została zapisana do pliku ::\n");
         System.out.println("Nowy wpis: " + newTransaction.toStringNoPrice());

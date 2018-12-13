@@ -3,6 +3,7 @@ package com.infoshareacademy.jbusters.data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.enterprise.context.RequestScoped;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@RequestScoped
 public class DataLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(DataLoader.class);
     private static final int INDEX_TRANSACTION_DATE = 0;
@@ -30,6 +32,7 @@ public class DataLoader {
     private static final int INDEX_CONSTRUCTION_YEAR = 11;
     private static final int INDEX_CONSTRUCTION_YEAR_CATEGORY = 12;
     private static final int INDEX_TRANSACTION_NAME = 13;
+    private static final int INDEX_IMPORTANT = 14;
     private static final String separator = ",";
 
     public List<Transaction> createTransactionList(List<String> listFileTransakcjeCSV, boolean userFile) {
@@ -78,6 +81,7 @@ public class DataLoader {
 
             if (userFile) {
                 newRowOfTransactionList.setTransactionName(listTransaction.get(INDEX_TRANSACTION_NAME));
+                newRowOfTransactionList.setImportant(Boolean.valueOf(listTransaction.get(INDEX_IMPORTANT)));
             }
 
             listOfTransaction.add(newRowOfTransactionList);
