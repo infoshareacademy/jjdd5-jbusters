@@ -11,6 +11,7 @@
      <div class="jumbotron jumbotron-opacity">
          <h1 class="display-10"><p>${error} </p></h1>
          <hr class="my-4">
+         <a class="btn btn-primary btn-lg btn-dark" href="uploadFile.html" role="button">Załaduj plik</a>
      </div>
  </div>
 
@@ -43,11 +44,18 @@
     <tbody>
 
     <#list flats as flat>
-        <tr>
+
+        <#if flat.important>
+            <tr style="background: lawngreen">
+        <#else>
+            <tr>
+        </#if>
+
         <td>
         <a class="btn btn-primary btn-lg active" role="button" aria-pressed="true" href="/valuation?city=${flat.city}&district=${flat.district}&market-type=${flat.typeOfMarket}&flat-area=${flat.flatArea}&level=${flat.level}&parking-spot=${flat.parkingSpot}&standard-level=${flat.standardLevel}&construction=${flat.constructionYearCategory}">
             Wyceń</a>
         </td>
+
         <td>${flat.transactionName}</td>
         <td>${flat.city}</td>
         <td>${flat.district}</td>
@@ -65,6 +73,7 @@
             <td>po roku 1990</td>
         </#if>
         </tr>
+
     </#list>
     </tbody>
 </table>

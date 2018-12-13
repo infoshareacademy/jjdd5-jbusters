@@ -4,10 +4,7 @@
     <br>
     <br>
     <br>
-
-
-
-        <div class="row">
+    <div class="row">
         <div class="col-3">
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
@@ -22,19 +19,110 @@
         <div class="tab-content" id="v-pills-tabContent">
         <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
 
-        <div class="jumbotron jumbotron-opacity">
 
-        <h1 class="display-4">Wartość Twojego mieszkania za m<sup>2</sup> to:</h1>
-        <hr class="my-4">
-        <h1 id="price" class="display-4">${price} zł</h1>
-    <hr class="my-4">
 
-        </div>
+
+            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Wartość</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Lista transakcji</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Sczegóły</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+
+                    <div class="jumbotron jumbotron-opacity">
+
+                        <h1 class="display-4">Wartość Twojego mieszkania za m<sup>2</sup> to:</h1>
+                        <hr class="my-4">
+                        <h1 id="price" class="display-4">${price} zł</h1>
+                        <hr class="my-4">
+
+                    </div>
+
+
+                </div>
+                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+
+                    <hr class="my-4">
+                    <p class="lead">Do wyceny Twojego mieszkania wykorzystano <b>${listTransactionUseValuation?size}</b> transakcje</p>
+                    <br>
+                    <p>Lista wykorzystanych transakcji:</p>
+                    <table class="table table-striped table-dark">
+                        <thead>
+                        <tr>
+                            <th scope="col">Miasto</th>
+                            <th scope="col">Dzielnica</th>
+                            <th scope="col">Ulica</th>
+                            <th scope="col">Rodzaj rynku</th>
+                            <th scope="col">Metraż</th>
+                            <th scope="col">Piętro</th>
+                            <th scope="col">Parking</th>
+                            <th scope="col">Standard</th>
+                            <th scope="col">Rok budowy</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <#list listTransactionUseValuation as transaction >
+                            <tr>
+                                <td>${transaction.city}</td>
+                                <td>${transaction.district}</td>
+                                <td>${transaction.street}</td>
+                                <td>${transaction.typeOfMarket}</td>
+                                <td>${transaction.flatArea}</td>
+                                <td>${transaction.level}</td>
+                                <td>${transaction.parkingSpot}</td>
+                                <td>${transaction.standardLevel}</td>
+                            <#if transaction.constructionYearCategory = 1>
+                                <td>przed 1970r</td>
+                            <#elseif  transaction.constructionYearCategory = 2>
+                                <td>1970 - 1990r</td>
+                            <#elseif  transaction.constructionYearCategory = 3>
+                                <td>po roku 1990</td>
+                            </#if>
+                            </tr>
+
+                        </#list>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                    <div class="jumbotron jumbotron-opacity">
+                        <p class="lead">Szczegółowe informacje wyceny</p>
+                        <hr class="my-4">
+                    <br>
+                    <table class="table table-striped table-dark">
+                        <thead>
+                        <tr>
+                            <th scope="col">minimalna wartość wyceny</th>
+                            <th scope="col">maksymalna wartość wyceny</th>
+                            <th scope="col">średnia wartość wyceny</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>${minimumPrice}</td>
+                            <td>${maxPrice}</td>
+                            <td>${averagePrice}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                        <hr class="my-4">
+                    </div>
+                </div>
+            </div>
 
         </div>
         <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
 
         <div class="jumbotron jumbotron-opacity-1">
+            <p class="lead"><b>Twoje mieszkanie:</b> </p>
         <form method="get" action="valuation">
 
         <div class="form-group">
@@ -83,37 +171,43 @@
         </div>
         </div>
 
-        <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-            <div class="jumbotron jumbotron-opacity-1">
-                <form method="POST" action="/valuation">
-                    <div class="form-group">
-                        <label for="Select9">Ustaw opis mieszkania</label>
-                        <input name="description" type="text" class="form-control" id="Select9" required>
+                <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+
+                    <div class="jumbotron jumbotron-opacity-1">
+                    <form method="POST" action="/valuation">
+                        <div class="form-group">
+                            <label for="Select10">Ustaw opis mieszkania</label>
+                            <input name="description" type="text" class="form-control" id="Select10" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Select11">Podaj nazwę ulicy</label>
+                            <input name="street" type="text" class="form-control" id="Select11" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Select12">Podaj rok budowy</label>
+                            <input name="construction-year" type="text" class="form-control" id="Select12" required >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="Select13">Chcesz wyróżnić mieszkanie ?</label>
+                            <select name="important" class="form-control" id="Select13" required>
+                                <option>nie</option>
+                                <option>tak</option>
+                            </select>
+                        </div>
+                        <input class="btn btn-primary" type="submit" value="Zapisz w pliku" name="upload" id="upload"/>
+
+                    </form>
+                        </div>
+
+
                     </div>
-
-                    <div class="form-group">
-                        <label for="Select9">Podaj nazwę ulicy</label>
-                        <input name="street" type="text" class="form-control" id="Select9" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="Select9">Podaj rok budowy</label>
-                        <input name="construction-year" type="text" class="form-control" id="Select9" required>
-                    </div>
-
-                    <#if constructionYearError??>
-                        <div class="p-3 mb-2 bg-danger text-white">${constructionYearError}</div>
-                    </#if>
-
-                    <input class="btn btn-primary" type="submit" value="Zapisz w pliku" name="upload" id="upload"/>
-                </form>
+                </div>
             </div>
         </div>
         </div>
-        </div>
-        </div>
-
-</div>
 
 <script src="js/jquery-3.3.1.slim.min.js"></script>
 <#include "footer.ftlh">

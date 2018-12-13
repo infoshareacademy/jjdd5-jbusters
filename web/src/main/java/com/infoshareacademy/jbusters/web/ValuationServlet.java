@@ -2,7 +2,9 @@ package com.infoshareacademy.jbusters.web;
 
 import com.infoshareacademy.jbusters.console.Menu;
 import com.infoshareacademy.jbusters.data.CalculatePrice;
+import com.infoshareacademy.jbusters.data.Data;
 import com.infoshareacademy.jbusters.data.FilterTransactions;
+import com.infoshareacademy.jbusters.data.StatisticsManager;
 import com.infoshareacademy.jbusters.data.Transaction;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import com.sun.deploy.net.HttpRequest;
@@ -35,7 +37,8 @@ import java.util.regex.Pattern;
 public class ValuationServlet extends HttpServlet {
 
     private static final Logger LOG = LoggerFactory.getLogger(ValuationServlet.class);
-    private static String TEMPLATE_NAME = "valuation";
+    private static final String TEMPLATE_NAME = "valuation";
+    private static final String MARKET_TYPE = "market-type";
 
     private Transaction newTransaction = new Transaction();
 
@@ -45,14 +48,20 @@ public class ValuationServlet extends HttpServlet {
     @Inject
     private FilterTransactions filterTransactions;
 
+    @Inject
+    private StatisticsManager statisticsManager;
+
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
 
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/load-other-values");
         Map<String, Object> model = new HashMap<>();
         Map<String, String> errorsMap = saveTransactionDetails(req);
         model.put("errors", errorsMap);
+
+        statisticsManager.captureNameFromServlet(req.getParameter("district"));
+
 
         List<Transaction> filteredList = filterTransactions.theGreatFatFilter(newTransaction);
         BigDecimal flatPrice = BigDecimal.valueOf(0);
@@ -82,9 +91,10 @@ public class ValuationServlet extends HttpServlet {
                 BigDecimal averagePriceInList = calc.getAvaragePriceInList(filteredList);
                 BigDecimal maxPriceInList = calc.getMaxPriceInList(filteredList);
 
-                model.put("minimumPrice", minimumPriceInList);
-                model.put("averagePrice", averagePriceInList);
-                model.put("maxPrice", maxPriceInList);
+            model.put("minimumPrice", minimumPriceInList);
+            model.put("averagePrice", averagePriceInList);
+            model.put("maxPrice", maxPriceInList);
+            model.put("listTransactionUseValuation", filteredList);
 
                 flatPrice = calc.calculatePrice();
 
@@ -105,11 +115,10 @@ public class ValuationServlet extends HttpServlet {
             model.put("standard_level", newTransaction.getStandardLevel());
             model.put("construction", newTransaction.getConstructionYearCategory());
 
-            try {
-                template.process(model, out);
-            } catch (TemplateException e) {
-                LOG.error("Failed to send model due to {}", e.getMessage());
-            }
+        try {
+            template.process(model, out);
+        } catch (TemplateException e) {
+            LOG.error("Failed to send model due to {}", e.getMessage());
         }
     }
 
@@ -127,14 +136,27 @@ public class ValuationServlet extends HttpServlet {
         newTransaction.setStreet(req.getParameter("street"));
         newTransaction.setConstructionYear(req.getParameter("construction"));
         newTransaction.setConstructionYear(req.getParameter("construction-year"));
+        String important = req.getParameter("important");
+
+        if ("nie".equals(important)){
+            newTransaction.setImportant(false);
+        }
+        if ("tak".equals(important)){
+            newTransaction.setImportant(true);
+        }
+
 
 
         Menu menu = new Menu();
         final Path path = Paths.get(System.getProperty("jboss.home.dir") + "/upload/flats.txt");
+
         menu.saveTransaction(newTransaction, path, true);
 
         String saved = "Zapisane";
 
+        String saved = "Zapisane";
+
+        Map<String, String> model = new HashMap<>();
         model.put("price", saved);
 
         try {
