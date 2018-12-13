@@ -15,18 +15,15 @@ import java.util.Objects;
 public class StatisticsManager {
 
     private static final Path PATH_TO_STATISTICS_FILE = Paths.get(System.getProperty("jboss.home.dir"), "data", "statistics.txt");
+    private static final String SEPARATOR = ",";
 
     public void captureNameFromServlet(String cityName, String districtName, String value) throws IOException {
-
         if(Objects.nonNull(value) && Double.parseDouble(value) > 0) {
-
             addOrUpdateStatistics(cityName, districtName, value);
         }
-
     }
 
     private void addOrUpdateStatistics(String cityName, String districtName, String value) throws IOException {
-
         if (!Files.exists(PATH_TO_STATISTICS_FILE)) {
             Files.createFile(PATH_TO_STATISTICS_FILE);
         }
@@ -38,7 +35,6 @@ public class StatisticsManager {
         boolean shouldAddNewLine = true;
 
         for (int i = 0; i < existingList.size(); i++) {
-
             if (existingList.get(i).getCityName().equals(cityName) &&
                     existingList.get(i).getDistrictName().equals(districtName)) {
 
@@ -50,12 +46,11 @@ public class StatisticsManager {
                 valueUpdate = (valueUpdate + Double.parseDouble(value)) * counterIncrement;
                 String valueString = String.valueOf(valueUpdate);
 
-                overwriteExistingLine(i, cityName + "," + districtName + "," + counterString + "," + valueString);
+                overwriteExistingLine(i, cityName + SEPARATOR + districtName + SEPARATOR + counterString + SEPARATOR + valueString);
 
                 shouldAddNewLine = false;
             }
         }
-
         if (shouldAddNewLine){
             addNewLine(cityName, districtName, value);
         }
@@ -63,7 +58,7 @@ public class StatisticsManager {
 
     private void addNewLine(String cityName, String districtName, String value) throws IOException {
 
-        String statisticsString = cityName + "," + districtName + ",1," + value + System.lineSeparator();
+        String statisticsString = cityName + SEPARATOR + districtName + ",1," + value + System.lineSeparator();
 
         Files.write(Paths.get(String.valueOf(PATH_TO_STATISTICS_FILE)), statisticsString.getBytes(), StandardOpenOption.APPEND);
     }
@@ -87,7 +82,7 @@ public class StatisticsManager {
 
         for (String rowList : existingList) {
 
-            List<String> listTransaction = Arrays.asList(rowList.split(","));
+            List<String> listTransaction = Arrays.asList(rowList.split(SEPARATOR));
 
             Statistics newLine = new Statistics();
 
