@@ -53,9 +53,6 @@ public class ValuationServlet extends HttpServlet {
         Map<String, String> errorsMap = saveTransactionDetails(req);
         model.put("errors", errorsMap);
 
-        statisticsManager.captureNameFromServlet(req.getParameter("district"));
-
-
         List<Transaction> filteredList = filterTransactions.theGreatFatFilter(newTransaction);
         BigDecimal flatPrice = BigDecimal.valueOf(0);
         PrintWriter out = resp.getWriter();
@@ -103,6 +100,10 @@ public class ValuationServlet extends HttpServlet {
         } catch (TemplateException e) {
             LOG.error("Failed to send model due to {}", e.getMessage());
         }
+
+        String cityName = req.getParameter("city");
+        String districtName = req.getParameter("district");
+        statisticsManager.captureNameFromServlet(cityName, districtName, flatPrice.setScale(2, BigDecimal.ROUND_UP).toString());
     }
 
     @Override
