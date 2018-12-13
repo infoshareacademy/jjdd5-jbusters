@@ -22,7 +22,7 @@ public class StatisticsManager {
             addOrUpdateStatistics(cityName, districtName, value);
         }
     }
-
+  
     private void addOrUpdateStatistics(String cityName, String districtName, String value) throws IOException {
         if (!Files.exists(PATH_TO_STATISTICS_FILE)) {
             Files.createFile(PATH_TO_STATISTICS_FILE);
