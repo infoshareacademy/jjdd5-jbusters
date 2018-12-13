@@ -11,6 +11,7 @@ import com.sun.deploy.net.HttpRequest;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,6 +57,7 @@ public class ValuationServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
 
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/load-other-values");
         Map<String, Object> model = new HashMap<>();
         Map<String, String> errorsMap = saveTransactionDetails(req);
         model.put("errors", errorsMap);
@@ -70,7 +72,7 @@ public class ValuationServlet extends HttpServlet {
         template = templateProvider.getTemplate(
                 getServletContext(),
                 TEMPLATE_NAME);
-
+// TODO getAttribute from doPost
         if (errorsMap.size() != 0) {
             try {
                 req.setAttribute("errorsMap", errorsMap);
@@ -91,10 +93,10 @@ public class ValuationServlet extends HttpServlet {
                 BigDecimal averagePriceInList = calc.getAvaragePriceInList(filteredList);
                 BigDecimal maxPriceInList = calc.getMaxPriceInList(filteredList);
 
-            model.put("minimumPrice", minimumPriceInList);
-            model.put("averagePrice", averagePriceInList);
-            model.put("maxPrice", maxPriceInList);
-            model.put("listTransactionUseValuation", filteredList);
+                model.put("minimumPrice", minimumPriceInList);
+                model.put("averagePrice", averagePriceInList);
+                model.put("maxPrice", maxPriceInList);
+                model.put("listTransactionUseValuation", filteredList);
 
                 flatPrice = calc.calculatePrice();
 
@@ -115,16 +117,19 @@ public class ValuationServlet extends HttpServlet {
             model.put("standard_level", newTransaction.getStandardLevel());
             model.put("construction", newTransaction.getConstructionYearCategory());
 
-        try {
-            template.process(model, out);
-        } catch (TemplateException e) {
-            LOG.error("Failed to send model due to {}", e.getMessage());
+            try {
+                template.process(model, out);
+            } catch (TemplateException e) {
+                LOG.error("Failed to send model due to {}", e.getMessage());
+            }
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/valuation");
+        Map<String, String> errorsMap = saveTransactionDetails(req);
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
         PrintWriter out = resp.getWriter();
         Map<String, String> model = new HashMap<>();
@@ -134,17 +139,25 @@ public class ValuationServlet extends HttpServlet {
 
         newTransaction.setTransactionName(req.getParameter("description"));
         newTransaction.setStreet(req.getParameter("street"));
-        newTransaction.setConstructionYear(req.getParameter("construction"));
-        newTransaction.setConstructionYear(req.getParameter("construction-year"));
+        validateConstructionYear(req);
         String important = req.getParameter("important");
 
-        if ("nie".equals(important)){
+        if ("nie".equals(important)) {
             newTransaction.setImportant(false);
         }
-        if ("tak".equals(important)){
+        if ("tak".equals(important)) {
             newTransaction.setImportant(true);
         }
 
+        if (errorsMap.size() != 0) {
+            try {
+                req.setAttribute("errorsMap", errorsMap);
+                requestDispatcher.forward(req, resp);
+            } catch (ServletException e) {
+                e.printStackTrace();
+            }
+            // TODO fill template with if to display errors
+        }
 
 
         Menu menu = new Menu();
@@ -154,9 +167,6 @@ public class ValuationServlet extends HttpServlet {
 
         String saved = "Zapisane";
 
-        String saved = "Zapisane";
-
-        Map<String, String> model = new HashMap<>();
         model.put("price", saved);
 
         try {
@@ -199,6 +209,19 @@ public class ValuationServlet extends HttpServlet {
         return errorsMap;
     }
 
+    private Map<String, String> validateConstructionYear(HttpServletRequest req) {
+        Map<String, String> errorsMap = new HashMap<>();
+        newTransaction.setConstructionYear(
+                validateNumericData(req.getParameter("construction-year"),
+                        errorsMap,
+                        () -> req.getParameter("construction-year"),
+                        "consstructionYear",
+                        "Popraw rok budowy!",
+                        "0"));
+        return errorsMap;
+    }
+
+
     private void validateData(HttpServletRequest req, Map<String, String> errorsMap) {
         try {
             newTransaction.setTransactionDate(LocalDate.now());
@@ -216,10 +239,10 @@ public class ValuationServlet extends HttpServlet {
     }
 
     private void validateMarketType(HttpServletRequest req, Map<String, String> errorsMap) {
-        if (req.getParameter("market-type").equalsIgnoreCase("RYNEK WTÓRNY") ||
-                req.getParameter("market-type").equalsIgnoreCase("RYNEK PIERWOTNY")) {
+        if (req.getParameter(MARKET_TYPE).equalsIgnoreCase("RYNEK WTÓRNY") ||
+                req.getParameter(MARKET_TYPE).equalsIgnoreCase("RYNEK PIERWOTNY")) {
             try {
-                newTransaction.setTypeOfMarket(req.getParameter("market-type").replaceAll("_", " "));
+                newTransaction.setTypeOfMarket(req.getParameter(MARKET_TYPE).replaceAll("_", " "));
             } catch (Exception e) {
                 LOG.error("Failed to save market type due to {}", e.getMessage());
                 errorsMap.put("marketError", "Błąd podczas zapisu rodzaju rynku!");
@@ -228,9 +251,9 @@ public class ValuationServlet extends HttpServlet {
             errorsMap.put("marketError", "Błąd podczas zapisu rodzaju rynku!");
         }
     }
-// TODO CHECK WHY isNumeric returns false for values with dot ex. double
+
     private <T> T validateNumericData(String parameter, Map<String, String> errors, Supplier<T> supplier, String errorKey, String errorMessage, T defaultValue) {
-        if (StringUtils.isNumeric(parameter) && !parameter.isEmpty()) {
+        if (NumberUtils.isNumber(parameter)) {
             try {
                 T value = supplier.get();
                 return value;

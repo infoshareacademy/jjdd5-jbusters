@@ -174,6 +174,9 @@
                 <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
 
                     <div class="jumbotron jumbotron-opacity-1">
+
+                        <#if errors
+
                     <form method="POST" action="/valuation">
                         <div class="form-group">
                             <label for="Select10">Ustaw opis mieszkania</label>
