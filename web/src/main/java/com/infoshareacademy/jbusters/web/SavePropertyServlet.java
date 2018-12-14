@@ -16,11 +16,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @WebServlet("/save-property")
@@ -64,19 +67,26 @@ public class SavePropertyServlet extends HttpServlet {
             newTransaction.setImportant(true);
         }
 
-        // TODO zamiast dispacher poszukać reload aby zostało na tej samoej stronie
-        // TODO nie pozwolić zapisać do pliku jeśli rok nie jest liczbą, lub zawiera litery
-
-
         if (errorsMap.size() != 0) {
             req.setAttribute("constructionYearError", errorsMap);
             requestDispatcher.forward(req, resp);
         } else {
 
-            Menu menu = new Menu();
-            final Path path = Paths.get(System.getProperty("jboss.home.dir") + "/upload/flats.txt");
+            HttpSession session = req.getSession();
+            List<Transaction> propertyList = (List<Transaction>) session.getAttribute("propertyList");
+            if (propertyList == null) {
+                propertyList = new ArrayList<>();
+                session.setAttribute("propertyList", propertyList );
+            }
+            Transaction toList = new Transaction();
+            toList = newTransaction;
+            propertyList.add(toList);
 
-            menu.saveTransaction(newTransaction, path, true);
+
+//            Menu menu = new Menu();
+//            final Path path = Paths.get(System.getProperty("jboss.home.dir") + "/upload/flats.txt");
+//
+//            menu.saveTransaction(newTransaction, path, true);
 
             String saved = "Zapisane";
 
@@ -84,9 +94,9 @@ public class SavePropertyServlet extends HttpServlet {
 
             try {
                 template.process(model, out);
-                LOG.info("Saved user transaction to file {}", path);
+//                LOG.info("Saved user transaction to file {}", path);
             } catch (TemplateException e) {
-                LOG.error("Failed to save user file to {}", path);
+//                LOG.error("Failed to save user file to {}", path);
             }
         }
     }

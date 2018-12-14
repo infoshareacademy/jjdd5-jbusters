@@ -49,7 +49,6 @@ public class UsersTransactionsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-
         final PrintWriter writer = response.getWriter();
         final Part filePart = request.getPart("file");
         List<Transaction> usersTransactions = new ArrayList<>();

@@ -5,7 +5,7 @@
 <script type="text/javascript" charset="utf8"
         src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
-<div class="container">
+<div class="container" style="margin-left: 200px">
     <br>
     <br>
     <br>
@@ -39,11 +39,12 @@
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
 
-                    <div class="jumbotron jumbotron-opacity">
+                    <div class="jumbotron jumbotron-opacity-1">
 
-                        <h1 class="display-4">Wartość Twojego mieszkania za m<sup>2</sup> to:</h1>
+                        <h1 class="display-4">Wartość Twojego mieszkania  to:</h1>
                         <hr class="my-4">
-                        <h1 id="price" class="display-4">${price} zł</h1>
+                        <h1 id="price" class="display-4"><b>${price} zł za m<sup>2</sup></b></h1>
+                        <h1 id="price" class="display-4">${price_total} zł za całe mieszkanie</h1>
                         <hr class="my-4">
 
                     </div>
@@ -51,7 +52,7 @@
 
                 </div>
                 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-
+                    <div class="jumbotron jumbotron-opacity" style="width: 1200px">
                     <hr class="my-4">
                     <script>
                         $(document).ready(function () {
@@ -63,7 +64,7 @@
                     <p class="lead">Do wyceny Twojego mieszkania wykorzystano <b>${listTransactionUseValuation?size}</b> transakcje</p>
                     <br>
                     <p>Lista wykorzystanych transakcji:</p>
-                    <table id="flats" class="display nowrap" style="width: 100%">
+                    <table id="flats" class="display nowrap" style="width: 400px">
                         <thead>
                         <tr>
                             <th scope="col">Miasto</th>
@@ -101,25 +102,26 @@
 
                         </tbody>
                     </table>
+                    </div>
                 </div>
                 <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
                     <div class="jumbotron jumbotron-opacity">
-                        <p class="lead">Szczegółowe informacje wyceny</p>
+                        <p class="lead">Wartości nieruchomości uwzględnionych przy wycenie twojego mieszkania</p>
                         <hr class="my-4">
                     <br>
-                    <table class="table table-striped table-dark">
-                        <thead>
+                    <table class="table table-striped">
+                        <thead class="thead-dark">
                         <tr>
-                            <th scope="col">minimalna wartość wyceny</th>
-                            <th scope="col">maksymalna wartość wyceny</th>
-                            <th scope="col">średnia wartość wyceny</th>
+                            <th scope="col">Minimalna</th>
+                            <th scope="col">Maksymalna</th>
+                            <th scope="col">Średnia</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td>${minimumPrice}</td>
-                            <td>${maxPrice}</td>
-                            <td>${averagePrice}</td>
+                            <td><b>${minimumPrice} zł za m<sup>2</sup></b></td>
+                            <td><b>${maxPrice} zł za m<sup>2</sup></b></td>
+                            <td><b>${averagePrice} zł za m<sup>2</sup></b></td>
                         </tr>
                         </tbody>
                     </table>

@@ -60,7 +60,8 @@ public class ValuationServlet extends HttpServlet {
         model.put("errors", errorsMap);
 
         List<Transaction> filteredList = filterTransactions.theGreatFatFilter(newTransaction);
-        BigDecimal flatPrice = BigDecimal.valueOf(0);
+        BigDecimal flatPriceM2 = BigDecimal.valueOf(0);
+        BigDecimal flatPriceTotal = BigDecimal.valueOf(0);
         PrintWriter out = resp.getWriter();
         Template template = templateProvider.getTemplate(
                 getServletContext(),
@@ -91,7 +92,8 @@ public class ValuationServlet extends HttpServlet {
                 model.put("maxPrice", maxPriceInList);
                 model.put("listTransactionUseValuation", filteredList);
 
-                flatPrice = calc.calculatePrice().setScale(2, RoundingMode.HALF_UP);
+                flatPriceM2 = calc.calculatePrice().setScale(2, RoundingMode.HALF_UP);
+                flatPriceTotal = newTransaction.getFlatArea().multiply(flatPriceM2).setScale(2, RoundingMode.HALF_UP);
 
             } else {
                 template = templateProvider.getTemplate(
@@ -99,7 +101,8 @@ public class ValuationServlet extends HttpServlet {
                         "no-valuation");
             }
 
-            model.put("price", flatPrice);
+            model.put("price", flatPriceM2);
+            model.put("price_total", flatPriceTotal);
             model.put("city", newTransaction.getCity());
             model.put("district1", newTransaction.getDistrict());
             model.put("market_type", newTransaction.getTypeOfMarket());
@@ -111,7 +114,7 @@ public class ValuationServlet extends HttpServlet {
 
             String cityName = req.getParameter("city");
             String districtName = req.getParameter("district");
-            statisticsManager.captureNameFromServlet(cityName, districtName, flatPrice.setScale(2, BigDecimal.ROUND_UP).toString());
+//            statisticsManager.captureNameFromServlet(cityName, districtName, flatPriceM2.setScale(2, BigDecimal.ROUND_UP).toString());
 
             if (req.getAttribute("constructionYearError") != null) {
                 template = templateProvider.getTemplate(
