@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class StatisticsManager {
@@ -19,11 +20,11 @@ public class StatisticsManager {
     }
 
     public void captureNameFromServlet(String cityName, String districtName, String value) throws IOException {
-        if(Objects.nonNull(value) && Double.parseDouble(value) > 0) {
+        if (Objects.nonNull(value) && Double.parseDouble(value) > 0) {
             addOrUpdateStatistics(cityName, districtName, value);
         }
     }
-  
+
     private void addOrUpdateStatistics(String cityName, String districtName, String value) throws IOException {
         if (!Files.exists(PATH_TO_STATISTICS_FILE)) {
             Files.createFile(PATH_TO_STATISTICS_FILE);
@@ -51,7 +52,7 @@ public class StatisticsManager {
                 shouldAddNewLine = false;
             }
         }
-        if (shouldAddNewLine){
+        if (shouldAddNewLine) {
             addNewLine(cityName, districtName, value);
         }
     }
@@ -102,9 +103,63 @@ public class StatisticsManager {
         return listOfStatistics;
     }
 
-    public Map<String,Integer[]> getCitysStatistics(List<Statistics> inputList){
-        Map<String,Integer[]> resultCityMap = new Tree
+    public Map<String, Double[]> getCitesStatistics(List<Statistics> inputList) {
+        Map<String, Double[]> resultCityMap = new HashMap<>();
+
         inputList.stream()
-                .map(x ->)
+                .forEach(x -> {
+                    int counter = x.getCounter();
+                    double all = x.getAverageValue() * counter;
+                    Double[] results = new Double[2];
+                    if (resultCityMap.containsKey(x.getCityName())) {
+                        results = resultCityMap.get(x.getCityName());
+                        results[0] = results[0] + counter;
+                        results[1] = results[1] + all;
+                    }else{
+                        results[0] = (double)counter;
+                        results[1] = all;
+                    }
+
+                    resultCityMap.put(x.getCityName(), results);
+                });
+
+        return resultCityMap;
+    }
+
+    public Map<String, Double[]> getDistrictsStatistics(List<Statistics> inputList) {
+        Map<String, Double[]> resultDistrictMap = new HashMap<>();
+
+        inputList.stream()
+                .forEach(x -> {
+                    int counter = x.getCounter();
+                    double avg = x.getAverageValue();
+                    double all = x.getAverageValue() * counter;
+                    Double[] results = new Double[3];
+
+                        results[0] = (double)counter;
+                        results[1] = avg;
+                        results[2] = all;
+
+
+                    resultDistrictMap.put(x.getCityName(), results);
+                });
+
+        return resultDistrictMap;
+    }
+
+    public List<String> resultMapListConverter(Map<String,Double[]> inputMap){
+
+        ArrayList<String> results = new ArrayList();
+
+
+        inputMap.entrySet().forEach(x -> {
+           String result=x.getKey();
+            for(int i=0; i<x.getValue().length;i++){
+                result+=","+x.getValue()[i];
+            }
+            results.add(result);
+        });
+
+        return results;
     }
 }
