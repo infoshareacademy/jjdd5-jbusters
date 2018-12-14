@@ -1,5 +1,10 @@
 <#include "header.ftlh">
 
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
 <div class="container">
     <br>
     <br>
@@ -48,10 +53,17 @@
                 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
 
                     <hr class="my-4">
+                    <script>
+                        $(document).ready(function () {
+                            $('#flats').DataTable({
+                                "dom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>'
+                            });
+                        });
+                    </script>
                     <p class="lead">Do wyceny Twojego mieszkania wykorzystano <b>${listTransactionUseValuation?size}</b> transakcje</p>
                     <br>
                     <p>Lista wykorzystanych transakcji:</p>
-                    <table id="usedTransactions" class="display nowrap" style="width: 100%">
+                    <table id="flats" class="display nowrap" style="width: 100%">
                         <thead>
                         <tr>
                             <th scope="col">Miasto</th>
@@ -186,7 +198,7 @@
 
                         <div class="form-group">
                             <label for="Select12">Podaj rok budowy</label>
-                            <input name="construction-year" type="text" class="form-control" id="Select12" required >
+                            <input name="construction-year" type="text" class="form-control" id="Select12" required pattern="^[1-9][0-9]?[0-9]?$" >
                         </div>
 
                         <div class="form-group">
@@ -210,5 +222,5 @@
         </div>
         </div>
 
-<script src="js/jquery-3.3.1.slim.min.js"></script>
+<#--<script src="js/jquery-3.3.1.slim.min.js"></script>-->
 <#include "footer.ftlh">
