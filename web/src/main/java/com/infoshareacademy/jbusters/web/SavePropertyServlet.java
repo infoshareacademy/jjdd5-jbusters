@@ -44,7 +44,7 @@ public class SavePropertyServlet extends HttpServlet {
 
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
 
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/valuation");
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/error.html");
 
         Map<String, String> errorsMap = validateConstructionYear(req);
         Map<String, Object> model = new HashMap<>();

@@ -33,7 +33,6 @@ public class ValuationServlet extends HttpServlet {
 
 
     private static final String TEMPLATE_VALUATION = "valuation";
-    private static final String TEMPLATE_SAVEINFO = "save-info";
     private static final String MARKET_TYPE = "market-type";
 
     @Inject
@@ -130,63 +129,6 @@ public class ValuationServlet extends HttpServlet {
         }
     }
 
-//    @Override
-//    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-//        resp.addHeader("Content-Type", "text/html; charset=utf-8");
-//
-//        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/valuation");
-//
-//        Map<String, String> errorsMap = validateConstructionYear(req);
-//        Map<String, Object> model = new HashMap<>();
-//        PrintWriter out = resp.getWriter();
-//        Template template = templateProvider.getTemplate(
-//                getServletContext(), TEMPLATE_SAVEINFO);
-//
-//        newTransaction.setTransactionName(req.getParameter("description"));
-//        newTransaction.setStreet(req.getParameter("street"));
-//
-//        String important = req.getParameter("important");
-//
-//        if ("nie".equals(important)) {
-//            newTransaction.setImportant(false);
-//        }
-//        if ("tak".equals(important)) {
-//            newTransaction.setImportant(true);
-//        }
-//
-//        // TODO zamiast dispacher poszukać reload aby zostało na tej samoej stronie
-//        // TODO nie pozwolić zapisać do pliku jeśli rok nie jest liczbą, lub zawiera litery
-//
-//
-//        if (errorsMap.size() != 0) {
-//
-//            req.setAttribute("constructionYearError", errorsMap);
-////                String url = req.getRequestURI();
-////                resp.sendRedirect(url);
-////                doGet(req, resp);
-//            System.out.println(req.getRequestURI());
-//            System.out.println(req.getRequestURL());
-//            resp.sendRedirect(req.getRequestURI());
-//        }
-//
-//        Menu menu = new Menu();
-//        final Path path = Paths.get(System.getProperty("jboss.home.dir") + "/upload/flats.txt");
-//
-//        menu.saveTransaction(newTransaction, path, true);
-//
-//        String saved = "Zapisane";
-//
-//        model.put("price", saved);
-//
-//        try {
-//            template.process(model, out);
-//            LOG.info("Saved user transaction to file {}", path);
-//        } catch (TemplateException e) {
-//            LOG.error("Failed to save user file to {}", path);
-//        }
-//    }
-
-
     private Map<String, String> saveTransactionDetails(HttpServletRequest req) {
         Map<String, String> errorsMap = new HashMap<>();
 
@@ -247,10 +189,14 @@ public class ValuationServlet extends HttpServlet {
     }
 
     private void validateMarketType(HttpServletRequest req, Map<String, String> errorsMap) {
-        if (req.getParameter(MARKET_TYPE).equalsIgnoreCase("RYNEK WTÓRNY") ||
-                req.getParameter(MARKET_TYPE).equalsIgnoreCase("RYNEK PIERWOTNY")) {
+        String marketType = req.getParameter(MARKET_TYPE);
+        if (marketType == null) {
+            return;
+        }
+        if (marketType.equalsIgnoreCase("RYNEK WTÓRNY") ||
+                marketType.equalsIgnoreCase("RYNEK PIERWOTNY")) {
             try {
-                newTransaction.setTypeOfMarket(req.getParameter(MARKET_TYPE).replaceAll("_", " "));
+                newTransaction.setTypeOfMarket(marketType.replaceAll("_", " "));
             } catch (Exception e) {
                 LOG.error("Failed to save market type due to {}", e.getMessage());
                 errorsMap.put("marketError", "Błąd podczas zapisu rodzaju rynku!");
@@ -259,6 +205,4 @@ public class ValuationServlet extends HttpServlet {
             errorsMap.put("marketError", "Błąd podczas zapisu rodzaju rynku!");
         }
     }
-
-
 }
