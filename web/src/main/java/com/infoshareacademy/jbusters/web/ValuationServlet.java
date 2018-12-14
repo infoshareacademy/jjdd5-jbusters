@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -58,8 +59,6 @@ public class ValuationServlet extends HttpServlet {
         Map<String, String> errorsMap = saveTransactionDetails(req);
         model.put("errors", errorsMap);
 
-        statisticsManager.captureNameFromServlet(req.getParameter("district"));
-
         List<Transaction> filteredList = filterTransactions.theGreatFatFilter(newTransaction);
         BigDecimal flatPrice = BigDecimal.valueOf(0);
         PrintWriter out = resp.getWriter();
@@ -83,16 +82,16 @@ public class ValuationServlet extends HttpServlet {
                 BigDecimal yearlyTrendOfPriceChange = calc.overallTrend(filteredList);
                 model.put("trend", yearlyTrendOfPriceChange);
 
-                BigDecimal minimumPriceInList = calc.getMinimumPriceInList(filteredList);
-                BigDecimal averagePriceInList = calc.getAvaragePriceInList(filteredList);
-                BigDecimal maxPriceInList = calc.getMaxPriceInList(filteredList);
+                BigDecimal minimumPriceInList = calc.getMinimumPriceInList(filteredList).setScale(2, RoundingMode.HALF_UP);
+                BigDecimal averagePriceInList = calc.getAvaragePriceInList(filteredList).setScale(2, RoundingMode.HALF_UP);
+                BigDecimal maxPriceInList = calc.getMaxPriceInList(filteredList).setScale(2, RoundingMode.HALF_UP);
 
                 model.put("minimumPrice", minimumPriceInList);
                 model.put("averagePrice", averagePriceInList);
                 model.put("maxPrice", maxPriceInList);
                 model.put("listTransactionUseValuation", filteredList);
 
-                flatPrice = calc.calculatePrice();
+                flatPrice = calc.calculatePrice().setScale(2, RoundingMode.HALF_UP);
 
             } else {
                 template = templateProvider.getTemplate(
@@ -110,6 +109,10 @@ public class ValuationServlet extends HttpServlet {
             model.put("standard_level", newTransaction.getStandardLevel());
             model.put("construction", newTransaction.getConstructionYearCategory());
 
+            String cityName = req.getParameter("city");
+            String districtName = req.getParameter("district");
+            statisticsManager.captureNameFromServlet(cityName, districtName, flatPrice.setScale(2, BigDecimal.ROUND_UP).toString());
+
             if (req.getAttribute("constructionYearError") != null) {
                 template = templateProvider.getTemplate(
                         getServletContext(), TEMPLATE_VALUATION);
@@ -119,12 +122,12 @@ public class ValuationServlet extends HttpServlet {
                     LOG.error("Failed to send model due to {}", e.getMessage());
                 }
             } else {
-
                 try {
                     template.process(model, out);
                 } catch (TemplateException e) {
                     LOG.error("Failed to send model due to {}", e.getMessage());
                 }
+
             }
         }
     }
@@ -157,18 +160,6 @@ public class ValuationServlet extends HttpServlet {
                         () -> Integer.valueOf(req.getParameter("construction")),
                         "constructionYearError", "Zła kategoria roku budowy!", 0));
 
-        return errorsMap;
-    }
-
-    private Map<String, String> validateConstructionYear(HttpServletRequest req) {
-        Map<String, String> errorsMap = new HashMap<>();
-        newTransaction.setConstructionYear(
-                numericDataValidator.validate(req.getParameter("construction-year"),
-                        errorsMap,
-                        () -> req.getParameter("construction-year"),
-                        "constructionYear",
-                        "Popraw rok budowy!",
-                        "0"));
         return errorsMap;
     }
 
