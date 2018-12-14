@@ -2,6 +2,7 @@ package com.infoshareacademy.jbusters.data;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -32,7 +33,9 @@ public class StatisticsManager {
         List<Statistics> existingList = generateStatisticsList();
 
         int counterIncrement;
-        double valueUpdate;
+        BigDecimal valueUpdate;
+        BigDecimal newValue = new BigDecimal(value);
+        BigDecimal divider = new BigDecimal(2);
         boolean shouldAddNewLine = true;
 
         for (int i = 0; i < existingList.size(); i++) {
@@ -42,8 +45,8 @@ public class StatisticsManager {
                 counterIncrement = existingList.get(i).getCounter() + 1;
                 String counterString = String.valueOf(counterIncrement);
 
-                valueUpdate = existingList.get(i).getAverageValue();
-                valueUpdate = (valueUpdate + Double.parseDouble(value)) / 2;
+                valueUpdate = BigDecimal.valueOf(existingList.get(i).getAverageValue());
+                valueUpdate = valueUpdate.add(newValue).divide(divider).setScale(2,BigDecimal.ROUND_UP);
                 String valueString = String.valueOf(valueUpdate);
 
                 overwriteExistingLine(i, cityName + SEPARATOR + districtName + SEPARATOR + counterString + SEPARATOR + valueString);
