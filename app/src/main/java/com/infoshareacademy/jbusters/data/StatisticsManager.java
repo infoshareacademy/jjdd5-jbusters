@@ -7,16 +7,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @ApplicationScoped
 public class StatisticsManager {
 
     private static final Path PATH_TO_STATISTICS_FILE = Paths.get(System.getProperty("jboss.home.dir"), "data", "statistics.txt");
     private static final String SEPARATOR = ",";
+
+    public StatisticsManager() {
+    }
 
     public void captureNameFromServlet(String cityName, String districtName, String value) throws IOException {
         if(Objects.nonNull(value) && Double.parseDouble(value) > 0) {
@@ -100,5 +100,11 @@ public class StatisticsManager {
             listOfStatistics.add(newLine);
         }
         return listOfStatistics;
+    }
+
+    public Map<String,Integer[]> getCitysStatistics(List<Statistics> inputList){
+        Map<String,Integer[]> resultCityMap = new Tree
+        inputList.stream()
+                .map(x ->)
     }
 }
