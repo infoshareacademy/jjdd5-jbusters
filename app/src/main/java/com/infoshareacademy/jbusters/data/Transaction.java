@@ -1,14 +1,13 @@
 package com.infoshareacademy.jbusters.data;
 
-import com.infoshareacademy.jbusters.console.ConsoleReader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import javax.enterprise.context.SessionScoped;
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 
-public class Transaction {
+@SessionScoped
+public class Transaction implements Serializable {
 
     PropLoader properties = new PropLoader(System.getProperty("jboss.home.dir") + "/data/app.properties");
 

@@ -51,7 +51,7 @@
                     <p class="lead">Do wyceny Twojego mieszkania wykorzystano <b>${listTransactionUseValuation?size}</b> transakcje</p>
                     <br>
                     <p>Lista wykorzystanych transakcji:</p>
-                    <table class="table table-striped table-dark">
+                    <table id="usedTransactions" class="display nowrap" style="width: 100%">
                         <thead>
                         <tr>
                             <th scope="col">Miasto</th>
@@ -173,7 +173,7 @@
 
                     <div class="jumbotron jumbotron-opacity-1">
 
-                    <form method="POST" action="/valuation">
+                    <form method="GET" action="/save-property">
                         <div class="form-group">
                             <label for="Select10">Ustaw opis mieszkania</label>
                             <input name="description" type="text" class="form-control" id="Select10" required>

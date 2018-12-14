@@ -1,17 +1,13 @@
 package com.infoshareacademy.jbusters.web;
 
-import com.infoshareacademy.jbusters.console.Menu;
 import com.infoshareacademy.jbusters.data.CalculatePrice;
-import com.infoshareacademy.jbusters.data.Data;
 import com.infoshareacademy.jbusters.data.FilterTransactions;
 import com.infoshareacademy.jbusters.data.StatisticsManager;
 import com.infoshareacademy.jbusters.data.Transaction;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
-import com.sun.deploy.net.HttpRequest;
+import com.infoshareacademy.jbusters.web.validator.NumericDataValidator;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,24 +21,23 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
-import java.util.regex.Pattern;
 
 @WebServlet(urlPatterns = "/valuation")
 public class ValuationServlet extends HttpServlet {
 
     private static final Logger LOG = LoggerFactory.getLogger(ValuationServlet.class);
+
+
     private static final String TEMPLATE_VALUATION = "valuation";
     private static final String TEMPLATE_SAVEINFO = "save-info";
     private static final String MARKET_TYPE = "market-type";
 
-    private Transaction newTransaction = new Transaction();
+    @Inject
+    private Transaction newTransaction;
 
     @Inject
     private TemplateProvider templateProvider;
@@ -52,6 +47,8 @@ public class ValuationServlet extends HttpServlet {
 
     @Inject
     private StatisticsManager statisticsManager;
+
+    private NumericDataValidator numericDataValidator = new NumericDataValidator();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -70,6 +67,7 @@ public class ValuationServlet extends HttpServlet {
         Template template = templateProvider.getTemplate(
                 getServletContext(),
                 TEMPLATE_VALUATION);
+
 
         if (errorsMap.size() != 0) {
             try {
@@ -113,75 +111,81 @@ public class ValuationServlet extends HttpServlet {
             model.put("standard_level", newTransaction.getStandardLevel());
             model.put("construction", newTransaction.getConstructionYearCategory());
 
-            try {
-                template.process(model, out);
-            } catch (TemplateException e) {
-                LOG.error("Failed to send model due to {}", e.getMessage());
-            }
-        }
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.addHeader("Content-Type", "text/html; charset=utf-8");
-
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/valuation");
-        Map<String, String> errorsMap = validateConstructionYear(req);
-        Map<String, Object> model = new HashMap<>();
-        PrintWriter out = resp.getWriter();
-        Template template = templateProvider.getTemplate(
-                getServletContext(), TEMPLATE_SAVEINFO);
-
-        newTransaction.setTransactionName(req.getParameter("description"));
-        newTransaction.setStreet(req.getParameter("street"));
-
-        String important = req.getParameter("important");
-
-        if ("nie".equals(important)) {
-            newTransaction.setImportant(false);
-        }
-        if ("tak".equals(important)) {
-            newTransaction.setImportant(true);
-        }
-
-        // TODO zamiast dispacher poszukać reload aby zostało na tej samoej stronie
-        // TODO nie pozwolić zapisać do pliku jeśli rok nie jest liczbą, lub zawiera litery
-        if (req.getAttribute("constructionYearError") != null) {
-            template = templateProvider.getTemplate(
-                    getServletContext(), TEMPLATE_VALUATION);
-            try {
-                template.process(model, out);
-            } catch (TemplateException e) {
-                LOG.error("Failed to send model due to {}", e.getMessage());
-            }
-        } else {
-
-            if (errorsMap.size() != 0) {
+            if (req.getAttribute("constructionYearError") != null) {
+                template = templateProvider.getTemplate(
+                        getServletContext(), TEMPLATE_VALUATION);
                 try {
-                    req.setAttribute("constructionYearError", errorsMap);
-                    requestDispatcher.forward(req, resp);
-                } catch (ServletException e) {
-                    e.printStackTrace();
+                    template.process(model, out);
+                } catch (TemplateException e) {
+                    LOG.error("Failed to send model due to {}", e.getMessage());
+                }
+            } else {
+
+                try {
+                    template.process(model, out);
+                } catch (TemplateException e) {
+                    LOG.error("Failed to send model due to {}", e.getMessage());
                 }
             }
-
-            Menu menu = new Menu();
-            final Path path = Paths.get(System.getProperty("jboss.home.dir") + "/upload/flats.txt");
-
-            menu.saveTransaction(newTransaction, path, true);
-
-            String saved = "Zapisane";
-
-            model.put("price", saved);
-
-            try {
-                template.process(model, out);
-                LOG.info("Saved user transaction to file {}", path);
-            } catch (TemplateException e) {
-                LOG.error("Failed to save user file to {}", path);
-            }
         }
     }
+
+//    @Override
+//    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+//        resp.addHeader("Content-Type", "text/html; charset=utf-8");
+//
+//        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/valuation");
+//
+//        Map<String, String> errorsMap = validateConstructionYear(req);
+//        Map<String, Object> model = new HashMap<>();
+//        PrintWriter out = resp.getWriter();
+//        Template template = templateProvider.getTemplate(
+//                getServletContext(), TEMPLATE_SAVEINFO);
+//
+//        newTransaction.setTransactionName(req.getParameter("description"));
+//        newTransaction.setStreet(req.getParameter("street"));
+//
+//        String important = req.getParameter("important");
+//
+//        if ("nie".equals(important)) {
+//            newTransaction.setImportant(false);
+//        }
+//        if ("tak".equals(important)) {
+//            newTransaction.setImportant(true);
+//        }
+//
+//        // TODO zamiast dispacher poszukać reload aby zostało na tej samoej stronie
+//        // TODO nie pozwolić zapisać do pliku jeśli rok nie jest liczbą, lub zawiera litery
+//
+//
+//        if (errorsMap.size() != 0) {
+//
+//            req.setAttribute("constructionYearError", errorsMap);
+////                String url = req.getRequestURI();
+////                resp.sendRedirect(url);
+////                doGet(req, resp);
+//            System.out.println(req.getRequestURI());
+//            System.out.println(req.getRequestURL());
+//            resp.sendRedirect(req.getRequestURI());
+//        }
+//
+//        Menu menu = new Menu();
+//        final Path path = Paths.get(System.getProperty("jboss.home.dir") + "/upload/flats.txt");
+//
+//        menu.saveTransaction(newTransaction, path, true);
+//
+//        String saved = "Zapisane";
+//
+//        model.put("price", saved);
+//
+//        try {
+//            template.process(model, out);
+//            LOG.info("Saved user transaction to file {}", path);
+//        } catch (TemplateException e) {
+//            LOG.error("Failed to save user file to {}", path);
+//        }
+//    }
+
 
     private Map<String, String> saveTransactionDetails(HttpServletRequest req) {
         Map<String, String> errorsMap = new HashMap<>();
@@ -190,7 +194,7 @@ public class ValuationServlet extends HttpServlet {
         validateMarketType(req, errorsMap);
 
         newTransaction.setFlatArea(
-                validateNumericData(req.getParameter("flat-area").replaceAll(",", "."),
+                numericDataValidator.validate(req.getParameter("flat-area").replaceAll(",", "."),
                         errorsMap,
                         () -> BigDecimal.valueOf(Double.parseDouble(req.getParameter("flat-area").replaceAll(",", "."))),
                         "flatAreaError",
@@ -198,7 +202,7 @@ public class ValuationServlet extends HttpServlet {
                         new BigDecimal(0)));
 
         newTransaction.setLevel(
-                validateNumericData(req.getParameter("level"),
+                numericDataValidator.validate(req.getParameter("level"),
                         errorsMap,
                         () -> Integer.valueOf(req.getParameter("level")),
                         "levelError",
@@ -206,7 +210,7 @@ public class ValuationServlet extends HttpServlet {
                         0));
 
         newTransaction.setConstructionYearCategory(
-                validateNumericData(req.getParameter("construction"),
+                numericDataValidator.validate(req.getParameter("construction"),
                         errorsMap,
                         () -> Integer.valueOf(req.getParameter("construction")),
                         "constructionYearError", "Zła kategoria roku budowy!", 0));
@@ -217,7 +221,7 @@ public class ValuationServlet extends HttpServlet {
     private Map<String, String> validateConstructionYear(HttpServletRequest req) {
         Map<String, String> errorsMap = new HashMap<>();
         newTransaction.setConstructionYear(
-                validateNumericData(req.getParameter("construction-year"),
+                numericDataValidator.validate(req.getParameter("construction-year"),
                         errorsMap,
                         () -> req.getParameter("construction-year"),
                         "constructionYear",
@@ -256,19 +260,5 @@ public class ValuationServlet extends HttpServlet {
         }
     }
 
-    private <T> T validateNumericData(String parameter, Map<String, String> errors, Supplier<T> supplier, String errorKey, String errorMessage, T defaultValue) {
-        if (NumberUtils.isNumber(parameter)) {
-            try {
-                T value = supplier.get();
-                return value;
-            } catch (Exception e) {
-                LOG.error(errorMessage, e);
-                errors.put(errorKey, errorMessage);
-                return defaultValue;
-            }
-        } else {
-            errors.put(errorKey, errorMessage);
-            return defaultValue;
-        }
-    }
+
 }
