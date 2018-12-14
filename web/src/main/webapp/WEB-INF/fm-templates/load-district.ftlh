@@ -4,7 +4,7 @@
         <form method="get" action="load-other-values">
             <div class="form-group">
             <label for="Select2">Wybierz dzielnice</label>
-                <select name="district" class="form-control" id="Select2">
+                <select name="district" class="form-control" id="Select2" required>
                     <option></option>
                     <#list district as d>
                     <option>${d}</option>
