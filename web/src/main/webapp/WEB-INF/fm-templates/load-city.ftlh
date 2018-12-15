@@ -5,7 +5,7 @@
           <form method="get" action="/load-district">
             <div class="form-group">
                 <label for="Select1">Wybierz miasto</label>
-                <select name="city" class="form-control" id="Select1">
+                <select name="city" class="form-control" id="Select1" required>
                     <option></option>
                     <#list cities as c>
                     <option>${c}</option>
