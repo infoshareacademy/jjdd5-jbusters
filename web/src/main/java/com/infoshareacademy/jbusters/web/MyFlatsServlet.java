@@ -51,4 +51,9 @@ public class MyFlatsServlet extends HttpServlet {
             e.printStackTrace();
         }
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        doGet(req,resp);
+    }
 }
