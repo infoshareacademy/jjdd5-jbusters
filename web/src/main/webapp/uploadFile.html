@@ -29,6 +29,9 @@
                             <a class="nav-link" href="uploadFile.html">Załaduj plik</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="/my-flats">Moje mieszkania</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link disabled" href="#">Zaloguj</a>
                         </li>
                     </ul>
@@ -39,7 +42,7 @@
 
     <div class="container">
         <div class="jumbotron jumbotron-opacity">
-            <h1 class="display-10">Wybierz plik, z którego chcesz załadować swoją listę mieszkań do wyceny. Plik powinien być w formacie CSV.</h1>
+            <h1 class="display-10">Wybierz plik, z którego chcesz załadować swoją listę mieszkań do wyceny.</h1>
             <hr class="my-4">
             <form method="POST" action="/users-transactions" enctype="multipart/form-data">
                 <input class="btn btn-primary" type="file" name="file" id="file"/> <br/>

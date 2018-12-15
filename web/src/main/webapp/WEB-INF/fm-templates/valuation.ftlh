@@ -1,22 +1,15 @@
 <#include "header.ftlh">
 
-<div class="container">
-    <br>
-    <br>
-    <br>
-    <#if errors??>
-    <#list errors as k, v>
-    <#if k == "overalError" && v??>
-    <p>${v}</p>
-    </#if>
-    <#if k == "flatAreaError" && v??>
-    <p>${v}</p>
-    </#if>
-    </#list>
-    </#if>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+<script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
-
-        <div class="row">
+<div class="container" style="margin-left: 200px">
+    <br>
+    <br>
+    <br>
+    <div class="row">
         <div class="col-3">
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab"
@@ -30,8 +23,6 @@
         <div class="col-9">
         <div class="tab-content" id="v-pills-tabContent">
         <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-
-
 
 
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
@@ -48,11 +39,12 @@
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
 
-                    <div class="jumbotron jumbotron-opacity">
+                    <div class="jumbotron jumbotron-opacity-1">
 
-                        <h1 class="display-4">Wartość Twojego mieszkania za m<sup>2</sup> to:</h1>
+                        <h1 class="display-4">Wartość Twojego mieszkania  to:</h1>
                         <hr class="my-4">
-                        <h1 id="price" class="display-4">${price} zł</h1>
+                        <h1 id="price" class="display-4"><b>${price}</b> zł za m<sup>2</sup></h1>
+                        <h1 id="price" class="display-4"><b>${priceTotal}</b> zł za całe mieszkanie</h1>
                         <hr class="my-4">
 
                     </div>
@@ -60,12 +52,19 @@
 
                 </div>
                 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-
+                    <div class="jumbotron jumbotron-opacity" style="width: 1200px">
                     <hr class="my-4">
+                    <script>
+                        $(document).ready(function () {
+                            $('#flats').DataTable({
+                                "dom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>'
+                            });
+                        });
+                    </script>
                     <p class="lead">Do wyceny Twojego mieszkania wykorzystano <b>${listTransactionUseValuation?size}</b> transakcje</p>
                     <br>
                     <p>Lista wykorzystanych transakcji:</p>
-                    <table class="table table-striped table-dark">
+                    <table id="flats" class="display nowrap" style="width: 400px">
                         <thead>
                         <tr>
                             <th scope="col">Miasto</th>
@@ -103,25 +102,26 @@
 
                         </tbody>
                     </table>
+                    </div>
                 </div>
                 <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
                     <div class="jumbotron jumbotron-opacity">
-                        <p class="lead">Szczegółowe informacje wyceny</p>
+                        <h3 class="lead">Wartości nieruchomości uwzględnionych przy wycenie twojego mieszkania</h3>
                         <hr class="my-4">
                     <br>
-                    <table class="table table-striped table-dark">
-                        <thead>
+                    <table class="table table-striped">
+                        <thead class="thead-dark">
                         <tr>
-                            <th scope="col">minimalna wartość wyceny</th>
-                            <th scope="col">maksymalna wartość wyceny</th>
-                            <th scope="col">średnia wartość wyceny</th>
+                            <th scope="col">Minimalna</th>
+                            <th scope="col">Maksymalna</th>
+                            <th scope="col">Średnia</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
-                            <td>${minimumPrice}</td>
-                            <td>${maxPrice}</td>
-                            <td>${averagePrice}</td>
+                            <td><b>${minimumPrice} zł za m<sup>2</sup></b></td>
+                            <td><b>${maxPrice} zł za m<sup>2</sup></b></td>
+                            <td><b>${averagePrice} zł za m<sup>2</sup></b></td>
                         </tr>
                         </tbody>
                     </table>
@@ -149,12 +149,12 @@
 
         <div class="form-group">
     <label for="Select3"><b>Rodzaj rynku</b></label>
-    <input name="market-type" type="text" class="form-control" id="Select3" value="${market_type}" disabled>
+    <input name="market-type" type="text" class="form-control" id="Select3" value="${marketType}" disabled>
         </div>
 
         <div class="form-group">
     <label for="Select4"><b>Wielkość mieszkania w m2</b></label>
-    <input name="flat-area" type="text" class="form-control" id="Select4" value="${flat_area}" disabled>
+    <input name="flat-area" type="text" class="form-control" id="Select4" value="${flatArea}" disabled>
         </div>
 
         <div class="form-group">
@@ -164,12 +164,12 @@
 
         <div class="form-group">
     <label for="Select6"><b>Miejsce parkingowe</b></label>
-    <input name="parking-spot" type="text" class="form-control" id="Select6" value="${parking_spot}" disabled>
+    <input name="parking-spot" type="text" class="form-control" id="Select6" value="${parkingSpot}" disabled>
         </div>
 
         <div class="form-group">
     <label for="Select7"><b>Poziom wykończenia mieszkania</b></label>
-    <input name="standard-level" type="text" class="form-control" id="Select7" value="${standard_level}" disabled>
+    <input name="standard-level" type="text" class="form-control" id="Select7" value="${standardLevel}" disabled>
         </div>
 
         <div class="form-group">
@@ -186,7 +186,8 @@
                 <div class="tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
 
                     <div class="jumbotron jumbotron-opacity-1">
-                    <form method="POST" action="/valuation">
+
+                    <form method="GET" action="/save-property">
                         <div class="form-group">
                             <label for="Select10">Ustaw opis mieszkania</label>
                             <input name="description" type="text" class="form-control" id="Select10" required>
@@ -199,7 +200,7 @@
 
                         <div class="form-group">
                             <label for="Select12">Podaj rok budowy</label>
-                            <input name="construction-year" type="text" class="form-control" id="Select12" required >
+                            <input name="construction-year" type="text" class="form-control" id="Select12" required pattern="^(18|19|20)\d{2}$" >
                         </div>
 
                         <div class="form-group">
@@ -212,6 +213,8 @@
                         <input class="btn btn-primary" type="submit" value="Zapisz w pliku" name="upload" id="upload"/>
 
                     </form>
+
+
                         </div>
 
 
@@ -221,5 +224,5 @@
         </div>
         </div>
 
-<script src="js/jquery-3.3.1.slim.min.js"></script>
+<#--<script src="js/jquery-3.3.1.slim.min.js"></script>-->
 <#include "footer.ftlh">
