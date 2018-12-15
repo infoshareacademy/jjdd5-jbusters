@@ -18,6 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
@@ -125,15 +126,18 @@ public class ValuationServlet extends HttpServlet {
                     LOG.error("Failed to send model due to {}", e.getMessage());
                 }
             } else {
+                HttpSession session = req.getSession();
+                session.setAttribute("newTransaction", newTransaction);
                 try {
                     template.process(model, out);
                 } catch (TemplateException e) {
                     LOG.error("Failed to send model due to {}", e.getMessage());
                 }
-
             }
         }
     }
+
+
 
     private Map<String, String> saveTransactionDetails(HttpServletRequest req) {
         Map<String, String> errorsMap = new HashMap<>();

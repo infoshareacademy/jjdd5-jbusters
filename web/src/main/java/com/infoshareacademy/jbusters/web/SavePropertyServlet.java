@@ -1,6 +1,5 @@
 package com.infoshareacademy.jbusters.web;
 
-import com.infoshareacademy.jbusters.console.Menu;
 import com.infoshareacademy.jbusters.data.Transaction;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import com.infoshareacademy.jbusters.web.validator.NumericDataValidator;
@@ -19,52 +18,57 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @WebServlet("/save-property")
 public class SavePropertyServlet extends HttpServlet {
 
     private static final Logger LOG = LoggerFactory.getLogger(ValuationServlet.class);
-    private static final String TEMPLATE_VALUATION = "valuation";
     private static final String TEMPLATE_SAVEINFO = "save-info";
-    private static final String MARKET_TYPE = "market-type";
-
-    @Inject
-    private Transaction newTransaction = new Transaction();
 
     @Inject
     private TemplateProvider templateProvider;
 
-   private NumericDataValidator numericDataValidator = new NumericDataValidator();
+    private NumericDataValidator numericDataValidator = new NumericDataValidator();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
+
+        HttpSession session = req.getSession();
+        Transaction newTransaction = (Transaction) session.getAttribute("newTransaction");
+
+        List<Transaction> newTransactionList = new ArrayList<>();
+        newTransactionList.add(newTransaction);
+
+        List<Transaction> userTlist = newTransactionList.stream()
+                .map(item -> new Transaction(item))
+                .collect(Collectors.toList());
+
+        Transaction userT = userTlist.get(0);
 
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("/error.html");
 
-        Map<String, String> errorsMap = validateConstructionYear(req);
+        Map<String, String> errorsMap = validateConstructionYear(req, userT);
         Map<String, Object> model = new HashMap<>();
         PrintWriter out = resp.getWriter();
         Template template = templateProvider.getTemplate(
                 getServletContext(), TEMPLATE_SAVEINFO);
 
-        newTransaction.setTransactionName(req.getParameter("description"));
-        newTransaction.setStreet(req.getParameter("street"));
+        userT.setTransactionName(req.getParameter("description"));
+        userT.setStreet(req.getParameter("street"));
 
         String important = req.getParameter("important");
 
         if ("nie".equals(important)) {
-            newTransaction.setImportant(false);
+            userT.setImportant(false);
         }
         if ("tak".equals(important)) {
-            newTransaction.setImportant(true);
+            userT.setImportant(true);
         }
 
         if (errorsMap.size() != 0) {
@@ -72,38 +76,28 @@ public class SavePropertyServlet extends HttpServlet {
             requestDispatcher.forward(req, resp);
         } else {
 
-            HttpSession session = req.getSession();
             List<Transaction> propertyList = (List<Transaction>) session.getAttribute("propertyList");
             if (propertyList == null) {
                 propertyList = new ArrayList<>();
-                session.setAttribute("propertyList", propertyList );
+                session.setAttribute("propertyList", propertyList);
             }
-            Transaction toList = new Transaction();
-            toList = newTransaction;
-            propertyList.add(toList);
+            propertyList.add(userT);
 
-
-//            Menu menu = new Menu();
-//            final Path path = Paths.get(System.getProperty("jboss.home.dir") + "/upload/flats.txt");
-//
-//            menu.saveTransaction(newTransaction, path, true);
-
-            String saved = "Zapisane";
-
+            String saved = "Twoje mieszkanie zostało dodane do listy";
             model.put("price", saved);
 
             try {
                 template.process(model, out);
-//                LOG.info("Saved user transaction to file {}", path);
+                LOG.info("User transaction saved to session, number of flats in sesion: {}", propertyList.size());
             } catch (TemplateException e) {
-//                LOG.error("Failed to save user file to {}", path);
+                LOG.error("Failed to save user flat");
             }
         }
     }
 
-    private Map<String, String> validateConstructionYear(HttpServletRequest req) {
+    private Map<String, String> validateConstructionYear(HttpServletRequest req, Transaction userT) {
         Map<String, String> errorsMap = new HashMap<>();
-        newTransaction.setConstructionYear(
+        userT.setConstructionYear(
                 numericDataValidator.validate(req.getParameter("construction-year"),
                         errorsMap,
                         () -> req.getParameter("construction-year"),

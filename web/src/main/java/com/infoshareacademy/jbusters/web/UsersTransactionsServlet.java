@@ -72,9 +72,9 @@ public class UsersTransactionsServlet extends HttpServlet {
             model.put("flats", usersTransactions);
         } catch (Exception e) {
 
-            String errorMasage = "You either did not specify a file to upload or are "
-                    + "trying to upload a file to a protected or nonexistent "
-                    + "location.";
+
+            String errorMasage = "Błąd ładowania pliku. "
+                    + "Możliwe że nie wskazałeś żadnego pliku do załadowania. ";
             model.put("error", errorMasage);
 
             LOG.error("Error with loading file. {}", e.getMessage());

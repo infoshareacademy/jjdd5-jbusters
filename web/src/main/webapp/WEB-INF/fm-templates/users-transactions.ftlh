@@ -12,6 +12,7 @@
          <h1 class="display-10"><p>${error} </p></h1>
          <hr class="my-4">
          <a class="btn btn-primary btn-lg btn-dark" href="uploadFile.html" role="button">Załaduj plik</a>
+         <a class="btn btn-primary btn-lg btn-dark" href="/load-city" role="button">Wyceń mieszkanie</a>
      </div>
  </div>
 
