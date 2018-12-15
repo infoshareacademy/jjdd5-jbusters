@@ -2,6 +2,8 @@ package com.infoshareacademy.jbusters.web;
 
 import com.infoshareacademy.jbusters.console.Menu;
 import com.infoshareacademy.jbusters.data.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,6 +19,9 @@ import java.util.List;
 
 @WebServlet("/saveAs")
 public class SaveToFileServlet extends HttpServlet {
+
+    private static final Logger LOG = LoggerFactory.getLogger(SaveToFileServlet.class);
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -37,7 +42,7 @@ public class SaveToFileServlet extends HttpServlet {
             outputStream.flush();
             outputStream.close();
         } catch (Exception e) {
-            System.out.println(e.toString());
+            LOG.error("Failed to save list if flats and send it to user due to {}", e.getMessage());
         }
     }
 
