@@ -11,7 +11,7 @@ public class NumericDataValidator {
     private static final Logger LOG = LoggerFactory.getLogger(NumericDataValidator.class);
 
 
-    public  <T> T validate(String parameter, Map<String, String> errors, Supplier<T> supplier, String errorKey, String errorMessage, T defaultValue) {
+    public <T> T validate(String parameter, Map<String, String> errors, Supplier<T> supplier, String errorKey, String errorMessage, T defaultValue) {
         if (NumberUtils.isNumber(parameter)) {
             try {
                 T value = supplier.get();
