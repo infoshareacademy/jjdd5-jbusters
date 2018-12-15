@@ -25,9 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import static com.itextpdf.io.font.PdfEncodings.*;
+import static com.itextpdf.io.font.PdfEncodings.CP1250;
 import static com.itextpdf.io.font.constants.StandardFonts.HELVETICA;
-import static com.itextpdf.io.font.constants.StandardFonts.TIMES_ROMAN;
 
 @RequestScoped
 public class ReportGenerator {
@@ -50,7 +49,9 @@ public class ReportGenerator {
 
         PdfFont polishFont = null;
         try {
-            polishFont = PdfFontFactory.createFont(HELVETICA,CP1250, true, true);
+            polishFont = PdfFontFactory.createFont(HELVETICA, CP1250, true, true);
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -63,7 +64,7 @@ public class ReportGenerator {
         Text author = new Text("JBusters").setFont(polishFont);
         Paragraph parag = new Paragraph().add(title).add(" \nwykonany przez team").add(": ").add(author);
         parag.setTextAlignment(TextAlignment.CENTER).setFontSize(16f);
-        parag.setMarginBottom(70f);
+        parag.setMarginBottom(80f);
         doc.add(parag);
 
 
@@ -74,7 +75,18 @@ public class ReportGenerator {
         ArrayList<String> cityStatisticList = new ArrayList<String>(statisticsManager.getCitesStatistics(wholeStatisticList));
         ArrayList<String> districtStatisticList = new ArrayList<String>(statisticsManager.getDistrictsStatistics(wholeStatisticList));
 
+        Paragraph parag1 = new Paragraph().add("Tabela statystyk dla miast (porzadek alfabetyczny)");
+        parag.setTextAlignment(TextAlignment.CENTER).setFontSize(20f);
+        parag.setMarginBottom(20f);
+
+        doc.add(parag1);
         doc.add(tableCreator(CITY_TABLE_HEADER, cityStatisticList, polishFont, 100));
+
+        Paragraph parag2 = new Paragraph().add("Tabela statystyk dla dzielnic (porzadek alfabetyczny)");
+        parag.setTextAlignment(TextAlignment.CENTER).setFontSize(20f);
+        parag.setMarginBottom(20f);
+        doc.add(parag1);
+
         doc.add(tableCreator(DISTRICT_TABLE_HEADER, districtStatisticList, polishFont, 100));
 
         doc.flush();
