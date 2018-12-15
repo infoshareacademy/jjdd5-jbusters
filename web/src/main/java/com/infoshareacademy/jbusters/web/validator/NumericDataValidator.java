@@ -10,18 +10,11 @@ import java.util.function.Supplier;
 public class NumericDataValidator {
     private static final Logger LOG = LoggerFactory.getLogger(NumericDataValidator.class);
 
-
     public <T> T validate(String parameter, Map<String, String> errors, Supplier<T> supplier, String errorKey, String errorMessage, T defaultValue) {
         if (NumberUtils.isNumber(parameter)) {
-            try {
-                T value = supplier.get();
-                return value;
-            } catch (Exception e) {
-                LOG.error(errorMessage, e);
-                errors.put(errorKey, errorMessage);
-                return defaultValue;
-            }
+            return supplier.get();
         } else {
+            LOG.error("Podana wartość {} nie jest liczbą", parameter);
             errors.put(errorKey, errorMessage);
             return defaultValue;
         }

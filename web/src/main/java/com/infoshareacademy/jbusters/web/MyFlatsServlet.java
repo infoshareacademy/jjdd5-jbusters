@@ -20,7 +20,7 @@ import java.util.Map;
 @WebServlet("/my-flats")
 public class MyFlatsServlet extends HttpServlet {
 
-    private static final String TEMPLATE_NAME = "users-transactions";
+    private static final String TEMPLATE_USERS_TRANSACTION = "users-transactions";
 
     @Inject
     private TemplateProvider templateProvider;
@@ -37,7 +37,7 @@ public class MyFlatsServlet extends HttpServlet {
 
         Template template = templateProvider.getTemplate(
                 getServletContext(),
-                TEMPLATE_NAME);
+                TEMPLATE_USERS_TRANSACTION);
 
         if (propertyList == null) {
             String error = "Twoja lista jest pusta";

@@ -46,7 +46,7 @@ public class SavePropertyServlet extends HttpServlet {
         newTransactionList.add(newTransaction);
 
         List<Transaction> userTlist = newTransactionList.stream()
-                .map(item -> new Transaction(item))
+                .map(Transaction::new)
                 .collect(Collectors.toList());
 
         Transaction userT = userTlist.get(0);

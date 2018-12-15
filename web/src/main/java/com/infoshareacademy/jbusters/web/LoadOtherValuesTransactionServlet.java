@@ -38,17 +38,17 @@ public class LoadOtherValuesTransactionServlet extends HttpServlet {
 
         if (req.getAttribute("errorsMap") != null) {
             errorsMap = (Map<String, String>) req.getAttribute("errorsMap");
-            model.put("marketType", req.getParameter("market-type"));
-            model.put("flatArea", req.getParameter("flat-area"));
-            model.put("level", req.getParameter("level"));
-            model.put("parkingSpot", req.getParameter("parking-spot"));
-            model.put("standardLevel", req.getParameter("standard-level"));
-            model.put("construction", req.getParameter("construction"));
+            model.put(ValuationServlet.MARKET_TYPE, req.getParameter("market-type"));
+            model.put(ValuationServlet.FLAT_AREA, req.getParameter("flat-area"));
+            model.put(ValuationServlet.LEVEL, req.getParameter("level"));
+            model.put(ValuationServlet.PARKING_SPOT, req.getParameter("parking-spot"));
+            model.put(ValuationServlet.STANDARD_LEVEL, req.getParameter("standard-level"));
+            model.put(ValuationServlet.CONSTRUCTION, req.getParameter("construction"));
             model.put("errors", errorsMap);
         }
 
-        model.put("city", city);
-        model.put("district1", district);
+        model.put(ValuationServlet.CITY, city);
+        model.put(ValuationServlet.DISTRICT_1, district);
 
         Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
 

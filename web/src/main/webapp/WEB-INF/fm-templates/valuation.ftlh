@@ -43,8 +43,8 @@
 
                         <h1 class="display-4">Wartość Twojego mieszkania  to:</h1>
                         <hr class="my-4">
-                        <h1 id="price" class="display-4"><b>${price} zł za m<sup>2</sup></b></h1>
-                        <h1 id="price" class="display-4">${price_total} zł za całe mieszkanie</h1>
+                        <h1 id="price" class="display-4"><b>${price}</b> zł za m<sup>2</sup></h1>
+                        <h1 id="price" class="display-4"><b>${priceTotal}</b> zł za całe mieszkanie</h1>
                         <hr class="my-4">
 
                     </div>
@@ -106,7 +106,7 @@
                 </div>
                 <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
                     <div class="jumbotron jumbotron-opacity">
-                        <p class="lead">Wartości nieruchomości uwzględnionych przy wycenie twojego mieszkania</p>
+                        <h3 class="lead">Wartości nieruchomości uwzględnionych przy wycenie twojego mieszkania</h3>
                         <hr class="my-4">
                     <br>
                     <table class="table table-striped">
@@ -149,12 +149,12 @@
 
         <div class="form-group">
     <label for="Select3"><b>Rodzaj rynku</b></label>
-    <input name="market-type" type="text" class="form-control" id="Select3" value="${market_type}" disabled>
+    <input name="market-type" type="text" class="form-control" id="Select3" value="${marketType}" disabled>
         </div>
 
         <div class="form-group">
     <label for="Select4"><b>Wielkość mieszkania w m2</b></label>
-    <input name="flat-area" type="text" class="form-control" id="Select4" value="${flat_area}" disabled>
+    <input name="flat-area" type="text" class="form-control" id="Select4" value="${flatArea}" disabled>
         </div>
 
         <div class="form-group">
@@ -164,12 +164,12 @@
 
         <div class="form-group">
     <label for="Select6"><b>Miejsce parkingowe</b></label>
-    <input name="parking-spot" type="text" class="form-control" id="Select6" value="${parking_spot}" disabled>
+    <input name="parking-spot" type="text" class="form-control" id="Select6" value="${parkingSpot}" disabled>
         </div>
 
         <div class="form-group">
     <label for="Select7"><b>Poziom wykończenia mieszkania</b></label>
-    <input name="standard-level" type="text" class="form-control" id="Select7" value="${standard_level}" disabled>
+    <input name="standard-level" type="text" class="form-control" id="Select7" value="${standardLevel}" disabled>
         </div>
 
         <div class="form-group">
@@ -200,7 +200,7 @@
 
                         <div class="form-group">
                             <label for="Select12">Podaj rok budowy</label>
-                            <input name="construction-year" type="text" class="form-control" id="Select12" required pattern="^[1-9][0-9]?[0-9]?$" >
+                            <input name="construction-year" type="text" class="form-control" id="Select12" required pattern="^(18|19|20)\d{2}$" >
                         </div>
 
                         <div class="form-group">

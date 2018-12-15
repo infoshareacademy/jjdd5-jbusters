@@ -60,23 +60,14 @@ public class UsersTransactionsServlet extends HttpServlet {
 
         String fileName;
         try {
-            File file = uploadFileFromUser.uploadFile(filePart);
-            fileName = file.getName();
+            fileName = uploadFileFromUser.uploadFile(filePart).getName();
             Path path2 = Paths.get(System.getProperty("jboss.home.dir") + "/upload/" + fileName);
-            try {
-                usersTransactions = dataLoader.createTransactionList(Files.readAllLines(path2), true);
-                LOG.info("Loading file with name {}", fileName);
-            } catch (Exception e) {
-                LOG.error("File loading error {}", e.getMessage());
-            }
+            usersTransactions = createTransactionListFromFile(usersTransactions, fileName, path2);
             model.put("flats", usersTransactions);
         } catch (Exception e) {
-
-
             String errorMasage = "Błąd ładowania pliku. "
                     + "Możliwe że nie wskazałeś żadnego pliku do załadowania. ";
             model.put("error", errorMasage);
-
             LOG.error("Error with loading file. {}", e.getMessage());
         } finally {
             try {
@@ -89,5 +80,15 @@ public class UsersTransactionsServlet extends HttpServlet {
                 writer.close();
             }
         }
+    }
+
+    private List<Transaction> createTransactionListFromFile(List<Transaction> usersTransactions, String fileName, Path path2) {
+        try {
+            usersTransactions = dataLoader.createTransactionList(Files.readAllLines(path2), true);
+            LOG.info("Loading file with name {}", fileName);
+        } catch (Exception e) {
+            LOG.error("File loading error {}", e.getMessage());
+        }
+        return usersTransactions;
     }
 }

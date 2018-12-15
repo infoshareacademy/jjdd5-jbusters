@@ -33,9 +33,17 @@ public class ValuationServlet extends HttpServlet {
 
     private static final Logger LOG = LoggerFactory.getLogger(ValuationServlet.class);
 
-
     private static final String TEMPLATE_VALUATION = "valuation";
-    private static final String MARKET_TYPE = "market-type";
+    public static final String CITY = "city";
+    public static final String DISTRICT_1 = "district1";
+    public static final String MARKET_TYPE = "marketType";
+    public static final String PRICE = "price";
+    public static final String PRICE_TOTAL = "priceTotal";
+    public static final String FLAT_AREA = "flatArea";
+    public static final String LEVEL = "level";
+    public static final String PARKING_SPOT = "parkingSpot";
+    public static final String STANDARD_LEVEL = "standardLevel";
+    public static final String CONSTRUCTION = "construction";
 
     @Inject
     private Transaction newTransaction;
@@ -102,16 +110,16 @@ public class ValuationServlet extends HttpServlet {
                         "no-valuation");
             }
 
-            model.put("price", flatPriceM2);
-            model.put("price_total", flatPriceTotal);
-            model.put("city", newTransaction.getCity());
-            model.put("district1", newTransaction.getDistrict());
-            model.put("market_type", newTransaction.getTypeOfMarket());
-            model.put("flat_area", newTransaction.getFlatArea());
-            model.put("level", newTransaction.getLevel());
-            model.put("parking_spot", newTransaction.getParkingSpot());
-            model.put("standard_level", newTransaction.getStandardLevel());
-            model.put("construction", newTransaction.getConstructionYearCategory());
+            model.put(PRICE, flatPriceM2);
+            model.put(PRICE_TOTAL, flatPriceTotal);
+            model.put(CITY, newTransaction.getCity());
+            model.put(DISTRICT_1, newTransaction.getDistrict());
+            model.put(MARKET_TYPE, newTransaction.getTypeOfMarket());
+            model.put(FLAT_AREA, newTransaction.getFlatArea());
+            model.put(LEVEL, newTransaction.getLevel());
+            model.put(PARKING_SPOT, newTransaction.getParkingSpot());
+            model.put(STANDARD_LEVEL, newTransaction.getStandardLevel());
+            model.put(CONSTRUCTION, newTransaction.getConstructionYearCategory());
 
             String cityName = req.getParameter("city");
             String districtName = req.getParameter("district");
@@ -186,7 +194,7 @@ public class ValuationServlet extends HttpServlet {
     }
 
     private void validateMarketType(HttpServletRequest req, Map<String, String> errorsMap) {
-        String marketType = req.getParameter(MARKET_TYPE);
+        String marketType = req.getParameter("market-type");
         if (marketType == null) {
             return;
         }
