@@ -7,14 +7,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class StatisticsManager {
 
     private static final Path PATH_TO_STATISTICS_FILE = Paths.get(System.getProperty("jboss.home.dir"), "data", "statistics.txt");
     private static final String SEPARATOR = ",";
+    private static final int COUNT = 0, ALL = 1, AVG = 2;
 
     public StatisticsManager() {
     }
@@ -75,9 +77,14 @@ public class StatisticsManager {
         Files.write(path, existingLine, StandardCharsets.UTF_8);
     }
 
-    private List<Statistics> generateStatisticsList() throws IOException {
+    public List<Statistics> generateStatisticsList() {
 
-        List<String> existingList = Files.readAllLines(PATH_TO_STATISTICS_FILE, StandardCharsets.UTF_8);
+        List<String> existingList = null;
+        try {
+            existingList = Files.readAllLines(PATH_TO_STATISTICS_FILE, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         List<Statistics> listOfStatistics = new ArrayList<>();
 
@@ -103,8 +110,8 @@ public class StatisticsManager {
         return listOfStatistics;
     }
 
-    public Map<String, Double[]> getCitesStatistics(List<Statistics> inputList) {
-        Map<String, Double[]> resultCityMap = new HashMap<>();
+    public List<String> getCitesStatistics(List<Statistics> inputList) {
+        Map<String, Double[]> resultCityMap = new TreeMap<>();
 
         inputList.stream()
                 .forEach(x -> {
@@ -113,22 +120,23 @@ public class StatisticsManager {
                     Double[] results = new Double[2];
                     if (resultCityMap.containsKey(x.getCityName())) {
                         results = resultCityMap.get(x.getCityName());
-                        results[0] = results[0] + counter;
-                        results[1] = results[1] + all;
-                    }else{
-                        results[0] = (double)counter;
-                        results[1] = all;
+                        results[COUNT] = results[COUNT] + counter;
+                        results[ALL] = results[ALL] + all;
+                    } else {
+                        results[COUNT] = (double) counter;
+                        results[ALL] = all;
                     }
 
                     resultCityMap.put(x.getCityName(), results);
+
                 });
 
-        return resultCityMap;
+
+        return resultMapListConverter(resultCityMap);
     }
 
-    public Map<String, Double[]> getDistrictsStatistics(List<Statistics> inputList) {
-        Map<String, Double[]> resultDistrictMap = new HashMap<>();
-
+    public List<String> getDistrictsStatistics(List<Statistics> inputList) {
+        Map<String, Double[]> resultDistrictMap = new TreeMap<>();
         inputList.stream()
                 .forEach(x -> {
                     int counter = x.getCounter();
@@ -136,30 +144,32 @@ public class StatisticsManager {
                     double all = x.getAverageValue() * counter;
                     Double[] results = new Double[3];
 
-                        results[0] = (double)counter;
-                        results[1] = avg;
-                        results[2] = all;
+                    results[COUNT] = (double) counter;
+                    results[AVG] = avg;
+                    results[ALL] = all;
 
-
-                    resultDistrictMap.put(x.getCityName(), results);
+                    resultDistrictMap.put(x.getDistrictName(), results);
                 });
 
-        return resultDistrictMap;
+        return resultMapListConverter(resultDistrictMap);
     }
 
-    public List<String> resultMapListConverter(Map<String,Double[]> inputMap){
+    public List<String> resultMapListConverter(Map<String, Double[]> inputMap) {
 
         ArrayList<String> results = new ArrayList();
 
-
+        DecimalFormat df = new DecimalFormat("#.##");
+        df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.ENGLISH));
         inputMap.entrySet().forEach(x -> {
-           String result=x.getKey();
-            for(int i=0; i<x.getValue().length;i++){
-                result+=","+x.getValue()[i];
+            String result = x.getKey();
+            for (int i = 0; i < x.getValue().length; i++) {
+                result += "," + df.format(x.getValue()[i]);
             }
             results.add(result);
         });
 
         return results;
     }
+
 }
+

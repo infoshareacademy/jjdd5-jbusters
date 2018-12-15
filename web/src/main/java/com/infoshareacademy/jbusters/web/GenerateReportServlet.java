@@ -1,4 +1,4 @@
-package com.infoshareacademy.jbusters.iText;
+package com.infoshareacademy.jbusters.web;
 
 import com.infoshareacademy.jbusters.data.ReportGenerator;
 
@@ -17,7 +17,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-@WebServlet(urlPatterns = ("/generate-report"))
+@WebServlet("/generate-report")
 public class GenerateReportServlet extends HttpServlet {
 
 
