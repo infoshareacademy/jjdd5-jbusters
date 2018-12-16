@@ -36,7 +36,7 @@ public class Menu {
 
     public Menu() {
         try {
-            InputStream is =APP_PROPERTIES_FILE.openStream();
+            InputStream is = APP_PROPERTIES_FILE.openStream();
             properties = new PropLoader(APP_PROPERTIES_FILE.openStream());
             exchangeRate = new BigDecimal(properties.getExchangeRate());
 
@@ -146,25 +146,25 @@ public class Menu {
 
     private void loadTransaction() {
 
+        if (!dataLoader.createFlatsListFromFile(pathToUserFile, true).isEmpty()) {
+
+            List<Transaction> userList = dataLoader.createFlatsListFromFile(pathToUserFile, true);
+
             if (!dataLoader.createFlatsListFromFile(pathToUserFile, true).isEmpty()) {
-
-                List<Transaction> userList = dataLoader.createFlatsListFromFile(pathToUserFile, true);
-
-                    if (!dataLoader.createFlatsListFromFile(pathToUserFile, true).isEmpty()) {
-                        for (int i = 0; i < userList.size(); i++) {
-                            System.out.println("\n:: MIESZKANIE NR " + (i + 1) + " " +
-                                    userList.get(i).getTransactionName() +
-                                    " ::::::::::::::::::::::::::::\n" + userList.get(i).toStringNoPrice());
-                        }
-                        System.out.println("\nPodaj nr mieszkania, które chcesz załadować");
-                        int chosenFlat = consoleReader.readInt(1, userList.size());
-                        ConsoleViewer.clearScreen();
-                        newTransactionCreator.setNewTransaction(userList.get(chosenFlat - 1));
-                        System.out.println(":: Mieskzanie nr " + chosenFlat + " o nazwie " +
-                                newTransactionCreator.getNewTransaction().getTransactionName() + " zostało załadowane ::");
-                    }
+                for (int i = 0; i < userList.size(); i++) {
+                    System.out.println("\n:: MIESZKANIE NR " + (i + 1) + " " +
+                            userList.get(i).getTransactionName() +
+                            " ::::::::::::::::::::::::::::\n" + userList.get(i).toStringNoPrice());
                 }
+                System.out.println("\nPodaj nr mieszkania, które chcesz załadować");
+                int chosenFlat = consoleReader.readInt(1, userList.size());
+                ConsoleViewer.clearScreen();
+                newTransactionCreator.setNewTransaction(userList.get(chosenFlat - 1));
+                System.out.println(":: Mieskzanie nr " + chosenFlat + " o nazwie " +
+                        newTransactionCreator.getNewTransaction().getTransactionName() + " zostało załadowane ::");
             }
+        }
+    }
 
     private boolean checkIfFlatExist(List<Transaction> userList) {
         for (int i = 0; i < userList.size(); i++) {
@@ -215,7 +215,7 @@ public class Menu {
         Writer out = new BufferedWriter(new OutputStreamWriter(
                 new FileOutputStream(String.valueOf(pathToFile), true), "UTF-8"));
         try {
-            out.append(transactionString + "," + transactionName + "," + transactionImportant+"\n");
+            out.append(transactionString + "," + transactionName + "," + transactionImportant + "\n");
 
         } finally {
             out.close();

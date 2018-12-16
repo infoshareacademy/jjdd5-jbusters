@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.RequestScoped;
 import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.file.Files;
@@ -41,14 +40,11 @@ public class DataLoader {
     public List<Transaction> createTransactionList(List<String> listFileTransakcjeCSV, boolean userFile) {
 
         PropLoader properties = new PropLoader();
-        //TODO zasanowić się jak obsłużyćsytuację, gdy nie ma pliku app.properties. -> np. zrobic return pustej listy, czy użyć jakiś domyślnych wartości?
         try {
-            InputStream is =APP_PROPERTIES_FILE.openStream();
             properties = new PropLoader(APP_PROPERTIES_FILE.openStream());
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOGGER.error("Missing properties file in path {}", APP_PROPERTIES_FILE.toString());
         }
-
 
 
         List<Transaction> listOfTransaction = new ArrayList<>();

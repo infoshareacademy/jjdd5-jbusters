@@ -1,14 +1,10 @@
 package com.infoshareacademy.jbusters.data;
 
-import com.infoshareacademy.jbusters.console.ConsoleReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 
 public class Transaction {
@@ -36,14 +32,11 @@ public class Transaction {
     private PropLoader properties;
     private boolean important;
 
-
     public Transaction() {
         properties = new PropLoader();
-        //TODO zasanowić się jak obsłużyćsytuację, gdy nie ma pliku app.properties. -> np. zrobic return pustej listy, czy użyć jakiś domyślnych wartości?
         try {
-            InputStream is =APP_PROPERTIES_FILE.openStream();
             properties = new PropLoader(APP_PROPERTIES_FILE.openStream());
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOGGER.error("Missing properties file in path {}", APP_PROPERTIES_FILE.toString());
         }
     }

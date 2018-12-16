@@ -26,7 +26,6 @@ public class LoadDistricTransactionServlet extends HttpServlet {
     private static final String TEMPLATE_NAME = "load-district";
     private static final Logger LOG = LoggerFactory.getLogger(ValuationServlet.class);
 
-
     @Inject
     private TemplateProvider templateProvider;
 

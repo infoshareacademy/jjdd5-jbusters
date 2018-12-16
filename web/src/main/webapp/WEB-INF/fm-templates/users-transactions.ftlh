@@ -7,13 +7,14 @@
 
 <#if error?? >
 
- <div class="container">
-     <div class="jumbotron jumbotron-opacity">
-         <h1 class="display-10"><p>${error} </p></h1>
-         <hr class="my-4">
-         <a class="btn btn-primary btn-lg btn-dark" href="uploadFile.html" role="button">Załaduj plik</a>
-     </div>
- </div>
+<div class="container">
+    <div class="jumbotron jumbotron-opacity">
+        <h1 class="display-10"><p>${error} </p></h1>
+        <hr class="my-4">
+        <a class="btn btn-secondary btn-lg btn-dark" href="uploadFile.html" role="button">Załaduj plik</a>
+        <a class="btn btn-secondary btn-lg btn-dark" href="/load-city" role="button">Wyceń mieszkanie</a>
+    </div>
+</div>
 
 <#elseif flats?has_content>
 <script>
@@ -50,7 +51,8 @@
         </#if>
 
         <td>
-        <a class="btn btn-primary btn-lg active" role="button" aria-pressed="true" href="/valuation?city=${flat.city}&district=${flat.district}&market-type=${flat.typeOfMarket}&flat-area=${flat.flatArea}&level=${flat.level}&parking-spot=${flat.parkingSpot}&standard-level=${flat.standardLevel}&construction=${flat.constructionYearCategory}">
+    <a class="btn btn-primary btn-lg btn-dark active" role="button"
+       aria-pressed="true" href="/valuation?city=${flat.city}&district=${flat.district}&market-type=${flat.typeOfMarket}&flat-area=${flat.flatArea}&level=${flat.level}&parking-spot=${flat.parkingSpot}&standard-level=${flat.standardLevel}&construction=${flat.constructionYearCategory}">
             Wyceń</a>
         </td>
 
@@ -75,6 +77,19 @@
     </#list>
     </tbody>
 </table>
+
+<div class="jumbotron jumbotron-opacity" style="margin: 10px, 30%, 0, 30%">
+    <div style="text-align: center">
+        <form method="GET" action="/saveAs">
+            <input class="btn btn-primary btn-lg btn-dark active" type="submit" value="Pobierz listę mieszkań">
+        </form>
+        <hr class="my-4">
+        <form method="POST" action="/saveAs">
+            <input class="btn btn-primary btn-lg btn-dark active" type="submit" value="Wyczyść listę">
+        </form>
+    </div>
+</div>
+
 <#else>
     <div class="container">
         <div class="jumbotron jumbotron-opacity">

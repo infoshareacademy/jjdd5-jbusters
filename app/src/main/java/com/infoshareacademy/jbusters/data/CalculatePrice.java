@@ -4,16 +4,13 @@ import com.infoshareacademy.jbusters.console.ConsoleViewer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -35,13 +32,11 @@ public class CalculatePrice {
         this.filteredList = filteredList;
 
         properties = new PropLoader();
-        //TODO zasanowić się jak obsłużyćsytuację, gdy nie ma pliku app.properties. -> np. zrobic return pustej listy, czy użyć jakiś domyślnych wartości?
         try {
-            InputStream is =APP_PROPERTIES_FILE.openStream();
             properties = new PropLoader(APP_PROPERTIES_FILE.openStream());
             exchangeRate = properties.getExchangeRateBigDecimal();
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOGGER.error("Missing properties file in path {}", APP_PROPERTIES_FILE.toString());
         }
     }

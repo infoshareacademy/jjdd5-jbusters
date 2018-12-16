@@ -11,15 +11,14 @@ public class SearchOfData {
     public List<String> showCity() {
 
         Data data = new Data();
-
         List<Transaction> transactionList = data.fileToData();
         return data.cityList(transactionList);
     }
 
-    public List<String> showDistrict( String city) {
+    public List<String> showDistrict(String city) {
         Data data = new Data();
 
-        List<Transaction> transactionsBase =data.fileToData();
+        List<Transaction> transactionsBase = data.fileToData();
         List<String> districts = new ArrayList<>();
         for (int i = 0; i < transactionsBase.size(); i++) {
             if (city.equals(transactionsBase.get(i).getCity())) {

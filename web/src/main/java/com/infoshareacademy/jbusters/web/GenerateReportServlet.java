@@ -1,10 +1,7 @@
 package com.infoshareacademy.jbusters.web;
 
 import com.infoshareacademy.jbusters.data.ReportGenerator;
-
 import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
@@ -13,29 +10,28 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 @WebServlet("/generate-report")
 public class GenerateReportServlet extends HttpServlet {
 
-
-    private static final String TEMPLATE_NAME = "load-other-values";
-    private static final Logger LOG = LoggerFactory.getLogger(com.infoshareacademy.jbusters.web.LoadOtherValuesTransactionServlet.class);
-
     public static final String RAPORT_PATH = System.getProperty("jboss.server.temp.dir") + "/raport.pdf";
     @Inject
     private ReportGenerator reportGenerator;
 
 
-    public GenerateReportServlet() throws FileNotFoundException {
+    public GenerateReportServlet() {
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-       reportGenerator.generateReport();
+        reportGenerator.generateReport();
 
         resp.setHeader("Content-Disposition", "attachment; filename=\"Raport.pdf\"");
         // reads input file from an absolute path
@@ -71,7 +67,6 @@ public class GenerateReportServlet extends HttpServlet {
         Files.deleteIfExists(Paths.get(RAPORT_PATH));
 
     }
-
 
 
 }

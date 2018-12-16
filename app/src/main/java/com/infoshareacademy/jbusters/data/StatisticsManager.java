@@ -17,7 +17,9 @@ public class StatisticsManager {
 
     private static final Path PATH_TO_STATISTICS_FILE = Paths.get(System.getProperty("jboss.home.dir"), "data", "statistics.txt");
     private static final String SEPARATOR = ",";
-    private static final int COUNT = 0, ALL = 1, AVG = 2;
+    private static final int COUNT = 0;
+    private static final int ALL = 1;
+    private static final int AVG = 2;
 
     public StatisticsManager() {
     }
@@ -49,7 +51,7 @@ public class StatisticsManager {
                 String counterString = String.valueOf(counterIncrement);
 
                 valueUpdate = BigDecimal.valueOf(existingList.get(i).getAverageValue());
-                valueUpdate = valueUpdate.add(newValue).divide(divider).setScale(2,BigDecimal.ROUND_UP);
+                valueUpdate = valueUpdate.add(newValue).divide(divider).setScale(2, BigDecimal.ROUND_UP);
                 String valueString = String.valueOf(valueUpdate);
 
                 overwriteExistingLine(i, cityName + SEPARATOR + districtName + SEPARATOR + counterString + SEPARATOR + valueString);

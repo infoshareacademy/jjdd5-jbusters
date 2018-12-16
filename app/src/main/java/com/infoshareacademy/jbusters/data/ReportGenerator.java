@@ -34,12 +34,13 @@ public class ReportGenerator {
 
     public static final String RAPORT_PATH = System.getProperty("jboss.server.temp.dir") + "/raport.pdf";
     public static final URL BG_IMG_PATH = Thread.currentThread().getContextClassLoader().getResource("/img/JBusters_logo.png");
-    private StatisticsManager statisticsManager = new StatisticsManager();
+    private StatisticsManager statisticsManager;
     private static final String CITY_TABLE_HEADER = "MIASTO,ILOŚĆ WYSZUKIWAŃ,CAŁKOWITA KWOTA WYCEN";
     private static final String DISTRICT_TABLE_HEADER = "DZIELNICA,ILOŚĆ WYSZUKIWAŃ,CAŁKOWITA KWOTA WYCEN,ŚREDNIA KWOTA WYCENY";
 
 
     public ReportGenerator() {
+        this.statisticsManager = new StatisticsManager();
     }
 
     public void generateReport() throws IOException {
@@ -47,15 +48,7 @@ public class ReportGenerator {
         PdfDocument pdf = new PdfDocument(new PdfWriter(RAPORT_PATH));
         Document doc = new Document(pdf);
 
-        PdfFont polishFont = null;
-        try {
-            polishFont = PdfFontFactory.createFont(HELVETICA, CP1250, true, true);
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        PdfFont polishFont = PdfFontFactory.createFont(HELVETICA, CP1250, true, true);
         PdfCanvas canvas = new PdfCanvas(pdf.addNewPage());
         Rectangle rect = new Rectangle(doc.getPageEffectiveArea(PageSize.A4).getWidth() / 2 - 110, doc.getPageEffectiveArea(PageSize.A4).getHeight() / 2 - 100, 300, 300);
         canvas.addImage(ImageDataFactory.create(BG_IMG_PATH), rect, false);
@@ -71,9 +64,9 @@ public class ReportGenerator {
         canvas.setStrokeColor(new DeviceRgb(0, 0, 0)).moveTo(20, 730).lineTo(580, 730).closePathStroke();
 
 
-        ArrayList<Statistics> wholeStatisticList = new ArrayList<Statistics>(statisticsManager.generateStatisticsList());
-        ArrayList<String> cityStatisticList = new ArrayList<String>(statisticsManager.getCitesStatistics(wholeStatisticList));
-        ArrayList<String> districtStatisticList = new ArrayList<String>(statisticsManager.getDistrictsStatistics(wholeStatisticList));
+        ArrayList<Statistics> wholeStatisticList = new ArrayList<>(statisticsManager.generateStatisticsList());
+        ArrayList<String> cityStatisticList = new ArrayList<>(statisticsManager.getCitesStatistics(wholeStatisticList));
+        ArrayList<String> districtStatisticList = new ArrayList<>(statisticsManager.getDistrictsStatistics(wholeStatisticList));
 
         Paragraph parag1 = new Paragraph().add("Tabela statystyk dla miast (porzadek alfabetyczny)");
         parag.setTextAlignment(TextAlignment.CENTER).setFontSize(20f);
@@ -85,7 +78,7 @@ public class ReportGenerator {
         Paragraph parag2 = new Paragraph().add("Tabela statystyk dla dzielnic (porzadek alfabetyczny)");
         parag.setTextAlignment(TextAlignment.CENTER).setFontSize(20f);
         parag.setMarginBottom(20f);
-        doc.add(parag1);
+        doc.add(parag2);
 
         doc.add(tableCreator(DISTRICT_TABLE_HEADER, districtStatisticList, polishFont, 100));
 
