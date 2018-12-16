@@ -3,11 +3,14 @@ package com.infoshareacademy.jbusters.data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.enterprise.context.SessionScoped;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.time.LocalDate;
 
-public class Transaction {
+@SessionScoped
+public class Transaction implements Serializable {
 
     private static final URL APP_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("app.properties");
     private static final Logger LOGGER = LoggerFactory.getLogger(DataLoader.class);
@@ -43,20 +46,20 @@ public class Transaction {
 
     public Transaction(Transaction transaction) {
         super();
-        this.transactionDate = transaction.transactionDate;
-        this.city = transaction.city;
-        this.district = transaction.district;
-        this.street = transaction.street;
-        this.typeOfMarket = transaction.typeOfMarket;
-        this.price = transaction.price;
+        this.transactionDate = transaction.getTransactionDate();
+        this.city = transaction.getCity();
+        this.district = transaction.getDistrict();
+        this.street = transaction.getStreet();
+        this.typeOfMarket = transaction.getTypeOfMarket();
+        this.price = transaction.getPrice();
         this.currency = transaction.currency;
-        this.flatArea = transaction.flatArea;
-        this.pricePerM2 = transaction.pricePerM2;
-        this.level = transaction.level;
-        this.parkingSpot = transaction.parkingSpot;
-        this.standardLevel = transaction.standardLevel;
-        this.constructionYear = transaction.constructionYear;
-        this.constructionYearCategory = transaction.constructionYearCategory;
+        this.flatArea = transaction.getFlatArea();
+        this.pricePerM2 = transaction.getPricePerM2();
+        this.level = transaction.getLevel();
+        this.parkingSpot = transaction.getParkingSpot();
+        this.standardLevel = transaction.getStandardLevel();
+        this.constructionYear = transaction.getConstructionYear();
+        this.constructionYearCategory = transaction.getConstructionYearCategory();
 
     }
 

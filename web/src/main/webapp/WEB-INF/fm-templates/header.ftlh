@@ -27,6 +27,9 @@
                             <a class="nav-link" href="uploadFile.html">Załaduj plik</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="/my-flats">Moje mieszkania</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="/generate-report">Pobierz statystyki</a>
                         </li>
                         <li class="nav-item">

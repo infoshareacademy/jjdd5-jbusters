@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.io.*;
 import java.math.BigDecimal;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -28,9 +29,7 @@ public class Menu {
 
     private Path pathToUserFile = Paths.get("data", "test.txt");
     private Path pathToFileTransactionCSV = Paths.get("data", "transaction.csv");
-
     private PropLoader properties;
-
     private DecimalFormat df = new DecimalFormat("###,###,###.##");
     private BigDecimal exchangeRate;
 
@@ -186,15 +185,32 @@ public class Menu {
     }
 
     public void saveTransaction(Transaction newTransaction, Path pathToFile, boolean isUserFile) throws IOException {
+        String transactionString = getTransactionAsString(newTransaction, isUserFile);
+
+
+        Writer out = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream(String.valueOf(pathToFile), true), StandardCharsets.UTF_8));
+        try {
+            out.append(transactionString).append("\n");
+        } finally {
+            out.close();
+        }
+
+        ConsoleViewer.clearScreen();
+        System.out.println(":: Twoja transakcja została zapisana do pliku ::\n");
+        System.out.println("Nowy wpis: " + newTransaction.toStringNoPrice());
+        System.out.println("\nWybierz z poniższego menu co chcesz dalej zrobić?\n");
+    }
+
+    public String getTransactionAsString(Transaction newTransaction, boolean isUserFile) {
         String transactionName = "brak";
         boolean transactionImportant = false;
 
         if (isUserFile) {
             transactionName = newTransaction.getTransactionName();
             transactionImportant = newTransaction.isImportant();
-
         }
-        String transactionString = Stream.of(
+        return String.join(",",
                 newTransaction.getTransactionDate().toString().replaceAll("-", " "),
                 newTransaction.getCity(),
                 newTransaction.getDistrict(),
@@ -207,23 +223,9 @@ public class Menu {
                 newTransaction.getParkingSpot(),
                 newTransaction.getStandardLevel(),
                 newTransaction.getConstructionYear(),
-                String.valueOf(newTransaction.getConstructionYearCategory()))
-                .collect(Collectors.joining(","));
-
-
-        Writer out = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(String.valueOf(pathToFile), true), "UTF-8"));
-        try {
-            out.append(transactionString + "," + transactionName + "," + transactionImportant + "\n");
-
-        } finally {
-            out.close();
-        }
-
-        ConsoleViewer.clearScreen();
-        System.out.println(":: Twoja transakcja została zapisana do pliku ::\n");
-        System.out.println("Nowy wpis: " + newTransaction.toStringNoPrice());
-        System.out.println("\nWybierz z poniższego menu co chcesz dalej zrobić?\n");
+                String.valueOf(newTransaction.getConstructionYearCategory()),
+                transactionName,
+                String.valueOf(transactionImportant));
     }
 
     private void addSoldFlatToDataBase(Transaction newTransaction) throws FileNotFoundException {
