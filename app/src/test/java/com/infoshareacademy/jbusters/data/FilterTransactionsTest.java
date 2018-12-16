@@ -1,16 +1,12 @@
 package com.infoshareacademy.jbusters.data;
 
 import org.junit.Assert;
-import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FilterTransactionsTest {
 
@@ -43,7 +39,7 @@ public class FilterTransactionsTest {
     }
 
   // @Test
-    public void BasicFilterTest(){
+    public void basicFilterTest(){
         tempTransactions=new ArrayList<Transaction>();
         LocalDate now = LocalDate.now();
         tempTransactions.add(createTransactionByDate(now));

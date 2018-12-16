@@ -36,7 +36,6 @@ public class Menu {
 
     public Menu() {
         try {
-            InputStream is = APP_PROPERTIES_FILE.openStream();
             properties = new PropLoader(APP_PROPERTIES_FILE.openStream());
             exchangeRate = new BigDecimal(properties.getExchangeRate());
 

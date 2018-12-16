@@ -4,10 +4,8 @@ import com.infoshareacademy.jbusters.data.Data;
 import com.infoshareacademy.jbusters.data.PropLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Properties;
@@ -17,8 +15,6 @@ public class MenuOptions {
     private static final Logger LOGGER = LoggerFactory.getLogger(Data.class);
 
     private ConsoleReader consoleReader = new ConsoleReader();
-    //private PropLoader properties = new PropLoader("app/src/main/resources/app.properties");
-    private PropLoader properties;
     private int decimalPlaces;
     private String currency;
     private BigDecimal exchangeRate;
@@ -29,10 +25,8 @@ public class MenuOptions {
 
     void loadOptionsMenu() throws IOException {
 
-        properties = new PropLoader();
-        //TODO zasanowić się jak obsłużyćsytuację, gdy nie ma pliku app.properties. -> np. zrobic return pustej listy, czy użyć jakiś domyślnych wartości?
+        PropLoader properties = new PropLoader();
         try {
-            InputStream is =APP_PROPERTIES_FILE.openStream();
             properties = new PropLoader(APP_PROPERTIES_FILE.openStream());
             decimalPlaces = properties.getDecimalPlaces();
             currency = properties.getCurrency();

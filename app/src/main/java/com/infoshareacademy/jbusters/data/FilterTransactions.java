@@ -182,13 +182,12 @@ public class FilterTransactions {
                 .sorted(Comparator.comparing(Transaction::getPricePerM2))
                 .collect(Collectors.toList());
 
-        // removeLeftOutliers(transSortedByPPerM2, maxDiff);
+        //removeLeftOutliers(transSortedByPPerM2, maxDiff);
         //removeRightOutliers(transSortedByPPerM2, maxDiff);
 
         BigDecimal sumPPM2 = transSortedByPPerM2.stream()
-                .map(x -> x.getPricePerM2())
+                .map(Transaction::getPricePerM2)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-        System.out.println(sumPPM2);
 
         BigDecimal avg = sumPPM2.divide(new BigDecimal(transSortedByPPerM2.size()), RoundingMode.HALF_UP);
 
