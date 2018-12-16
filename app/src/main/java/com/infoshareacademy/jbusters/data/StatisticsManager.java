@@ -3,11 +3,9 @@ package com.infoshareacademy.jbusters.data;
 import javax.enterprise.context.ApplicationScoped;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
+import java.nio.file.*;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.*;
@@ -68,7 +66,7 @@ public class StatisticsManager {
 
         String statisticsString = cityName + SEPARATOR + districtName + ",1," + value + System.lineSeparator();
 
-        Files.write(Paths.get(String.valueOf(PATH_TO_STATISTICS_FILE)), statisticsString.getBytes(), StandardOpenOption.APPEND);
+        Files.write(Paths.get(String.valueOf(PATH_TO_STATISTICS_FILE)), statisticsString.getBytes(Charset.forName("UTF-8")), StandardOpenOption.APPEND);
     }
 
     private void overwriteExistingLine(int lineNumber, String lineData) throws IOException {

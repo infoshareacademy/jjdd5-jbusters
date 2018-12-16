@@ -210,14 +210,11 @@
                                 <option>tak</option>
                             </select>
                         </div>
-                        <input class="btn btn-primary" type="submit" value="Zapisz w pliku" name="upload" id="upload"/>
+                        <input class="btn btn-primary" type="submit" value="Zapisz" name="upload" id="upload"/>
 
                     </form>
 
-
                         </div>
-
-
                     </div>
                 </div>
             </div>
