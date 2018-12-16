@@ -1,31 +1,54 @@
 package com.infoshareacademy.jbusters.data;
 
 import com.infoshareacademy.jbusters.console.ConsoleViewer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.io.InputStream;
 import java.math.BigDecimal;
-import java.util.*;
+import java.math.RoundingMode;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class FilterTransactions {
 
-    private PropLoader properties = new PropLoader(System.getProperty("jboss.home.dir") + "/data/app.properties");
+    private static final Logger LOGGER = LoggerFactory.getLogger(DataLoader.class);
+    private static final URL APP_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("app.properties");
+    private static final URL DISTR_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("districts.properties");
 
-    private Map<String, Integer> districtProperties;
+
+    private DistrWagesHandler distrWagesHandler;
     private List<Transaction> transactionsBase;
-    private BigDecimal areaDiff = properties.getAreaDiff();
-    private BigDecimal areaDiffExpanded = properties.getAreaDiffExpanded();
-    private int minResultsNumber = properties.getMinResultsNumber();
-    private BigDecimal priceDiff = properties.getPriceDiff();
+    private BigDecimal areaDiff;
+    private BigDecimal areaDiffExpanded;
+    private int minResultsNumber;
+    private BigDecimal priceDiff;
 
     @Inject
     private Data data;
 
     public FilterTransactions() {
-        districtProperties = new DistrWagesHandler(System.getProperty("jboss.home.dir") + "/data/districts.properties").getDistrictWages();
+        PropLoader properties = new PropLoader();
+        try {
+            InputStream is = APP_PROPERTIES_FILE.openStream();
+            properties = new PropLoader(is);
+            areaDiff = properties.getAreaDiff();
+            areaDiffExpanded = properties.getAreaDiffExpanded();
+            minResultsNumber = properties.getMinResultsNumber();
+            priceDiff = properties.getPriceDiff();
+
+            is = DISTR_PROPERTIES_FILE.openStream();
+            distrWagesHandler = new DistrWagesHandler(is);
+        } catch (Exception e) {
+            LOGGER.error("Missing properties file in path {} or {}", APP_PROPERTIES_FILE.toString(), DISTR_PROPERTIES_FILE.toString());
+        }
     }
 
     @PostConstruct
@@ -52,7 +75,7 @@ public class FilterTransactions {
 
         ConsoleViewer.clearScreen();
         System.out.println(":: Wycena niemożliwa, baza zawiera zbyt małą ilość pasujących transakcji ::\n");
-        return new ArrayList<Transaction>();
+        return new ArrayList<>();
     }
 
     public List<Transaction> basicFilter(Transaction userTransaction) {
@@ -131,7 +154,7 @@ public class FilterTransactions {
     private List<Transaction> multiDistrictFilter(List<Transaction> transactionsBase, Transaction userTransaction) {
         List<Transaction> lista = transactionsBase.stream()
 
-                .filter(transaction -> districtWageComparator(transaction, userTransaction))
+                .filter(transaction -> distrWagesHandler.districtWageComparator(transaction, userTransaction))
                 .collect(Collectors.toList());
         return new ArrayList(lista);
     }
@@ -159,8 +182,20 @@ public class FilterTransactions {
                 .sorted(Comparator.comparing(Transaction::getPricePerM2))
                 .collect(Collectors.toList());
 
-        removeLeftOutliers(transSortedByPPerM2, maxDiff);
-        removeRightOutliers(transSortedByPPerM2, maxDiff);
+        //removeLeftOutliers(transSortedByPPerM2, maxDiff);
+        //removeRightOutliers(transSortedByPPerM2, maxDiff);
+
+        BigDecimal sumPPM2 = transSortedByPPerM2.stream()
+                .map(Transaction::getPricePerM2)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        BigDecimal avg = sumPPM2.divide(new BigDecimal(transSortedByPPerM2.size()), RoundingMode.HALF_UP);
+
+        transSortedByPPerM2 = transSortedByPPerM2.stream()
+                .filter(x -> x.getPricePerM2().compareTo(avg.multiply(BigDecimal.valueOf(0.7))) >= 0)
+                .filter(x -> x.getPricePerM2().compareTo(avg.multiply(BigDecimal.valueOf(1.3))) <= 0)
+                .collect(Collectors.toList());
+
         return transSortedByPPerM2;
     }
 
@@ -190,21 +225,4 @@ public class FilterTransactions {
         return listToCheck.size() >= minSize;
     }
 
-    private boolean districtWageComparator(Transaction checkedTransaction, Transaction userTransaction) {
-        String checkedTransactionDistrict = districtStringParser(checkedTransaction.getDistrict());
-        String userTransactionDistrict = districtStringParser(userTransaction.getDistrict());
-
-        DistrWagesHandler districtPropnew = new DistrWagesHandler(System.getProperty("jboss.home.dir") + "/data/districts.properties");
-
-
-        if(districtPropnew.getProperties().containsKey(userTransactionDistrict)){
-            return (districtPropnew.getProperties().getProperty(checkedTransactionDistrict).equals(districtPropnew.getProperties().getProperty(userTransactionDistrict)));
-        }
-
-        return false;
-    }
-
-    private String districtStringParser(String districtName) {
-        return districtName.trim().replace(" ", "_").toLowerCase();
-    }
 }

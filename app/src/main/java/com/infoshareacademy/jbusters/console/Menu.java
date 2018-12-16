@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Menu {
-
+    private static final URL APP_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("app.properties");
     private static final Logger LOGGER = LoggerFactory.getLogger(Menu.class);
     private ConsoleReader consoleReader = new ConsoleReader();
     private Data data = new Data();
@@ -28,11 +29,19 @@ public class Menu {
 
     private Path pathToUserFile = Paths.get("data", "test.txt");
     private Path pathToFileTransactionCSV = Paths.get("data", "transaction.csv");
-    private PropLoader properties = new PropLoader("app/app.properties");
+    private PropLoader properties;
     private DecimalFormat df = new DecimalFormat("###,###,###.##");
-    private BigDecimal exchangeRate = properties.getExchangeRateBigDecimal();
+    private BigDecimal exchangeRate;
 
     public Menu() {
+        try {
+            properties = new PropLoader(APP_PROPERTIES_FILE.openStream());
+            exchangeRate = new BigDecimal(properties.getExchangeRate());
+
+        } catch (IOException e) {
+            LOGGER.error("Missing properties file in path {}", APP_PROPERTIES_FILE.toString());
+        }
+
         filterTransactions.setData(data);
         filterTransactions.init();
         this.dataLoader = new DataLoader();
@@ -135,25 +144,25 @@ public class Menu {
 
     private void loadTransaction() {
 
+        if (!dataLoader.createFlatsListFromFile(pathToUserFile, true).isEmpty()) {
+
+            List<Transaction> userList = dataLoader.createFlatsListFromFile(pathToUserFile, true);
+
             if (!dataLoader.createFlatsListFromFile(pathToUserFile, true).isEmpty()) {
-
-                List<Transaction> userList = dataLoader.createFlatsListFromFile(pathToUserFile, true);
-
-                    if (!dataLoader.createFlatsListFromFile(pathToUserFile, true).isEmpty()) {
-                        for (int i = 0; i < userList.size(); i++) {
-                            System.out.println("\n:: MIESZKANIE NR " + (i + 1) + " " +
-                                    userList.get(i).getTransactionName() +
-                                    " ::::::::::::::::::::::::::::\n" + userList.get(i).toStringNoPrice());
-                        }
-                        System.out.println("\nPodaj nr mieszkania, które chcesz załadować");
-                        int chosenFlat = consoleReader.readInt(1, userList.size());
-                        ConsoleViewer.clearScreen();
-                        newTransactionCreator.setNewTransaction(userList.get(chosenFlat - 1));
-                        System.out.println(":: Mieskzanie nr " + chosenFlat + " o nazwie " +
-                                newTransactionCreator.getNewTransaction().getTransactionName() + " zostało załadowane ::");
-                    }
+                for (int i = 0; i < userList.size(); i++) {
+                    System.out.println("\n:: MIESZKANIE NR " + (i + 1) + " " +
+                            userList.get(i).getTransactionName() +
+                            " ::::::::::::::::::::::::::::\n" + userList.get(i).toStringNoPrice());
                 }
+                System.out.println("\nPodaj nr mieszkania, które chcesz załadować");
+                int chosenFlat = consoleReader.readInt(1, userList.size());
+                ConsoleViewer.clearScreen();
+                newTransactionCreator.setNewTransaction(userList.get(chosenFlat - 1));
+                System.out.println(":: Mieskzanie nr " + chosenFlat + " o nazwie " +
+                        newTransactionCreator.getNewTransaction().getTransactionName() + " zostało załadowane ::");
             }
+        }
+    }
 
     private boolean checkIfFlatExist(List<Transaction> userList) {
         for (int i = 0; i < userList.size(); i++) {
@@ -186,7 +195,7 @@ public class Menu {
         } finally {
             out.close();
         }
-        
+
         ConsoleViewer.clearScreen();
         System.out.println(":: Twoja transakcja została zapisana do pliku ::\n");
         System.out.println("Nowy wpis: " + newTransaction.toStringNoPrice());

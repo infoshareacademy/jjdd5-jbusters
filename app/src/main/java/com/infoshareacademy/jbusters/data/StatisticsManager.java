@@ -8,19 +8,24 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.*;
 
 @ApplicationScoped
 public class StatisticsManager {
 
     private static final Path PATH_TO_STATISTICS_FILE = Paths.get(System.getProperty("jboss.home.dir"), "data", "statistics.txt");
     private static final String SEPARATOR = ",";
+    private static final int COUNT = 0;
+    private static final int ALL = 1;
+    private static final int AVG = 2;
+
+    public StatisticsManager() {
+    }
 
     public void captureNameFromServlet(String cityName, String districtName, String value) throws IOException {
-        if(Objects.nonNull(value) && Double.parseDouble(value) > 0) {
+        if (Objects.nonNull(value) && Double.parseDouble(value) > 0) {
             addOrUpdateStatistics(cityName, districtName, value);
         }
     }
@@ -46,7 +51,7 @@ public class StatisticsManager {
                 String counterString = String.valueOf(counterIncrement);
 
                 valueUpdate = BigDecimal.valueOf(existingList.get(i).getAverageValue());
-                valueUpdate = valueUpdate.add(newValue).divide(divider).setScale(2,BigDecimal.ROUND_UP);
+                valueUpdate = valueUpdate.add(newValue).divide(divider).setScale(2, BigDecimal.ROUND_UP);
                 String valueString = String.valueOf(valueUpdate);
 
                 overwriteExistingLine(i, cityName + SEPARATOR + districtName + SEPARATOR + counterString + SEPARATOR + valueString);
@@ -54,7 +59,7 @@ public class StatisticsManager {
                 shouldAddNewLine = false;
             }
         }
-        if (shouldAddNewLine){
+        if (shouldAddNewLine) {
             addNewLine(cityName, districtName, value);
         }
     }
@@ -77,9 +82,14 @@ public class StatisticsManager {
         Files.write(path, existingLine, StandardCharsets.UTF_8);
     }
 
-    private List<Statistics> generateStatisticsList() throws IOException {
+    public List<Statistics> generateStatisticsList() {
 
-        List<String> existingList = Files.readAllLines(PATH_TO_STATISTICS_FILE, StandardCharsets.UTF_8);
+        List<String> existingList = null;
+        try {
+            existingList = Files.readAllLines(PATH_TO_STATISTICS_FILE, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         List<Statistics> listOfStatistics = new ArrayList<>();
 
@@ -104,4 +114,67 @@ public class StatisticsManager {
         }
         return listOfStatistics;
     }
+
+    public List<String> getCitesStatistics(List<Statistics> inputList) {
+        Map<String, Double[]> resultCityMap = new TreeMap<>();
+
+        inputList.stream()
+                .forEach(x -> {
+                    int counter = x.getCounter();
+                    double all = x.getAverageValue() * counter;
+                    Double[] results = new Double[2];
+                    if (resultCityMap.containsKey(x.getCityName())) {
+                        results = resultCityMap.get(x.getCityName());
+                        results[COUNT] = results[COUNT] + counter;
+                        results[ALL] = results[ALL] + all;
+                    } else {
+                        results[COUNT] = (double) counter;
+                        results[ALL] = all;
+                    }
+
+                    resultCityMap.put(x.getCityName(), results);
+
+                });
+
+
+        return resultMapListConverter(resultCityMap);
+    }
+
+    public List<String> getDistrictsStatistics(List<Statistics> inputList) {
+        Map<String, Double[]> resultDistrictMap = new TreeMap<>();
+        inputList.stream()
+                .forEach(x -> {
+                    int counter = x.getCounter();
+                    double avg = x.getAverageValue();
+                    double all = x.getAverageValue() * counter;
+                    Double[] results = new Double[3];
+
+                    results[COUNT] = (double) counter;
+                    results[AVG] = avg;
+                    results[ALL] = all;
+
+                    resultDistrictMap.put(x.getDistrictName(), results);
+                });
+
+        return resultMapListConverter(resultDistrictMap);
+    }
+
+    public List<String> resultMapListConverter(Map<String, Double[]> inputMap) {
+
+        ArrayList<String> results = new ArrayList();
+
+        DecimalFormat df = new DecimalFormat("#.##");
+        df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+        inputMap.entrySet().forEach(x -> {
+            String result = x.getKey();
+            for (int i = 0; i < x.getValue().length; i++) {
+                result += "," + df.format(x.getValue()[i]);
+            }
+            results.add(result);
+        });
+
+        return results;
+    }
+
 }
+

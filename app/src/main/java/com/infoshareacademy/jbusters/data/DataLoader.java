@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import javax.enterprise.context.RequestScoped;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.DecimalFormat;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @RequestScoped
 public class DataLoader {
+    private static final URL APP_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("app.properties");
     private static final Logger LOGGER = LoggerFactory.getLogger(DataLoader.class);
     private static final int INDEX_TRANSACTION_DATE = 0;
     private static final int INDEX_CITY = 1;
@@ -37,7 +39,13 @@ public class DataLoader {
 
     public List<Transaction> createTransactionList(List<String> listFileTransakcjeCSV, boolean userFile) {
 
-        PropLoader properties = new PropLoader(System.getProperty("jboss.home.dir") + "/data/app.properties");
+        PropLoader properties = new PropLoader();
+        try {
+            properties = new PropLoader(APP_PROPERTIES_FILE.openStream());
+        } catch (Exception e) {
+            LOGGER.error("Missing properties file in path {}", APP_PROPERTIES_FILE.toString());
+        }
+
 
         List<Transaction> listOfTransaction = new ArrayList<>();
 

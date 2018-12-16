@@ -1,0 +1,113 @@
+2018-12-04 23:52:03,415 INFO com.infoshareacademy.jbusters.data.Data [main] Load file CSV. Path: data/transaction.csv
+2018-12-04 23:52:03,839 INFO com.infoshareacademy.jbusters.data.DataLoader [main] Create list transaction. List size: 3363 rows
+2018-12-04 23:52:09,787 INFO com.infoshareacademy.jbusters.data.Data [main] Load file CSV. Path: data/transaction.csv
+2018-12-04 23:52:09,991 INFO com.infoshareacademy.jbusters.data.DataLoader [main] Create list transaction. List size: 3363 rows
+2018-12-06 00:31:41,358 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null
+2018-12-06 00:38:47,040 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null
+2018-12-06 00:39:03,047 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null
+2018-12-06 00:39:32,303 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null
+2018-12-06 00:41:23,987 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null
+2018-12-06 00:42:34,751 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null
+2018-12-06 00:47:26,509 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null input
+2018-12-06 00:54:16,659 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null input
+2018-12-06 00:54:39,585 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null input
+2018-12-06 00:59:57,354 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null input
+2018-12-06 01:01:20,575 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null input
+2018-12-06 01:02:25,046 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null input
+2018-12-06 11:37:59,916 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null input
+2018-12-06 13:04:33,977 ERROR com.infoshareacademy.jbusters.data.Data [main] Error - wrong filetype, .properties expected
+2018-12-06 13:04:33,980 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 13:27:41,360 ERROR com.infoshareacademy.jbusters.data.Data [main] Error - wrong filetype, .properties expected
+2018-12-06 13:27:41,363 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:10:55,613 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:13:10,760 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:14:14,531 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:15:13,373 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:16:41,953 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:20:25,734 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:32:18,706 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:42:36,662 ERROR com.infoshareacademy.jbusters.data.Data [main] Error - wrong filetype, .properties expected
+2018-12-06 16:42:36,666 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:42:36,667 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null input
+2018-12-06 16:42:36,722 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:42:53,860 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:50:20,621 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:50:58,457 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:51:21,744 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:51:27,540 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 16:53:20,937 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-07 16:13:31,975 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-07 16:28:37,352 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-07 16:28:55,496 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-07 16:32:05,464 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-07 16:44:15,815 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-07 16:52:07,696 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-07 16:53:53,438 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 18:16:47,295 ERROR com.infoshareacademy.jbusters.data.Data [main] Error - wrong filetype, .properties expected
+2018-12-06 18:16:47,298 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 18:16:47,299 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null input
+2018-12-06 18:16:47,356 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 18:21:44,148 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 18:23:45,239 ERROR com.infoshareacademy.jbusters.data.Data [main] Error - wrong filetype, .properties expected
+2018-12-06 18:23:45,242 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 18:23:45,242 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null input
+2018-12-06 18:23:45,256 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 18:23:50,961 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 18:32:05,437 INFO com.infoshareacademy.jbusters.data.Data [main] district property file loaded successfully
+2018-12-06 18:35:41,833 INFO com.infoshareacademy.jbusters.data.Data [main] district property file loaded successfully
+2018-12-06 18:35:58,219 INFO com.infoshareacademy.jbusters.data.Data [main] district property file loaded successfully
+2018-12-06 18:36:56,836 INFO com.infoshareacademy.jbusters.data.Data [main] district property file loaded successfully
+2018-12-06 18:39:14,687 ERROR com.infoshareacademy.jbusters.data.Data [main] Error - wrong filetype, .properties expected
+2018-12-06 18:39:14,690 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 18:39:14,691 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null input
+2018-12-06 18:39:14,705 INFO com.infoshareacademy.jbusters.data.Data [main] district property file loaded successfully
+2018-12-06 19:02:17,662 ERROR com.infoshareacademy.jbusters.data.Data [main] Error - wrong filetype, .properties expected
+2018-12-06 19:02:17,665 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 19:02:17,665 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null input
+2018-12-06 19:02:28,249 ERROR com.infoshareacademy.jbusters.data.Data [main] Error - wrong filetype, .properties expected
+2018-12-06 19:02:28,254 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-06 19:02:28,255 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null input
+2018-12-10 15:34:03,389 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-10 15:49:29,786 ERROR com.infoshareacademy.jbusters.data.Data [main] Error - wrong filetype, .properties expected
+2018-12-10 15:49:29,794 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-10 16:12:44,555 ERROR com.infoshareacademy.jbusters.data.Data [main] Error - wrong filetype, .properties expected
+2018-12-10 16:12:44,564 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-10 16:36:05,549 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-10 16:37:14,294 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-10 17:12:47,023 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-10 17:13:00,109 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-10 17:13:20,610 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-10 17:13:31,073 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-11 09:19:24,521 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-11 13:16:03,254 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-11 16:25:13,371 ERROR com.infoshareacademy.jbusters.data.Data [main] Error - wrong filetype, .properties expected
+2018-12-11 16:25:13,376 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-11 16:25:13,377 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null input
+2018-12-11 16:25:13,386 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-11 16:25:13,446 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-11 16:25:52,873 ERROR com.infoshareacademy.jbusters.data.Data [main] Error - wrong filetype, .properties expected
+2018-12-11 16:25:52,879 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-11 16:25:52,880 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null input
+2018-12-11 16:25:52,888 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-11 22:25:42,291 ERROR com.infoshareacademy.jbusters.data.Data [main] Error - wrong filetype, .properties expected
+2018-12-11 22:25:42,297 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-11 22:25:42,299 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null input
+2018-12-11 22:25:42,309 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-11 22:26:57,900 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: {}
+2018-12-12 00:25:01,056 INFO com.infoshareacademy.jbusters.data.Data [main] district property file loaded successfully
+2018-12-12 00:32:42,514 INFO com.infoshareacademy.jbusters.data.Data [main] district property file loaded successfully
+2018-12-12 00:32:57,206 INFO com.infoshareacademy.jbusters.data.Data [main] district property file loaded successfully
+2018-12-12 00:39:06,697 INFO com.infoshareacademy.jbusters.data.Data [main] district property file loaded successfully
+2018-12-12 00:40:41,992 INFO com.infoshareacademy.jbusters.data.Data [main] district property file loaded successfully
+2018-12-12 00:41:26,255 INFO com.infoshareacademy.jbusters.data.Data [main] district property file loaded successfully
+2018-12-12 14:47:55,854 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null input
+2018-12-12 14:58:15,785 ERROR com.infoshareacademy.jbusters.data.Data [main] Error loading file: null input
+2018-12-12 15:00:43,686 INFO com.infoshareacademy.jbusters.data.Data [main] district property file loaded successfully
+2018-12-12 15:01:07,758 INFO com.infoshareacademy.jbusters.data.Data [main] district property file loaded successfully
+2018-12-13 14:51:34,655 INFO com.infoshareacademy.jbusters.data.Data [main] district property file loaded successfully
+2018-12-13 14:51:34,720 INFO com.infoshareacademy.jbusters.data.Data [main] district property file loaded successfully
+2018-12-13 14:52:09,681 INFO com.infoshareacademy.jbusters.data.Data [main] district property file loaded successfully
+2018-12-13 14:52:09,742 INFO com.infoshareacademy.jbusters.data.Data [main] district property file loaded successfully
+2018-12-13 14:52:27,730 INFO com.infoshareacademy.jbusters.data.Data [main] district property file loaded successfully
+2018-12-13 14:54:38,040 INFO com.infoshareacademy.jbusters.data.Data [main] district property file loaded successfully
+2018-12-13 14:58:26,149 INFO com.infoshareacademy.jbusters.data.Data [main] district property file loaded successfully

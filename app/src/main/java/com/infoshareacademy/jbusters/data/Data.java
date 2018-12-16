@@ -4,12 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
-import java.io.IOException;
-import java.math.BigDecimal;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -26,21 +24,15 @@ public class Data {
     }
 
     public List<Transaction> fileToData() {
-        Path pathToFileTransactionCSV = Paths.get(System.getProperty("jboss.home.dir") + "/data/transaction.csv");
 
         List<String> listFileTransactionCSV = null;
-        try {
-            listFileTransactionCSV = Files.readAllLines(pathToFileTransactionCSV, StandardCharsets.UTF_8);
-            listFileTransactionCSV.remove(0);
-            DataLoader data = new DataLoader();
-            LOGGER.info("Load file CSV. Path: {}", pathToFileTransactionCSV);
-            return data.createTransactionList(listFileTransactionCSV, false);
-        } catch (IOException e) {
-            System.out.println("Error while loading data: ");
-            e.printStackTrace();
-            LOGGER.error("Error loading file: {}", pathToFileTransactionCSV);
-        }
-        return null;
+
+        InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("transaction.csv");
+        listFileTransactionCSV = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8)).lines().collect(Collectors.toList());
+        listFileTransactionCSV.remove(0);
+        DataLoader data = new DataLoader();
+        LOGGER.info("Load file CSV. Number of loaded transactions: {}", listFileTransactionCSV.size());
+        return data.createTransactionList(listFileTransactionCSV, false);
     }
 
     // Metoda do wyciągania z bazy danych listy miast/dzielnic bez duplikatów + w kolejnkości alfabetycznej

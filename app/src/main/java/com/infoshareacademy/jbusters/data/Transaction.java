@@ -1,15 +1,21 @@
 package com.infoshareacademy.jbusters.data;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.time.LocalDate;
 
 @SessionScoped
 public class Transaction implements Serializable {
 
-    PropLoader properties = new PropLoader(System.getProperty("jboss.home.dir") + "/data/app.properties");
+    private static final URL APP_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("app.properties");
+    private static final Logger LOGGER = LoggerFactory.getLogger(DataLoader.class);
+
+    // PropLoader properties = new PropLoader(System.getProperty("jboss.home.dir") + "/data/app.properties");
 
     private LocalDate transactionDate;
     private String city;
@@ -26,13 +32,20 @@ public class Transaction implements Serializable {
     private String constructionYear;
     private int constructionYearCategory;
     private String transactionName;
+    private PropLoader properties;
     private boolean important;
 
-
     public Transaction() {
+        properties = new PropLoader();
+        try {
+            properties = new PropLoader(APP_PROPERTIES_FILE.openStream());
+        } catch (Exception e) {
+            LOGGER.error("Missing properties file in path {}", APP_PROPERTIES_FILE.toString());
+        }
     }
 
     public Transaction(Transaction transaction) {
+        super();
         this.transactionDate = transaction.getTransactionDate();
         this.city = transaction.getCity();
         this.district = transaction.getDistrict();

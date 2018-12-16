@@ -9,7 +9,7 @@ public class Statistics {
 
     @Override
     public String toString() {
-        return  "Miasto " + cityName + " było użyte " + counter + " raz(y) w wycenie nieruchomości.\n" +
+        return "Miasto " + cityName + " było użyte " + counter + " raz(y) w wycenie nieruchomości.\n" +
                 "Dzielnica " + districtName + " była użyta " + counter + " raz(y) w wycenie nieruchomości.\n" +
                 "Średnia cena nieruchomości w tym rejonie wynosi " + averageValue + " PLN";
     }
