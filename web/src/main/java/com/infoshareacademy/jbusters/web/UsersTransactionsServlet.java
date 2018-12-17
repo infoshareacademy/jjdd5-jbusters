@@ -13,10 +13,7 @@ import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
+import javax.servlet.http.*;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -49,6 +46,7 @@ public class UsersTransactionsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
+        HttpSession session = request.getSession();
         final PrintWriter writer = response.getWriter();
         final Part filePart = request.getPart("file");
         List<Transaction> usersTransactions = new ArrayList<>();
@@ -57,6 +55,8 @@ public class UsersTransactionsServlet extends HttpServlet {
         Template template = templateProvider.getTemplate(
                 getServletContext(),
                 TEMPLATE_NAME);
+
+        // TODO błąd gdy wybierze się plik do pobrania a następnie go przeniesie/usunie z dysku i kliknie się na pobierz
 
         String fileName;
         try {
@@ -72,6 +72,7 @@ public class UsersTransactionsServlet extends HttpServlet {
         } finally {
             try {
                 template.process(model, writer);
+                session.setAttribute("propertyList", usersTransactions);
                 LOG.info("Loaded users flats. Number of flats: {}", usersTransactions.size());
             } catch (TemplateException e) {
                 LOG.error("Failed to load users flats. Number of flats: {}", usersTransactions.size());
