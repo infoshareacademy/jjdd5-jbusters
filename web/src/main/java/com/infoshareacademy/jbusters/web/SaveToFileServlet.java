@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.util.List;
 
 
@@ -27,8 +28,8 @@ public class SaveToFileServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Menu menu = new Menu();
 
-        resp.setContentType("lista_mieszkan/txt");
-        resp.setHeader("Content-Disposition", "attachment; filename=\"lista_mieszkan.txt\"");
+        resp.setContentType("lista_mieszkan/csv");
+        resp.setHeader("Content-Disposition", "attachment; filename=\"lista_mieszkan.csv\"");
 
         HttpSession session = req.getSession();
         List<Transaction> transactionList = (List<Transaction>) session.getAttribute("propertyList");
@@ -37,7 +38,7 @@ public class SaveToFileServlet extends HttpServlet {
         try {
             for (Transaction transaction : transactionList) {
                 String outString = menu.getTransactionAsString(transaction, true) + System.lineSeparator();
-                outputStream.write(outString.getBytes());
+                outputStream.write(outString.getBytes(Charset.forName("UTF-8")));
             }
             outputStream.flush();
             outputStream.close();
