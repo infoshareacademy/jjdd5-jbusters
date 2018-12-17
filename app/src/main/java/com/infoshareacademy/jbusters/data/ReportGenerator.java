@@ -17,6 +17,8 @@ import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.UnitValue;
 import com.itextpdf.layout.property.VerticalAlignment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.RequestScoped;
 import java.io.IOException;
@@ -32,15 +34,28 @@ import static com.itextpdf.io.font.constants.StandardFonts.HELVETICA;
 public class ReportGenerator {
 
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Data.class);
+    private static final URL APP_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("app.properties");
     public static final String RAPORT_PATH = System.getProperty("jboss.server.temp.dir") + "/raport.pdf";
     public static final URL BG_IMG_PATH = Thread.currentThread().getContextClassLoader().getResource("/img/JBusters_logo.png");
     private StatisticsManager statisticsManager;
-    private static final String CITY_TABLE_HEADER = "MIASTO,ILOŚĆ WYSZUKIWAŃ,CAŁKOWITA KWOTA WYCEN";
-    private static final String DISTRICT_TABLE_HEADER = "DZIELNICA,ILOŚĆ WYSZUKIWAŃ,CAŁKOWITA KWOTA WYCEN,ŚREDNIA KWOTA WYCENY";
+    private PropLoader properties;
+    private static String CITY_TABLE_HEADER;
+    private static String DISTRICT_TABLE_HEADER;
 
 
     public ReportGenerator() {
         this.statisticsManager = new StatisticsManager();
+        properties = new PropLoader();
+        String currency;
+        try {
+            properties = new PropLoader(APP_PROPERTIES_FILE.openStream());
+            currency = properties.getCurrency();
+            CITY_TABLE_HEADER = "MIASTO,ILOŚĆ WYSZUKIWAŃ,SUMARYCZNA WARTOŚĆ WYCEN";
+            DISTRICT_TABLE_HEADER = "DZIELNICA,ILOŚĆ WYSZUKIWAŃ,SUMARYCZNA WARTOŚĆ WYCEN,ŚREDNIA WARTOŚĆ WYCEN";
+        } catch (Exception e) {
+            LOGGER.error("Missing properties file in path {}", APP_PROPERTIES_FILE.toString());
+        }
     }
 
     public void generateReport() throws IOException {
@@ -60,7 +75,6 @@ public class ReportGenerator {
         parag.setMarginBottom(80f);
         doc.add(parag);
 
-
         canvas.setStrokeColor(new DeviceRgb(0, 0, 0)).moveTo(20, 730).lineTo(580, 730).closePathStroke();
 
 
@@ -68,16 +82,18 @@ public class ReportGenerator {
         ArrayList<String> cityStatisticList = new ArrayList<>(statisticsManager.getCitesStatistics(wholeStatisticList));
         ArrayList<String> districtStatisticList = new ArrayList<>(statisticsManager.getDistrictsStatistics(wholeStatisticList));
 
-        Paragraph parag1 = new Paragraph().add("Tabela statystyk dla miast (porzadek alfabetyczny)");
-        parag.setTextAlignment(TextAlignment.CENTER).setFontSize(20f);
-        parag.setMarginBottom(20f);
+        Paragraph parag1 = new Paragraph().add("Tabela statystyk dla miast (porządek alfabetyczny):");
+        parag1.setFont(polishFont);
+        parag1.setTextAlignment(TextAlignment.CENTER).setFontSize(16f);
+        parag1.setMarginBottom(20f);
 
         doc.add(parag1);
         doc.add(tableCreator(CITY_TABLE_HEADER, cityStatisticList, polishFont, 100));
 
-        Paragraph parag2 = new Paragraph().add("Tabela statystyk dla dzielnic (porzadek alfabetyczny)");
-        parag.setTextAlignment(TextAlignment.CENTER).setFontSize(20f);
-        parag.setMarginBottom(20f);
+        Paragraph parag2 = new Paragraph().add("Tabela statystyk dla dzielnic (porządek alfabetyczny):");
+        parag2.setFont(polishFont);
+        parag2.setTextAlignment(TextAlignment.CENTER).setFontSize(16f);
+        parag2.setMarginBottom(20f);
         doc.add(parag2);
 
         doc.add(tableCreator(DISTRICT_TABLE_HEADER, districtStatisticList, polishFont, 100));

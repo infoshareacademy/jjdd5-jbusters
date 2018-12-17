@@ -1,8 +1,12 @@
 package com.infoshareacademy.jbusters.data;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.enterprise.context.ApplicationScoped;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,7 +18,10 @@ import java.util.*;
 
 @ApplicationScoped
 public class StatisticsManager {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(Data.class);
+    private static final URL APP_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("app.properties");
+    private PropLoader properties;
+    private String currency ="PLN";
     private static final Path PATH_TO_STATISTICS_FILE = Paths.get(System.getProperty("jboss.home.dir"), "data", "statistics.txt");
     private static final String SEPARATOR = ",";
     private static final int COUNT = 0;
@@ -22,6 +29,13 @@ public class StatisticsManager {
     private static final int AVG = 2;
 
     public StatisticsManager() {
+        properties = new PropLoader();
+        try {
+            properties = new PropLoader(APP_PROPERTIES_FILE.openStream());
+            currency = properties.getCurrency();
+        } catch (Exception e) {
+            LOGGER.error("Missing properties file in path {}", APP_PROPERTIES_FILE.toString());
+        }
     }
 
     public void captureNameFromServlet(String cityName, String districtName, String value) throws IOException {
@@ -163,12 +177,17 @@ public class StatisticsManager {
 
         ArrayList<String> results = new ArrayList();
 
-        DecimalFormat df = new DecimalFormat("#.##");
-        df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+        DecimalFormat df = new DecimalFormat("##.##");
+        DecimalFormatSymbols dfs = DecimalFormatSymbols.getInstance(Locale.ENGLISH);
+
         inputMap.entrySet().forEach(x -> {
             String result = x.getKey();
-            for (int i = 0; i < x.getValue().length; i++) {
-                result += "," + df.format(x.getValue()[i]);
+            result += "," + df.format(x.getValue()[COUNT]);
+            //loop for money values like avg, all etc.
+            if(x.getValue().length>COUNT+1) {
+                for (int i = COUNT + 1; i < x.getValue().length; i++) {
+                    result += "," + df.format(x.getValue()[i])+" "+ currency;
+                }
             }
             results.add(result);
         });
