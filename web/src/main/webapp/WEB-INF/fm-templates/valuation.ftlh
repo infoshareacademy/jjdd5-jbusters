@@ -113,15 +113,15 @@
                         <thead class="thead-dark">
                         <tr>
                             <th scope="col">Minimalna</th>
-                            <th scope="col">Maksymalna</th>
                             <th scope="col">Średnia</th>
+                            <th scope="col">Maksymalna</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr>
                             <td><b>${minimumPrice} zł za m<sup>2</sup></b></td>
-                            <td><b>${maxPrice} zł za m<sup>2</sup></b></td>
                             <td><b>${averagePrice} zł za m<sup>2</sup></b></td>
+                            <td><b>${maxPrice} zł za m<sup>2</sup></b></td>
                         </tr>
                         </tbody>
                     </table>
@@ -174,10 +174,13 @@
 
         <div class="form-group">
     <label for="Select8"><b>Przedział czasowy w jakim zostało wybudowane mieszkanie</b></label>
-    <p class="small">1 - przed rokiem 1970</p>
-    <p class="small">2 - między rokiem 1970 a 1990</p>
-    <p class="small">3 - po roku 1990</p>
-    <input name="construction" type="text" class="form-control" id="Select8" value="${construction}" disabled>
+            <#if construction = 1 >
+                <input name="construction" type="text" class="form-control" id="Select8" value="przed rokiem 1970" disabled>
+            <#elseif construction = 2>
+                <input name="construction" type="text" class="form-control" id="Select8" value="między rokiem 1970 a 1990" disabled>
+            <#elseif construction = 3>
+                <input name="construction" type="text" class="form-control" id="Select8" value="po roku 1990" disabled>
+            </#if>
         </div>
         </form>
         </div>
