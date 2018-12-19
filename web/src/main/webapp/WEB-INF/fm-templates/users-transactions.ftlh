@@ -86,7 +86,24 @@
         </form>
         <hr class="my-4">
         <form method="POST" action="/saveAs">
-            <input class="btn btn-primary btn-lg btn-dark active" type="submit" value="Wyczyść listę">
+
+            <!-- Large modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Wyczyść listę</button>
+
+            <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="jumbotron">
+                            <h1 class="display-4">Uważaj!!!😕</h1>
+                            <p class="lead">Operacja "Wyszczyść listę" usuwa z bieżącej sesji transakcje, które załadowałeś."</p>
+                            <hr class="my-4">
+                            <p>Jeżeli chcesz kontynuować kliknij <b>"Wyczyść listę"</b> w przeciwnym razie naciśnij <b>"Esc"</b> na swojej klawiaturze.</p>
+                            <input class="btn btn-primary btn-lg btn-dark active" type="submit" value="Wyczyść listę">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </form>
     </div>
 </div>
