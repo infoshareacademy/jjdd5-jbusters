@@ -1,0 +1,9 @@
+version: "2"
+services:
+  app:
+    build:
+      context: ./web
+    ports:
+      - 4280:8080
+      - 4281:9990
+    dns: 8.8.8.8

@@ -2,9 +2,8 @@
 
     <div class="container">
         <div class="jumbotron jumbotron-opacity">
-            <h1 class="display-4">Zapisane !!!</h1>
+            <h1 class="display-4">${saved}</h1>
             <hr class="my-4">
-
         </div>
     </div>
 
