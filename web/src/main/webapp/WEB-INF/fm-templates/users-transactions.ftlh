@@ -21,7 +21,8 @@
     $(document).ready(function () {
         $('#flats').DataTable({
             "dom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>'
-        });
+        }
+        );
     });
 </script>
 
@@ -53,7 +54,7 @@
         <td>
     <a class="btn btn-primary btn-lg btn-dark active" role="button"
        aria-pressed="true" href="/valuation?city=${flat.city}&district=${flat.district}&market-type=${flat.typeOfMarket}&flat-area=${flat.flatArea}&level=${flat.level}&parking-spot=${flat.parkingSpot}&standard-level=${flat.standardLevel}&construction=${flat.constructionYearCategory}">
-            Wyceń</a>
+            Wyceń ponownie</a>
         </td>
 
         <td>${flat.transactionName}</td>

@@ -84,7 +84,7 @@ public class SavePropertyServlet extends HttpServlet {
             propertyList.add(userT);
 
             String saved = "Twoje mieszkanie zostało dodane do listy";
-            model.put("price", saved);
+            model.put("saved", saved);
 
             try {
                 template.process(model, out);
