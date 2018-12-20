@@ -39,7 +39,7 @@ public class MyFlatsServlet extends HttpServlet {
                 getServletContext(),
                 TEMPLATE_USERS_TRANSACTION);
 
-        if (propertyList == null) {
+        if (propertyList == null || propertyList.isEmpty()) {
             String error = "Twoja lista jest pusta";
             model.put("error", error);
         }
