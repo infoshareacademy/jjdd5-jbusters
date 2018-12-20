@@ -35,38 +35,32 @@ public class ReportGenerator {
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Data.class);
-    private static final URL APP_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("app.properties");
-    public static final String RAPORT_PATH = System.getProperty("jboss.server.temp.dir") + "/raport.pdf";
-    public static final URL BG_IMG_PATH = Thread.currentThread().getContextClassLoader().getResource("/img/JBusters_logo.png");
     private StatisticsManager statisticsManager;
     private PropLoader properties;
-    private static String CITY_TABLE_HEADER;
-    private static String DISTRICT_TABLE_HEADER;
+    private static final String CITY_TABLE_HEADER = "MIASTO|ILOŚĆ WYSZUKIWAŃ|SUMARYCZNA WARTOŚĆ WYCEN";
+    private static final String DISTRICT_TABLE_HEADER = "DZIELNICA|ILOŚĆ WYSZUKIWAŃ|SUMARYCZNA WARTOŚĆ WYCEN|ŚREDNIA WARTOŚĆ WYCEN";
 
 
     public ReportGenerator() {
         this.statisticsManager = new StatisticsManager();
         properties = new PropLoader();
-        String currency;
         try {
-            properties = new PropLoader(APP_PROPERTIES_FILE.openStream());
-            currency = properties.getCurrency();
-            CITY_TABLE_HEADER = "MIASTO,ILOŚĆ WYSZUKIWAŃ,SUMARYCZNA WARTOŚĆ WYCEN";
-            DISTRICT_TABLE_HEADER = "DZIELNICA,ILOŚĆ WYSZUKIWAŃ,SUMARYCZNA WARTOŚĆ WYCEN,ŚREDNIA WARTOŚĆ WYCEN";
+            properties = new PropLoader(StaticFields.getAppPropertiesURL().openStream());
+            String currency = properties.getCurrency();
         } catch (Exception e) {
-            LOGGER.error("Missing properties file in path {}", APP_PROPERTIES_FILE.toString());
+            LOGGER.error("Missing properties file in path {}", StaticFields.getAppPropertiesURL().toString());
         }
     }
 
     public void generateReport() throws IOException {
 
-        PdfDocument pdf = new PdfDocument(new PdfWriter(RAPORT_PATH));
+        PdfDocument pdf = new PdfDocument(new PdfWriter(StaticFields.getRaportPathString()));
         Document doc = new Document(pdf);
 
         PdfFont polishFont = PdfFontFactory.createFont(HELVETICA, CP1250, true, true);
         PdfCanvas canvas = new PdfCanvas(pdf.addNewPage());
         Rectangle rect = new Rectangle(doc.getPageEffectiveArea(PageSize.A4).getWidth() / 2 - 110, doc.getPageEffectiveArea(PageSize.A4).getHeight() / 2 - 100, 300, 300);
-        canvas.addImage(ImageDataFactory.create(BG_IMG_PATH), rect, false);
+        canvas.addImage(ImageDataFactory.create(StaticFields.getBgImgPath()), rect, false);
 
         Text title = new Text("Raport statystyk użycia aplikacji").setFont(polishFont).setFontSize(20f);
         Text author = new Text("JBusters").setFont(polishFont);
@@ -103,7 +97,7 @@ public class ReportGenerator {
     }
 
     private Table tableCreator(String headerCommaSeparated, List<String> content, PdfFont font, float widthPercentValue) {
-        int colCounter = headerCommaSeparated.split(",").length;
+        int colCounter = headerCommaSeparated.split("\\|").length;
         Table table = new Table(colCounter);
         table.setWidth(UnitValue.createPercentValue(widthPercentValue));
         table.setTextAlignment(TextAlignment.CENTER);
@@ -117,16 +111,16 @@ public class ReportGenerator {
     }
 
     private void addCells(Table table, String line, PdfFont font, boolean isHeader) {
-        StringTokenizer tokenizer = new StringTokenizer(line, ",");
+        String[] inputLineTable = line.split("\\|");
 
-        while (tokenizer.hasMoreTokens()) {
+        for(String s : inputLineTable){
             Cell cell = new Cell();
             cell.setVerticalAlignment(VerticalAlignment.MIDDLE);
-            cell.add(new Paragraph(tokenizer.nextToken()).setFont(font));
+            cell.add(new Paragraph(s).setFont(font));
             if (isHeader) cell.setBold();
-
             table.addCell(cell);
         }
+
     }
 
 }

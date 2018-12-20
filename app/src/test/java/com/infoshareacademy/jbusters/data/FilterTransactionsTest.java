@@ -1,6 +1,18 @@
 package com.infoshareacademy.jbusters.data;
 
-import org.junit.Assert;
+//import org.junit.Assert;
+
+import org.junit.jupiter.api.Assertions;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -9,10 +21,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FilterTransactionsTest {
+/*
+    private List<Transaction> tempTransactions = new ArrayList();
 
-    private List<Transaction> tempTransactions = new ArrayList<>();
-
-  //  @Test
+  // @Test
     public void removeOutliersTest() {
 
         //avg flat
@@ -33,14 +45,14 @@ public class FilterTransactionsTest {
         FilterTransactions ft = new FilterTransactions();
         tempTransactions=ft.removeOutliers(tempTransactions,new BigDecimal(600));
 
-        Assert.assertEquals(7,tempTransactions.size());
+        Assertions.assertEquals(7,tempTransactions.size());
 
 
     }
 
-  // @Test
+//@Test
     public void basicFilterTest(){
-        tempTransactions=new ArrayList<Transaction>();
+        tempTransactions=new ArrayList();
         LocalDate now = LocalDate.now();
         tempTransactions.add(createTransactionByDate(now));
         tempTransactions.add(createTransactionByDate(now.minusYears(2).plusDays(1)));
@@ -55,22 +67,22 @@ public class FilterTransactionsTest {
         ft.init();
         tempTransactions = ft.basicFilter(createTransactionByDate(now));
 
-        Assert.assertEquals(3,tempTransactions.size());
+        Assertions.assertEquals(3,tempTransactions.size());
 
 
-    }
+    }*/
 
     private Transaction createTransaction(BigDecimal price){
 
         Transaction trans = new Transaction();
         trans.setCity("Gdynia");
         trans.setDistrict("Witomino");
-        trans.setTransactionDate(LocalDate.of(2018, 06, 20));
+        trans.setTransactionDate(LocalDate.of(2018, 6, 20));
         trans.setStreet("Dabrowkowska");
         trans.setTypeOfMarket("RYNEK WTÓRNY");
         trans.setPrice(price);
         trans.setFlatArea(new BigDecimal(45));
-        trans.setPricePerM2(trans.getPrice().divide(trans.getFlatArea(),RoundingMode.HALF_UP));
+        trans.setPricePerM2(trans.getPrice().divide(trans.getFlatArea(), RoundingMode.HALF_UP));
         trans.setLevel(3);
         trans.setParkingSpot(ParkingPlace.BRAK_MP.getName());
         trans.setStandardLevel(StandardLevel.DOBRY.getName());

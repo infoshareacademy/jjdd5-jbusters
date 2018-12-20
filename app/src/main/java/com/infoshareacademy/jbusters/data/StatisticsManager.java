@@ -32,10 +32,10 @@ public class StatisticsManager {
     public StatisticsManager() {
         properties = new PropLoader();
         try {
-            properties = new PropLoader(APP_PROPERTIES_FILE.openStream());
+            properties = new PropLoader(StaticFields.getAppPropertiesURL().openStream());
             currency = properties.getCurrency();
         } catch (Exception e) {
-            LOGGER.error("Missing properties file in path {}", APP_PROPERTIES_FILE.toString());
+            LOGGER.error("Missing properties file in path {}", StaticFields.getAppPropertiesURL().toString());
         }
     }
 
@@ -46,8 +46,8 @@ public class StatisticsManager {
     }
 
     private void addOrUpdateStatistics(String cityName, String districtName, String value) throws IOException {
-        if (!Files.exists(PATH_TO_STATISTICS_FILE)) {
-            Files.createFile(PATH_TO_STATISTICS_FILE);
+        if (!Files.exists(StaticFields.getStatisticsFilePath())) {
+            Files.createFile(StaticFields.getStatisticsFilePath());
         }
 
         List<Statistics> existingList = generateStatisticsList();
@@ -83,12 +83,12 @@ public class StatisticsManager {
 
         String statisticsString = cityName + SEPARATOR + districtName + ",1," + value + System.lineSeparator();
 
-        Files.write(Paths.get(String.valueOf(PATH_TO_STATISTICS_FILE)), statisticsString.getBytes(Charset.forName("UTF-8")), StandardOpenOption.APPEND);
+        Files.write(Paths.get(String.valueOf(StaticFields.getStatisticsFilePath())), statisticsString.getBytes(Charset.forName("UTF-8")), StandardOpenOption.APPEND);
     }
 
     private void overwriteExistingLine(int lineNumber, String lineData) throws IOException {
 
-        Path path = PATH_TO_STATISTICS_FILE;
+        Path path = StaticFields.getStatisticsFilePath();
 
         List<String> existingLine = Files.readAllLines(path, StandardCharsets.UTF_8);
 
@@ -101,7 +101,7 @@ public class StatisticsManager {
 
         List<String> existingList = null;
         try {
-            existingList = Files.readAllLines(PATH_TO_STATISTICS_FILE, StandardCharsets.UTF_8);
+            existingList = Files.readAllLines(StaticFields.getStatisticsFilePath(), StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -178,16 +178,13 @@ public class StatisticsManager {
 
         ArrayList<String> results = new ArrayList();
 
-        DecimalFormat df = new DecimalFormat("##.##");
-        DecimalFormatSymbols dfs = DecimalFormatSymbols.getInstance(Locale.ENGLISH);
-
         inputMap.entrySet().forEach(x -> {
             String result = x.getKey();
-            result += "," + df.format(x.getValue()[COUNT]);
+            result += "|" + StaticFields.formatWithLongDF(x.getValue()[COUNT]);
             //loop for money values like avg, all etc.
             if(x.getValue().length>COUNT+1) {
                 for (int i = COUNT + 1; i < x.getValue().length; i++) {
-                    result += "," + df.format(x.getValue()[i])+" "+ currency;
+                    result += "|" + StaticFields.formatWithLongDF(x.getValue()[i])+" "+ currency;
                 }
             }
             results.add(result);

@@ -1,7 +1,8 @@
 package com.infoshareacademy.jbusters.data;
 
-import org.junit.Assert;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,18 +15,18 @@ import java.util.Properties;
 
 public class DistrWagesHandlerTest {
 
-    //@Test
+    @Test
     public void nullFileInputTest(){
         InputStream is = null;
         DistrWagesHandler distr = new DistrWagesHandler(is);
 
-        Assert.assertEquals(new Properties(), distr.getProperties());
+        Assertions.assertEquals(new Properties(), distr.getProperties());
     }
-    //@Test
+    @Test
     public void wrongFileTypeInputTest() throws IOException{
 
         DistrWagesHandler distr = new DistrWagesHandler(Thread.currentThread().getContextClassLoader().getResource("app.txt").openStream());
-        Assert.assertEquals(new Properties(), distr.getProperties());
+        Assertions.assertEquals(new Properties(), distr.getProperties());
     }
 
 

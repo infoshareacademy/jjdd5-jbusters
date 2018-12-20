@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 public class FilterTransactions {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DataLoader.class);
-    private static final URL APP_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("app.properties");
-    private static final URL DISTR_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("districts.properties");
+   // private static final URL APP_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("app.properties");
+   // private static final URL DISTR_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("districts.properties");
 
 
     private DistrWagesHandler distrWagesHandler;
@@ -37,17 +37,17 @@ public class FilterTransactions {
     public FilterTransactions() {
         PropLoader properties = new PropLoader();
         try {
-            InputStream is = APP_PROPERTIES_FILE.openStream();
+            InputStream is = StaticFields.getAppPropertiesURL().openStream();
             properties = new PropLoader(is);
             areaDiff = properties.getAreaDiff();
             areaDiffExpanded = properties.getAreaDiffExpanded();
             minResultsNumber = properties.getMinResultsNumber();
             priceDiff = properties.getPriceDiff();
 
-            is = DISTR_PROPERTIES_FILE.openStream();
+            is = StaticFields.getDistrPropertiesURL().openStream();
             distrWagesHandler = new DistrWagesHandler(is);
         } catch (Exception e) {
-            LOGGER.error("Missing properties file in path {} or {}", APP_PROPERTIES_FILE.toString(), DISTR_PROPERTIES_FILE.toString());
+            LOGGER.error("Missing properties file in path {} or {}", StaticFields.getAppPropertiesURL().toString(), StaticFields.getDistrPropertiesURL().toString());
         }
     }
 

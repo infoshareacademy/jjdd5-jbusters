@@ -17,14 +17,12 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 public class CalculatePrice {
 
-    private static final URL APP_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("app.properties");
+    //private static final URL APP_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("app.properties");
     private static final Logger LOGGER = LoggerFactory.getLogger(Data.class);
 
     private Transaction userTransaction;
     private List<Transaction> filteredList;
     private PropLoader properties;
-    private DecimalFormat pf = new DecimalFormat("##.##");
-    private DecimalFormat df = new DecimalFormat("###,###.##");
     private BigDecimal exchangeRate;
 
     public CalculatePrice(Transaction transaction, List<Transaction> filteredList) {
@@ -33,11 +31,11 @@ public class CalculatePrice {
 
         properties = new PropLoader();
         try {
-            properties = new PropLoader(APP_PROPERTIES_FILE.openStream());
+            properties = new PropLoader(StaticFields.getAppPropertiesURL().openStream());
             exchangeRate = properties.getExchangeRateBigDecimal();
 
         } catch (Exception e) {
-            LOGGER.error("Missing properties file in path {}", APP_PROPERTIES_FILE.toString());
+            LOGGER.error("Missing properties file in path {}", StaticFields.getAppPropertiesURL().toString());
         }
     }
 
@@ -49,13 +47,13 @@ public class CalculatePrice {
         ConsoleViewer.clearScreen();
         System.out.println(":: Wybrano wycenę mieszkania ::\n");
         System.out.println("Statystyki:\n");
-        System.out.println("Cena minimalna przed aktualizacją o trend to:\t\t\t" + df.format(min.divide(exchangeRate, BigDecimal.ROUND_UP)) + " " + properties.getCurrency());
+        System.out.println("Cena minimalna przed aktualizacją o trend to:"+getTabs(3) + StaticFields.formatWithLongDF(min.divide(exchangeRate, BigDecimal.ROUND_UP)) + " " + properties.getCurrency());
 
         List<Transaction> listToCalculateTrend = getListToCalculateTrend(transactions);
 
         BigDecimal overallTrend = overallTrend(listToCalculateTrend);
 
-        System.out.println("Roczny trend wzrostu cen mieszkań wynosi:\t\t\t" + pf.format(overallTrend.multiply(BigDecimal.valueOf(36500))) + "%");
+        System.out.println("Roczny trend wzrostu cen mieszkań wynosi:"+getTabs(3) + StaticFields.formatWithShortDF(overallTrend.multiply(BigDecimal.valueOf(36500))) + "%");
 
 
         List<Transaction> exportList = transactions.stream()
@@ -142,9 +140,16 @@ public class CalculatePrice {
 
         BigDecimal max = getMaxPriceInList(transactions);
 
-        System.out.println("Średnia cena dla zbioru podobnych mieszkań to:\t\t\t" + df.format(average.setScale(2, RoundingMode.HALF_UP).divide(exchangeRate, BigDecimal.ROUND_UP)) + " " + properties.getCurrency() + " za m2");
-        System.out.println("Cena maksymalna dla dobranego zbioru to:\t\t\t" + df.format(max.divide(exchangeRate, BigDecimal.ROUND_UP)) + " " + properties.getCurrency() + " za m2");
-        System.out.println("Cena minimalna dla dobranego zbioru to:\t\t\t\t" + df.format(min.divide(exchangeRate, BigDecimal.ROUND_UP)) + " " + properties.getCurrency() + " za m2");
+        System.out.println("Średnia cena dla zbioru podobnych mieszkań to:"+getTabs(3)
+                + StaticFields.formatWithLongDF(
+                        average.setScale(2, RoundingMode.HALF_UP).divide(exchangeRate, BigDecimal.ROUND_UP))
+                + " " + properties.getCurrency() + " za m2");
+        System.out.println("Cena maksymalna dla dobranego zbioru to:"+getTabs(3)
+                + StaticFields.formatWithLongDF(max.divide(exchangeRate, BigDecimal.ROUND_UP))
+                + " " + properties.getCurrency() + " za m2");
+        System.out.println("Cena minimalna dla dobranego zbioru to:"+getTabs(4)
+                + StaticFields.formatWithLongDF(min.divide(exchangeRate, BigDecimal.ROUND_UP))
+                + " " + properties.getCurrency() + " za m2");
 
         BigDecimal lowerFactor = min.divide(average, 3, RoundingMode.HALF_UP);
         BigDecimal upperFactor = max.divide(average, 3, RoundingMode.HALF_UP);
@@ -184,10 +189,13 @@ public class CalculatePrice {
 
         BigDecimal finalWeight = weightOne.add(weightTwo).add(weightThree).add(weightFour);
 
-        System.out.println("Współczynnik wagi dla tego mieszkania to:\t\t\t" + finalWeight);
+        System.out.println("Współczynnik wagi dla tego mieszkania to:"+getTabs(3) + finalWeight);
 
         BigDecimal pricePerM2 = average.multiply(finalWeight);
-        System.out.println("Obliczona cena za m2 to:\t\t\t\t\t" + df.format(pricePerM2.setScale(2, RoundingMode.HALF_UP).divide(exchangeRate, BigDecimal.ROUND_UP)) + " " + properties.getCurrency());
+        System.out.println("Obliczona cena za m2 to:"+getTabs(5)
+                + StaticFields.formatWithLongDF(
+                        pricePerM2.setScale(2, RoundingMode.HALF_UP).divide(exchangeRate, BigDecimal.ROUND_UP))
+                + " " + properties.getCurrency());
 
         return pricePerM2;
     }
@@ -218,7 +226,7 @@ public class CalculatePrice {
         BigDecimal averageFlatArea = BigDecimal.valueOf(finallySortedList.stream()
                 .mapToDouble(t -> t.getFlatArea().doubleValue())
                 .average().orElse((double) 0));
-        System.out.println("Średnia wielkość mieszkań dla dobranego zbioru to:\t\t" + averageFlatArea.setScale(2, RoundingMode.HALF_UP) + " m2");
+        System.out.println("Średnia wielkość mieszkań dla dobranego zbioru to:"+getTabs(2) + averageFlatArea.setScale(2, RoundingMode.HALF_UP) + " m2");
         return transToCheck.getFlatArea().compareTo(averageFlatArea) < 0;
     }
 
@@ -239,5 +247,13 @@ public class CalculatePrice {
                 .max(new ParkingPlaceComparator())
                 .orElse(ParkingPlace.GARAZ);
         return ParkingPlace.fromString(transToCheck.getParkingSpot()).compareTo(bestParking) >= 0;
+    }
+
+    private String getTabs(int numberOfTabs){
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < numberOfTabs; i++) {
+            sb.append("\t");
+        }
+        return sb.toString();
     }
 }
