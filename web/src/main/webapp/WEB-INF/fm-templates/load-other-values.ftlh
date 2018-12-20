@@ -156,14 +156,11 @@
         <br>
         <div class="form-group">
             <label for="Select6">Wybierz przedzial czasowy w jakim zostalo wybudowane Twoje mieszkanie</label>
-            <p class="small">1 - przed rokiem 1970</p>
-            <p class="small">2 - między rokiem 1970 a 1990</p>
-            <p class="small">3 - po roku 1990</p>
             <select name="construction" class="form-control" id="Select6" required>
                 <option></option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
+                <option value="1">przed rokiem 1970</option>
+                <option value="2">między rokiem 1970 a 1990</option>
+                <option value="3">po roku 1990</option>
                 >
             </select>
 
