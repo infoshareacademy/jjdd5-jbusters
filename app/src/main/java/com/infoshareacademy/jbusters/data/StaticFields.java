@@ -12,7 +12,7 @@ public class StaticFields {
 
     private static final StaticFields staticFields = new StaticFields();
     private static final DecimalFormatSymbols decimalSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
-    private static final DecimalFormat LONG_DF = new DecimalFormat("###,###.##");
+    private static final DecimalFormat LONG_DF = new DecimalFormat("###,###");
     private static final DecimalFormat SHORT_DF = new DecimalFormat("##.##");
 
     private static final URL APP_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("app.properties");

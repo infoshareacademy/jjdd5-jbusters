@@ -17,7 +17,7 @@ class StaticFieldsTest {
 
         //when
 
-        Assertions.assertEquals("1 123 456 789.89",df.format(actual));
+        Assertions.assertEquals("1 123 456 790",df.format(actual));
 
     }
 }
