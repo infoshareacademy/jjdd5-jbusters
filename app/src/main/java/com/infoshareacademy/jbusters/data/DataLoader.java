@@ -18,7 +18,7 @@ import java.util.List;
 
 @RequestScoped
 public class DataLoader {
-    private static final URL APP_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("app.properties");
+    //private static final URL APP_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("app.properties");
     private static final Logger LOGGER = LoggerFactory.getLogger(DataLoader.class);
     private static final int INDEX_TRANSACTION_DATE = 0;
     private static final int INDEX_CITY = 1;
@@ -41,9 +41,9 @@ public class DataLoader {
 
         PropLoader properties = new PropLoader();
         try {
-            properties = new PropLoader(APP_PROPERTIES_FILE.openStream());
+            properties = new PropLoader(StaticFields.getAppPropertiesURL().openStream());
         } catch (Exception e) {
-            LOGGER.error("Missing properties file in path {}", APP_PROPERTIES_FILE.toString());
+            LOGGER.error("Missing properties file in path {}", StaticFields.getAppPropertiesURL().toString());
         }
 
 

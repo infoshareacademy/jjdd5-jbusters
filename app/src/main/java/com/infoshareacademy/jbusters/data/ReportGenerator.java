@@ -17,13 +17,13 @@ import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.UnitValue;
 import com.itextpdf.layout.property.VerticalAlignment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.RequestScoped;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import static com.itextpdf.io.font.PdfEncodings.CP1250;
 import static com.itextpdf.io.font.constants.StandardFonts.HELVETICA;
@@ -32,26 +32,32 @@ import static com.itextpdf.io.font.constants.StandardFonts.HELVETICA;
 public class ReportGenerator {
 
 
-    public static final String RAPORT_PATH = System.getProperty("jboss.server.temp.dir") + "/raport.pdf";
-    public static final URL BG_IMG_PATH = Thread.currentThread().getContextClassLoader().getResource("/img/JBusters_logo.png");
+    private static final Logger LOGGER = LoggerFactory.getLogger(Data.class);
     private StatisticsManager statisticsManager;
-    private static final String CITY_TABLE_HEADER = "MIASTO,ILOŚĆ WYSZUKIWAŃ,CAŁKOWITA KWOTA WYCEN";
-    private static final String DISTRICT_TABLE_HEADER = "DZIELNICA,ILOŚĆ WYSZUKIWAŃ,CAŁKOWITA KWOTA WYCEN,ŚREDNIA KWOTA WYCENY";
+    private PropLoader properties;
+    private static final String CITY_TABLE_HEADER = "MIASTO|ILOŚĆ WYSZUKIWAŃ|SUMARYCZNA WARTOŚĆ WYCEN";
+    private static final String DISTRICT_TABLE_HEADER = "DZIELNICA|ILOŚĆ WYSZUKIWAŃ|SUMARYCZNA WARTOŚĆ WYCEN|ŚREDNIA WARTOŚĆ WYCEN";
 
 
     public ReportGenerator() {
         this.statisticsManager = new StatisticsManager();
+        properties = new PropLoader();
+        try {
+            properties = new PropLoader(StaticFields.getAppPropertiesURL().openStream());
+        } catch (Exception e) {
+            LOGGER.error("Missing properties file in path {}", StaticFields.getAppPropertiesURL().toString());
+        }
     }
 
     public void generateReport() throws IOException {
 
-        PdfDocument pdf = new PdfDocument(new PdfWriter(RAPORT_PATH));
+        PdfDocument pdf = new PdfDocument(new PdfWriter(StaticFields.getRaportPathString()));
         Document doc = new Document(pdf);
 
         PdfFont polishFont = PdfFontFactory.createFont(HELVETICA, CP1250, true, true);
         PdfCanvas canvas = new PdfCanvas(pdf.addNewPage());
         Rectangle rect = new Rectangle(doc.getPageEffectiveArea(PageSize.A4).getWidth() / 2 - 110, doc.getPageEffectiveArea(PageSize.A4).getHeight() / 2 - 100, 300, 300);
-        canvas.addImage(ImageDataFactory.create(BG_IMG_PATH), rect, false);
+        canvas.addImage(ImageDataFactory.create(StaticFields.getBgImgPath()), rect, false);
 
         Text title = new Text("Raport statystyk użycia aplikacji").setFont(polishFont).setFontSize(20f);
         Text author = new Text("JBusters").setFont(polishFont);
@@ -60,7 +66,6 @@ public class ReportGenerator {
         parag.setMarginBottom(80f);
         doc.add(parag);
 
-
         canvas.setStrokeColor(new DeviceRgb(0, 0, 0)).moveTo(20, 730).lineTo(580, 730).closePathStroke();
 
 
@@ -68,16 +73,18 @@ public class ReportGenerator {
         ArrayList<String> cityStatisticList = new ArrayList<>(statisticsManager.getCitesStatistics(wholeStatisticList));
         ArrayList<String> districtStatisticList = new ArrayList<>(statisticsManager.getDistrictsStatistics(wholeStatisticList));
 
-        Paragraph parag1 = new Paragraph().add("Tabela statystyk dla miast (porzadek alfabetyczny)");
-        parag.setTextAlignment(TextAlignment.CENTER).setFontSize(20f);
-        parag.setMarginBottom(20f);
+        Paragraph parag1 = new Paragraph().add("Tabela statystyk dla miast (porządek alfabetyczny):");
+        parag1.setFont(polishFont);
+        parag1.setTextAlignment(TextAlignment.CENTER).setFontSize(16f);
+        parag1.setMarginBottom(20f);
 
         doc.add(parag1);
         doc.add(tableCreator(CITY_TABLE_HEADER, cityStatisticList, polishFont, 100));
 
-        Paragraph parag2 = new Paragraph().add("Tabela statystyk dla dzielnic (porzadek alfabetyczny)");
-        parag.setTextAlignment(TextAlignment.CENTER).setFontSize(20f);
-        parag.setMarginBottom(20f);
+        Paragraph parag2 = new Paragraph().add("Tabela statystyk dla dzielnic (porządek alfabetyczny):");
+        parag2.setFont(polishFont);
+        parag2.setTextAlignment(TextAlignment.CENTER).setFontSize(16f);
+        parag2.setMarginBottom(20f);
         doc.add(parag2);
 
         doc.add(tableCreator(DISTRICT_TABLE_HEADER, districtStatisticList, polishFont, 100));
@@ -87,7 +94,7 @@ public class ReportGenerator {
     }
 
     private Table tableCreator(String headerCommaSeparated, List<String> content, PdfFont font, float widthPercentValue) {
-        int colCounter = headerCommaSeparated.split(",").length;
+        int colCounter = headerCommaSeparated.split("\\|").length;
         Table table = new Table(colCounter);
         table.setWidth(UnitValue.createPercentValue(widthPercentValue));
         table.setTextAlignment(TextAlignment.CENTER);
@@ -101,16 +108,16 @@ public class ReportGenerator {
     }
 
     private void addCells(Table table, String line, PdfFont font, boolean isHeader) {
-        StringTokenizer tokenizer = new StringTokenizer(line, ",");
+        String[] inputLineTable = line.split("\\|");
 
-        while (tokenizer.hasMoreTokens()) {
+        for(String s : inputLineTable){
             Cell cell = new Cell();
             cell.setVerticalAlignment(VerticalAlignment.MIDDLE);
-            cell.add(new Paragraph(tokenizer.nextToken()).setFont(font));
+            cell.add(new Paragraph(s).setFont(font));
             if (isHeader) cell.setBold();
-
             table.addCell(cell);
         }
+
     }
 
 }

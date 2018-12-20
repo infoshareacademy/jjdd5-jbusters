@@ -24,7 +24,6 @@ public class Data {
     }
 
     public List<Transaction> fileToData() {
-
         List<String> listFileTransactionCSV = null;
 
         InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream("transaction.csv");
@@ -59,7 +58,7 @@ public class Data {
         }
         Set<String> noDuplicates = new TreeSet<>(districtList);
         districtList = new ArrayList<>(noDuplicates);
-        LOGGER.info("Creste district list. List size: {}", districtList.size());
+        LOGGER.info("Create district list. List size: {}", districtList.size());
         return districtList;
     }
 

@@ -1,25 +1,40 @@
 package com.infoshareacademy.jbusters.data;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.enterprise.context.ApplicationScoped;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.*;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 @ApplicationScoped
 public class StatisticsManager {
-
-    private static final Path PATH_TO_STATISTICS_FILE = Paths.get(System.getProperty("jboss.home.dir"), "data", "statistics.txt");
+    private static final Logger LOGGER = LoggerFactory.getLogger(Data.class);
+    private PropLoader properties;
+    private String currency ="PLN";
     private static final String SEPARATOR = ",";
     private static final int COUNT = 0;
     private static final int ALL = 1;
     private static final int AVG = 2;
 
     public StatisticsManager() {
+        properties = new PropLoader();
+        try {
+            properties = new PropLoader(StaticFields.getAppPropertiesURL().openStream());
+            currency = properties.getCurrency();
+        } catch (Exception e) {
+            LOGGER.error("Missing properties file in path {}", StaticFields.getAppPropertiesURL().toString());
+        }
     }
 
     public void captureNameFromServlet(String cityName, String districtName, String value) throws IOException {
@@ -29,8 +44,8 @@ public class StatisticsManager {
     }
 
     private void addOrUpdateStatistics(String cityName, String districtName, String value) throws IOException {
-        if (!Files.exists(PATH_TO_STATISTICS_FILE)) {
-            Files.createFile(PATH_TO_STATISTICS_FILE);
+        if (!Files.exists(StaticFields.getStatisticsFilePath())) {
+            Files.createFile(StaticFields.getStatisticsFilePath());
         }
 
         List<Statistics> existingList = generateStatisticsList();
@@ -66,12 +81,12 @@ public class StatisticsManager {
 
         String statisticsString = cityName + SEPARATOR + districtName + ",1," + value + System.lineSeparator();
 
-        Files.write(Paths.get(String.valueOf(PATH_TO_STATISTICS_FILE)), statisticsString.getBytes(Charset.forName("UTF-8")), StandardOpenOption.APPEND);
+        Files.write(Paths.get(String.valueOf(StaticFields.getStatisticsFilePath())), statisticsString.getBytes(Charset.forName("UTF-8")), StandardOpenOption.APPEND);
     }
 
     private void overwriteExistingLine(int lineNumber, String lineData) throws IOException {
 
-        Path path = PATH_TO_STATISTICS_FILE;
+        Path path = StaticFields.getStatisticsFilePath();
 
         List<String> existingLine = Files.readAllLines(path, StandardCharsets.UTF_8);
 
@@ -84,7 +99,7 @@ public class StatisticsManager {
 
         List<String> existingList = null;
         try {
-            existingList = Files.readAllLines(PATH_TO_STATISTICS_FILE, StandardCharsets.UTF_8);
+            existingList = Files.readAllLines(StaticFields.getStatisticsFilePath(), StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -161,12 +176,14 @@ public class StatisticsManager {
 
         ArrayList<String> results = new ArrayList();
 
-        DecimalFormat df = new DecimalFormat("#.##");
-        df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.ENGLISH));
         inputMap.entrySet().forEach(x -> {
             String result = x.getKey();
-            for (int i = 0; i < x.getValue().length; i++) {
-                result += "," + df.format(x.getValue()[i]);
+            result += "|" + StaticFields.formatWithLongDF(x.getValue()[COUNT]);
+            //loop for money values like avg, all etc.
+            if(x.getValue().length>COUNT+1) {
+                for (int i = COUNT + 1; i < x.getValue().length; i++) {
+                    result += "|" + StaticFields.formatWithLongDF(x.getValue()[i])+" "+ currency;
+                }
             }
             results.add(result);
         });
