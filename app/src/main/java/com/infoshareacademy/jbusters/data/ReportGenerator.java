@@ -22,10 +22,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.RequestScoped;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import static com.itextpdf.io.font.PdfEncodings.CP1250;
 import static com.itextpdf.io.font.constants.StandardFonts.HELVETICA;
@@ -46,7 +44,6 @@ public class ReportGenerator {
         properties = new PropLoader();
         try {
             properties = new PropLoader(StaticFields.getAppPropertiesURL().openStream());
-            String currency = properties.getCurrency();
         } catch (Exception e) {
             LOGGER.error("Missing properties file in path {}", StaticFields.getAppPropertiesURL().toString());
         }

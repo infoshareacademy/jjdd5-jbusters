@@ -20,8 +20,6 @@ import java.util.stream.Collectors;
 public class FilterTransactions {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DataLoader.class);
-   // private static final URL APP_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("app.properties");
-   // private static final URL DISTR_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("districts.properties");
 
 
     private DistrWagesHandler distrWagesHandler;
