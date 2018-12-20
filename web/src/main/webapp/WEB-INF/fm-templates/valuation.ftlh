@@ -54,13 +54,17 @@
                 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
                     <div class="jumbotron jumbotron-opacity" style="width: 1200px">
                     <hr class="my-4">
-                    <script>
-                        $(document).ready(function () {
-                            $('#flats').DataTable({
-                                "dom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>'
+                        <script>
+                            $(document).ready(function () {
+                                $('#flats').DataTable({
+                                            "dom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>',
+                                            "language": {
+                                                "url": "js/dataTable.json"
+                                            }
+                                        }
+                                );
                             });
-                        });
-                    </script>
+                        </script>
                     <p class="lead">Do wyceny Twojego mieszkania wykorzystano <b>${listTransactionUseValuation?size}</b> transakcje</p>
                     <br>
                     <p>Lista wykorzystanych transakcji:</p>
