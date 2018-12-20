@@ -20,8 +20,11 @@
 <script>
     $(document).ready(function () {
         $('#flats').DataTable({
-            "dom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>'
-        }
+                    "dom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>',
+                    "language": {
+                        "url": "js/dataTable.json"
+                    }
+                }
         );
     });
 </script>
@@ -52,9 +55,10 @@
         </#if>
 
         <td>
-    <a class="btn btn-primary btn-lg btn-dark active" role="button"
-       aria-pressed="true" href="/valuation?city=${flat.city}&district=${flat.district}&market-type=${flat.typeOfMarket}&flat-area=${flat.flatArea}&level=${flat.level}&parking-spot=${flat.parkingSpot}&standard-level=${flat.standardLevel}&construction=${flat.constructionYearCategory}">
-            Wyceń ponownie</a>
+            <a class="btn btn-primary btn-lg btn-dark active" role="button"
+               aria-pressed="true"
+               href="/valuation?city=${flat.city}&district=${flat.district}&market-type=${flat.typeOfMarket}&flat-area=${flat.flatArea}&level=${flat.level}&parking-spot=${flat.parkingSpot}&standard-level=${flat.standardLevel}&construction=${flat.constructionYearCategory}">
+                Wyceń ponownie</a>
         </td>
 
         <td>${flat.transactionName}</td>
@@ -73,7 +77,7 @@
         <#elseif  flat.constructionYearCategory = 3>
             <td>po roku 1990</td>
         </#if>
-        </tr>
+    </tr>
 
     </#list>
     </tbody>
@@ -88,16 +92,21 @@
         <form method="POST" action="/saveAs">
 
             <!-- Large modal -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Wyczyść listę</button>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Wyczyść
+                listę
+            </button>
 
-            <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+                 aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="jumbotron">
                             <h1 class="display-4">Uważaj!!!😕</h1>
-                            <p class="lead">Operacja "Wyszczyść listę" usuwa z bieżącej sesji transakcje, które załadowałeś."</p>
+                            <p class="lead">Operacja "Wyszczyść listę" usuwa z bieżącej sesji transakcje, które
+                                załadowałeś."</p>
                             <hr class="my-4">
-                            <p>Jeżeli chcesz kontynuować kliknij <b>"Wyczyść listę"</b> w przeciwnym razie naciśnij <b>"Esc"</b> na swojej klawiaturze.</p>
+                            <p>Jeżeli chcesz kontynuować kliknij <b>"Wyczyść listę"</b> w przeciwnym razie naciśnij <b>"Esc"</b>
+                                na swojej klawiaturze.</p>
                             <input class="btn btn-primary btn-lg btn-dark active" type="submit" value="Wyczyść listę">
                         </div>
                     </div>
