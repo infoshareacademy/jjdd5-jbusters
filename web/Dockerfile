@@ -8,3 +8,4 @@ RUN mkdir -p /opt/jboss/wildfly/data
 RUN mkdir -p /opt/jboss/wildfly/upload
 
 CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0"]
+

@@ -135,7 +135,7 @@
                 <artifactId>wildfly-maven-plugin</artifactId>
                 <version>1.2.1.Final</version>
                 <configuration>
-                    <name>hibernate-demo.war</name>
+                    <name>hibernate-jbusters.war</name>
                 </configuration>
                 <executions>
                     <execution>

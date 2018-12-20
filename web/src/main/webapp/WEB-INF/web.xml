@@ -8,9 +8,10 @@
     </welcome-file-list>
 
     <data-source>
-        <name>java:ds/demods</name>
+        <name>java:ds/jbusters</name>
         <class-name>com.mysql.cj.jdbc.MysqlDataSource</class-name>
-        <url>jdbc:mysql://db:3306/jbuster</url>
+        <url>jdbc:mysql://db:3306/jbusters</url> <!-- DOCKERS -->
+        <!-- <url>jdbc:mysql://0.0.0.0:6603/jbusters</url> LOCAL USE -->
         <user>root</user>
         <password>pass123</password>
     </data-source>
