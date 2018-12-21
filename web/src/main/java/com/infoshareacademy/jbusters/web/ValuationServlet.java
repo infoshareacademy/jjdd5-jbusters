@@ -123,7 +123,7 @@ public class ValuationServlet extends HttpServlet {
 
             String cityName = req.getParameter("city");
             String districtName = req.getParameter("district");
-            statisticsManager.captureNameFromServlet(cityName, districtName, flatPriceM2.setScale(2, BigDecimal.ROUND_UP).toString());
+            statisticsManager.captureNameFromServlet(cityName, districtName, flatPriceTotal.setScale(2, BigDecimal.ROUND_UP).toString());
 
             if (req.getAttribute("constructionYearError") != null) {
                 template = templateProvider.getTemplate(
