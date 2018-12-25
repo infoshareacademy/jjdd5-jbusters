@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 24 Gru 2018, 20:16
+-- Czas generowania: 25 Gru 2018, 16:16
 -- Wersja serwera: 10.1.25-MariaDB
 -- Wersja PHP: 7.1.7
 
@@ -3426,6 +3426,29 @@ INSERT INTO `transactions` (`TRANSACTIONS_ID`, `TRANSACTIONS_DATA_TRANSACTION`, 
 (3363, '2018 09 19', 'Sopot', ' Sopot', 'Kazimierza Wielkiego', 'RYNEK WTÓRNY', '275000', '27', '11699', 6, 'BRAK MP', 'BARDZO DOBRY', '40-50', '1'),
 (3364, '2016 12 23', 'Gdynia', ' Witomino', 'Kielecka', 'RYNEK WTÓRNY', '406000', '128', '4137', 5, 'BRAK MP', 'NISKI', '2010', '3');
 
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `users`
+--
+
+CREATE TABLE `users` (
+  `USERS_ID` int(11) NOT NULL,
+  `USERS_EMAIL` varchar(45) COLLATE utf8_polish_ci NOT NULL,
+  `USERS_PASSWORD` varchar(128) COLLATE utf8_polish_ci NOT NULL,
+  `USERS_NAME` varchar(45) COLLATE utf8_polish_ci DEFAULT NULL,
+  `USERS_SURNAME` varchar(45) COLLATE utf8_polish_ci DEFAULT NULL,
+  `USERS_ROLE` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+--
+-- Zrzut danych tabeli `users`
+--
+
+INSERT INTO `users` (`USERS_ID`, `USERS_EMAIL`, `USERS_PASSWORD`, `USERS_NAME`, `USERS_SURNAME`, `USERS_ROLE`) VALUES
+(3365, 'jbusters.isa@gmail.com', 'jbusters1234', 'jbustersName', 'jbustersSurname', 1),
+(3366, 'jan@wp.pl', 'janek1234', 'Jan', 'Kowski', 2);
+
 --
 -- Indeksy dla zrzutów tabel
 --
@@ -3438,6 +3461,13 @@ ALTER TABLE `transactions`
   ADD UNIQUE KEY `transactions_id_UNIQUE` (`TRANSACTIONS_ID`);
 
 --
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`USERS_ID`),
+  ADD UNIQUE KEY `USERS_ID_UNIQUE` (`USERS_ID`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -3445,7 +3475,12 @@ ALTER TABLE `transactions`
 -- AUTO_INCREMENT dla tabeli `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `TRANSACTIONS_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3365;COMMIT;
+  MODIFY `TRANSACTIONS_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3365;
+--
+-- AUTO_INCREMENT dla tabeli `users`
+--
+ALTER TABLE `users`
+  MODIFY `USERS_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3367;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
