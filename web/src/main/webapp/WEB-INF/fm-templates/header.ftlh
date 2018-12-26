@@ -33,6 +33,9 @@
                             <a class="nav-link" href="/generate-report">Pobierz statystyki</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="add-user.html">Załóż konto</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link disabled" href="#">Zaloguj</a>
                         </li>
                     </ul>

@@ -35,28 +35,55 @@
                             <a class="nav-link" href="/generate-report">Pobierz statystyki</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="add-user.html">Załóż konto</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link disabled" href="">Zaloguj</a>
+                            <a class="nav-link disabled" href="#">Zaloguj</a>
                         </li>
                     </ul>
                 </div>
             </nav>
         </div>
     </header>
-
     <div class="container">
         <div class="jumbotron jumbotron-opacity">
-            <h1 class="display-4">Myślisz o sprzedaży mieszkania?</h1>
-            <p class="lead">Skorzystaj z naszej wyceniarki i sprawdż ile może być warte</p>
+            <h1 class="display-4">Zarejestruj sie u nas. 😎</h1>
+            <p class="lead">Otrzymasz więcej możliwości.</p>
             <hr class="my-4">
-            <a class="btn btn-primary btn-lg btn-dark" href="/load-city" role="button">Wyceń mieszkanie</a>
+            <form method="post" action="/add-user">
+
+                <div class="form-group">
+                    <label for="email">Email: *</label>
+                    <input type="email" name="email" id="email" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputPassword">Hasło: *</label>
+                    <input type="password" name="password" id="inputPassword" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputPassword2">Powtórz hasło: *</label>
+                    <input type="password" name="password2" id="inputPassword2" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputName">Imię:</label>
+                    <input type="text" name="name" id="inputName" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="inputSurname">Nazwisko:</label>
+                    <input type="text" name="surname" id="inputSurname" class="form-control">
+                </div>
+
+                <input class="btn btn-primary btn-lg btn-dark" type="submit" value="załóż konto">
+            </form>
         </div>
     </div>
+
+
+
+
 </div>
 <footer>&copy; 2018 JBusters</footer>
-
 <script src="js/jquery-3.3.1.slim.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 </body>

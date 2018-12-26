@@ -3433,11 +3433,11 @@ INSERT INTO `transactions` (`TRANSACTIONS_ID`, `TRANSACTIONS_DATA_TRANSACTION`, 
 --
 
 CREATE TABLE `users` (
-  `USERS_ID` int(11) NOT NULL,
-  `USERS_EMAIL` varchar(45) COLLATE utf8_polish_ci NOT NULL,
-  `USERS_PASSWORD` varchar(128) COLLATE utf8_polish_ci NOT NULL,
-  `USERS_NAME` varchar(45) COLLATE utf8_polish_ci DEFAULT NULL,
-  `USERS_SURNAME` varchar(45) COLLATE utf8_polish_ci DEFAULT NULL,
+  `USERS_ID` int NOT NULL,
+  `USERS_EMAIL` varchar(255) COLLATE utf8_polish_ci NOT NULL,
+  `USERS_PASSWORD` varchar(255) COLLATE utf8_polish_ci NOT NULL,
+  `USERS_NAME` varchar(255) COLLATE utf8_polish_ci DEFAULT NULL,
+  `USERS_SURNAME` varchar(255) COLLATE utf8_polish_ci DEFAULT NULL,
   `USERS_ROLE` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
@@ -3447,7 +3447,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`USERS_ID`, `USERS_EMAIL`, `USERS_PASSWORD`, `USERS_NAME`, `USERS_SURNAME`, `USERS_ROLE`) VALUES
 (3365, 'jbusters.isa@gmail.com', 'jbusters1234', 'jbustersName', 'jbustersSurname', 1),
-(3366, 'jan@wp.pl', 'janek1234', 'Jan', 'Kowski', 2);
+(3366, 'jan@wp.pl', 'janek1234', 'Jan', 'Kowalski', 2);
 
 --
 -- Indeksy dla zrzutów tabel

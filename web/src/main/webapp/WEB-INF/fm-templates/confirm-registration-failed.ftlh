@@ -35,28 +35,27 @@
                             <a class="nav-link" href="/generate-report">Pobierz statystyki</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="add-user.html">Załóż konto</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link disabled" href="">Zaloguj</a>
+                            <a class="nav-link disabled" href="#">Zaloguj</a>
                         </li>
                     </ul>
                 </div>
             </nav>
         </div>
     </header>
-
     <div class="container">
         <div class="jumbotron jumbotron-opacity">
-            <h1 class="display-4">Myślisz o sprzedaży mieszkania?</h1>
-            <p class="lead">Skorzystaj z naszej wyceniarki i sprawdż ile może być warte</p>
+            <h1 class="display-4">Nie udało się. 😥</h1>
+            <p class="lead">Podane dane są niepoprawne lub podany email jest już zajęty.</p>
             <hr class="my-4">
-            <a class="btn btn-primary btn-lg btn-dark" href="/load-city" role="button">Wyceń mieszkanie</a>
+            <a class="btn btn-primary btn-lg btn-dark" href="add-user.html" role="button">Spróbuj ponownie</a>
         </div>
     </div>
+
+
+
+
 </div>
 <footer>&copy; 2018 JBusters</footer>
-
 <script src="js/jquery-3.3.1.slim.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 </body>
