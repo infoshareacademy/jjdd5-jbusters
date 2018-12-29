@@ -40,6 +40,7 @@ public class LoginServlet extends HttpServlet {
             GoogleIdToken.Payload payLoad = IdTokenVerifierAndParser.getPayload(idToken);
             String name = (String) payLoad.get("name");
             String email = payLoad.getEmail();
+
             System.out.println("User name: " + name);
             System.out.println("User email: " + email);
 
@@ -52,7 +53,9 @@ public class LoginServlet extends HttpServlet {
 
 
 
-            model.put("session", session_name);
+            model.put("sessionName", session_name);
+            model.put("sessionEmail", email);
+
 
             Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_USERS_LOGIN);
 

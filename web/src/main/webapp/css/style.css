@@ -4,10 +4,28 @@ body{
     /*background-color: #adb5bd;*/
 }
 
+.card{
+    margin-bottom: 15px;
+}
+
+.jumbotron-login{
+    text-align: center;
+}
+
 .wrap{
     min-height: 1000px;
     background-color: #adb5bd;
     background-image: url("../img/background_img.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    padding-bottom: 30px;
+}
+.wrap-user{
+    min-height: 1000px;
+    background-color: #adb5bd;
+    background-image: url("../img/background-users.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
