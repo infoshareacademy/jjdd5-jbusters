@@ -1,12 +1,15 @@
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="google-signin-client_id" content="210558406372-6hmulf6oa0046s3jcgme2vo3130oa1nm.apps.googleusercontent.com">
     <title>JBusters</title>
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
+    <!-- Google -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="210558406372-1i31kqkfer8n3pa5dsdkl3udifff4k9v.apps.googleusercontent.com">
 </head>
 <body>
 <div class="wrap">
@@ -20,7 +23,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
-                        <li class="nav-item active">
+                        <li class="nav-item">
                             <a class="nav-link" href="/index.html">Home <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
@@ -36,56 +39,23 @@
                             <a class="nav-link" href="/generate-report">Pobierz statystyki</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link disabled" href="#">Zaloguj</a>
+                            <a class="nav-link" href="add-user.html">Załóż konto</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="index.html" onclick="signOut();">Sign out</a>
+                            <script>
+                                function signOut() {
+                                    var auth2 = gapi.auth2.getAuthInstance();
+                                    auth2.signOut().then(function () {
+                                        console.log('User signed out.');
+                                    });
+                                }
+                            </script>
                         </li>
                     </ul>
                 </div>
             </nav>
         </div>
     </header>
-    <div class="container">
-        <div class="jumbotron jumbotron-opacity">
-            <h1 class="display-4">Zaloguj sie u nas przez google. 😎</h1>
-            <p class="lead">Otrzymasz więcej możliwości.</p>
-            <hr class="my-4">
-                <div class="g-signin2" data-onsuccess="onSignIn"></div>
-            <a href="index.html" onclick="signOut();">Sign out</a>
-            <script>
-                function signOut() {
-                    var auth2 = gapi.auth2.getAuthInstance();
-                    auth2.signOut().then(function () {
-                        console.log('User signed out.');
-                    });
-                }
-            </script>
-        </div>
-    </div>
 
-
-
-
-</div>
-<footer>&copy; 2018 JBusters</footer>
-<script src="js/jquery-3.3.1.slim.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="https://apis.google.com/js/platform.js" async defer></script>
-
-<script>
-    gapi.load('auth2', function () {
-        gapi.auth2.init();
-    });
-
-</script>
-
-<script>
-    function onSignIn(googleUser) {
-        var profile = googleUser.getBasicProfile();
-        console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-        console.log('Name: ' + profile.getName());
-        console.log('Image URL: ' + profile.getImageUrl());
-        console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
-    }
-</script>
-
-</body>
-</html>
+<#include "footer.ftlh">

@@ -1,12 +1,17 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="google-signin-client_id" content="210558406372-6hmulf6oa0046s3jcgme2vo3130oa1nm.apps.googleusercontent.com">
     <title>JBusters</title>
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
+    <!-- Google -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="210558406372-1i31kqkfer8n3pa5dsdkl3udifff4k9v.apps.googleusercontent.com">
 </head>
 <body>
 <div class="wrap">
@@ -39,7 +44,32 @@
                             <a class="nav-link" href="add-user.html">Załóż konto</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="login-user.html">Zaloguj</a>
+                            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+                            <script>
+                                //google callback. This function will redirect to our login servlet
+                                function onSignIn(googleUser) {
+                                    var profile = googleUser.getBasicProfile();
+                                    console.log('ID: ' + profile.getId());
+                                    console.log('Name: ' + profile.getName());
+                                    console.log('Image URL: ' + profile.getImageUrl());
+                                    console.log('Email: ' + profile.getEmail());
+                                    console.log('id_token: ' + googleUser.getAuthResponse().id_token);
+
+                                    //do not post all above info to the server because that is not secure.
+                                    //just send the id_token
+
+                                    var redirectUrl = 'login';
+
+                                    //using jquery to post data dynamically
+                                    var form = $('<form action="' + redirectUrl + '" method="post">' +
+                                        '<input type="text" name="id_token" value="' +
+                                        googleUser.getAuthResponse().id_token + '" />' +
+                                        '</form>');
+                                    $('li').append(form);
+                                    form.submit();
+                                }
+
+                            </script>
                         </li>
                     </ul>
                 </div>
@@ -60,13 +90,6 @@
 
 <script src="js/jquery-3.3.1.slim.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
-<script src="https://apis.google.com/js/platform.js" async defer></script>
 
-<script>
-    gapi.load('auth2', function () {
-        gapi.auth2.init();
-    });
-
-</script>
 </body>
 </html>
