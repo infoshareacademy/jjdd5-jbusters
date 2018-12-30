@@ -167,7 +167,6 @@ public class ValuationServlet extends HttpServlet {
                     LOG.error("Failed to send model due to {}", e.getMessage());
                 }
             } else {
-//                HttpSession session = req.getSession();
                 session.setAttribute("newTransaction", newTransaction);
                 try {
                     template.process(model, out);

@@ -5,7 +5,6 @@
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-
 </head>
 <body>
 <div class="wrap">
@@ -20,13 +19,13 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item active">
-                            <a class="nav-link" href="/index.html">Home </a>
+                            <a class="nav-link" href="/index.html">Home <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/load-city">Wyceń mieszkanie</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="uploadFile.html">Załaduj plik <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="uploadFile.html">Załaduj plik</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/my-flats">Moje mieszkania</a>
@@ -35,7 +34,7 @@
                             <a class="nav-link" href="add-user.html">Załóż konto</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="login-user.html">Zaloguj </a>
+                            <a class="nav-link" href="login-user.html">Zaloguj</a>
                         </li>
                     </ul>
                 </div>
@@ -45,42 +44,17 @@
 
     <div class="container">
         <div class="jumbotron jumbotron-opacity">
-            <h1 class="display-10">Wybierz plik, z którego chcesz załadować swoją listę mieszkań do wyceny.</h1>
+            <h1 class="display-4">Wylogowano</h1>
+            <p class="lead">Zapraszamy ponownie...</p>
             <hr class="my-4">
-
-
-
-
-            <form method="POST" action="/users-transactions" enctype="multipart/form-data">
-                <input class="btn btn-primary" type="file" name="file" id="file"/> <br/>
-                </br>
-
-                <!-- Large modal -->
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">załaduj</button>
-
-                <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="jumbotron">
-                                <h1 class="display-4">Uważaj !!!😮 Człowieku 👳‍♂ ....️</h1>
-                                <p class="lead">Wczytanie nowego pliku usunie wszystkie Twoje niezapisane transakcje z bieżącej sesji.</p>
-                                <hr class="my-4">
-                                <p>Jeżeli chcesz kontynuować kliknij <b>"załaduj"</b> w przeciwnym razie naciśnij <b>"Esc"</b> na swojej klawiaturze.</p>
-                                <input class="btn btn-primary" type="submit" value="Załaduj" name="upload" id="upload"/>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-            </form>
+            <a class="btn btn-primary btn-lg btn-dark" href="index.html" role="button">Strona główna</a>
         </div>
     </div>
-
 </div>
 <footer>&copy; 2018 JBusters</footer>
 
 <script src="js/jquery-3.3.1.slim.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
+
 </body>
 </html>

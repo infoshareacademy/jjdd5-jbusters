@@ -2,7 +2,6 @@ package com.infoshareacademy.jbusters.web.login;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
-import com.infoshareacademy.jbusters.web.UsersServlet.AddUsersServlet;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.slf4j.Logger;
@@ -40,13 +39,12 @@ public class LoginServlet extends HttpServlet {
         final PrintWriter writer = resp.getWriter();
 
         try {
+            LOG.info("Login user with google api");
+
             String idToken = req.getParameter("id_token");
             GoogleIdToken.Payload payLoad = IdTokenVerifierAndParser.getPayload(idToken);
             String name = (String) payLoad.get("name");
             String email = payLoad.getEmail();
-
-            System.out.println("User name: " + name);
-            System.out.println("User email: " + email);
 
             Map<String, Object> model = new HashMap<>();
 
@@ -57,23 +55,24 @@ public class LoginServlet extends HttpServlet {
             Object sessionName =  session.getAttribute("userName");
             Object sessionEmail =  session.getAttribute("userEmail");
 
-
-
             model.put("sessionName", sessionName);
             model.put("sessionEmail", sessionEmail);
 
-
             Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
 
-            try {
-                template.process(model, writer);
-                LOG.info("Login user {}", sessionName);
-            } catch (TemplateException e) {
-                LOG.error("Failed to login user");
-            }
+            setDataTemplate(writer, model, sessionName, template);
 
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            LOG.error("Failed to login user in google api");
+        }
+    }
+
+    private void setDataTemplate(PrintWriter writer, Map<String, Object> model, Object sessionName, Template template) throws IOException {
+        try {
+            template.process(model, writer);
+            LOG.info("Login user {}", sessionName);
+        } catch (TemplateException e) {
+            LOG.error("Failed to login user");
         }
     }
 }

@@ -21,6 +21,8 @@ import java.util.Map;
 public class MyFlatsServlet extends HttpServlet {
 
     private static final String TEMPLATE_USERS_TRANSACTION = "transactions-users";
+    private static final String TEMPLATE_LOGGED_USERS_TRANSACTION = "user-transactions-users";
+
 
     @Inject
     private TemplateProvider templateProvider;
@@ -34,10 +36,23 @@ public class MyFlatsServlet extends HttpServlet {
 
         HttpSession session = req.getSession();
         List<Transaction> propertyList = (List<Transaction>) session.getAttribute("propertyList");
+        Object sessionEmail =  session.getAttribute("userEmail");
+        Object sessionName =  session.getAttribute("userName");
 
-        Template template = templateProvider.getTemplate(
-                getServletContext(),
-                TEMPLATE_USERS_TRANSACTION);
+        Template template;
+
+        if(sessionEmail == null){
+            template = templateProvider.getTemplate(
+                    getServletContext(),
+                    TEMPLATE_USERS_TRANSACTION);
+        }else {
+            template = templateProvider.getTemplate(
+                    getServletContext(),
+                    TEMPLATE_LOGGED_USERS_TRANSACTION);
+            model.put("sessionEmail", sessionEmail);
+            model.put("sessionName", sessionName);
+        }
+
 
         if (propertyList == null) {
             String error = "Twoja lista jest pusta";
@@ -45,15 +60,11 @@ public class MyFlatsServlet extends HttpServlet {
         }
 
         model.put("flats", propertyList);
+
         try {
             template.process(model, writer);
         } catch (TemplateException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        doGet(req,resp);
     }
 }

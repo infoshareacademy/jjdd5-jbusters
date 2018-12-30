@@ -88,16 +88,4 @@ public class Users {
         this.usersRole = usersRole;
     }
 
-    @Override
-    public String toString() {
-        final StringBuffer sb = new StringBuffer("Users{");
-        sb.append("usersId=").append(usersId);
-        sb.append(", usersEmail='").append(usersEmail).append('\'');
-        sb.append(", usersPassword='").append(usersPassword).append('\'');
-        sb.append(", usersName='").append(usersName).append('\'');
-        sb.append(", usersSurname='").append(usersSurname).append('\'');
-        sb.append(", usersRole=").append(usersRole);
-        sb.append('}');
-        return sb.toString();
-    }
 }

@@ -65,21 +65,30 @@
             </div>
 
             <hr class="my-4">
-            <div class="container  container-form">
+            <br>
+            <form method="POST" action="/users-transactions" enctype="multipart/form-data">
+                <input class="btn btn-primary" type="file" name="file" id="file"/> <br/>
+                </br>
 
-                <form method="get" action="/load-district">
-                    <div class="form-group">
-                        <label for="Select1">Wybierz miasto</label>
-                        <select name="city" class="form-control" id="Select1" required>
-                            <option></option>
-                            <#list cities as c>
-                                <option>${c}</option>
-                            </#list>
-                        </select>
+                <!-- Large modal -->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">załaduj</button>
+
+                <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="jumbotron">
+                                <h1 class="display-4">Uważaj !!!😮 Człowieku 👳‍♂ ....️</h1>
+                                <p class="lead">Wczytanie nowego pliku usunie wszystkie Twoje niezapisane transakcje z bieżącej sesji.</p>
+                                <hr class="my-4">
+                                <p>Jeżeli chcesz kontynuować kliknij <b>"załaduj"</b> w przeciwnym razie naciśnij <b>"Esc"</b> na swojej klawiaturze.</p>
+                                <input class="btn btn-primary" type="submit" value="Załaduj" name="upload" id="upload"/>
+                            </div>
+
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Dalej</button>
-                </form>
-            </div>
+                </div>
+
+            </form>
 
         </div>
 
