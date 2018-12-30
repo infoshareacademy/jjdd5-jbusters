@@ -20,7 +20,7 @@ import java.util.Map;
 @WebServlet("/my-flats")
 public class MyFlatsServlet extends HttpServlet {
 
-    private static final String TEMPLATE_USERS_TRANSACTION = "users-transactions";
+    private static final String TEMPLATE_USERS_TRANSACTION = "transactions-users";
 
     @Inject
     private TemplateProvider templateProvider;

@@ -2,8 +2,11 @@ package com.infoshareacademy.jbusters.web.login;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
+import com.infoshareacademy.jbusters.web.UsersServlet.AddUsersServlet;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -21,7 +24,8 @@ import java.util.Map;
 @WebServlet(urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
 
-    private static final String TEMPLATE_USERS_LOGIN = "login";
+    private Logger LOG = LoggerFactory.getLogger(LoginServlet.class);
+    private static final String TEMPLATE_NAME = "login";
 
     @Inject
     private TemplateProvider templateProvider;
@@ -48,21 +52,24 @@ public class LoginServlet extends HttpServlet {
 
             HttpSession session = req.getSession(true);
             session.setAttribute("userName", name);
+            session.setAttribute("userEmail", email);
 
-            Object session_name =  session.getAttribute("userName");
-
-
-
-            model.put("sessionName", session_name);
-            model.put("sessionEmail", email);
+            Object sessionName =  session.getAttribute("userName");
+            Object sessionEmail =  session.getAttribute("userEmail");
 
 
-            Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_USERS_LOGIN);
+
+            model.put("sessionName", sessionName);
+            model.put("sessionEmail", sessionEmail);
+
+
+            Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
 
             try {
                 template.process(model, writer);
+                LOG.info("Login user {}", sessionName);
             } catch (TemplateException e) {
-                e.printStackTrace();
+                LOG.error("Failed to login user");
             }
 
         } catch (Exception e) {
