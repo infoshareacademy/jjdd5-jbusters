@@ -25,7 +25,7 @@ import java.util.Map;
 public class LoginServlet extends HttpServlet {
 
     private Logger LOG = LoggerFactory.getLogger(LoginServlet.class);
-    private static final String TEMPLATE_NAME = "login";
+    private static final String TEMPLATE_NAME = "user-login";
 
     @Inject
     private TemplateProvider templateProvider;

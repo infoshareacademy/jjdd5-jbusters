@@ -40,11 +40,19 @@
     <header>
         <div class="container-fluid">
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <a class="navbar-brand" href="#">JBusters</a>
+                <a class="navbar-brand" href="#">JBusters -></a>
+                <a class="navbar-brand" href="#">użytkownik: ${sessionName}</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="index.html" class="nav-link" onclick="signOut();">Wyloguj</a>
+                        </li>
+                    </ul>
+                </div>
             </nav>
         </div>
     </header>
@@ -53,15 +61,21 @@
         <br><br>
 
         <div class="jumbotron jumbotron-opacity">
-            <h1 class="display-4">${sessionName} 😎</h1>
-            <p class="lead">Witamy w naszej wspaniałej wyceniarce. Skorzystaj z poniższych funkcjonalności.</p>
-            <hr class="my-4">
-            <div class="row">
+
+            <div class="row my-border-bootom">
+                <div class="col-8">
+                    <h1 class="display-4">Witaj w naszej wyceniarce 😎</h1>
+                    <p class="lead">Skorzystaj z poniższych funkcjonalności...</p>
+                </div>
+
                 <div class="col-4">
                     <div class="card" style="width: 18rem;">
                         <div class="card-body">
                             <p class="card-text">Zostałeś zalogowany za pomoca googla. 😂</p>
                         </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Imię i nazwisko: <b>${sessionName}</b></li>
+                        </ul>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">Twój email: <b>${sessionEmail}</b></li>
                         </ul>
@@ -71,14 +85,21 @@
                     </div>
 
                 </div>
-                <div class="col-8">
+
+            </div>
+            <br>
+            <br>
+            <div class="row">
+
+                <div class="col-12">
 
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">Wyceń mieszkanie</h5>
-                                    <p class="card-text">Wypełnij formularz. Będziesz musiał podać nam parametry Twojego mieszkania.</p>
+                                    <p class="card-text">Wypełnij formularz. Będziesz musiał podać nam parametry Twojego
+                                        mieszkania.</p>
                                     <a href="/load-city" class="btn btn-primary">Przejdz dalej</a>
                                 </div>
                             </div>
@@ -99,7 +120,35 @@
                                 <div class="card-body">
                                     <h5 class="card-title">Pobierz statystyki</h5>
                                     <p class="card-text">Generuje plik pdf ze statystykami</p>
-                                    <a href="/generate-report" class="btn btn-primary">Przejdz dalej</a>
+                                    <a class="btn btn-primary" data-toggle="modal"
+                                       data-target="#download">Pobierz</a>
+
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="download" tabindex="-1" role="dialog"
+                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Pobierz PDF</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Czy chcesz zapisać plik .pdf na Swoim dysku?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <a type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Nie
+                                                    </a>
+                                                    <a href="/generate-report" type="button" class="btn btn-primary">Tak</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -121,11 +170,10 @@
         </div>
 
 
-
-        </div>
-
-
     </div>
+
+
+</div>
 </div>
 <footer>&copy; 2018 JBusters</footer>
 

@@ -40,7 +40,8 @@
     <header>
         <div class="container-fluid">
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <a class="navbar-brand" href="#">JBusters</a>
+                <a class="navbar-brand" href="#">JBusters -></a>
+                <a class="navbar-brand" href="#">użytkownik: ${sessionName}</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -48,12 +49,11 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" href="/load-city">Zalogowano: ${sessionName}</a>
+                            <a href="login-user.html" class="nav-link">Menu</a>
                         </li>
                         <li class="nav-item">
                             <a href="index.html" class="nav-link" onclick="signOut();">Wyloguj</a>
                         </li>
-
                     </ul>
                 </div>
             </nav>
@@ -268,11 +268,7 @@
                     </form>
                 </#if>
             </div>
-
-
-
             <!--Koniec formularza szczegółowych informacji o mieszkaniu-->
-
     </div>
 
 

@@ -67,8 +67,7 @@
 
             <div class="row">
                 <div class="col-8">
-                    <h1 class="display-4">Wyceń mieszkanie</h1>
-                    <p class="lead">Wypełnij formularz. Musisz podać parametry Twojego mieszkania..</p>
+
                 </div>
 
                 <div class="col-4">
@@ -86,21 +85,11 @@
             </div>
 
             <hr class="my-4">
-            <div class="container  container-form">
+            <h1 class="display-4">Posiadamy za mało transakcji !!! 😓</h1>
+            <p class="lead">Do prawidłowej wyceny potrzeba min 11 transakcji.</p>
+            <hr class="my-4">
 
-                <form method="get" action="/load-district">
-                    <div class="form-group">
-                        <label for="Select1">Wybierz miasto</label>
-                        <select name="city" class="form-control" id="Select1" required>
-                            <option></option>
-                            <#list cities as c>
-                                <option>${c}</option>
-                            </#list>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Dalej</button>
-                </form>
-            </div>
+            <a class="btn btn-primary" href="/load-city" role="button">Spróbuj ponownie</a>
 
         </div>
 
