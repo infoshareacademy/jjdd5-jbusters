@@ -1,9 +1,5 @@
 package com.infoshareacademy.jbusters.web;
 
-import com.infoshareacademy.jbusters.data.Data;
-import com.infoshareacademy.jbusters.data.DataLoader;
-import com.infoshareacademy.jbusters.data.SearchOfData;
-import com.infoshareacademy.jbusters.data.Transaction;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -20,7 +16,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @WebServlet(urlPatterns = "/upload-file")
