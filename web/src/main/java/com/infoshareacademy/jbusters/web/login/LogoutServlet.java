@@ -20,7 +20,7 @@ import java.util.Map;
 @WebServlet(urlPatterns = {"/logout"})
 public class LogoutServlet extends HttpServlet {
 
-    private Logger LOG = LoggerFactory.getLogger(LogoutServlet.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LogoutServlet.class);
     private static final String TEMPLATE_NAME = "user-logout";
 
     @Inject

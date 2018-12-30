@@ -3433,19 +3433,19 @@ INSERT INTO `transactions` (`TRANSACTIONS_ID`, `TRANSACTIONS_DATA_TRANSACTION`, 
 --
 
 CREATE TABLE `users` (
-  `USERS_ID` int NOT NULL,
-  `USERS_EMAIL` varchar(255) COLLATE utf8_polish_ci NOT NULL,
-  `USERS_PASSWORD` varchar(255) COLLATE utf8_polish_ci NOT NULL,
-  `USERS_NAME` varchar(255) COLLATE utf8_polish_ci DEFAULT NULL,
-  `USERS_SURNAME` varchar(255) COLLATE utf8_polish_ci DEFAULT NULL,
-  `USERS_ROLE` int(11) DEFAULT NULL
+  `USER_ID` int NOT NULL,
+  `USER_EMAIL` varchar(255) COLLATE utf8_polish_ci NOT NULL,
+  `USER_PASSWORD` varchar(255) COLLATE utf8_polish_ci NOT NULL,
+  `USER_NAME` varchar(255) COLLATE utf8_polish_ci DEFAULT NULL,
+  `USER_SURNAME` varchar(255) COLLATE utf8_polish_ci DEFAULT NULL,
+  `USER_ROLE` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 --
 -- Zrzut danych tabeli `users`
 --
 
-INSERT INTO `users` (`USERS_ID`, `USERS_EMAIL`, `USERS_PASSWORD`, `USERS_NAME`, `USERS_SURNAME`, `USERS_ROLE`) VALUES
+INSERT INTO `users` (`USER_ID`, `USER_EMAIL`, `USER_PASSWORD`, `USER_NAME`, `USER_SURNAME`, `USER_ROLE`) VALUES
 (3365, 'jbusters.isa@gmail.com', 'jbusters1234', 'jbustersName', 'jbustersSurname', 1),
 (3366, 'jan@wp.pl', 'janek1234', 'Jan', 'Kowalski', 2);
 
@@ -3464,8 +3464,8 @@ ALTER TABLE `transactions`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`USERS_ID`),
-  ADD UNIQUE KEY `USERS_ID_UNIQUE` (`USERS_ID`);
+  ADD PRIMARY KEY (`USER_ID`),
+  ADD UNIQUE KEY `USER_ID_UNIQUE` (`USER_ID`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -3480,7 +3480,7 @@ ALTER TABLE `transactions`
 -- AUTO_INCREMENT dla tabeli `users`
 --
 ALTER TABLE `users`
-  MODIFY `USERS_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3367;COMMIT;
+  MODIFY `USER_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3367;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

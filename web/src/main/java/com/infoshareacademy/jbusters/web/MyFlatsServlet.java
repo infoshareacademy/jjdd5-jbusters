@@ -36,23 +36,19 @@ public class MyFlatsServlet extends HttpServlet {
 
         HttpSession session = req.getSession();
         List<Transaction> propertyList = (List<Transaction>) session.getAttribute("propertyList");
-        Object sessionEmail =  session.getAttribute("userEmail");
-        Object sessionName =  session.getAttribute("userName");
+        String sessionEmail = (String) session.getAttribute("userEmail");
+        String sessionName = (String) session.getAttribute("userName");
 
         Template template;
 
-        if(sessionEmail == null){
-            template = templateProvider.getTemplate(
-                    getServletContext(),
-                    TEMPLATE_USERS_TRANSACTION);
-        }else {
-            template = templateProvider.getTemplate(
-                    getServletContext(),
-                    TEMPLATE_LOGGED_USERS_TRANSACTION);
+        if (sessionEmail == null){
+            template = templateProvider.getTemplate(getServletContext(), TEMPLATE_USERS_TRANSACTION);
+        } else {
+            template = templateProvider.getTemplate(getServletContext(), TEMPLATE_LOGGED_USERS_TRANSACTION);
+
             model.put("sessionEmail", sessionEmail);
             model.put("sessionName", sessionName);
         }
-
 
         if (propertyList == null) {
             String error = "Twoja lista jest pusta";

@@ -53,11 +53,11 @@ public class LoadOtherValuesTransactionServlet extends HttpServlet {
         model.put(ValuationServlet.DISTRICT_1, district);
 
         HttpSession session = req.getSession(true);
-        Object sessionEmail =  session.getAttribute("userEmail");
-        Object sessionName =  session.getAttribute("userName");
+        String sessionEmail = (String) session.getAttribute("userEmail");
+        String sessionName = (String) session.getAttribute("userName");
 
 
-        if(sessionEmail == null){
+        if (sessionEmail == null){
             Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_GUEST);
 
             try {
@@ -66,7 +66,7 @@ public class LoadOtherValuesTransactionServlet extends HttpServlet {
             } catch (TemplateException e) {
                 LOG.error("Failed to export data to tamplate {} {}", city, district);
             }
-        }else {
+        }   else {
 
             Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_USER);
             model.put("sessionEmail", sessionEmail);

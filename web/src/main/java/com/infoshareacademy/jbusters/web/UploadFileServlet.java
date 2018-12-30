@@ -33,25 +33,22 @@ public class UploadFileServlet extends HttpServlet {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
         PrintWriter out = resp.getWriter();
 
-
         Map<String, Object> model = new HashMap<>();
 
-
         HttpSession session = req.getSession(true);
-        Object sessionEmail =  session.getAttribute("userEmail");
-        Object sessionName =  session.getAttribute("userName");
-
+        String sessionEmail = (String) session.getAttribute("userEmail");
+        String sessionName = (String) session.getAttribute("userName");
 
         Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
         model.put("sessionEmail", sessionEmail);
         model.put("sessionName", sessionName);
 
-            try {
-                template.process(model, out);
-                LOG.info("Loaded file");
-            } catch (TemplateException e) {
-                LOG.error("Failed to load file");
-            }
-
+        try {
+            template.process(model, out);
+            LOG.info("Loaded file");
+        } catch (TemplateException e) {
+            LOG.error("Failed to load file");
         }
+
     }
+}

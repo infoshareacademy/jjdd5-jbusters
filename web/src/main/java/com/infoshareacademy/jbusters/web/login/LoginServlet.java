@@ -23,7 +23,7 @@ import java.util.Map;
 @WebServlet(urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
 
-    private Logger LOG = LoggerFactory.getLogger(LoginServlet.class);
+    private static final Logger LOG = LoggerFactory.getLogger(LoginServlet.class);
     private static final String TEMPLATE_NAME = "user-login";
 
     @Inject
@@ -52,8 +52,8 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("userName", name);
             session.setAttribute("userEmail", email);
 
-            Object sessionName =  session.getAttribute("userName");
-            Object sessionEmail =  session.getAttribute("userEmail");
+            String sessionName = (String) session.getAttribute("userName");
+            String sessionEmail = (String) session.getAttribute("userEmail");
 
             model.put("sessionName", sessionName);
             model.put("sessionEmail", sessionEmail);
