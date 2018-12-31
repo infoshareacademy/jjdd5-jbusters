@@ -12,7 +12,7 @@
     <header>
         <div class="container-fluid">
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <a class="navbar-brand" href="index.html">JBusters</a>
+                <a class="navbar-brand" href="#">JBusters</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -20,7 +20,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item active">
-                            <a class="nav-link" href="/index.html">Home</a>
+                            <a class="nav-link" href="/index.html">Home <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/load-city">Wyceń mieszkanie</a>
@@ -32,26 +32,30 @@
                             <a class="nav-link" href="/my-flats">Moje mieszkania</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="add-user.html">Załóż konto</a>
+                            <a class="nav-link" href="/generate-report">Pobierz statystyki</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="login-user.html">Zaloguj</a>
+                            <a class="nav-link disabled" href="#">Zaloguj</a>
                         </li>
                     </ul>
                 </div>
             </nav>
         </div>
     </header>
-
     <div class="container">
         <div class="jumbotron jumbotron-opacity">
-            <h1 class="display-4">Przykro nam, coś poszło nie tak</h1>
+            <h1 class="display-4">Nie udało się. 😥</h1>
+            <p class="lead">Podane dane są niepoprawne lub podany email jest już zajęty.</p>
             <hr class="my-4">
+            <a class="btn btn-primary btn-lg btn-dark" href="add-user.html" role="button">Spróbuj ponownie</a>
         </div>
     </div>
+
+
+
+
 </div>
 <footer>&copy; 2018 JBusters</footer>
-
 <script src="js/jquery-3.3.1.slim.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 </body>

@@ -6,6 +6,12 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
+    <!-- Google -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://apis.google.com/js/client.js" async defer></script>
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="210558406372-1i31kqkfer8n3pa5dsdkl3udifff4k9v.apps.googleusercontent.com">
 </head>
 <body>
 <div class="wrap">
@@ -20,7 +26,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item active">
-                            <a class="nav-link" href="/index.html">Home</a>
+                            <a class="nav-link" href="/index.html">Home </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/load-city">Wyceń mieszkanie</a>
@@ -35,7 +41,7 @@
                             <a class="nav-link" href="add-user.html">Załóż konto</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="login-user.html">Zaloguj</a>
+                            <a class="nav-link" href="login-user.html">Zaloguj <span class="sr-only">(current)</span></a>
                         </li>
                     </ul>
                 </div>
@@ -44,9 +50,13 @@
     </header>
 
     <div class="container">
-        <div class="jumbotron jumbotron-opacity">
-            <h1 class="display-4">Przykro nam, coś poszło nie tak</h1>
+        <div class="jumbotron jumbotron-opacity jumbotron-login">
+            <h1 class="display-4">Zaloguj się do naszej aplikacji.</h1>
+            <p class="lead">Możesz się zalogować poprzez konto google.</p>
             <hr class="my-4">
+
+            <a class="btn btn-lg g-signin2 lead" data-onsuccess="onSignIn"></a>
+
         </div>
     </div>
 </div>
@@ -54,5 +64,32 @@
 
 <script src="js/jquery-3.3.1.slim.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
+
+<script>
+    //google callback. This function will redirect to our login servlet
+    function onSignIn(googleUser) {
+        var profile = googleUser.getBasicProfile();
+        console.log('ID: ' + profile.getId());
+        console.log('Name: ' + profile.getName());
+        console.log('Image URL: ' + profile.getImageUrl());
+        console.log('Email: ' + profile.getEmail());
+        console.log('id_token: ' + googleUser.getAuthResponse().id_token);
+
+        //do not post all above info to the server because that is not secure.
+        //just send the id_token
+
+        var redirectUrl = 'login';
+
+        //using jquery to post data dynamically
+        var form = $('<form action="' + redirectUrl + '" method="post">' +
+            '<input type="text" name="id_token" value="' +
+            googleUser.getAuthResponse().id_token + '" />' +
+            '</form>');
+        $('body').append(form);
+        form.submit();
+    }
+
+</script>
+
 </body>
 </html>

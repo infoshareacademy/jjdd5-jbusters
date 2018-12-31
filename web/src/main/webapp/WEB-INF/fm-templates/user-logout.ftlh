@@ -5,7 +5,6 @@
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-
 </head>
 <body>
 <div class="wrap">
@@ -20,7 +19,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item active">
-                            <a class="nav-link" href="/index.html">Home</a>
+                            <a class="nav-link" href="/index.html">Home <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/load-city">Wyceń mieszkanie</a>
@@ -45,8 +44,10 @@
 
     <div class="container">
         <div class="jumbotron jumbotron-opacity">
-            <h1 class="display-4">Przykro nam, coś poszło nie tak</h1>
+            <h1 class="display-4">Wylogowano</h1>
+            <p class="lead">Zapraszamy ponownie...</p>
             <hr class="my-4">
+            <a class="btn btn-primary btn-lg btn-dark" href="index.html" role="button">Strona główna</a>
         </div>
     </div>
 </div>
@@ -54,5 +55,6 @@
 
 <script src="js/jquery-3.3.1.slim.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
+
 </body>
 </html>
