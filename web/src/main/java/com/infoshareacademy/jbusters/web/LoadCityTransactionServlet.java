@@ -1,9 +1,6 @@
 package com.infoshareacademy.jbusters.web;
 
-import com.infoshareacademy.jbusters.data.Data;
-import com.infoshareacademy.jbusters.data.DataLoader;
 import com.infoshareacademy.jbusters.data.SearchOfData;
-import com.infoshareacademy.jbusters.data.Transaction;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -32,6 +29,8 @@ public class LoadCityTransactionServlet extends HttpServlet {
 
     @Inject
     private TemplateProvider templateProvider;
+    @Inject
+    private SearchOfData searchOfData;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -39,18 +38,15 @@ public class LoadCityTransactionServlet extends HttpServlet {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
         PrintWriter out = resp.getWriter();
 
-
-        List<String> cities = new SearchOfData().showCity();
+        List<String> cities = searchOfData.showCity();
         Map<String, Object> model = new HashMap<>();
         model.put("cities", cities);
 
         HttpSession session = req.getSession(true);
-        Object sessionEmail =  session.getAttribute("userEmail");
-        Object sessionName =  session.getAttribute("userName");
+        String sessionEmail = (String) session.getAttribute("userEmail");
+        String sessionName = (String) session.getAttribute("userName");
 
-
-
-        if(sessionEmail == null){
+        if (sessionEmail == null){
             Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_GUEST);
 
             try {
@@ -59,7 +55,7 @@ public class LoadCityTransactionServlet extends HttpServlet {
             } catch (TemplateException e) {
                 LOG.error("Failed to load city list. Size of list: {}", cities.size());
             }
-        }else {
+        } else {
 
             Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_USER);
             model.put("sessionEmail", sessionEmail);
@@ -73,12 +69,6 @@ public class LoadCityTransactionServlet extends HttpServlet {
                 LOG.error("Failed to load city for {}. List. Size of list: {}",sessionEmail, cities.size());
             }
         }
-
-
-
-
-
-
 
     }
 }

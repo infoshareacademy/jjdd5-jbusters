@@ -12,28 +12,6 @@
     <script src="https://apis.google.com/js/client.js" async defer></script>
     <meta name="google-signin-scope" content="profile email">
     <meta name="google-signin-client_id">
-
-    <script>
-        function signOut() {
-            console.log("logging out ...");
-            gapi.auth.authorize(
-                {
-                    'client_id': "210558406372-1i31kqkfer8n3pa5dsdkl3udifff4k9v.apps.googleusercontent.com",
-                    'scope': "profile email",
-                    'immediate': false,
-                    cookie_policy: 'single_host_origin',
-                    response_type: 'token id_token'
-                },
-                function (authResult) {
-                    gapi.auth.signOut();
-                    gapi.auth.disconnect();
-                }
-            );
-            console.log("redirecting to logout servlet");
-            window.location.href = 'logout';
-        }
-    </script>
-
 </head>
 <body>
 <div class="wrap-user">
@@ -49,7 +27,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a href="index.html" class="nav-link" onclick="signOut();">Wyloguj</a>
+                            <a href="/logout" class="nav-link" onclick="signOut();">Wyloguj</a>
                         </li>
                     </ul>
                 </div>
@@ -80,7 +58,7 @@
                             <li class="list-group-item">Twój email: <b>${sessionEmail}</b></li>
                         </ul>
                         <div class="card-body">
-                            <a href="index.html" class="card-link" onclick="signOut();">Wyloguj</a>
+                            <a href="/logout" class="card-link" onclick="signOut();">Wyloguj</a>
                         </div>
                     </div>
 
@@ -110,7 +88,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title">Załaduj plik</h5>
                                     <p class="card-text">Załaduj Twój plik z wcześniej wycenionymi mieszkaniami</p>
-                                    <a href="uploadFile.html" class="btn btn-primary">Przejdz dalej</a>
+                                    <a href="/upload-file" class="btn btn-primary">Przejdz dalej</a>
                                 </div>
                             </div>
                         </div>
@@ -180,6 +158,26 @@
 <script src="js/jquery-3.3.1.slim.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 
+<script>
+    function signOut() {
+        console.log("logging out ...");
+        gapi.auth.authorize(
+            {
+                'client_id': "210558406372-1i31kqkfer8n3pa5dsdkl3udifff4k9v.apps.googleusercontent.com",
+                'scope': "profile email",
+                'immediate': false,
+                cookie_policy: 'single_host_origin',
+                response_type: 'token id_token'
+            },
+            function (authResult) {
+                gapi.auth.signOut();
+                gapi.auth.disconnect();
+            }
+        );
+        console.log("redirecting to logout servlet");
+        window.location.href = '/logout';
+    }
+</script>
 </body>
 </html>
 

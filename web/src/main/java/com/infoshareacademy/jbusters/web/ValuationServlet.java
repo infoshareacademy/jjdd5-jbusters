@@ -75,24 +75,23 @@ public class ValuationServlet extends HttpServlet {
         PrintWriter out = resp.getWriter();
 
         HttpSession session = req.getSession(true);
-        Object sessionEmail =  session.getAttribute("userEmail");
-        Object sessionName =  session.getAttribute("userName");
+        String sessionEmail = (String) session.getAttribute("userEmail");
+        String sessionName = (String) session.getAttribute("userName");
 
         model.put("sessionEmail", sessionEmail);
         model.put("sessionName", sessionName);
 
         Template template;
 
-        if(sessionEmail == null){
+        if (sessionEmail == null) {
             template = templateProvider.getTemplate(
                     getServletContext(),
                     TEMPLATE_VALUATION);
-        }else {
+        } else {
             template = templateProvider.getTemplate(
                     getServletContext(),
                     TEMPLATE_VALUATION_USER);
         }
-
 
 
         if (errorsMap.size() != 0) {
@@ -124,14 +123,10 @@ public class ValuationServlet extends HttpServlet {
 
             } else {
 
-                if(sessionEmail == null){
-                    template = templateProvider.getTemplate(
-                            getServletContext(),
-                            "no-valuation");
-                }else {
-                    template = templateProvider.getTemplate(
-                            getServletContext(),
-                            "user-no-valuation");
+                if (sessionEmail == null) {
+                    template = templateProvider.getTemplate(getServletContext(), "no-valuation");
+                } else {
+                    template = templateProvider.getTemplate(getServletContext(), "user-no-valuation");
                 }
 
             }
@@ -153,10 +148,10 @@ public class ValuationServlet extends HttpServlet {
 
             if (req.getAttribute("constructionYearError") != null) {
 
-                if(sessionEmail == null){
+                if (sessionEmail == null) {
                     template = templateProvider.getTemplate(
                             getServletContext(), TEMPLATE_VALUATION);
-                }else {
+                } else {
                     template = templateProvider.getTemplate(
                             getServletContext(), TEMPLATE_VALUATION_USER);
                 }
@@ -167,7 +162,6 @@ public class ValuationServlet extends HttpServlet {
                     LOG.error("Failed to send model due to {}", e.getMessage());
                 }
             } else {
-//                HttpSession session = req.getSession();
                 session.setAttribute("newTransaction", newTransaction);
                 try {
                     template.process(model, out);

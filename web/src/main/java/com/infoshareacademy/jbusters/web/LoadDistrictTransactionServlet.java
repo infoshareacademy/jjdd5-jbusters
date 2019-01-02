@@ -45,11 +45,10 @@ public class LoadDistrictTransactionServlet extends HttpServlet {
         model.put("district", districtsList);
 
         HttpSession session = req.getSession(true);
-        Object sessionEmail =  session.getAttribute("userEmail");
-        Object sessionName =  session.getAttribute("userName");
+        String sessionEmail = (String) session.getAttribute("userEmail");
+        String sessionName = (String) session.getAttribute("userName");
 
-
-        if(sessionEmail == null){
+        if (sessionEmail == null){
             Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_GUEST);
 
             try {
@@ -58,7 +57,7 @@ public class LoadDistrictTransactionServlet extends HttpServlet {
             } catch (TemplateException e) {
                 LOG.error("Failed to load district list. Size of list: {}" + districtsList.size());
             }
-        }else {
+        } else {
 
             Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_USER);
             model.put("sessionEmail", sessionEmail);
