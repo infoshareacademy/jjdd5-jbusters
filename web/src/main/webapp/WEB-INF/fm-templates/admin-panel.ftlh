@@ -12,10 +12,9 @@
     <script src="https://apis.google.com/js/client.js" async defer></script>
     <meta name="google-signin-scope" content="profile email">
     <meta name="google-signin-client_id">
-
 </head>
 <body>
-<div class="wrap-user">
+<div class="wrap-admin">
     <header>
         <div class="container-fluid">
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -40,56 +39,28 @@
         <br><br>
 
         <div class="jumbotron jumbotron-opacity">
-
-            <div class="row">
+            <div class="row my-border-bootom">
                 <div class="col-8">
-                    <h1 class="display-4">Wyceń mieszkanie</h1>
-                    <p class="lead">Wypełnij formularz. Musisz podać parametry Twojego mieszkania..</p>
+                    <h1 class="display-4">Panel administracyjny ⚙</h1>
+                    <p class="lead">Skorzystaj z poniższych funkcjonalności...</p>
                     <form method="post" action="load-user-menu">
                         <button type="submit" class="btn btn-primary">Menu</button>
                     </form>
                 </div>
 
                 <div class="col-4">
-                    <div class="card" style="width: 18rem;">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Zalogowano: <b>${sessionEmail}</b></li>
-                        </ul>
+                    <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+                        <div class="card-header"><b>Administrator:</b></div>
                         <div class="card-body">
+                            <h5 class="card-title">${sessionName}</h5>
+                            <h5 class="card-title">${sessionEmail}</h5>
                             <a href="/logout" class="card-link" onclick="signOut();">Wyloguj</a>
                         </div>
                     </div>
-
                 </div>
-
             </div>
-
-            <hr class="my-4">
-            <div class="container  container-form">
-                <form method="get" action="load-other-values">
-                    <div class="form-group">
-                        <label for="Select2">Wybierz dzielnice</label>
-                        <select name="district" class="form-control" id="Select2" required>
-                            <option></option>
-                            <#list district as d>
-                                <option>${d}</option>
-                            </#list>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Dalej</button>
-
-                    <div class="form-group hidden">
-                        <label for="Select1">Miasto: </label>
-                        <input name="city" type="text" class="form-control" id="Select1" value="${city}">
-                    </div>
-
-                </form>
-            </div>
-
+                    <#--Łukasz tu funkcje admina daj :) -->
         </div>
-
-
-
     </div>
 
 
@@ -120,7 +91,6 @@
         window.location.href = '/logout';
     }
 </script>
-
 </body>
 </html>
 
