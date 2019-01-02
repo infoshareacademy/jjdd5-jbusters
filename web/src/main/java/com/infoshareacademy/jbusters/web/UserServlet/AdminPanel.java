@@ -1,7 +1,5 @@
 package com.infoshareacademy.jbusters.web.UserServlet;
 
-
-import com.infoshareacademy.jbusters.dao.UserDao;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -44,9 +42,10 @@ public class AdminPanel extends HttpServlet {
         model.put("sessionName", sessionName);
 
         try {
+            LOG.info("Load admin panel");
             template.process(model, writter);
         } catch (TemplateException e) {
-            e.printStackTrace();
+            LOG.error("Failed load admin panel");
         }
 
 

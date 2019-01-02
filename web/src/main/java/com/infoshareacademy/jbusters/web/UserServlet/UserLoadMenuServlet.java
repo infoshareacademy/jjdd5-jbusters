@@ -43,7 +43,7 @@ public class UserLoadMenuServlet extends HttpServlet {
         resp.setContentType("text/html;charset=UTF-8");
         final PrintWriter writer = resp.getWriter();
         HttpSession session = req.getSession(true);
-        User user = new User();
+        User user;
 
         String sessionName = (String) session.getAttribute("userName");
         String sessionEmail = (String) session.getAttribute("userEmail");
@@ -57,7 +57,7 @@ public class UserLoadMenuServlet extends HttpServlet {
         Map<String, Object> model = new HashMap<>();
 
          if (!userList.isEmpty()){
-           user =  userList.get(0);
+            user =  userList.get(0);
 
             if(user.getUserRole() == 1){
                 template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_LOGIN_ADMIN);
@@ -75,9 +75,10 @@ public class UserLoadMenuServlet extends HttpServlet {
         model.put("sessionEmail", sessionEmail);
 
         try {
+            LOG.info("Load user menu");
             template.process(model, writer);
         } catch (TemplateException e) {
-            e.printStackTrace();
+            LOG.error("Failed load user menu");
         }
 
 

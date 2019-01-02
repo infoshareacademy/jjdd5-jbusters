@@ -31,6 +31,8 @@ public class LoginServlet extends HttpServlet {
     private static final String TEMPLATE_NAME_LOGIN_OK = "user-login";
     private static final String TEMPLATE_NAME_LOGIN_FAILED = "user-login-failed";
     private static final String TEMPLATE_NAME_LOGIN_ADMIN = "admin-login";
+    private static final String SESSION_ATTRIBUTE_NAME = "userName";
+    private static final String SESSION_ATTRIBUTE_EMAIL = "userEmail";
 
     @Inject
     private TemplateProvider templateProvider;
@@ -54,13 +56,12 @@ public class LoginServlet extends HttpServlet {
             String nameGoogle = (String) payLoad.get("name");
             String emailGoogle = payLoad.getEmail();
 
-            session.setAttribute("userName", nameGoogle);
-            session.setAttribute("userEmail", emailGoogle);
+            session.setAttribute(SESSION_ATTRIBUTE_NAME, nameGoogle);
+            session.setAttribute(SESSION_ATTRIBUTE_EMAIL, emailGoogle);
 
         } catch (Exception e) {
             LOG.warn("Failed to login user in google api");
             LOG.info("Trying to log in using our user account");
-
 
             String email = req.getParameter("email");
             String password = req.getParameter("password");
@@ -70,25 +71,20 @@ public class LoginServlet extends HttpServlet {
                     .filter(u -> u.getUserEmail().equals(email))
                     .collect(Collectors.toList());
 
-
-
             if (!userList.isEmpty()){
 
                 user = userList.get(0);
 
                 if (user != null && user.getUserPassword().equals(password)) {
 
-                    session.setAttribute("userName", user.getUserName());
-                    session.setAttribute("userEmail", user.getUserEmail());
+                    session.setAttribute(SESSION_ATTRIBUTE_NAME, user.getUserName());
+                    session.setAttribute(SESSION_ATTRIBUTE_EMAIL, user.getUserEmail());
                 }
             }
-
-
         }
 
-
-        String sessionName = (String) session.getAttribute("userName");
-        String sessionEmail = (String) session.getAttribute("userEmail");
+        String sessionName = (String) session.getAttribute(SESSION_ATTRIBUTE_NAME);
+        String sessionEmail = (String) session.getAttribute(SESSION_ATTRIBUTE_EMAIL);
 
         Map<String, Object> model = new HashMap<>();
         Template template;
@@ -98,21 +94,17 @@ public class LoginServlet extends HttpServlet {
             model.put("sessionName", sessionName);
             model.put("sessionEmail", sessionEmail);
 
-            if(user.getUserRole() == 1){
+            if (user.getUserRole() == 1){
                 template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_LOGIN_ADMIN);
-            }else {
+            } else {
                 template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_LOGIN_OK);
             }
-
-
         } else {
             template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_LOGIN_FAILED);
             LOG.warn("Failed to. Incorrect login or password");
         }
 
-
         setDataTemplate(writer, model, sessionName, template);
-
 
     }
 
