@@ -6,6 +6,12 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
 
+    <!-- Google -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://apis.google.com/js/client.js" async defer></script>
+    <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="210558406372-1i31kqkfer8n3pa5dsdkl3udifff4k9v.apps.googleusercontent.com">
 </head>
 <body>
 <div class="wrap">
@@ -32,60 +38,58 @@
                             <a class="nav-link" href="/my-flats">Moje mieszkania</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="add-user.html">Załóż konto <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="add-user.html">Załóż konto</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="login-user.html">Zaloguj</a>
+                            <a class="nav-link" href="login-user.html">Zaloguj <span class="sr-only">(current)</span></a>
                         </li>
                     </ul>
                 </div>
             </nav>
         </div>
     </header>
+
     <div class="container">
-        <div class="jumbotron jumbotron-opacity">
-            <h1 class="display-4">Rejestracja</h1>
-            <p class="lead">Załóż konto lub zaloguj sie przy pomocy <b>GOOGLE</b>.</p>
-            <a href="login-user.html" class="btn btn-primary">Loguj w Google</a>
+        <div class="jumbotron jumbotron-opacity jumbotron-login">
+            <h1 class="display-4">Zaloguj się do naszej aplikacji.</h1>
+            <p class="lead">Możesz się zalogować poprzez konto google.</p>
             <hr class="my-4">
-            <form method="post" action="/add-user">
 
-                <div class="form-group">
-                    <label for="email">Email: *</label>
-                    <input type="email" name="email" id="email" class="form-control" required>
-                </div>
+            <a class="btn btn-lg g-signin2 lead" data-onsuccess="onSignIn"></a>
 
-                <div class="form-group">
-                    <label for="inputPassword">Hasło: *</label>
-                    <input type="password" name="password" id="inputPassword" class="form-control" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="inputPassword2">Powtórz hasło: *</label>
-                    <input type="password" name="password2" id="inputPassword2" class="form-control" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="inputName">Imię:</label>
-                    <input type="text" name="name" id="inputName" class="form-control">
-                </div>
-
-                <div class="form-group">
-                    <label for="inputSurname">Nazwisko:</label>
-                    <input type="text" name="surname" id="inputSurname" class="form-control">
-                </div>
-
-                <input class="btn btn-primary btn-lg btn-dark" type="submit" value="załóż konto">
-            </form>
         </div>
     </div>
-
-
-
-
 </div>
 <footer>&copy; 2018 JBusters</footer>
+
 <script src="js/jquery-3.3.1.slim.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
+
+<script>
+    //google callback. This function will redirect to our login servlet
+    function onSignIn(googleUser) {
+        var profile = googleUser.getBasicProfile();
+        console.log('ID: ' + profile.getId());
+        console.log('Name: ' + profile.getName());
+        console.log('Image URL: ' + profile.getImageUrl());
+        console.log('Email: ' + profile.getEmail());
+        console.log('id_token: ' + googleUser.getAuthResponse().id_token);
+
+        //do not post all above info to the server because that is not secure.
+        //just send the id_token
+
+        var redirectUrl = 'login';
+
+        //using jquery to post data dynamically
+        var form = $('<form action="' + redirectUrl + '" method="post">' +
+            '<input type="text" name="id_token" value="' +
+            googleUser.getAuthResponse().id_token + '" />' +
+            '</form>');
+        $('body').append(form);
+        form.submit();
+    }
+
+</script>
+
 </body>
 </html>

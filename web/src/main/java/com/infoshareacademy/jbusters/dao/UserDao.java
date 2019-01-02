@@ -1,6 +1,7 @@
 package com.infoshareacademy.jbusters.dao;
 
-import com.infoshareacademy.jbusters.model.Users;
+import com.infoshareacademy.jbusters.model.User;
+
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -9,38 +10,38 @@ import javax.persistence.Query;
 import java.util.List;
 
 @Stateless
-public class UsersDao {
+public class UserDao {
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    public int save(Users u) {
+    public int save(User u) {
         entityManager.persist(u);
-        return u.getUsersId();
+        return u.getUserId();
     }
 
-    public Users update(Users u) {
+    public User update(User u) {
         return entityManager.merge(u);
     }
 
     public void delete(Long id) {
-        final Users u = entityManager.find(Users.class, id);
+        final User u = entityManager.find(User.class, id);
         if (u != null) {
             entityManager.remove(u);
         }
     }
 
-    public Users findEmail(String usersEmail){
-        return entityManager.find(Users.class, usersEmail);
+    public User findEmail(String usersEmail){
+        return entityManager.find(User.class, usersEmail);
     }
 
-    public Users findById(Long id) {
-        return entityManager.find(Users.class, id);
+    public User findById(Long id) {
+        return entityManager.find(User.class, id);
     }
 
 
-    public List<Users> findAll() {
-        final Query query = entityManager.createQuery("SELECT u FROM Users u");
+    public List<User> findAll() {
+        final Query query = entityManager.createQuery("SELECT u FROM User u");
 
         return query.getResultList();
     }
