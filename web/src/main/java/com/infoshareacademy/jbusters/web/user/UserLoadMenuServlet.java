@@ -1,4 +1,4 @@
-package com.infoshareacademy.jbusters.web.UserServlet;
+package com.infoshareacademy.jbusters.web.user;
 
 
 import com.infoshareacademy.jbusters.dao.UserDao;
@@ -26,16 +26,15 @@ import java.util.stream.Collectors;
 @WebServlet(urlPatterns = "/load-user-menu")
 public class UserLoadMenuServlet extends HttpServlet {
 
-        private static final Logger LOG = LoggerFactory.getLogger(UserLoadMenuServlet.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserLoadMenuServlet.class);
+    private static final String TEMPLATE_NAME_LOGIN_ADMIN = "admin-login";
+    private static final String TEMPLATE_NAME_LOGIN_USER = "user-login";
+    private static final String TEMPLATE_NAME_SESSION_EXPIRED = "session-expired";
 
-        private static final String TEMPLATE_NAME_LOGIN_ADMIN = "admin-login";
-        private static final String TEMPLATE_NAME_LOGIN_USER = "user-login";
-        private static final String TEMPLATE_NAME_SESSION_EXPIRED = "session-expired";
-
-        @Inject
-        private TemplateProvider templateProvider;
-        @Inject
-        private UserDao userDao;
+    @Inject
+    private TemplateProvider templateProvider;
+    @Inject
+    private UserDao userDao;
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -48,28 +47,28 @@ public class UserLoadMenuServlet extends HttpServlet {
         String sessionName = (String) session.getAttribute("userName");
         String sessionEmail = (String) session.getAttribute("userEmail");
 
-         List<User> userList = userDao.findAll()
-                    .stream()
-                    .filter(u -> u.getUserEmail().equals(sessionEmail))
-                    .collect(Collectors.toList());
+        List<User> userList = userDao.findAll()
+                .stream()
+                .filter(u -> u.getUserEmail().equals(sessionEmail))
+                .collect(Collectors.toList());
 
         Template template;
         Map<String, Object> model = new HashMap<>();
 
-         if (!userList.isEmpty()){
-            user =  userList.get(0);
+        if (!userList.isEmpty()) {
+            user = userList.get(0);
 
-            if(user.getUserRole() == 1){
+            if (user.getUserRole() == 1) {
                 template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_LOGIN_ADMIN);
-            }else {
+            } else {
                 template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_LOGIN_USER);
             }
 
-         } else if (userList.isEmpty()){
-             template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_LOGIN_ADMIN);
-         } else {
-             template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_SESSION_EXPIRED);
-         }
+        } else if (userList.isEmpty()) {
+            template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_LOGIN_ADMIN);
+        } else {
+            template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_SESSION_EXPIRED);
+        }
 
         model.put("sessionName", sessionName);
         model.put("sessionEmail", sessionEmail);

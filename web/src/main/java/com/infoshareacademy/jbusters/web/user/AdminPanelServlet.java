@@ -1,4 +1,4 @@
-package com.infoshareacademy.jbusters.web.UserServlet;
+package com.infoshareacademy.jbusters.web.user;
 
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import freemarker.template.Template;
@@ -19,10 +19,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @WebServlet(urlPatterns = "/admin-panel")
-public class AdminPanel extends HttpServlet {
+public class AdminPanelServlet extends HttpServlet {
 
 
-    private static final Logger LOG = LoggerFactory.getLogger(AdminPanel.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AdminPanelServlet.class);
     private static final String TEMPLATE_NAME = "admin-panel";
     @Inject
     private TemplateProvider templateProvider;

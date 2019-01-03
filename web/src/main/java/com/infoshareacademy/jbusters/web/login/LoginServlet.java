@@ -33,6 +33,7 @@ public class LoginServlet extends HttpServlet {
     private static final String TEMPLATE_NAME_LOGIN_ADMIN = "admin-login";
     private static final String SESSION_ATTRIBUTE_NAME = "userName";
     private static final String SESSION_ATTRIBUTE_EMAIL = "userEmail";
+    private static final Integer ADMIN = 1;
 
     @Inject
     private TemplateProvider templateProvider;
@@ -71,7 +72,7 @@ public class LoginServlet extends HttpServlet {
                     .filter(u -> u.getUserEmail().equals(email))
                     .collect(Collectors.toList());
 
-            if (!userList.isEmpty()){
+            if (!userList.isEmpty()) {
 
                 user = userList.get(0);
 
@@ -94,7 +95,7 @@ public class LoginServlet extends HttpServlet {
             model.put("sessionName", sessionName);
             model.put("sessionEmail", sessionEmail);
 
-            if (user.getUserRole() == 1){
+            if (user.getUserRole() == ADMIN) {
                 template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_LOGIN_ADMIN);
             } else {
                 template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_LOGIN_OK);
