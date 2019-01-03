@@ -22,19 +22,25 @@
                             <a class="nav-link" href="/index.html">Home <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/load-city">Wyceń mieszkanie</a>
+                            <a class="nav-link" href="/load-city">${menu_valuation}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="uploadFile.html">Załaduj plik</a>
+                            <a class="nav-link" href="uploadFile.html">${menu_upload}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/my-flats">Moje mieszkania</a>
+                            <a class="nav-link" href="/my-flats">${menu_my_apartments}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="add-user.html">Załóż konto</a>
+                            <a class="nav-link" href="add-user.html">${menu_create_account}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="login-user.html">Zaloguj</a>
+                            <a class="nav-link" href="login-user.html">${menu_login}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/language?lang=pl"><img src="img/poland-flag-icon-64.png" alt="pl" height="22" width="38"></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/language?lang=en"><img src="img/united-kingdom-flag-icon-64.png" alt="en" height="22" width="38"></a>
                         </li>
                     </ul>
                 </div>
@@ -44,10 +50,10 @@
 
     <div class="container">
         <div class="jumbotron jumbotron-opacity">
-            <h1 class="display-4">Myślisz o sprzedaży mieszkania?</h1>
-            <p class="lead">Skorzystaj z naszej wyceniarki i sprawdż ile może być warte</p>
+            <h1 class="display-4">${home_headline}</h1>
+            <p class="lead">${home_subheadline}</p>
             <hr class="my-4">
-            <a class="btn btn-primary btn-lg btn-dark" href="/load-city" role="button">Wyceń mieszkanie</a>
+            <a class="btn btn-primary btn-lg btn-dark" href="/load-city" role="button">${home_button_valuation}</a>
         </div>
     </div>
 </div>
