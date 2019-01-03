@@ -28,9 +28,6 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a href="login-user.html" class="nav-link">Menu</a>
-                        </li>
-                        <li class="nav-item">
                             <a href="/logout" class="nav-link" onclick="signOut();">Wyloguj</a>
                         </li>
                     </ul>
@@ -46,7 +43,9 @@
 
             <div class="row">
                 <div class="col-8">
-
+                    <form method="post" action="load-user-menu">
+                        <button type="submit" class="btn btn-primary">Menu</button>
+                    </form>
                 </div>
 
                 <div class="col-4">

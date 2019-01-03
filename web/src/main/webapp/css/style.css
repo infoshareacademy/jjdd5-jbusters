@@ -24,6 +24,10 @@ body{
     border-bottom: #4e555b solid 2px;
 }
 
+.add-user-link{
+    font-size: 10px;
+}
+
 .wrap{
     min-height: 1000px;
     background-color: #adb5bd;
@@ -38,6 +42,17 @@ body{
     min-height: 1000px;
     background-color: #adb5bd;
     background-image: url("../img/background-users.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    padding-bottom: 30px;
+}
+
+.wrap-admin{
+    min-height: 1000px;
+    background-color: #adb5bd;
+    background-image: url("../img/background-admin.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;

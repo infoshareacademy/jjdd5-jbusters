@@ -14,7 +14,7 @@
     <meta name="google-signin-client_id">
 </head>
 <body>
-<div class="wrap-user">
+<div class="wrap-admin">
     <header>
         <div class="container-fluid">
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -47,21 +47,14 @@
                 </div>
 
                 <div class="col-4">
-                    <div class="card" style="width: 18rem;">
+                    <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+                        <div class="card-header"><b>Administrator:</b></div>
                         <div class="card-body">
-                            <p class="card-text"><b>Twoje konto:</b></p>
-                        </div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Imię i nazwisko: <b>${sessionName}</b></li>
-                        </ul>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Twój email: <b>${sessionEmail}</b></li>
-                        </ul>
-                        <div class="card-body">
+                            <h5 class="card-title">${sessionName}</h5>
+                            <h5 class="card-title">${sessionEmail}</h5>
                             <a href="/logout" class="card-link" onclick="signOut();">Wyloguj</a>
                         </div>
                     </div>
-
                 </div>
 
             </div>
@@ -72,6 +65,16 @@
                 <div class="col-12">
 
                     <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Panel administracyjny</h5>
+                                    <h1>⚙️</h1>
+                                    <p class="card-text"></p>
+                                    <a href="/admin-panel" class="btn btn-primary">Przejdz dalej</a>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-sm-6">
                             <div class="card">
                                 <div class="card-body">
@@ -119,9 +122,10 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <a type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">Nie
+                                                       data-dismiss="modal">Nie
                                                     </a>
-                                                    <a href="/generate-report" type="button" class="btn btn-primary">Tak</a>
+                                                    <a href="/generate-report" type="button"
+                                                       class="btn btn-primary">Tak</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -140,8 +144,8 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
+
                 </div>
 
             </div>

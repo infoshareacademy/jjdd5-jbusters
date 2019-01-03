@@ -31,8 +31,8 @@ public class UserDao {
         }
     }
 
-    public User findEmail(String usersEmail){
-        return entityManager.find(User.class, usersEmail);
+    public User findEmail(String userEmail){
+        return entityManager.find(User.class, userEmail);
     }
 
     public User findById(Long id) {
