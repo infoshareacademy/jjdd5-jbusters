@@ -1,4 +1,4 @@
-package com.infoshareacademy.jbusters.web.UserServlet;
+package com.infoshareacademy.jbusters.web.user;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;

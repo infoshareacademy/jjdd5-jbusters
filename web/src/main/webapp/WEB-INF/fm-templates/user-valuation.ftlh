@@ -28,9 +28,6 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a href="login-user.html" class="nav-link">Menu</a>
-                        </li>
-                        <li class="nav-item">
                             <a href="/logout" class="nav-link" onclick="signOut();">Wyloguj</a>
                         </li>
                     </ul>
@@ -48,6 +45,9 @@
                 <div class="col-8">
                     <h1 class="display-4">Twoje mieszkanie zostało wycenione. Dziękujemy</h1>
                     <p class="lead">Poniżej znajdziesz szczegółowe informacje...</p>
+                    <form method="post" action="load-user-menu">
+                        <button type="submit" class="btn btn-primary">Menu</button>
+                    </form>
                 </div>
 
                 <div class="col-4">

@@ -13,6 +13,7 @@
 
     <artifactId>web</artifactId>
     <packaging>war</packaging>
+    <name>2. Web module</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -114,57 +115,51 @@
             <version>v2-rev120-1.22.0</version>
         </dependency>
         <dependency>
-            <groupId>com.google.api-client</groupId>
-            <artifactId>google-api-client</artifactId>
-            <version>1.22.0</version>
-        </dependency>
-        <dependency>
             <groupId>com.google.apis</groupId>
             <artifactId>google-api-services-plus</artifactId>
             <version>v1-rev453-1.22.0</version>
         </dependency>
-
     </dependencies>
 
-   <!-- <build>
-        <plugins>
+    <!-- <build>
+         <plugins>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-war-plugin</artifactId>
-                <version>3.2.0</version>
-                <configuration>
-                    <failOnMissingWebXml>false</failOnMissingWebXml>
-                </configuration>
-            </plugin>
+             <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-war-plugin</artifactId>
+                 <version>3.2.0</version>
+                 <configuration>
+                     <failOnMissingWebXml>false</failOnMissingWebXml>
+                 </configuration>
+             </plugin>
 
-            <plugin>
-                <groupId>org.wildfly.plugins</groupId>
-                <artifactId>wildfly-maven-plugin</artifactId>
-                <version>1.2.1.Final</version>
-                <configuration>
-                    <name>web.war</name>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>install</phase>
-                        <goals>
-                            <goal>deploy</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+             <plugin>
+                 <groupId>org.wildfly.plugins</groupId>
+                 <artifactId>wildfly-maven-plugin</artifactId>
+                 <version>1.2.1.Final</version>
+                 <configuration>
+                     <name>web.war</name>
+                 </configuration>
+                 <executions>
+                     <execution>
+                         <phase>install</phase>
+                         <goals>
+                             <goal>deploy</goal>
+                         </goals>
+                     </execution>
+                 </executions>
+             </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.7.0</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
+             <plugin>
+                 <groupId>org.apache.maven.plugins</groupId>
+                 <artifactId>maven-compiler-plugin</artifactId>
+                 <version>3.7.0</version>
+                 <configuration>
+                     <source>1.8</source>
+                     <target>1.8</target>
+                 </configuration>
+             </plugin>
 
-        </plugins>
-    </build>-->
+         </plugins>
+     </build>-->
 </project>

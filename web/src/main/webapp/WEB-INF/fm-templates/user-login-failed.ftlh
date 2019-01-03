@@ -5,13 +5,14 @@
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+
 </head>
 <body>
 <div class="wrap">
     <header>
         <div class="container-fluid">
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <a class="navbar-brand" href="index.html">JBusters</a>
+                <a class="navbar-brand" href="#">JBusters</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -31,30 +32,31 @@
                             <a class="nav-link" href="/my-flats">Moje mieszkania</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="add-user.html">Załóż konto</a>
+                            <a class="nav-link" href="/generate-report">Pobierz statystyki</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="login-user.html">Zaloguj</a>
+                            <a class="nav-link disabled" href="#">Zaloguj</a>
                         </li>
                     </ul>
                 </div>
             </nav>
         </div>
     </header>
-
     <div class="container">
         <div class="jumbotron jumbotron-opacity">
-            <h1 class="display-4">Myślisz o sprzedaży mieszkania?</h1>
-            <p class="lead">Skorzystaj z naszej wyceniarki i sprawdż ile może być warte</p>
+            <h1 class="display-4">Nie udało się. 😥</h1>
+            <p class="lead">Podałeś niepoprawny email lub hasło...</p>
             <hr class="my-4">
-            <a class="btn btn-primary btn-lg btn-dark" href="/load-city" role="button">Wyceń mieszkanie</a>
+            <a class="btn btn-primary btn-lg btn-dark" href="form-login.html" role="button">Spróbuj ponownie</a>
         </div>
     </div>
+
+
+
+
 </div>
 <footer>&copy; 2018 JBusters</footer>
-
 <script src="js/jquery-3.3.1.slim.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
-
 </body>
 </html>
