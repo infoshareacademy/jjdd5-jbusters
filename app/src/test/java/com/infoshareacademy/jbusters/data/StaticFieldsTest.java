@@ -1,5 +1,4 @@
 package com.infoshareacademy.jbusters.data;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -10,14 +9,12 @@ class StaticFieldsTest {
     void getDecimalFormat() {
 
         //given
-
         DecimalFormat df = StaticFields.getLongDF();
         double actual = 1123456789.894d;
 
+        //then
 
-        //when
-
-        Assertions.assertEquals("1 123 456 789.89",df.format(actual));
+        Assertions.assertEquals("1 123 456 789.9",""+df.format(actual));
 
     }
 }

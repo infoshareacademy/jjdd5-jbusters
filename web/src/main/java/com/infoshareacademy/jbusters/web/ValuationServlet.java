@@ -1,9 +1,6 @@
 package com.infoshareacademy.jbusters.web;
 
-import com.infoshareacademy.jbusters.data.CalculatePrice;
-import com.infoshareacademy.jbusters.data.FilterTransactions;
-import com.infoshareacademy.jbusters.data.StatisticsManager;
-import com.infoshareacademy.jbusters.data.Transaction;
+import com.infoshareacademy.jbusters.data.*;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import com.infoshareacademy.jbusters.web.validator.NumericDataValidator;
 import freemarker.template.Template;
@@ -56,6 +53,7 @@ public class ValuationServlet extends HttpServlet {
 
     @Inject
     private StatisticsManager statisticsManager;
+
 
     private NumericDataValidator numericDataValidator = new NumericDataValidator();
 
@@ -110,8 +108,8 @@ public class ValuationServlet extends HttpServlet {
                         "no-valuation");
             }
 
-            model.put(PRICE, flatPriceM2);
-            model.put(PRICE_TOTAL, flatPriceTotal);
+            model.put(PRICE, StaticFields.formatWithLongDF(flatPriceM2));
+            model.put(PRICE_TOTAL, StaticFields.formatWithLongDF(flatPriceTotal));
             model.put(CITY, newTransaction.getCity());
             model.put(DISTRICT_1, newTransaction.getDistrict());
             model.put(MARKET_TYPE, newTransaction.getTypeOfMarket());

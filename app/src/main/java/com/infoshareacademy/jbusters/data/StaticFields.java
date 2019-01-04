@@ -1,5 +1,6 @@
 package com.infoshareacademy.jbusters.data;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.math.RoundingMode;
 import java.net.URL;
 import java.nio.file.Path;
@@ -8,11 +9,12 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
+@ApplicationScoped
 public class StaticFields {
 
     private static final StaticFields staticFields = new StaticFields();
     private static final DecimalFormatSymbols decimalSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
-    private static final DecimalFormat LONG_DF = new DecimalFormat("###,###.##");
+    private static final DecimalFormat LONG_DF = new DecimalFormat("###,###");
     private static final DecimalFormat SHORT_DF = new DecimalFormat("##.##");
 
     private static final URL APP_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("app.properties");
@@ -49,7 +51,7 @@ public class StaticFields {
     public static String formatWithLongDF(Number num) {
         LONG_DF.setDecimalFormatSymbols(getCustomizedSymbols());
         LONG_DF.setRoundingMode(RoundingMode.CEILING);
-        return SHORT_DF.format(num);
+        return LONG_DF.format(num);
     }
 
     public static DecimalFormat getShortDF() {

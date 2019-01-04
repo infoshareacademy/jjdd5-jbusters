@@ -26,12 +26,6 @@
             <version>7.0</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.1.0</version>
-            <scope>test</scope>
-        </dependency>
 
         <!-- iText -->
         <dependency>

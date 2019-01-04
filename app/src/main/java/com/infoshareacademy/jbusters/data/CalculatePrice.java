@@ -9,6 +9,7 @@ import java.math.RoundingMode;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -17,9 +18,7 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 public class CalculatePrice {
 
-    //private static final URL APP_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("app.properties");
     private static final Logger LOGGER = LoggerFactory.getLogger(Data.class);
-
     private Transaction userTransaction;
     private List<Transaction> filteredList;
     private PropLoader properties;
@@ -80,7 +79,7 @@ public class CalculatePrice {
                 .filter(transaction -> transaction.getStandardLevel().equalsIgnoreCase(mostPopularStandardLevel))
                 .filter(transaction -> transaction.getParkingSpot().equalsIgnoreCase(mostPopularParkingSpot))
                 .filter(transaction -> transaction.getLevel() != 1)
-                .sorted((o1, o2) -> o1.getTransactionDate().compareTo(o2.getTransactionDate()))
+                .sorted(Comparator.comparing(Transaction::getTransactionDate))
                 .collect(Collectors.toList());
     }
 
