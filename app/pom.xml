@@ -52,24 +52,6 @@
             <artifactId>forms</artifactId>
             <version>7.1.4</version>
         </dependency>
-
-        <!-- only needed for PDF/A -->
-        <dependency>
-            <groupId>com.itextpdf</groupId>
-            <artifactId>pdfa</artifactId>
-            <version>7.1.4</version>
-        </dependency>
-        <dependency>
-            <groupId>com.itextpdf</groupId>
-            <artifactId>io</artifactId>
-            <version>7.1.4</version>
-        </dependency>
-        <dependency>
-            <groupId>com.itextpdf</groupId>
-            <artifactId>kernel</artifactId>
-            <version>7.1.4</version>
-        </dependency>
-
     </dependencies>
 
 

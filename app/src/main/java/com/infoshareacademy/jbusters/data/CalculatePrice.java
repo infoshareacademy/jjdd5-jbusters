@@ -107,7 +107,7 @@ public class CalculatePrice {
             duration = 1;
         }
 
-        System.out.println("Między transakcjami, użytymi do obliczenia trendu upłynęło:\t" + duration + " dni");
+        LOGGER.info("{} day/days have passed between transactions used to calculate price change trend:\t",duration);
         BigDecimal priceOfNewest = listToCalculateTrend.get(last).getPricePerM2();
         BigDecimal priceOfOldest = listToCalculateTrend.get(first).getPricePerM2();
 
@@ -139,16 +139,17 @@ public class CalculatePrice {
 
         BigDecimal max = getMaxPriceInList(transactions);
 
-        System.out.println("Średnia cena dla zbioru podobnych mieszkań to:"+getTabs(3)
+        String currencySuffix = properties.getCurrency() +" per m2";
+        LOGGER.info("Average price calculated from similar flats set equals:"+getTabs(3)
                 + StaticFields.formatWithLongDF(
                         average.setScale(2, RoundingMode.HALF_UP).divide(exchangeRate, BigDecimal.ROUND_UP))
-                + " " + properties.getCurrency() + " za m2");
-        System.out.println("Cena maksymalna dla dobranego zbioru to:"+getTabs(3)
+                + " " + properties.getCurrency() + currencySuffix);
+        LOGGER.info("Maximum prise in similar flats set equals:"+getTabs(3)
                 + StaticFields.formatWithLongDF(max.divide(exchangeRate, BigDecimal.ROUND_UP))
-                + " " + properties.getCurrency() + " za m2");
-        System.out.println("Cena minimalna dla dobranego zbioru to:"+getTabs(4)
+                + " " + properties.getCurrency() + currencySuffix);
+        System.out.println("Minimum prise in similar flats set equals:"+getTabs(4)
                 + StaticFields.formatWithLongDF(min.divide(exchangeRate, BigDecimal.ROUND_UP))
-                + " " + properties.getCurrency() + " za m2");
+                + " " + properties.getCurrency() + currencySuffix);
 
         BigDecimal lowerFactor = min.divide(average, 3, RoundingMode.HALF_UP);
         BigDecimal upperFactor = max.divide(average, 3, RoundingMode.HALF_UP);
@@ -188,10 +189,10 @@ public class CalculatePrice {
 
         BigDecimal finalWeight = weightOne.add(weightTwo).add(weightThree).add(weightFour);
 
-        System.out.println("Współczynnik wagi dla tego mieszkania to:"+getTabs(3) + finalWeight);
+        LOGGER.info("Flat's wage coefficient equals:"+getTabs(3) + finalWeight);
 
         BigDecimal pricePerM2 = average.multiply(finalWeight);
-        System.out.println("Obliczona cena za m2 to:"+getTabs(5)
+        LOGGER.info("Calculated price per square meter equals:"+getTabs(5)
                 + StaticFields.formatWithLongDF(
                         pricePerM2.setScale(2, RoundingMode.HALF_UP).divide(exchangeRate, BigDecimal.ROUND_UP))
                 + " " + properties.getCurrency());
@@ -225,7 +226,7 @@ public class CalculatePrice {
         BigDecimal averageFlatArea = BigDecimal.valueOf(finallySortedList.stream()
                 .mapToDouble(t -> t.getFlatArea().doubleValue())
                 .average().orElse((double) 0));
-        System.out.println("Średnia wielkość mieszkań dla dobranego zbioru to:"+getTabs(2) + averageFlatArea.setScale(2, RoundingMode.HALF_UP) + " m2");
+        System.out.println("Average flat size in similar flats set equals: "+getTabs(2) + averageFlatArea.setScale(2, RoundingMode.HALF_UP) + " m2");
         return transToCheck.getFlatArea().compareTo(averageFlatArea) < 0;
     }
 

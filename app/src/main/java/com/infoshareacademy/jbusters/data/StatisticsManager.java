@@ -20,10 +20,8 @@ import java.nio.file.StandardOpenOption;
 @ApplicationScoped
 public class StatisticsManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(Data.class);
-    private static final URL APP_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("app.properties");
     private PropLoader properties;
     private String currency ="PLN";
-    private static final Path PATH_TO_STATISTICS_FILE = Paths.get(System.getProperty("jboss.home.dir"), "data", "statistics.txt");
     private static final String SEPARATOR = ",";
     private static final int COUNT = 0;
     private static final int ALL = 1;

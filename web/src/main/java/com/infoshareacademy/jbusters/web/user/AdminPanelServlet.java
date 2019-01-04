@@ -1,7 +1,5 @@
-package com.infoshareacademy.jbusters.web;
+package com.infoshareacademy.jbusters.web.user;
 
-
-import com.infoshareacademy.jbusters.data.SearchOfData;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -14,41 +12,42 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-@WebServlet(urlPatterns = ("/load-district"))
-public class LoadDistricTransactionServlet extends HttpServlet {
+@WebServlet(urlPatterns = "/admin-panel")
+public class AdminPanelServlet extends HttpServlet {
 
-    private static final String TEMPLATE_NAME = "load-district";
-    private static final Logger LOG = LoggerFactory.getLogger(LoadDistricTransactionServlet.class);
 
+    private static final Logger LOG = LoggerFactory.getLogger(AdminPanelServlet.class);
+    private static final String TEMPLATE_NAME = "admin-panel";
     @Inject
     private TemplateProvider templateProvider;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
-        PrintWriter out = resp.getWriter();
+        PrintWriter writter = resp.getWriter();
 
-        String city = req.getParameter("city");
-        List<String> districtsList = new SearchOfData().showDistrict(city);
+        HttpSession session = req.getSession(true);
+        String sessionEmail = (String) session.getAttribute("userEmail");
+        String sessionName = (String) session.getAttribute("userName");
 
         Map<String, Object> model = new HashMap<>();
-        model.put("city", city);
-        model.put("district", districtsList);
-
         Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
+        model.put("sessionEmail", sessionEmail);
+        model.put("sessionName", sessionName);
 
         try {
-            template.process(model, out);
-            LOG.info("Loaded district list of size {}", districtsList.size());
+            LOG.info("Load admin panel");
+            template.process(model, writter);
         } catch (TemplateException e) {
-            LOG.error("Failed to load district list. Size of list: {}" + districtsList.size());
+            LOG.error("Failed load admin panel");
         }
+
+
     }
 }
