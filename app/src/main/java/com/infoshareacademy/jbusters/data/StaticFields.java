@@ -21,6 +21,7 @@ public class StaticFields {
     private static final String RAPORT_PATH_STRING = System.getProperty("jboss.server.temp.dir") + "/raport.pdf";
     private static final URL BG_IMG_PATH = Thread.currentThread().getContextClassLoader().getResource("/img/JBusters_logo.png");
     private static final Path LANG_PROPERTIES_FILE = Paths.get(System.getProperty("jboss.home.dir"), "data", "language.properties");
+    private static final String EMAIL_REPORT_PATH = Paths.get(System.getProperty("jboss.home.dir"), "data", "report.pdf").toString();
 
     private StaticFields() {
     }
@@ -42,6 +43,8 @@ public class StaticFields {
     public static URL getBgImgPath() { return BG_IMG_PATH; }
 
     public static Path getLangPropertiesPath() { return LANG_PROPERTIES_FILE; }
+
+    public static String getEmailReportPath() { return EMAIL_REPORT_PATH; }
 
     public static DecimalFormat getLongDF() {
         LONG_DF.setDecimalFormatSymbols(getCustomizedSymbols());

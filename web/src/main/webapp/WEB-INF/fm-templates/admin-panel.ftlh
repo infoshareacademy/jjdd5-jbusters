@@ -59,12 +59,39 @@
                     </div>
                 </div>
             </div>
-                    <#--Łukasz tu funkcje admina daj :) -->
+            <br>
+            <br>
+            <div class="row">
+
+                <div class="col-12">
+
+                    <div class="row">
+
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Raporty e-mail</h5>
+                                    <p class="card-text">Wyślij cylkliczne e-mail'e z załączonym raportem</p>
+                                    <p class="card-text"></p>
+                                    <a href="/generate-email-report" class="btn btn-primary">Wyślij</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Opcja...</h5>
+                                    <p class="card-text">Tekst...</p>
+                                    <a href="/load-city" class="btn btn-primary">Przejdz dalej</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-
-</div>
 </div>
 <footer>&copy; 2018 JBusters</footer>
 
