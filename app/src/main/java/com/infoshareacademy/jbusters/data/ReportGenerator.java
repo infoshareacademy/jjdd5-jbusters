@@ -51,7 +51,7 @@ public class ReportGenerator {
 
     public void generateReport() throws IOException {
 
-        PdfDocument pdf = new PdfDocument(new PdfWriter(StaticFields.getRaportPathString()));
+        PdfDocument pdf = new PdfDocument(new PdfWriter(StaticFields.getReportPathString()));
         Document doc = new Document(pdf);
 
         PdfFont polishFont = PdfFontFactory.createFont(HELVETICA, CP1250, true, true);

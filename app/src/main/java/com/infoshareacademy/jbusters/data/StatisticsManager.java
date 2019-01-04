@@ -26,6 +26,7 @@ public class StatisticsManager {
     private static final int COUNT = 0;
     private static final int ALL = 1;
     private static final int AVG = 2;
+    private static final Path STATISTICS_PATH = StaticFields.getStatisticsFilePath();
 
     public StatisticsManager() {
         properties = new PropLoader();
@@ -44,8 +45,10 @@ public class StatisticsManager {
     }
 
     private void addOrUpdateStatistics(String cityName, String districtName, String value) throws IOException {
-        if (!Files.exists(StaticFields.getStatisticsFilePath())) {
-            Files.createFile(StaticFields.getStatisticsFilePath());
+        if (!Files.exists(STATISTICS_PATH)) {
+            LOGGER.warn("Statistics file missing under following path: {}", STATISTICS_PATH.toString());
+            Files.createFile(STATISTICS_PATH);
+            LOGGER.info("Empty statistics file created under following path: {}", STATISTICS_PATH.toString());
         }
 
         List<Statistics> existingList = generateStatisticsList();
@@ -81,27 +84,29 @@ public class StatisticsManager {
 
         String statisticsString = cityName + SEPARATOR + districtName + ",1," + value + System.lineSeparator();
 
-        Files.write(Paths.get(String.valueOf(StaticFields.getStatisticsFilePath())), statisticsString.getBytes(Charset.forName("UTF-8")), StandardOpenOption.APPEND);
+        Files.write(Paths.get(String.valueOf(STATISTICS_PATH)), statisticsString.getBytes(Charset.forName("UTF-8")), StandardOpenOption.APPEND);
+
+        LOGGER.info("New statistics line added: {}", statisticsString);
     }
 
     private void overwriteExistingLine(int lineNumber, String lineData) throws IOException {
 
-        Path path = StaticFields.getStatisticsFilePath();
-
-        List<String> existingLine = Files.readAllLines(path, StandardCharsets.UTF_8);
+        List<String> existingLine = Files.readAllLines(STATISTICS_PATH, StandardCharsets.UTF_8);
 
         existingLine.set(lineNumber, lineData);
 
-        Files.write(path, existingLine, StandardCharsets.UTF_8);
+        Files.write(STATISTICS_PATH, existingLine, StandardCharsets.UTF_8);
+
+        LOGGER.info("Statistics line {} updated with: {}", lineNumber, lineData);
     }
 
     public List<Statistics> generateStatisticsList() {
 
         List<String> existingList = null;
         try {
-            existingList = Files.readAllLines(StaticFields.getStatisticsFilePath(), StandardCharsets.UTF_8);
+            existingList = Files.readAllLines(STATISTICS_PATH, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.info("Statistics file missing under following path: {}", STATISTICS_PATH.toString());
         }
 
         List<Statistics> listOfStatistics = new ArrayList<>();

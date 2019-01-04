@@ -28,9 +28,9 @@ public class MailHandler {
 	private static final String ENCODING_CONTENT = "text/html; charset=UTF-8";
 	private static final String[] RECIPIENTS_LIST = { "" };
 	private static final String SUBJECT = "Raport z dnia ";
-	private static final String CONTENT = "Witaj, w załączniku znajdziesz cykliczny raport dotyczący rynku nieruchomości.";
-	private static final String ATTACHMENT_PATH = StaticFields.getRaportPathString();
-	private static final String ATTACHMENT_NAME = "report.pdf";
+	private static final String CONTENT = "Witaj, w załączniku znajdziesz cykliczny raport dotyczący wyników wyszukiwań w naszej aplikacji.";
+	private static final String ATTACHMENT_PATH = StaticFields.getReportPathString();
+	private static final String ATTACHMENT_NAME = "Raport.pdf";
 
 	public void executor() throws UnsupportedEncodingException, MessagingException {
 
