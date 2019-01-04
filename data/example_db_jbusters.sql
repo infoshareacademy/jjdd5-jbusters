@@ -3485,3 +3485,60 @@ ALTER TABLE `users`
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+CREATE TABLE `districts_properties` (
+  `CITY_NAME` varchar(255) COLLATE utf8_polish_ci NOT NULL,
+  `DISTRICT_NAME` varchar(255) COLLATE utf8_polish_ci NOT NULL,
+  `WAGE` int NOT NULL DEFAULT 0,
+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+INSERT INTO `districts_properties` (`CITY_NAME`, `DISTRICT_NAME`, `WAGE`) VALUES
+('Gdynia', 'Chylonia', 1),
+('Gdynia', 'Cisowa', 1),
+('Gdynia', 'Pustki_cisowskie', 1),
+('Gdynia', 'Obłuże', 2),
+('Gdynia', 'Oksywie', 2),
+('Gdynia', 'Pogórze', 2),
+('Gdynia', 'Babie_doły', 2),
+('Gdynia', 'Chwarzno-wiczlino', 3),
+('Gdynia', 'Dąbrowa', 3),
+('Gdynia', 'Witomino', 3),
+('Gdynia', 'Grabówek', 4),
+('Gdynia', 'Leszczynki', 4),
+('Gdynia', 'Działki_leśne', 4),
+('Gdynia', 'Karwiny', 5),
+('Gdynia', 'Wielki_kack', 5),
+('Gdynia', 'Mały_kack', 5),
+('Sopot', 'Sopot', 6),
+('Gdynia', 'Orłowo', 6),
+('Gdynia', 'Kamienna_góra', 7),
+('Gdynia', 'Wzgórze_św._maksymiliana', 7),
+('Gdynia', 'Śródmieście_z_portem', 7),
+('Gdynia', 'Redłowo', 7),
+
+ALTER TABLE `districts_properties`
+  ADD PRIMARY KEY (`CITY_NAME`,`DISTRICT_NAME`),
+  ADD UNIQUE KEY `CITY_DISTRICT_UNIQUE` (`CITY_NAME`,`DISTRICT_NAME`);
+
+CREATE TABLE `konfig` (
+  `PROPERTY_NAME` varchar(255) COLLATE utf8_polish_ci NOT NULL,
+  `VALUE` varchar(255) COLLATE utf8_polish_ci NOT NULL,
+
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+INSERT INTO `konfig` (`PROPERTY_NAME`, `VALUE`) VALUES
+('minResults', 11),
+('exchangeRate', 1.00),
+('currency', 'PLN'),
+('areaDiff', 20),
+('areaDiffExpanded', 25),
+('decimalPlaces', 2),
+('priceDiff', 600),
+('longDFPattern', '### ###'),
+('shortDFPattern', '##.##'),
+
+ALTER TABLE `konfig`
+  ADD PRIMARY KEY (`PROPERTY_NAME`),
+  ADD UNIQUE KEY `CITY_DISTRICT_UNIQUE` (`PROPERTY_NAME`);
