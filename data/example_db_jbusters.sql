@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 25 Gru 2018, 16:16
+-- Czas generowania: 05 Sty 2019, 11:34
 -- Wersja serwera: 10.1.25-MariaDB
 -- Wersja PHP: 7.1.7
 
@@ -23,6 +23,41 @@ SET time_zone = "+00:00";
 --
 CREATE DATABASE IF NOT EXISTS `jbusters` DEFAULT CHARACTER SET utf8 COLLATE utf8_polish_ci;
 USE `jbusters`;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `new_transaction`
+--
+
+CREATE TABLE `new_transaction` (
+  `NEW_TRANSACTION_ID` int(11) NOT NULL,
+  `NEW_TRANSACTION_USER_ID` int(11) DEFAULT NULL,
+  `NEW_TRANSACTION_DESCRIPTION` varchar(45) COLLATE utf8_polish_ci DEFAULT NULL,
+  `NEW_TRANSACTION_SALE` varchar(45) COLLATE utf8_polish_ci DEFAULT 'no',
+  `NEW_TRANSACTION_IMPORTANT` varchar(45) COLLATE utf8_polish_ci DEFAULT 'no',
+  `NEW_TRANSACTION_DATA_TRANSACTION` varchar(45) COLLATE utf8_polish_ci DEFAULT NULL,
+  `NEW_TRANSACTION_CITY` varchar(45) COLLATE utf8_polish_ci DEFAULT NULL,
+  `NEW_TRANSACTION_DISTRICT` varchar(45) COLLATE utf8_polish_ci DEFAULT NULL,
+  `NEW_TRANSACTION_STREET` varchar(45) COLLATE utf8_polish_ci DEFAULT NULL,
+  `NEW_TRANSACTION_TYPE_OF_MARKET` varchar(45) COLLATE utf8_polish_ci DEFAULT NULL,
+  `NEW_TRANSACTION_PRICE` decimal(10,0) DEFAULT NULL,
+  `NEW_TRANSACTION_FLAT_AREA` decimal(10,0) DEFAULT NULL,
+  `NEW_TRANSACTION_PRICE_PER_M2` decimal(10,0) DEFAULT NULL,
+  `NEW_TRANSACTION_LEVEL` int(11) DEFAULT NULL,
+  `NEW_TRANSACTION_PARKING_SPOT` varchar(45) COLLATE utf8_polish_ci DEFAULT NULL,
+  `NEW_TRANSACTION_STANDARD_LEVEL` varchar(45) COLLATE utf8_polish_ci DEFAULT NULL,
+  `NEW_TRANSACTION_CONSTRUCTION_YEAR` varchar(45) COLLATE utf8_polish_ci DEFAULT NULL,
+  `NEW_TRANSACTION_CONSTRUCTION_YEAR_CATEGORY` varchar(45) COLLATE utf8_polish_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+--
+-- Zrzut danych tabeli `new_transaction`
+--
+
+INSERT INTO `new_transaction` (`NEW_TRANSACTION_ID`, `NEW_TRANSACTION_USER_ID`, `NEW_TRANSACTION_DESCRIPTION`, `NEW_TRANSACTION_SALE`, `NEW_TRANSACTION_IMPORTANT`, `NEW_TRANSACTION_DATA_TRANSACTION`, `NEW_TRANSACTION_CITY`, `NEW_TRANSACTION_DISTRICT`, `NEW_TRANSACTION_STREET`, `NEW_TRANSACTION_TYPE_OF_MARKET`, `NEW_TRANSACTION_PRICE`, `NEW_TRANSACTION_FLAT_AREA`, `NEW_TRANSACTION_PRICE_PER_M2`, `NEW_TRANSACTION_LEVEL`, `NEW_TRANSACTION_PARKING_SPOT`, `NEW_TRANSACTION_STANDARD_LEVEL`, `NEW_TRANSACTION_CONSTRUCTION_YEAR`, `NEW_TRANSACTION_CONSTRUCTION_YEAR_CATEGORY`) VALUES
+(1, 1, 'Moje mieszkanie', 'no', 'no', '2018 01 05', 'Gdynia', 'Witomino', 'Promienna', 'RYNEK PIERWOTNY', NULL, '115', NULL, 4, 'BRAK MP', 'DOBRY', '1990', '2'),
+(2, 2, 'Mieszkanie Gdynia', 'no', 'no', '2018 01 04', 'Gdynia', 'Chylonia', 'Morska', 'RYNEK WTÓRNY', NULL, '80', NULL, 4, 'MIEJSCE POSTOJOWE W HALI GARAŻOWEJ', 'DOBRY', '2008', '3');
 
 -- --------------------------------------------------------
 
@@ -3433,11 +3468,11 @@ INSERT INTO `transactions` (`TRANSACTIONS_ID`, `TRANSACTIONS_DATA_TRANSACTION`, 
 --
 
 CREATE TABLE `users` (
-  `USER_ID` int NOT NULL,
-  `USER_EMAIL` varchar(255) COLLATE utf8_polish_ci NOT NULL,
-  `USER_PASSWORD` varchar(255) COLLATE utf8_polish_ci NOT NULL,
-  `USER_NAME` varchar(255) COLLATE utf8_polish_ci DEFAULT NULL,
-  `USER_SURNAME` varchar(255) COLLATE utf8_polish_ci DEFAULT NULL,
+  `USER_ID` int(11) NOT NULL,
+  `USER_EMAIL` varchar(45) COLLATE utf8_polish_ci NOT NULL,
+  `USER_password` varchar(128) COLLATE utf8_polish_ci DEFAULT NULL,
+  `USER_NAME` varchar(45) COLLATE utf8_polish_ci DEFAULT NULL,
+  `USER_SURNAME` varchar(45) COLLATE utf8_polish_ci DEFAULT NULL,
   `USER_ROLE` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
@@ -3445,13 +3480,20 @@ CREATE TABLE `users` (
 -- Zrzut danych tabeli `users`
 --
 
-INSERT INTO `users` (`USER_ID`, `USER_EMAIL`, `USER_PASSWORD`, `USER_NAME`, `USER_SURNAME`, `USER_ROLE`) VALUES
-(3365, 'jbusters.isa@gmail.com', 'jbusters1234', 'jbustersName', 'jbustersSurname', 1),
-(3366, 'jan@wp.pl', 'janek1234', 'Jan', 'Kowalski', 2);
+INSERT INTO `users` (`USER_ID`, `USER_EMAIL`, `USER_password`, `USER_NAME`, `USER_SURNAME`, `USER_ROLE`) VALUES
+(1, 'jbusters.isa@gmail.com', 'jbusters1234', 'Dżej', 'Buster', 1),
+(2, 'tom.ociepa@gmail.com', 'pass123', 'Tomek', 'Ociepa', 2);
 
 --
 -- Indeksy dla zrzutów tabel
 --
+
+--
+-- Indexes for table `new_transaction`
+--
+ALTER TABLE `new_transaction`
+  ADD PRIMARY KEY (`NEW_TRANSACTION_ID`),
+  ADD KEY `NEW_TRANSACTION_USER_ID` (`NEW_TRANSACTION_USER_ID`);
 
 --
 -- Indexes for table `transactions`
@@ -3464,13 +3506,17 @@ ALTER TABLE `transactions`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`USER_ID`),
-  ADD UNIQUE KEY `USER_ID_UNIQUE` (`USER_ID`);
+  ADD PRIMARY KEY (`USER_ID`);
 
 --
 -- AUTO_INCREMENT for dumped tables
 --
 
+--
+-- AUTO_INCREMENT dla tabeli `new_transaction`
+--
+ALTER TABLE `new_transaction`
+  MODIFY `NEW_TRANSACTION_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT dla tabeli `transactions`
 --
@@ -3480,7 +3526,17 @@ ALTER TABLE `transactions`
 -- AUTO_INCREMENT dla tabeli `users`
 --
 ALTER TABLE `users`
-  MODIFY `USER_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3367;
+  MODIFY `USER_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- Ograniczenia dla zrzutów tabel
+--
+
+--
+-- Ograniczenia dla tabeli `new_transaction`
+--
+ALTER TABLE `new_transaction`
+  ADD CONSTRAINT `NEW_TRANSACTION_USER_ID` FOREIGN KEY (`NEW_TRANSACTION_USER_ID`) REFERENCES `users` (`USER_ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
