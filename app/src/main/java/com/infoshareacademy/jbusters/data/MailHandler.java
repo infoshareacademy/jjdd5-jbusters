@@ -23,10 +23,10 @@ public class MailHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(MailHandler.class);
     private static final String SENDER_NAME = "JBusters Web App";
     private static final String SENDER_USER_LOGIN = "jbusters.isa";
-    private static final String SENDER_USER_PASS = "jbusters1234";
+    private static final String SENDER_USER_PASS = "";
     private static final String ENCODING_SUBJECT = "UTF-8";
     private static final String ENCODING_CONTENT = "text/html; charset=UTF-8";
-    private static final String[] RECIPIENTS_LIST = {"lukaszmarwitz@gmail.com"};
+    private static final String[] RECIPIENTS_LIST = {""};
     private static final String SUBJECT = "Raport z dnia ";
     private static final String CONTENT = "Witaj, w załączniku znajdziesz cykliczny raport, zawierający dane statystyczne wyszukiwań w naszej aplikacji.";
     private static final String ATTACHMENT_PATH = StaticFields.getReportPathString();
