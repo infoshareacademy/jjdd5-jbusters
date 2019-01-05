@@ -19,7 +19,7 @@ public class StaticFields {
     private static final URL DISTR_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("districts.properties");
     private static final Path STATISTICS_FILE_PATH = Paths.get(System.getProperty("jboss.home.dir"), "data", "statistics.txt");
     private static final String REPORT_PATH_STRING = Paths.get(System.getProperty("jboss.server.temp.dir"), "report.pdf").toString();
-    private static final URL BG_IMG_PATH = Thread.currentThread().getContextClassLoader().getResource("/img/JBusters_logo.png");
+    private static final URL BG_IMG_PATH = Thread.currentThread().getContextClassLoader().getResource(Paths.get("img", "JBusters_logo.png").toString());
     private static final Path LANG_PROPERTIES_FILE = Paths.get(System.getProperty("jboss.home.dir"), "data", "language.properties");
 
     private StaticFields() {

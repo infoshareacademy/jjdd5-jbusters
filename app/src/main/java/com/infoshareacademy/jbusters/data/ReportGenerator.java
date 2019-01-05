@@ -32,21 +32,14 @@ import static com.itextpdf.io.font.constants.StandardFonts.HELVETICA;
 public class ReportGenerator {
 
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Data.class);
     private StatisticsManager statisticsManager;
-    private PropLoader properties;
     private static final String CITY_TABLE_HEADER = "MIASTO|ILOŚĆ WYSZUKIWAŃ|SUMARYCZNA WARTOŚĆ WYCEN";
     private static final String DISTRICT_TABLE_HEADER = "DZIELNICA|ILOŚĆ WYSZUKIWAŃ|SUMARYCZNA WARTOŚĆ WYCEN|ŚREDNIA WARTOŚĆ WYCEN";
 
 
     public ReportGenerator() {
         this.statisticsManager = new StatisticsManager();
-        properties = new PropLoader();
-        try {
-            properties = new PropLoader(StaticFields.getAppPropertiesURL().openStream());
-        } catch (Exception e) {
-            LOGGER.error("Missing properties file in path {}", StaticFields.getAppPropertiesURL().toString());
-        }
+
     }
 
     public void generateReport() throws IOException {
