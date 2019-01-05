@@ -1,0 +1,8 @@
+Gdynia,Oksywie,13,341482.00
+Sopot,Sopot,75,374865.50
+Gdynia,Śródmieście z Portem,56,294937.00
+Gdynia,Wzgórze Św. Maksymiliana,41,275770.50
+Gdynia,Kamienna Góra,93,380980.50
+Gdynia,Redłowo,19,273248.50
+Gdynia,Orłowo,78,493295.00
+Gdynia,Grabówek,17,238058.00

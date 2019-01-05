@@ -71,9 +71,9 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">Raporty e-mail</h5>
-                                    <p class="card-text">Wyślij cylkliczne e-mail'e z załączonym raportem</p>
-                                    <p class="card-text"></p>
-                                    <a href="/generate-email-report" class="btn btn-primary">Wyślij</a>
+                                    <p class="card-text">Wysłanie cyklicznej korespondencji do subskrybentów wraz z załączonym raportem.</p>
+                                    <a href="/generate-email-report" class="btn btn-primary" style="float: left">Wyślij teraz</a>
+                                    <p class="text-muted btn"><em>${sentStatus}</em></p>
                                 </div>
                             </div>
                         </div>

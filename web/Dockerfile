@@ -9,3 +9,6 @@ RUN mkdir -p /opt/jboss/wildfly/upload
 
 CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0"]
 
+ADD src/main/resources/statistics.txt /opt/jboss/wildfly/data/
+USER root
+RUN chmod 777 /opt/jboss/wildfly/data/statistics.txt

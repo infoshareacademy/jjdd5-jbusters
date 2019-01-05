@@ -28,7 +28,7 @@ public class MailHandler {
 	private static final String ENCODING_CONTENT = "text/html; charset=UTF-8";
 	private static final String[] RECIPIENTS_LIST = { "" };
 	private static final String SUBJECT = "Raport z dnia ";
-	private static final String CONTENT = "Witaj, w załączniku znajdziesz cykliczny raport dotyczący wyników wyszukiwań w naszej aplikacji.";
+	private static final String CONTENT = "Witaj, w załączniku znajdziesz cykliczny raport, zawierający dane statystyczne wyszukiwań w naszej aplikacji.";
 	private static final String ATTACHMENT_PATH = StaticFields.getReportPathString();
 	private static final String ATTACHMENT_NAME = "Raport.pdf";
 
@@ -97,6 +97,7 @@ public class MailHandler {
 			LOGGER.info("Mail sent to: {}", RECIPIENTS_LIST);
 		} catch (MessagingException e) {
 			LOGGER.error("Mail not sent, attachment missing under the following path: {}", ATTACHMENT_PATH);
+			throw e;
 		}
 	}
 }

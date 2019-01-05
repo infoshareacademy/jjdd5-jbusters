@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.mail.MessagingException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -34,14 +35,20 @@ public class EmailReportServlet extends HttpServlet {
 
         reportGenerator.generateReport();
         LOGGER.info("Report generated under following path: {}", REPORT_PATH);
+        String sentStatus;
 
         try {
             mailHandler.executor();
+            sentStatus = "Wysyłano!";
         } catch (MessagingException e) {
-            e.printStackTrace();
+            sentStatus ="Problem z wysłaniem, sprawdź logi...";
         }
 
         Files.deleteIfExists(Paths.get(REPORT_PATH));
         LOGGER.info("Report deleted from following path: {}", REPORT_PATH);
+
+        RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin-panel");
+        req.setAttribute("status", sentStatus);
+        dispatcher.forward(req, resp);
     }
 }
