@@ -38,8 +38,8 @@ public class EmailReportServlet extends HttpServlet {
         String sentStatus;
 
         try {
-            mailHandler.executor();
-            sentStatus = "Wysyłano!";
+            mailHandler.sendFromGMail();
+            sentStatus = "Wysłano!";
         } catch (MessagingException e) {
             sentStatus ="Problem z wysłaniem, sprawdź logi...";
         }

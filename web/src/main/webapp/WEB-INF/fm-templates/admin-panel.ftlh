@@ -83,7 +83,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title">Opcja...</h5>
                                     <p class="card-text">Tekst...</p>
-                                    <a href="/load-city" class="btn btn-primary">Przejdz dalej</a>
+                                    <a href="/load-city" class="btn btn-primary">Przejdź dalej</a>
                                 </div>
                             </div>
                         </div>
