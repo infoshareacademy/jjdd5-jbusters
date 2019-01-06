@@ -2,6 +2,7 @@ package com.infoshareacademy.jbusters.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -17,7 +18,6 @@ public class User {
     private String userEmail;
 
     @Column(name = "USER_PASSWORD")
-    @NotNull
     private String userPassword;
 
     @Column(name = "USER_NAME")
@@ -28,6 +28,9 @@ public class User {
 
     @Column(name = "USER_ROLE")
     private int userRole;
+
+    @OneToMany(mappedBy = "newTransactionUserId", fetch = FetchType.EAGER)
+    private List<NewTransaction> newTransactionsList;
 
     public User() {
     }
@@ -86,5 +89,13 @@ public class User {
 
     public void setUserRole(int userRole) {
         this.userRole = userRole;
+    }
+
+    public List<NewTransaction> getNewTransactionsList() {
+        return newTransactionsList;
+    }
+
+    public void setNewTransactionsList(List<NewTransaction> newTransactionsList) {
+        this.newTransactionsList = newTransactionsList;
     }
 }

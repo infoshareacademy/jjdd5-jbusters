@@ -33,6 +33,7 @@ public class LoginServlet extends HttpServlet {
     private static final String TEMPLATE_NAME_LOGIN_ADMIN = "admin-login";
     private static final String SESSION_ATTRIBUTE_NAME = "userName";
     private static final String SESSION_ATTRIBUTE_EMAIL = "userEmail";
+    private static final String SESSION_ATTRIBUTE_USER = "user";
     private static final Integer ADMIN = 1;
 
     @Inject
@@ -80,6 +81,7 @@ public class LoginServlet extends HttpServlet {
 
                     session.setAttribute(SESSION_ATTRIBUTE_NAME, user.getUserName());
                     session.setAttribute(SESSION_ATTRIBUTE_EMAIL, user.getUserEmail());
+                    session.setAttribute(SESSION_ATTRIBUTE_USER, user);
                 }
             }
         }
