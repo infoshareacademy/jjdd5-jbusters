@@ -6,8 +6,11 @@ import com.infoshareacademy.jbusters.dao.UserDao;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import com.infoshareacademy.jbusters.model.NewTransaction;
 import com.infoshareacademy.jbusters.model.User;
+import com.infoshareacademy.jbusters.web.ValuationServlet;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.servlet.ServletException;
@@ -26,6 +29,7 @@ import java.util.stream.Collectors;
 @WebServlet("/show-transaction")
 public class ShowNewTransaction extends HttpServlet {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ShowNewTransaction.class);
     private static final String TEMPLATE_NAME = "user-show-new-transaction";
 
     @Inject
@@ -73,8 +77,9 @@ public class ShowNewTransaction extends HttpServlet {
 
         try {
             template.process(model, writer);
+            LOG.info("Load list newTransaction");
         } catch (TemplateException e) {
-            e.printStackTrace();
+            LOG.error("Failed load list newTransaction");
         }
     }
 }

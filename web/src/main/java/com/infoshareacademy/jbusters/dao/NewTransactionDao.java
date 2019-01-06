@@ -25,7 +25,7 @@ public class NewTransactionDao {
         return entityManager.merge(n);
     }
 
-    public void delete(Long id) {
+    public void delete(int id) {
         final NewTransaction n = entityManager.find(NewTransaction.class, id);
         if (n != null) {
             entityManager.remove(n);

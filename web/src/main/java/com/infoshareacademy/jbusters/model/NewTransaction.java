@@ -2,6 +2,7 @@ package com.infoshareacademy.jbusters.model;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "new_transaction")
@@ -27,7 +28,7 @@ public class NewTransaction {
     private String newTransactionImportant;
 
     @Column(name = "NEW_TRANSACTION_DATA_TRANSACTION")
-    private String newTransactionDataTransaction;
+    private LocalDate newTransactionDataTransaction;
 
     @Column(name = "NEW_TRANSACTION_CITY")
     private String newTransactionCity;
@@ -63,12 +64,12 @@ public class NewTransaction {
     private String newTransactionConstructionYear;
 
     @Column(name = "NEW_TRANSACTION_CONSTRUCTION_YEAR_CATEGORY")
-    private String newTransactionConstructionYearCategory;
+    private int newTransactionConstructionYearCategory;
 
     public NewTransaction() {
     }
 
-    public NewTransaction(User newTransactionUserId, String newTransactionDescription, String newTransactionSale, String newTransactionImportant, String newTransactionDataTransaction, String newTransactionCity, String newTransactionDistrict, String newTransactionStreet, String newTransactionTypeOfMarket, BigDecimal newTransactionPrice, BigDecimal newTransactionFlatArea, BigDecimal newTransactionPricePerM2, int newTransactionLevel, String newTransactionParkingSpot, String newTransactionStandardLevel, String newTransactionConstructionYear, String newTransactionConstructionYearCategory) {
+    public NewTransaction(User newTransactionUserId, String newTransactionDescription, String newTransactionSale, String newTransactionImportant, LocalDate newTransactionDataTransaction, String newTransactionCity, String newTransactionDistrict, String newTransactionStreet, String newTransactionTypeOfMarket, BigDecimal newTransactionPrice, BigDecimal newTransactionFlatArea, BigDecimal newTransactionPricePerM2, int newTransactionLevel, String newTransactionParkingSpot, String newTransactionStandardLevel, String newTransactionConstructionYear, int newTransactionConstructionYearCategory) {
         this.newTransactionUserId = newTransactionUserId;
         this.newTransactionDescription = newTransactionDescription;
         this.newTransactionSale = newTransactionSale;
@@ -128,11 +129,11 @@ public class NewTransaction {
         this.newTransactionImportant = newTransactionImportant;
     }
 
-    public String getNewTransactionDataTransaction() {
+    public LocalDate getNewTransactionDataTransaction() {
         return newTransactionDataTransaction;
     }
 
-    public void setNewTransactionDataTransaction(String newTransactionDataTransaction) {
+    public void setNewTransactionDataTransaction(LocalDate newTransactionDataTransaction) {
         this.newTransactionDataTransaction = newTransactionDataTransaction;
     }
 
@@ -224,11 +225,11 @@ public class NewTransaction {
         this.newTransactionConstructionYear = newTransactionConstructionYear;
     }
 
-    public String getNewTransactionConstructionYearCategory() {
+    public int getNewTransactionConstructionYearCategory() {
         return newTransactionConstructionYearCategory;
     }
 
-    public void setNewTransactionConstructionYearCategory(String newTransactionConstructionYearCategory) {
+    public void setNewTransactionConstructionYearCategory(int newTransactionConstructionYearCategory) {
         this.newTransactionConstructionYearCategory = newTransactionConstructionYearCategory;
     }
 }
