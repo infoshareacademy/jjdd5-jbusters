@@ -1,6 +1,7 @@
 package com.infoshareacademy.jbusters.web;
 
 import com.infoshareacademy.jbusters.data.ReportGenerator;
+import com.infoshareacademy.jbusters.data.StaticFields;
 import org.apache.commons.io.IOUtils;
 
 import javax.inject.Inject;
@@ -20,13 +21,10 @@ import java.nio.file.Paths;
 @WebServlet("/generate-report")
 public class GenerateReportServlet extends HttpServlet {
 
-    public static final String RAPORT_PATH = System.getProperty("jboss.server.temp.dir") + "/raport.pdf";
+    public static final String REPORT_PATH = StaticFields.getReportPathString();
+
     @Inject
     private ReportGenerator reportGenerator;
-
-
-    public GenerateReportServlet() {
-    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -35,7 +33,7 @@ public class GenerateReportServlet extends HttpServlet {
 
         resp.setHeader("Content-Disposition", "attachment; filename=\"Raport.pdf\"");
         // reads input file from an absolute path
-        File downloadFile = new File(RAPORT_PATH);
+        File downloadFile = new File(REPORT_PATH);
         FileInputStream inStream = new FileInputStream(downloadFile);
 
 
@@ -43,7 +41,7 @@ public class GenerateReportServlet extends HttpServlet {
         ServletContext context = getServletContext();
 
         // gets MIME type of the file
-        String mimeType = context.getMimeType(RAPORT_PATH);
+        String mimeType = context.getMimeType(REPORT_PATH);
         if (mimeType == null) {
             mimeType = "application/octet-stream";
         }
@@ -64,7 +62,7 @@ public class GenerateReportServlet extends HttpServlet {
         inStream.close();
         outStream.close();
 
-        Files.deleteIfExists(Paths.get(RAPORT_PATH));
+        Files.deleteIfExists(Paths.get(REPORT_PATH));
 
     }
 
