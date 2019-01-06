@@ -52,6 +52,13 @@
             <artifactId>forms</artifactId>
             <version>7.1.4</version>
         </dependency>
+
+        <!-- only needed for e-mail feature -->
+        <dependency>
+            <groupId>com.sun.mail</groupId>
+            <artifactId>javax.mail</artifactId>
+            <version>1.6.2</version>
+        </dependency>
     </dependencies>
 
 

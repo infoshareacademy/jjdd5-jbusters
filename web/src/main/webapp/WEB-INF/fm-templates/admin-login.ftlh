@@ -118,7 +118,7 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    Czy chcesz zapisać plik .pdf na Swoim dysku?
+                                                    Czy chcesz zapisać raport ze statystkami na swoim dysku?
                                                 </div>
                                                 <div class="modal-footer">
                                                     <a type="button" class="btn btn-secondary"
