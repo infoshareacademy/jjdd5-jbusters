@@ -273,7 +273,9 @@
 
                                     <div class="form-group">
                                         <label for="Select12">Podaj rok budowy</label>
-                                        <input name="construction-year" type="text" class="form-control" id="Select12" required pattern="^(18|19|20)\d{2}$" >
+                                        <input name="construction-year" type="text" class="form-control" id="Select12" required pattern="^(18|19|20)\d{2}$"
+                                               oninvalid="this.setCustomValidity('Wpisana wartość jest nieprawidłowa!')"
+                                               oninput="this.setCustomValidity('')">
                                     </div>
 
                                     <div class="form-group">
