@@ -1,6 +1,5 @@
 <#include "header.ftlh">
 
-
 <div class="container  container-form">
 
     <#if errors??>
