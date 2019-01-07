@@ -1,31 +1,19 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6deb5
--- https://www.phpmyadmin.net/
--- phpMyAdmin SQL Dump
 -- version 4.7.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Czas generowania: 06 Sty 2019, 21:35
--- Wersja serwera: 5.7.24-0ubuntu0.18.04.1
--- Wersja PHP: 7.2.10-0ubuntu0.18.04.1
-
 -- Host: 127.0.0.1
 -- Czas generowania: 05 Sty 2019, 11:34
 -- Wersja serwera: 10.1.25-MariaDB
 -- Wersja PHP: 7.1.7
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
-
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
-
 --
 -- Baza danych: `jbusters`
 --
@@ -112,7 +100,6 @@ CREATE TABLE `district_properties` (
   UNIQUE KEY `ID_UNIQUE` (`ID`),
   UNIQUE KEY `DISTRICT_UNIQUE` (`DISTRICT`)
 ) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Zrzut danych tabeli `district_properties`
@@ -3587,7 +3574,6 @@ INSERT INTO `users` (`USER_ID`, `USER_EMAIL`, `USER_password`, `USER_NAME`, `USE
 
 ALTER TABLE `config`
   ADD PRIMARY KEY (`ID`),
-  ADD UNIQUE KEY `ID_UNIQUE` (`ID`),
   ADD UNIQUE KEY `PROPERTY_NAME_UNIQUE` (`PROPERTY_NAME`);
 
 --
@@ -3595,7 +3581,6 @@ ALTER TABLE `config`
 --
 ALTER TABLE `district_properties`
   ADD PRIMARY KEY (`ID`),
-  ADD UNIQUE KEY `ID_UNIQUE` (`ID`),
   ADD UNIQUE KEY `DISTRICT_UNIQUE` (`DISTRICT`);
 
 --
