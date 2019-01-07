@@ -1,7 +1,7 @@
-package com.infoshareacademy.jbusters.web;
+package com.infoshareacademy.jbusters.web.user;
 
 
-import com.infoshareacademy.jbusters.data.SearchOfData;
+import com.infoshareacademy.jbusters.dao.NewTransactionDao;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -14,20 +14,23 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-@WebServlet(urlPatterns = ("/load-district"))
-public class LoadDistricTransactionServlet extends HttpServlet {
+@WebServlet("/delete-new-transaction")
+public class DeleteNewTransactionServlet extends HttpServlet {
 
-    private static final String TEMPLATE_NAME = "load-district";
-    private static final Logger LOG = LoggerFactory.getLogger(LoadDistricTransactionServlet.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DeleteNewTransactionServlet.class);
+    private static final String TEMPLATE_NAME = "user-delete-new-transaction";
 
     @Inject
     private TemplateProvider templateProvider;
+
+    @Inject
+    private NewTransactionDao newTransactionDao;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -35,20 +38,24 @@ public class LoadDistricTransactionServlet extends HttpServlet {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
         PrintWriter out = resp.getWriter();
 
-        String city = req.getParameter("city");
-        List<String> districtsList = new SearchOfData().showDistrict(city);
+        HttpSession session = req.getSession(true);
+        String sessionName = (String) session.getAttribute("userName");
+        String sessionEmail = (String) session.getAttribute("userEmail");
+        int id = Integer.parseInt(req.getParameter("id"));
 
-        Map<String, Object> model = new HashMap<>();
-        model.put("city", city);
-        model.put("district", districtsList);
+        newTransactionDao.delete(id);
 
         Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
 
+        Map<String, Object> model = new HashMap<>();
+        model.put("sessionName", sessionName);
+        model.put("sessionEmail", sessionEmail);
+
         try {
             template.process(model, out);
-            LOG.info("Loaded district list of size {}", districtsList.size());
+            LOG.info("Delete ok");
         } catch (TemplateException e) {
-            LOG.error("Failed to load district list. Size of list: {}" + districtsList.size());
+            LOG.error("Delete failed");
         }
     }
 }

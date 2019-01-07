@@ -1,10 +1,12 @@
 package com.infoshareacademy.jbusters.data;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+@ApplicationScoped
 public class SearchOfData {
 
 

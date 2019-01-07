@@ -34,6 +34,7 @@ public class ValuationServlet extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(ValuationServlet.class);
 
     private static final String TEMPLATE_VALUATION = "valuation";
+    private static final String TEMPLATE_VALUATION_USER = "user-valuation";
     public static final String CITY = "city";
     public static final String DISTRICT_1 = "district1";
     public static final String MARKET_TYPE = "marketType";
@@ -72,9 +73,25 @@ public class ValuationServlet extends HttpServlet {
         BigDecimal flatPriceM2 = BigDecimal.valueOf(0);
         BigDecimal flatPriceTotal = BigDecimal.valueOf(0);
         PrintWriter out = resp.getWriter();
-        Template template = templateProvider.getTemplate(
-                getServletContext(),
-                TEMPLATE_VALUATION);
+
+        HttpSession session = req.getSession(true);
+        String sessionEmail = (String) session.getAttribute("userEmail");
+        String sessionName = (String) session.getAttribute("userName");
+
+        model.put("sessionEmail", sessionEmail);
+        model.put("sessionName", sessionName);
+
+        Template template;
+
+        if (sessionEmail == null) {
+            template = templateProvider.getTemplate(
+                    getServletContext(),
+                    TEMPLATE_VALUATION);
+        } else {
+            template = templateProvider.getTemplate(
+                    getServletContext(),
+                    TEMPLATE_VALUATION_USER);
+        }
 
 
         if (errorsMap.size() != 0) {
@@ -105,10 +122,16 @@ public class ValuationServlet extends HttpServlet {
                 flatPriceTotal = newTransaction.getFlatArea().multiply(flatPriceM2).setScale(2, RoundingMode.HALF_UP);
 
             } else {
-                template = templateProvider.getTemplate(
-                        getServletContext(),
-                        "no-valuation");
+
+                if (sessionEmail == null) {
+                    template = templateProvider.getTemplate(getServletContext(), "no-valuation");
+                } else {
+                    template = templateProvider.getTemplate(getServletContext(), "user-no-valuation");
+                }
+
             }
+            session.setAttribute("priceM2", flatPriceM2);
+            session.setAttribute("price", flatPriceTotal);
 
             model.put(PRICE, flatPriceM2);
             model.put(PRICE_TOTAL, flatPriceTotal);
@@ -123,18 +146,24 @@ public class ValuationServlet extends HttpServlet {
 
             String cityName = req.getParameter("city");
             String districtName = req.getParameter("district");
-            statisticsManager.captureNameFromServlet(cityName, districtName, flatPriceM2.setScale(2, BigDecimal.ROUND_UP).toString());
+            statisticsManager.captureNameFromServlet(cityName, districtName, flatPriceTotal.setScale(2, BigDecimal.ROUND_UP).toString());
 
             if (req.getAttribute("constructionYearError") != null) {
-                template = templateProvider.getTemplate(
-                        getServletContext(), TEMPLATE_VALUATION);
+
+                if (sessionEmail == null) {
+                    template = templateProvider.getTemplate(
+                            getServletContext(), TEMPLATE_VALUATION);
+                } else {
+                    template = templateProvider.getTemplate(
+                            getServletContext(), TEMPLATE_VALUATION_USER);
+                }
+
                 try {
                     template.process(model, out);
                 } catch (TemplateException e) {
                     LOG.error("Failed to send model due to {}", e.getMessage());
                 }
             } else {
-                HttpSession session = req.getSession();
                 session.setAttribute("newTransaction", newTransaction);
                 try {
                     template.process(model, out);
