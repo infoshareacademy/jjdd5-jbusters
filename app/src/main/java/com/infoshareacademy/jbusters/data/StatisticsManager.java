@@ -1,25 +1,38 @@
 package com.infoshareacademy.jbusters.data;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.enterprise.context.ApplicationScoped;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.*;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 @ApplicationScoped
 public class StatisticsManager {
-
-    private static final Path PATH_TO_STATISTICS_FILE = Paths.get(System.getProperty("jboss.home.dir"), "data", "statistics.txt");
+    private static final Logger LOGGER = LoggerFactory.getLogger(Data.class);
+    private PropLoader properties;
+    private String currency ="PLN";
     private static final String SEPARATOR = ",";
     private static final int COUNT = 0;
     private static final int ALL = 1;
     private static final int AVG = 2;
+    private static final Path STATISTICS_PATH = StaticFields.getStatisticsFilePath();
 
     public StatisticsManager() {
+        properties = new PropLoader();
+        try {
+            properties = new PropLoader(StaticFields.getAppPropertiesURL().openStream());
+            currency = properties.getCurrency();
+        } catch (Exception e) {
+            LOGGER.error("Missing properties file in path {}", StaticFields.getAppPropertiesURL().toString());
+        }
     }
 
     public void captureNameFromServlet(String cityName, String districtName, String value) throws IOException {
@@ -29,8 +42,10 @@ public class StatisticsManager {
     }
 
     private void addOrUpdateStatistics(String cityName, String districtName, String value) throws IOException {
-        if (!Files.exists(PATH_TO_STATISTICS_FILE)) {
-            Files.createFile(PATH_TO_STATISTICS_FILE);
+        if (!Files.exists(STATISTICS_PATH)) {
+            LOGGER.warn("Statistics file missing under following path: {}", STATISTICS_PATH.toString());
+            Files.createFile(STATISTICS_PATH);
+            LOGGER.info("Empty statistics file created under following path: {}", STATISTICS_PATH.toString());
         }
 
         List<Statistics> existingList = generateStatisticsList();
@@ -66,27 +81,29 @@ public class StatisticsManager {
 
         String statisticsString = cityName + SEPARATOR + districtName + ",1," + value + System.lineSeparator();
 
-        Files.write(Paths.get(String.valueOf(PATH_TO_STATISTICS_FILE)), statisticsString.getBytes(Charset.forName("UTF-8")), StandardOpenOption.APPEND);
+        Files.write(Paths.get(String.valueOf(STATISTICS_PATH)), statisticsString.getBytes(Charset.forName("UTF-8")), StandardOpenOption.APPEND);
+
+        LOGGER.info("New statistics line added: {}", statisticsString);
     }
 
     private void overwriteExistingLine(int lineNumber, String lineData) throws IOException {
 
-        Path path = PATH_TO_STATISTICS_FILE;
-
-        List<String> existingLine = Files.readAllLines(path, StandardCharsets.UTF_8);
+        List<String> existingLine = Files.readAllLines(STATISTICS_PATH, StandardCharsets.UTF_8);
 
         existingLine.set(lineNumber, lineData);
 
-        Files.write(path, existingLine, StandardCharsets.UTF_8);
+        Files.write(STATISTICS_PATH, existingLine, StandardCharsets.UTF_8);
+
+        LOGGER.info("Statistics line {} updated with: {}", lineNumber, lineData);
     }
 
     public List<Statistics> generateStatisticsList() {
 
         List<String> existingList = null;
         try {
-            existingList = Files.readAllLines(PATH_TO_STATISTICS_FILE, StandardCharsets.UTF_8);
+            existingList = Files.readAllLines(STATISTICS_PATH, StandardCharsets.UTF_8);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.info("Statistics file missing under following path: {}", STATISTICS_PATH.toString());
         }
 
         List<Statistics> listOfStatistics = new ArrayList<>();
@@ -161,12 +178,14 @@ public class StatisticsManager {
 
         ArrayList<String> results = new ArrayList();
 
-        DecimalFormat df = new DecimalFormat("#.##");
-        df.setDecimalFormatSymbols(DecimalFormatSymbols.getInstance(Locale.ENGLISH));
         inputMap.entrySet().forEach(x -> {
             String result = x.getKey();
-            for (int i = 0; i < x.getValue().length; i++) {
-                result += "," + df.format(x.getValue()[i]);
+            result += "|" + StaticFields.formatWithLongDF(x.getValue()[COUNT]);
+            //loop for money values like avg, all etc.
+            if(x.getValue().length>COUNT+1) {
+                for (int i = COUNT + 1; i < x.getValue().length; i++) {
+                    result += "|" + StaticFields.formatWithLongDF(x.getValue()[i])+" "+ currency;
+                }
             }
             results.add(result);
         });

@@ -6,4 +6,15 @@
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
+
+    <data-source>
+        <name>java:ds/jbusters</name>
+        <class-name>com.mysql.cj.jdbc.MysqlDataSource</class-name>
+        <!-- DOCKERS -->
+        <url>jdbc:mysql://db:3306/jbusters</url>
+        <!-- LOCAL -->
+         <!--<url>jdbc:mysql://0.0.0.0:4285/jbusters</url>-->
+        <user>root</user>
+        <password>pass123</password>
+    </data-source>
 </web-app>
