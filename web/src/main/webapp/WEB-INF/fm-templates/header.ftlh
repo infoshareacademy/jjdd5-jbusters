@@ -30,10 +30,10 @@
                             <a class="nav-link" href="/my-flats">Moje mieszkania</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/generate-report">Pobierz statystyki</a>
+                            <a class="nav-link" href="add-user.html">Załóż konto</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link disabled" href="#">Zaloguj</a>
+                            <a class="nav-link" href="login-user.html">Zaloguj</a>
                         </li>
                     </ul>
                 </div>

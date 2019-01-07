@@ -1,9 +1,21 @@
 version: "2"
 services:
+  db:
+    image: mysql
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_polish_ci
+    environment:
+      - MYSQL_ROOT_PASSWORD=pass123
+      - MYSQL_DATABASE=jbusters
+    volumes:
+      - ./data/example_db_jbusters.sql:/docker-entrypoint-initdb.d/example_db_jbusters.sql
+    ports:
+      - 4285:3306
   app:
     build:
       context: ./web
     ports:
       - 4280:8080
       - 4281:9990
+    depends_on:
+      - db
     dns: 8.8.8.8
