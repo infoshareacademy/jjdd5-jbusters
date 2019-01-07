@@ -16,6 +16,7 @@ services:
     ports:
       - 4280:8080
       - 4281:9990
+      - 8787:8787
     depends_on:
       - db
     dns: 8.8.8.8
