@@ -44,7 +44,6 @@ public class ReportGenerator {
         properties = new PropLoader();
         try {
             properties = new PropLoader(StaticFields.getAppPropertiesURL().openStream());
-            String currency = properties.getCurrency();
         } catch (Exception e) {
             LOGGER.error("Missing properties file in path {}", StaticFields.getAppPropertiesURL().toString());
         }
