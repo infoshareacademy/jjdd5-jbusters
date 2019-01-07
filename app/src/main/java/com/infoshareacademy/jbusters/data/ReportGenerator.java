@@ -17,6 +17,8 @@ import com.itextpdf.layout.element.Text;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.layout.property.UnitValue;
 import com.itextpdf.layout.property.VerticalAlignment;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.RequestScoped;
 import java.io.IOException;
@@ -30,13 +32,22 @@ import static com.itextpdf.io.font.constants.StandardFonts.HELVETICA;
 public class ReportGenerator {
 
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(Data.class);
     private StatisticsManager statisticsManager;
+    private PropLoader properties;
     private static final String CITY_TABLE_HEADER = "MIASTO|ILOŚĆ WYSZUKIWAŃ|SUMARYCZNA WARTOŚĆ WYCEN";
     private static final String DISTRICT_TABLE_HEADER = "DZIELNICA|ILOŚĆ WYSZUKIWAŃ|SUMARYCZNA WARTOŚĆ WYCEN|ŚREDNIA WARTOŚĆ WYCEN";
 
 
     public ReportGenerator() {
         this.statisticsManager = new StatisticsManager();
+        properties = new PropLoader();
+        try {
+            properties = new PropLoader(StaticFields.getAppPropertiesURL().openStream());
+            String currency = properties.getCurrency();
+        } catch (Exception e) {
+            LOGGER.error("Missing properties file in path {}", StaticFields.getAppPropertiesURL().toString());
+        }
 
     }
 

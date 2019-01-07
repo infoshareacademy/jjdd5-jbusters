@@ -19,7 +19,6 @@ import static java.time.temporal.ChronoUnit.DAYS;
 public class CalculatePrice {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Data.class);
-
     private Transaction userTransaction;
     private List<Transaction> filteredList;
     private PropLoader properties;
@@ -227,7 +226,7 @@ public class CalculatePrice {
         BigDecimal averageFlatArea = BigDecimal.valueOf(finallySortedList.stream()
                 .mapToDouble(t -> t.getFlatArea().doubleValue())
                 .average().orElse((double) 0));
-        System.out.println("Średnia wielkość mieszkań dla dobranego zbioru to:"+getTabs(2) + averageFlatArea.setScale(2, RoundingMode.HALF_UP) + " m2");
+        System.out.println("Average flat size in similar flats set equals: "+getTabs(2) + averageFlatArea.setScale(2, RoundingMode.HALF_UP) + " m2");
         return transToCheck.getFlatArea().compareTo(averageFlatArea) < 0;
     }
 
