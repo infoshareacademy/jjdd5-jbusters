@@ -128,6 +128,8 @@ public class ValuationServlet extends HttpServlet {
                 }
 
             }
+            session.setAttribute("priceM2", flatPriceM2);
+            session.setAttribute("price", flatPriceTotal);
 
             model.put(PRICE, StaticFields.formatWithLongDF(flatPriceM2));
             model.put(PRICE_TOTAL, StaticFields.formatWithLongDF(flatPriceTotal));

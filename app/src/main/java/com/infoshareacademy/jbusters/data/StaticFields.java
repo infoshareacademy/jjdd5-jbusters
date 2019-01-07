@@ -2,8 +2,6 @@ package com.infoshareacademy.jbusters.data;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.math.RoundingMode;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -13,6 +11,7 @@ import java.util.Locale;
 
 @ApplicationScoped
 public class StaticFields {
+
 
     private static final StaticFields staticFields = new StaticFields();
     private static final DecimalFormatSymbols decimalSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
