@@ -260,7 +260,7 @@
 
                             <div class="jumbotron jumbotron-opacity-1 my-border-top">
 
-                                <form method="GET" action="/save-property">
+                                <form method="GET" action="/add-transaction">
                                     <div class="form-group">
                                         <label for="Select10">Ustaw opis mieszkania</label>
                                         <input name="description" type="text" class="form-control" id="Select10" required>

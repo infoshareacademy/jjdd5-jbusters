@@ -136,7 +136,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title">Twoje mieszkania</h5>
                                     <p class="card-text">Sprawdź listę mieszkań, które zapisałes w naszym systemie</p>
-                                    <a href="/my-flats" class="btn btn-primary">Przejdz dalej</a>
+                                    <a href="/show-transaction" class="btn btn-primary">Przejdz dalej</a>
                                 </div>
                             </div>
                         </div>
