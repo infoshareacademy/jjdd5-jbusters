@@ -1,4 +1,4 @@
-package com.infoshareacademy.jbusters.model;
+package com.infoshareacademy.jbusters.data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

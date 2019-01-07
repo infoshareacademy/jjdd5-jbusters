@@ -1,6 +1,6 @@
 package com.infoshareacademy.jbusters.dao;
 
-import com.infoshareacademy.jbusters.model.Config;
+import com.infoshareacademy.jbusters.data.Config;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
