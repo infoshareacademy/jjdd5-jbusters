@@ -98,8 +98,13 @@ public class UserEditTransactionServlet extends HttpServlet {
         if (authUser.isUserAuthorizedToEdit(sessionEmail, transactionId)) {
             NewTransaction transactionToEdit = newTransactionDao.findById(transactionId);
 
-            transactionToEdit.setNewTransactionImportant(req.getParameter("important"));
-            transactionToEdit.setNewTransactionSale(req.getParameter("sale"));
+            if (req.getParameter("important").equals("tak") || req.getParameter("important").equals("nie")) {
+                transactionToEdit.setNewTransactionImportant(req.getParameter("important"));
+            }
+
+            if (req.getParameter("sale").equals("tak") || req.getParameter("sale").equals("nie")) {
+                transactionToEdit.setNewTransactionSale(req.getParameter("sale"));
+            }
 
             newTransactionDao.update(transactionToEdit);
 
