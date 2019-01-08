@@ -59,10 +59,15 @@ public class UsersTransactionsServlet extends HttpServlet {
         // TODO błąd gdy wybierze się plik do pobrania a następnie go przeniesie/usunie z dysku i kliknie się na pobierz
 
         String fileName;
+        LOG.info("DEBUG zaczynam zapis");
         try {
+            LOG.info("DEBUG zapis:");
             fileName = uploadFileFromUser.uploadFile(filePart).getName();
+            LOG.info("DEBUG filename : "+ fileName);
             Path path2 = Paths.get(System.getProperty("jboss.home.dir") + "/upload/" + fileName);
+            LOG.info("DEBUG path: "+ System.getProperty("jboss.home.dir") + "/upload/" + fileName);
             usersTransactions = createTransactionListFromFile(usersTransactions, fileName, path2);
+
             model.put("flats", usersTransactions);
         } catch (Exception e) {
             String errorMasage = "Błąd ładowania pliku. "
