@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Stateless
 public class NewTransactionDao {
@@ -43,4 +44,11 @@ public class NewTransactionDao {
         return query.getResultList();
     }
 
+    public List<NewTransaction> findTransactionsByUserId(int userId) {
+        List<NewTransaction> newTransactionList = findAll();
+
+        return newTransactionList.stream()
+                .filter(t -> t.getNewTransactionUserId().getUserId() == userId)
+                .collect(Collectors.toList());
+    }
 }

@@ -53,19 +53,9 @@ public class ShowNewTransaction extends HttpServlet {
         String sessionEmail = (String) session.getAttribute("userEmail");
         String sessionName = (String) session.getAttribute("userName");
 
+        int userId = userDao.findUserIdByEmail(sessionEmail);
 
-        List<User> listUsers = userDao.findAll();
-        List<User> emailList = listUsers.stream()
-                .filter(e -> e.getUserEmail().equals(sessionEmail))
-                .collect(Collectors.toList());
-
-        int userId = emailList.get(0).getUserId();
-
-        List<NewTransaction> newTransactionList = newTransactionDao.findAll();
-
-        List<NewTransaction> userTransaction  = newTransactionList.stream()
-                .filter(t -> t.getNewTransactionUserId().getUserId() == userId)
-                .collect(Collectors.toList());
+        List<NewTransaction> userTransaction  = newTransactionDao.findTransactionsByUserId(userId);
 
         Template template;
         template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);

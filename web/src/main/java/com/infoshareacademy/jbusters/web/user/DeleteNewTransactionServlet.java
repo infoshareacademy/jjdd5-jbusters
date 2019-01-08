@@ -1,7 +1,9 @@
 package com.infoshareacademy.jbusters.web.user;
 
 
+import com.infoshareacademy.jbusters.authentication.AuthUser;
 import com.infoshareacademy.jbusters.dao.NewTransactionDao;
+import com.infoshareacademy.jbusters.dao.UserDao;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -32,8 +34,11 @@ public class DeleteNewTransactionServlet extends HttpServlet {
     @Inject
     private NewTransactionDao newTransactionDao;
 
+    @Inject
+    private AuthUser authUser;
+
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
         PrintWriter out = resp.getWriter();
@@ -41,21 +46,28 @@ public class DeleteNewTransactionServlet extends HttpServlet {
         HttpSession session = req.getSession(true);
         String sessionName = (String) session.getAttribute("userName");
         String sessionEmail = (String) session.getAttribute("userEmail");
-        int id = Integer.parseInt(req.getParameter("id"));
+        int transactionId = Integer.parseInt(req.getParameter("id"));
 
-        newTransactionDao.delete(id);
+        if (authUser.isUserAuthorizedToDelete(sessionEmail, transactionId)) {
 
-        Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
+            newTransactionDao.delete(transactionId);
+            LOG.info("User {} deleted transaction with id {}", sessionEmail, transactionId);
 
-        Map<String, Object> model = new HashMap<>();
-        model.put("sessionName", sessionName);
-        model.put("sessionEmail", sessionEmail);
+            Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
 
-        try {
-            template.process(model, out);
-            LOG.info("Delete ok");
-        } catch (TemplateException e) {
-            LOG.error("Delete failed");
+            Map<String, Object> model = new HashMap<>();
+            model.put("sessionName", sessionName);
+            model.put("sessionEmail", sessionEmail);
+
+            try {
+                template.process(model, out);
+                LOG.info("Delete ok");
+            } catch (TemplateException e) {
+                LOG.error("Delete failed");
+            }
+        } else {
+            resp.sendRedirect("error.html");
+            LOG.error("Unauthorized try of deletion by user {}, on transaction id {}", sessionEmail, transactionId);
         }
     }
 }
