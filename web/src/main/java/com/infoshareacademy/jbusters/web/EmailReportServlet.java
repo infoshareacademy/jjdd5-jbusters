@@ -1,5 +1,6 @@
 package com.infoshareacademy.jbusters.web;
 
+import com.infoshareacademy.jbusters.dao.UserDao;
 import com.infoshareacademy.jbusters.data.MailHandler;
 import com.infoshareacademy.jbusters.data.ReportGenerator;
 import com.infoshareacademy.jbusters.data.StaticFields;
@@ -30,15 +31,26 @@ public class EmailReportServlet extends HttpServlet {
     @Inject
     private MailHandler mailHandler;
 
+    @Inject
+    private UserDao userDao;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         reportGenerator.generateReport();
         LOGGER.info("Report generated under following path: {}", REPORT_PATH);
+
         String sentStatus;
+        String email = userDao.findById(1).getUserEmail();
+        String login = email.substring(0, email.indexOf("@"));
+        String pass = userDao.findById(1).getUserPassword();
+        String[] recipients = new String[userDao.findAll().size()-1];
+        for (int i = 0; i < userDao.findAll().size()-1; i++) {
+            recipients[i] = userDao.findById(i + 2).getUserEmail();
+        }
 
         try {
-            mailHandler.sendFromGMail();
+            mailHandler.sendMail(login, pass, recipients);
             sentStatus = "Wysłano!";
         } catch (MessagingException e) {
             sentStatus ="Problem z wysłaniem, sprawdź logi...";

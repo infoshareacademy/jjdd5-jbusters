@@ -35,7 +35,7 @@ public class UserDao {
         return entityManager.find(User.class, userEmail);
     }
 
-    public User findById(Long id) {
+    public User findById(int id) {
         return entityManager.find(User.class, id);
     }
 
