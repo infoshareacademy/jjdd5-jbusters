@@ -17,4 +17,9 @@
         <user>root</user>
         <password>pass123</password>
     </data-source>
+
+    <error-page>
+        <exception-type>java.lang.Exception</exception-type>
+        <location>/error</location>
+    </error-page>
 </web-app>
