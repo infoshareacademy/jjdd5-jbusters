@@ -116,6 +116,8 @@ public class CalculatePrice {
 
         if (trendPerDay.compareTo(BigDecimal.valueOf(0.000274)) > 0) {
             return BigDecimal.valueOf(0.000274);
+        } else if (trendPerDay.compareTo(BigDecimal.valueOf(-0.000274)) < 0) {
+            return BigDecimal.valueOf(-0.000274);
         } else {
             return trendPerDay;
         }
