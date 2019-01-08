@@ -31,7 +31,7 @@ import java.util.Map;
 public class UsersTransactionsServlet extends HttpServlet {
 
     private static final Logger LOG = LoggerFactory.getLogger(UsersTransactionsServlet.class);
-    private static final String TEMPLATE_NAME = "transactions-user";
+    private static final String TEMPLATE_NAME = "transactions-users";
 
     @Inject
     private TemplateProvider templateProvider;
