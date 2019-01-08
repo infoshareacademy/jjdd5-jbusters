@@ -42,7 +42,7 @@ public class EmailReportServlet extends HttpServlet {
 
         String sentStatus;
         String email = userDao.findById(1).getUserEmail();
-        String login = email.substring(0, email.indexOf("@"));
+        String login = email.substring(0, email.indexOf('@'));
         String pass = userDao.findById(1).getUserPassword();
         String[] recipients = new String[userDao.findAll().size()-1];
         for (int i = 0; i < userDao.findAll().size()-1; i++) {
