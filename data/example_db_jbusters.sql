@@ -3482,7 +3482,10 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`USER_ID`, `USER_EMAIL`, `USER_password`, `USER_NAME`, `USER_SURNAME`, `USER_ROLE`) VALUES
 (1, 'jbusters.isa@gmail.com', 'jbusters1234', 'Dżej', 'Buster', 1),
-(2, 'tom.ociepa@gmail.com', 'pass123', 'Tomek', 'Ociepa', 2);
+(2, 'tom.ociepa@gmail.com', 'pass123', 'Tomek', 'Ociepa', 2),
+(3, 'karolkarwia@gmail.com', 'pass123', 'Karol', 'Bemka', 2),
+(4, 'jan.odjas@gmail.com', 'pass123', 'Jan', 'Odjas', 2),
+(5, 'lukaszmarwitz@gmail.com', 'pass123', 'Łukasz', 'Marwitz', 2);
 
 --
 -- Indeksy dla zrzutów tabel
