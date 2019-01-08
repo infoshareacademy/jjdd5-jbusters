@@ -89,7 +89,7 @@
             <input class="btn btn-primary btn-lg btn-dark active" type="submit" value="Pobierz listę mieszkań">
         </form>
         <hr class="my-4">
-        <form method="POST" action="/saveAs">
+        <form method="POST" action="/my-flats">
 
             <!-- Large modal -->
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Wyczyść
