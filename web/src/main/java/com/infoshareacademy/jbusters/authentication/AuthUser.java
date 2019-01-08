@@ -18,7 +18,7 @@ public class AuthUser {
     @Inject
     private UserDao userDao;
 
-    public boolean isUserAuthorizedToDelete(String sessionEmail, int transactionId) {
+    public boolean isUserAuthorizedToEdit(String sessionEmail, int transactionId) {
 
         int userId = userDao.findUserIdByEmail(sessionEmail);
 

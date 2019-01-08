@@ -25,7 +25,7 @@ public class UserDao {
         return entityManager.merge(u);
     }
 
-    public void delete(Long id) {
+    public void delete(int id) {
         final User u = entityManager.find(User.class, id);
         if (u != null) {
             entityManager.remove(u);
@@ -36,7 +36,7 @@ public class UserDao {
         return entityManager.find(User.class, userEmail);
     }
 
-    public User findById(Long id) {
+    public User findById(int id) {
         return entityManager.find(User.class, id);
     }
 

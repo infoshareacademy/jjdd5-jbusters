@@ -33,7 +33,7 @@ public class NewTransactionDao {
         }
     }
 
-    public NewTransaction findById(Long id) {
+    public NewTransaction findById(int id) {
         return entityManager.find(NewTransaction.class, id);
     }
 

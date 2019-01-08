@@ -48,7 +48,7 @@ public class DeleteNewTransactionServlet extends HttpServlet {
         String sessionEmail = (String) session.getAttribute("userEmail");
         int transactionId = Integer.parseInt(req.getParameter("id"));
 
-        if (authUser.isUserAuthorizedToDelete(sessionEmail, transactionId)) {
+        if (authUser.isUserAuthorizedToEdit(sessionEmail, transactionId)) {
 
             newTransactionDao.delete(transactionId);
             LOG.info("User {} deleted transaction with id {}", sessionEmail, transactionId);
