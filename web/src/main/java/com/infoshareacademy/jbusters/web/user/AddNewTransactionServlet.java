@@ -1,6 +1,5 @@
 package com.infoshareacademy.jbusters.web.user;
 
-
 import com.infoshareacademy.jbusters.dao.NewTransactionDao;
 import com.infoshareacademy.jbusters.data.Transaction;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
@@ -12,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +35,7 @@ public class AddNewTransactionServlet extends HttpServlet {
     private NewTransactionDao newTransactionDao;
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
         PrintWriter out = resp.getWriter();
@@ -67,21 +65,24 @@ public class AddNewTransactionServlet extends HttpServlet {
         transaction.setNewTransactionConstructionYear(newTransaction.getConstructionYear());
         transaction.setNewTransactionConstructionYearCategory(newTransaction.getConstructionYearCategory());
 
-        newTransactionDao.save(transaction);
-        Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
-        String sessionName = (String) session.getAttribute("userName");
-        String sessionEmail = (String) session.getAttribute("userEmail");
-        Map<String, Object> model = new HashMap<>();
-        model.put("sessionName", sessionName);
-        model.put("sessionEmail", sessionEmail);
-
         try {
-            template.process(model, out);
-            LOG.info("Save ok");
-        } catch (TemplateException e) {
-            LOG.error("Save failed");
+            newTransactionDao.save(transaction);
+            Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
+            String sessionName = (String) session.getAttribute("userName");
+            String sessionEmail = (String) session.getAttribute("userEmail");
+            Map<String, Object> model = new HashMap<>();
+            model.put("sessionName", sessionName);
+            model.put("sessionEmail", sessionEmail);
+
+            try {
+                template.process(model, out);
+                LOG.info("Save ok");
+            } catch (TemplateException e) {
+                LOG.error("Save failed");
+            }
+        } catch (Exception e) {
+            LOG.error("Failed to save user's transaction to DB due to: {}", e.getMessage());
+            resp.sendRedirect("/error.html");
         }
-
-
     }
 }
