@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,8 +25,6 @@ public class UserEditTransactionServlet extends HttpServlet {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserEditTransactionServlet.class);
     private static final String TEMPLATE_EDIT_TRANSACTION = "user-edit-transaction";
-    private static final String TEMPLATE_SHOW_TRANSACTION = "user-show-new-transaction";
-
 
     @Inject
     private TemplateProvider templateProvider;
@@ -39,7 +36,7 @@ public class UserEditTransactionServlet extends HttpServlet {
     NewTransactionDao newTransactionDao;
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         resp.setContentType("text/html;charset=UTF-8");
         final PrintWriter out = resp.getWriter();
@@ -86,13 +83,9 @@ public class UserEditTransactionServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/html;charset=UTF-8");
-        final PrintWriter out = resp.getWriter();
-
-        Map<String, Object> model = new HashMap<>();
 
         HttpSession session = req.getSession();
         String sessionEmail = (String) session.getAttribute("userEmail");
-        String sessionName = (String) session.getAttribute("userName");
         int transactionId = Integer.parseInt(req.getParameter("id"));
 
         if (authUser.isUserAuthorizedToEdit(sessionEmail, transactionId)) {
