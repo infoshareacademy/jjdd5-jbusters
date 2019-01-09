@@ -1,6 +1,5 @@
 package com.infoshareacademy.jbusters.data;
 
-import jdk.nashorn.internal.runtime.ECMAException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
