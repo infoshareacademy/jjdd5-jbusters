@@ -4,8 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.mail.MessagingException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -21,6 +23,7 @@ public class MailScheduler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MailScheduler.class);
     private static final Properties scheduleProperties = new Properties();
+    private static final MailHandler mailHandler = new MailHandler();
     private static final String DAY_KEY = "day";
     private static final String HOUR_KEY = "hour";
     private static final String MINUTE_KEY = "minute";
@@ -73,24 +76,32 @@ public class MailScheduler {
 
     private void start() {
 
-        scheduler(getDelay(), PERIOD);
+        //scheduler(getDelay(), PERIOD);
     }
 
     private void update(int period) {
 
         SCHEDULED_TASK.cancel(false);
         SCHEDULER.shutdown();
-        scheduler(getDelay(), period);
+        //scheduler(getDelay(), PERIOD);
     }
 
-    private void scheduler(long delay, long period) {
+    private void scheduler(String login, String pass, String[] recipients) {
 
-        Runnable task = () -> {        };
+        Runnable task = () -> {
+            try {
+                mailHandler.sendMail(login, pass, recipients);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
+        };
 
-        SCHEDULED_TASK = SCHEDULER.scheduleAtFixedRate(task, delay, period, TimeUnit.SECONDS);
+        SCHEDULED_TASK = SCHEDULER.scheduleAtFixedRate(task, getDelay(), PERIOD, TimeUnit.SECONDS);
     }
 
-    public void saveScheduleAndInit(String dayString, String hourString, String minuteString) throws IOException {
+    public void saveScheduleAndInit(String dayString, String hourString, String minuteString, String login, String pass, String[] recipients) throws IOException, MessagingException {
 
         if (!Files.exists(StaticFields.getSchedulerPropertiesFile())) {
             Files.createFile(StaticFields.getSchedulerPropertiesFile());
@@ -117,6 +128,8 @@ public class MailScheduler {
         Date scheduleCompose = schedule.getTime();
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE 'at' HH:mm");
+
+        scheduler(login, pass, recipients);
 
         LOGGER.info("New schedule [ {} ] stored and initiated.", dateFormat.format(scheduleCompose));
     }
