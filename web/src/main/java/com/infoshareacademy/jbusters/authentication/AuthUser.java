@@ -2,12 +2,10 @@ package com.infoshareacademy.jbusters.authentication;
 
 import com.infoshareacademy.jbusters.dao.NewTransactionDao;
 import com.infoshareacademy.jbusters.dao.UserDao;
-import com.infoshareacademy.jbusters.model.NewTransaction;
+import com.infoshareacademy.jbusters.model.User;
 
 import javax.faces.bean.RequestScoped;
 import javax.inject.Inject;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RequestScoped
 public class AuthUser {
@@ -20,12 +18,10 @@ public class AuthUser {
 
     public boolean isUserAuthorizedToEdit(String sessionEmail, int transactionId) {
 
-        int userId = userDao.findUserIdByEmail(sessionEmail);
+        User user = userDao.findByEmail(sessionEmail);
 
-        List<NewTransaction> newTransactionList = newTransactionDao.findTransactionsByUserId(userId).stream()
-                .filter(t -> t.getNewTransactionId() == transactionId)
-                .collect(Collectors.toList());
+        return newTransactionDao.findByUser(user).stream()
+                .anyMatch(newTransaction -> newTransaction.getNewTransactionId() == transactionId);
 
-        return newTransactionList.size() == 1;
     }
 }

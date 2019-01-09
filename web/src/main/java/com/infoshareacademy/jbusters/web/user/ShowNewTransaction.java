@@ -5,6 +5,7 @@ import com.infoshareacademy.jbusters.dao.NewTransactionDao;
 import com.infoshareacademy.jbusters.dao.UserDao;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import com.infoshareacademy.jbusters.model.NewTransaction;
+import com.infoshareacademy.jbusters.model.User;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.slf4j.Logger;
@@ -49,9 +50,8 @@ public class ShowNewTransaction extends HttpServlet {
         String sessionEmail = (String) session.getAttribute("userEmail");
         String sessionName = (String) session.getAttribute("userName");
 
-        int userId = userDao.findUserIdByEmail(sessionEmail);
-
-        List<NewTransaction> userTransaction  = newTransactionDao.findTransactionsByUserId(userId);
+        User user = userDao.findByEmail(sessionEmail);
+        List<NewTransaction> userTransaction  = newTransactionDao.findByUser(user);
 
         Template template;
         template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);

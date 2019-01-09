@@ -44,11 +44,11 @@ public class NewTransactionDao {
         return query.getResultList();
     }
 
-    public List<NewTransaction> findTransactionsByUserId(int userId) {
-        List<NewTransaction> newTransactionList = findAll();
+    public List<NewTransaction> findByUser(User user) {
 
-        return newTransactionList.stream()
-                .filter(t -> t.getNewTransactionUserId().getUserId() == userId)
-                .collect(Collectors.toList());
+        final Query query = entityManager.createQuery("SELECT u FROM NewTransaction u WHERE u.newTransactionUser = :user");
+        query.setParameter("user", user);
+
+        return (List<NewTransaction>) query.getResultList();
     }
 }

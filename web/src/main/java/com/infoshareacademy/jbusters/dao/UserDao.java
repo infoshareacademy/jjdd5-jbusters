@@ -44,16 +44,13 @@ public class UserDao {
     public List<User> findAll() {
         final Query query = entityManager.createQuery("SELECT u FROM User u");
 
-        return query.getResultList();
+        return (List<User>) query.getResultList();
     }
 
-    public int findUserIdByEmail(String sessionEmail) {
-        List<User> listUsers = findAll();
+    public User findByEmail(String sessionEmail) {
+        final Query query = entityManager.createQuery("SELECT u FROM User u WHERE u.userEmail = :email");
+        query.setParameter("email", sessionEmail);
 
-        List<User> emailList = listUsers.stream()
-                .filter(e -> e.getUserEmail().equals(sessionEmail))
-                .collect(Collectors.toList());
-
-        return emailList.get(0).getUserId();
+       return (User) query.getSingleResult();
     }
 }

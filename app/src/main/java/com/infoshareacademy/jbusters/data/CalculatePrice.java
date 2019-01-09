@@ -24,6 +24,8 @@ public class CalculatePrice {
     private List<Transaction> filteredList;
     private PropLoader properties;
     private BigDecimal exchangeRate;
+    private static final double MAX_TREND_RATE_PER_DAY = 0.000274;
+    private static final double MIN_TREND_RATE_PER_DAY = -0.000274;
 
     public CalculatePrice(Transaction transaction, List<Transaction> filteredList) {
         this.userTransaction = transaction;
@@ -114,10 +116,10 @@ public class CalculatePrice {
 
         BigDecimal trendPerDay = (((priceOfNewest.subtract(priceOfOldest)).divide(priceOfOldest, 6, RoundingMode.HALF_UP)).divide(BigDecimal.valueOf(duration), 6, RoundingMode.HALF_UP));
 
-        if (trendPerDay.compareTo(BigDecimal.valueOf(0.000274)) > 0) {
-            return BigDecimal.valueOf(0.000274);
-        } else if (trendPerDay.compareTo(BigDecimal.valueOf(-0.000274)) < 0) {
-            return BigDecimal.valueOf(-0.000274);
+        if (trendPerDay.compareTo(BigDecimal.valueOf(MAX_TREND_RATE_PER_DAY)) > 0) {
+            return BigDecimal.valueOf(MAX_TREND_RATE_PER_DAY);
+        } else if (trendPerDay.compareTo(BigDecimal.valueOf(MIN_TREND_RATE_PER_DAY)) < 0) {
+            return BigDecimal.valueOf(MIN_TREND_RATE_PER_DAY);
         } else {
             return trendPerDay;
         }
