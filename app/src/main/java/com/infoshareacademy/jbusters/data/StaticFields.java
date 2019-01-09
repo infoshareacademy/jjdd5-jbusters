@@ -1,5 +1,8 @@
 package com.infoshareacademy.jbusters.data;
 
+
+import com.infoshareacademy.jbusters.dao.AppPropertyDao;
+
 import javax.enterprise.context.ApplicationScoped;
 import java.math.RoundingMode;
 import java.net.URL;
@@ -12,15 +15,14 @@ import java.util.Locale;
 @ApplicationScoped
 public class StaticFields {
 
-
+    //private static final AppPropertyDao appPropertyDao = new AppPropertyDao();
     private static final StaticFields staticFields = new StaticFields();
     private static final DecimalFormatSymbols decimalSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
-    private static final DecimalFormat LONG_DF = new DecimalFormat("###,###");
+    private static final DecimalFormat LONG_DF = new DecimalFormat("###,###.##");
     private static final DecimalFormat SHORT_DF = new DecimalFormat("##.##");
 
     private static final URL APP_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("app.properties");
     private static final URL DISTR_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("districts.properties");
-
     private static final Path STATISTICS_FILE_PATH = Paths.get(System.getProperty("jboss.home.dir"), "data", "statistics.txt");
     private static final String REPORT_PATH_STRING = Paths.get(System.getProperty("jboss.server.temp.dir"), "report.pdf").toString();
     private static final URL BG_IMG_PATH = Thread.currentThread().getContextClassLoader().getResource(Paths.get("img", "JBusters_logo.png").toString());
@@ -44,16 +46,18 @@ public class StaticFields {
 
     public static URL getBgImgPath() { return BG_IMG_PATH; }
 
+    public static Path getLangPropertiesPath() { return LANG_PROPERTIES_FILE; }
+
     public static DecimalFormat getLongDF() {
-        LONG_DF.setDecimalFormatSymbols(getCustomizedSymbols());
-        LONG_DF.setRoundingMode(RoundingMode.CEILING);
-        return LONG_DF;
+        DecimalFormat longDF = LONG_DF;
+//        DecimalFormat longDF = new DecimalFormat(appPropertyDao.findByName("longDFPattern").getApValue());
+      longDF.setDecimalFormatSymbols(getCustomizedSymbols());
+        longDF.setRoundingMode(RoundingMode.CEILING);
+        return longDF;
     }
 
     public static String formatWithLongDF(Number num) {
-        LONG_DF.setDecimalFormatSymbols(getCustomizedSymbols());
-        LONG_DF.setRoundingMode(RoundingMode.CEILING);
-        return LONG_DF.format(num);
+        return getLongDF().format(num);
     }
 
     public static DecimalFormat getShortDF() {
@@ -72,9 +76,5 @@ public class StaticFields {
         decimalSymbols.setDecimalSeparator('.');
         decimalSymbols.setGroupingSeparator(' ');
         return decimalSymbols;
-    }
-
-    public static Path getLangPropertiesPath() {
-        return LANG_PROPERTIES_FILE;
     }
 }
