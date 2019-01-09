@@ -15,7 +15,7 @@
 
     ``` shell
     $ mvn clean package
-    $ sudo docker-compose up -d --build --force-recreate
+    $ sh start_docker.sh
     ```
 
 2. Thereafter open your browser and go to the following address: 0.0.0.0:4280

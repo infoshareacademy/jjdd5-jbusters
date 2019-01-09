@@ -6,14 +6,12 @@ import com.infoshareacademy.jbusters.dao.UserDao;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import com.infoshareacademy.jbusters.model.NewTransaction;
 import com.infoshareacademy.jbusters.model.User;
-import com.infoshareacademy.jbusters.web.ValuationServlet;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +22,6 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @WebServlet("/show-transaction")
 public class ShowNewTransaction extends HttpServlet {
@@ -42,7 +39,7 @@ public class ShowNewTransaction extends HttpServlet {
     private NewTransactionDao newTransactionDao;
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         resp.setContentType("text/html;charset=UTF-8");
 
@@ -53,19 +50,8 @@ public class ShowNewTransaction extends HttpServlet {
         String sessionEmail = (String) session.getAttribute("userEmail");
         String sessionName = (String) session.getAttribute("userName");
 
-
-        List<User> listUsers = userDao.findAll();
-        List<User> emailList = listUsers.stream()
-                .filter(e -> e.getUserEmail().equals(sessionEmail))
-                .collect(Collectors.toList());
-
-        int userId = emailList.get(0).getUserId();
-
-        List<NewTransaction> newTransactionList = newTransactionDao.findAll();
-
-        List<NewTransaction> userTransaction  = newTransactionList.stream()
-                .filter(t -> t.getNewTransactionUserId().getUserId() == userId)
-                .collect(Collectors.toList());
+        User user = userDao.findByEmail(sessionEmail);
+        List<NewTransaction> userTransaction  = newTransactionDao.findByUser(user);
 
         Template template;
         template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);

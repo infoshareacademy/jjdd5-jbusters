@@ -42,7 +42,7 @@
                     <td>${flat.newTransactionStreet}</td>
                     <td>${flat.newTransactionSale}</td>
                     <td>
-                        <a href="#" class="btn btn-dark">Edytuj</a>
+                        <a href="/edit-transaction?id=${flat.newTransactionId}" class="btn btn-dark">Edytuj</a>
                     </td>
                     <td>
                         <a href="/delete-new-transaction?id=${flat.newTransactionId}" class="btn btn-danger">Usuń</a>
