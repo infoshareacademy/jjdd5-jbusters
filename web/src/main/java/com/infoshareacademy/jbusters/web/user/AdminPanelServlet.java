@@ -41,11 +41,18 @@ public class AdminPanelServlet extends HttpServlet {
         model.put("sessionEmail", sessionEmail);
         model.put("sessionName", sessionName);
 
-        if(req.getAttribute("status") == null) {
+        if(req.getAttribute("sentStatus") == null) {
             model.put("sentStatus", "");
         } else {
-            String sentStatus = req.getAttribute("status").toString();
+            String sentStatus = req.getAttribute("sentStatus").toString();
             model.put("sentStatus", sentStatus);
+        }
+
+        if(req.getAttribute("scheduleStatus") == null) {
+            model.put("scheduleStatus", "");
+        } else {
+            String scheduleStatus = req.getAttribute("scheduleStatus").toString();
+            model.put("scheduleStatus", scheduleStatus);
         }
 
         try {
