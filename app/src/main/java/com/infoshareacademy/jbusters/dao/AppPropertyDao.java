@@ -1,7 +1,6 @@
 package com.infoshareacademy.jbusters.dao;
 
 import com.infoshareacademy.jbusters.model.AppProperty;
-import com.infoshareacademy.jbusters.model.User;
 
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -20,14 +19,16 @@ public class AppPropertyDao {
     }
 
 
-    public AppProperty findByName(String apName){
-        return entityManager.find(AppProperty.class, apName);
-    }
-
     public AppProperty findById(int id) {
         return entityManager.find(AppProperty.class, id);
     }
 
+    public AppProperty findByName(String name) {
+        final Query query = entityManager.createQuery("SELECT ap FROM AppProperty ap WHERE ap.apName = name");
+        query.setParameter("name", name);
+
+        return (AppProperty) query.getSingleResult();
+    }
 
     public List<AppProperty> findAll() {
         final Query query = entityManager.createQuery("SELECT ap FROM AppProperty ap");
