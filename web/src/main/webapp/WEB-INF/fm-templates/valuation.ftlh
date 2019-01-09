@@ -54,13 +54,17 @@
                 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
                     <div class="jumbotron jumbotron-opacity" style="width: 1200px">
                     <hr class="my-4">
-                    <script>
-                        $(document).ready(function () {
-                            $('#flats').DataTable({
-                                "dom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>'
+                        <script>
+                            $(document).ready(function () {
+                                $('#flats').DataTable({
+                                            "dom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>',
+                                            "language": {
+                                                "url": "js/dataTable.json"
+                                            }
+                                        }
+                                );
                             });
-                        });
-                    </script>
+                        </script>
                     <p class="lead">Do wyceny Twojego mieszkania wykorzystano <b>${listTransactionUseValuation?size}</b> transakcje</p>
                     <br>
                     <p>Lista wykorzystanych transakcji:</p>
@@ -203,7 +207,9 @@
 
                         <div class="form-group">
                             <label for="Select12">Podaj rok budowy</label>
-                            <input name="construction-year" type="text" class="form-control" id="Select12" required pattern="^(18|19|20)\d{2}$" >
+                            <input name="construction-year" type="text" class="form-control" id="Select12" required pattern="^(18|19|20)\d{2}$"
+                                   oninvalid="this.setCustomValidity('Wpisana wartość jest nieprawidłowa!')"
+                                   oninput="this.setCustomValidity('')">
                         </div>
 
                         <div class="form-group">

@@ -71,7 +71,11 @@ public class AddUserServlet extends HttpServlet {
             u.setUserSurname(surname);
             u.setUserRole(2);
 
-            userDao.save(u);
+            try {
+                userDao.save(u);
+            } catch (Exception e) {
+                LOG.error("Failed to add new user due to: {}", e.getMessage());
+            }
 
             model.put("email", email);
             model.put("name", name);

@@ -61,6 +61,20 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute(SESSION_ATTRIBUTE_NAME, nameGoogle);
             session.setAttribute(SESSION_ATTRIBUTE_EMAIL, emailGoogle);
 
+            String email = (String) session.getAttribute(SESSION_ATTRIBUTE_EMAIL);
+
+            List<User> listUsers = userDao.findAll();
+            List<User> emailList = listUsers.stream()
+                    .filter(e -> e.getUserEmail().equals(email))
+                    .collect(Collectors.toList());
+
+            if (emailList.isEmpty()){
+                user.setUserEmail(email);
+                user.setUserRole(2);
+                userDao.save(user);
+                session.setAttribute(SESSION_ATTRIBUTE_USER, user);
+            }
+
         } catch (Exception e) {
             LOG.warn("Failed to login user in google api");
             LOG.info("Trying to log in using our user account");
