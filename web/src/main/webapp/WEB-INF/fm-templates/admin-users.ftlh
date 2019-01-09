@@ -68,8 +68,11 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij
                                         </button>
-                                        <a href="/admin-users/delete?id=${u.userId}" type="button"
-                                           class="btn btn-primary">Usuń</a>
+
+                                        <!-- NIE DZIAŁA PODSTAWIANIE userId -->
+                                        <form method="post" action="admin-users?id=${u.userId}">
+                                            <button type="submit" class="btn btn-danger">Usuń ${u.userId}</button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

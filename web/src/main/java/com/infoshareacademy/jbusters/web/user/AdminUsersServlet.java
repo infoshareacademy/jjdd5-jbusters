@@ -59,6 +59,15 @@ public class AdminUsersServlet extends HttpServlet {
         } catch (TemplateException e) {
             LOG.error("Failed to process model due to {}", e.getMessage());
         }
+    }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        int userId = Integer.parseInt(req.getParameter("id"));
+
+        userDao.delete(userId);
+
+        doGet(req, resp);
     }
 }

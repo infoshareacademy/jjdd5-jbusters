@@ -13,7 +13,7 @@
 
         <div class="jumbotron jumbotron-opacity-1">
             <p class="lead"><b>Użytkownik</b></p>
-            <form method="post" action="admin-users/editUser?id=${user.userId}">
+            <form method="post" action="editUser?id=${user.userId}">
 
                 <div class="form-group">
                     <label for="Select1"><b>Id użytkownika:</b></label>
@@ -41,8 +41,12 @@
 
                 <div class="form-group">
                     <label for="Select5">Uprawnienia użytkownika</label>
-                    <select name="important" class="form-control" id="Select5" required>
-                        <option>${user.userRole}</option>
+                    <select name="role" class="form-control" id="Select5" required>
+                        <#if user.userRole = 1>
+                            <option>ADMIN</option>
+                        <#elseif user.userRole = 2>
+                            <option>Podstawowe</option>
+                        </#if>
                         <option>ADMIN</option>
                         <option>Podstawowe</option>
                     </select>

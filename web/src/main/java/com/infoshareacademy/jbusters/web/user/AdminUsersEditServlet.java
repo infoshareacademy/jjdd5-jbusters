@@ -60,4 +60,24 @@ public class AdminUsersEditServlet extends HttpServlet {
             LOG.error("Faield to process model due to {}", e.getMessage());
         }
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+
+        int userId = Integer.parseInt(req.getParameter("id"));
+
+        User user = userDao.findById(userId);
+
+        String stringRole = req.getParameter("role");
+
+        if (stringRole.equals("ADMIN")) {
+            user.setUserRole(1);
+        } else {
+            user.setUserRole(2);
+        }
+
+        userDao.update(user);
+
+        resp.sendRedirect("/admin-users");
+    }
 }
