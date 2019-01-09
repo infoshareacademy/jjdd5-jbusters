@@ -1,5 +1,8 @@
 package com.infoshareacademy.jbusters.data;
 
+
+import com.infoshareacademy.jbusters.dao.AppPropertyDao;
+
 import java.math.RoundingMode;
 import java.net.URL;
 import java.nio.file.Path;
@@ -10,6 +13,7 @@ import java.util.Locale;
 
 public class StaticFields {
 
+    //private static final AppPropertyDao appPropertyDao = new AppPropertyDao();
     private static final StaticFields staticFields = new StaticFields();
     private static final DecimalFormatSymbols decimalSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
     private static final DecimalFormat LONG_DF = new DecimalFormat("###,###.##");
@@ -44,15 +48,15 @@ public class StaticFields {
     public static Path getLangPropertiesPath() { return LANG_PROPERTIES_FILE; }
 
     public static DecimalFormat getLongDF() {
-        LONG_DF.setDecimalFormatSymbols(getCustomizedSymbols());
-        LONG_DF.setRoundingMode(RoundingMode.CEILING);
-        return LONG_DF;
+        DecimalFormat longDF = LONG_DF;
+//        DecimalFormat longDF = new DecimalFormat(appPropertyDao.findByName("longDFPattern").getApValue());
+      longDF.setDecimalFormatSymbols(getCustomizedSymbols());
+        longDF.setRoundingMode(RoundingMode.CEILING);
+        return longDF;
     }
 
     public static String formatWithLongDF(Number num) {
-        LONG_DF.setDecimalFormatSymbols(getCustomizedSymbols());
-        LONG_DF.setRoundingMode(RoundingMode.CEILING);
-        return SHORT_DF.format(num);
+        return getLongDF().format(num);
     }
 
     public static DecimalFormat getShortDF() {
