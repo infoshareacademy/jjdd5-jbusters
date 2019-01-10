@@ -72,7 +72,7 @@
                                         <p>Czy na pewno chcesz usunąć to mieszkanie?</p>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Zamknij
                                         </button>
                                         <a href="/delete-new-transaction?id=${flat.newTransactionId}" type="button"
                                            class="btn btn-primary">Usuń</a>
