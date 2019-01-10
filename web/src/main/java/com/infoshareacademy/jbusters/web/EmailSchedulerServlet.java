@@ -2,10 +2,6 @@ package com.infoshareacademy.jbusters.web;
 
 import com.infoshareacademy.jbusters.dao.UserDao;
 import com.infoshareacademy.jbusters.data.MailScheduler;
-import com.infoshareacademy.jbusters.data.ReportGenerator;
-import com.infoshareacademy.jbusters.data.StaticFields;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import javax.mail.MessagingException;

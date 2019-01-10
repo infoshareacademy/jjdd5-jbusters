@@ -123,9 +123,9 @@ public class MailScheduler {
                 LOGGER.info("Report generated under following path: {}", REPORT_PATH);
                 mailHandler.sendMail(login, pass, recipients);
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.warn("Exception: {}", e);
             } catch (MessagingException e) {
-                e.printStackTrace();
+                LOGGER.warn("Exception: {}", e);
             }
         };
 

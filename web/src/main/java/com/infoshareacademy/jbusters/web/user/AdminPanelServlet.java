@@ -24,6 +24,9 @@ public class AdminPanelServlet extends HttpServlet {
 
     private static final Logger LOG = LoggerFactory.getLogger(AdminPanelServlet.class);
     private static final String TEMPLATE_NAME = "admin-panel";
+    private static final String SENT_STATUS = "sentStatus";
+    private static final String SCHEDULE_STATUS = "scheduleStatus";
+
     @Inject
     private TemplateProvider templateProvider;
 
@@ -41,18 +44,18 @@ public class AdminPanelServlet extends HttpServlet {
         model.put("sessionEmail", sessionEmail);
         model.put("sessionName", sessionName);
 
-        if(req.getAttribute("sentStatus") == null) {
-            model.put("sentStatus", "");
+        if(req.getAttribute(SENT_STATUS) == null) {
+            model.put(SENT_STATUS, "");
         } else {
-            String sentStatus = req.getAttribute("sentStatus").toString();
-            model.put("sentStatus", sentStatus);
+            String sentStatus = req.getAttribute(SENT_STATUS).toString();
+            model.put(SENT_STATUS, sentStatus);
         }
 
-        if(req.getAttribute("scheduleStatus") == null) {
-            model.put("scheduleStatus", "");
+        if(req.getAttribute(SCHEDULE_STATUS) == null) {
+            model.put(SCHEDULE_STATUS, "");
         } else {
-            String scheduleStatus = req.getAttribute("scheduleStatus").toString();
-            model.put("scheduleStatus", scheduleStatus);
+            String scheduleStatus = req.getAttribute(SCHEDULE_STATUS).toString();
+            model.put(SCHEDULE_STATUS, scheduleStatus);
         }
 
         try {
