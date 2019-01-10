@@ -60,7 +60,7 @@ public class EmailReportServlet extends HttpServlet {
         LOGGER.info("Report deleted from following path: {}", REPORT_PATH);
 
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin-panel");
-        req.setAttribute("status", sentStatus);
+        req.setAttribute("sentStatus", sentStatus);
         dispatcher.forward(req, resp);
     }
 }
