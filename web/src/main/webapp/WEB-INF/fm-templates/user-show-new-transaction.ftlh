@@ -42,10 +42,33 @@
                     <td>${flat.newTransactionStreet}</td>
                     <td>${flat.newTransactionSale}</td>
                     <td>
-                        <a href="#" class="btn btn-dark">Edytuj</a>
+                        <a href="/edit-transaction?id=${flat.newTransactionId}" class="btn btn-dark">Edytuj</a>
                     </td>
                     <td>
-                        <a href="/delete-new-transaction?id=${flat.newTransactionId}" class="btn btn-danger">Usuń</a>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                            Usuń
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Czy na pewno chcesz usunąć to mieszkanie?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
+                                        <a href="/delete-new-transaction?id=${flat.newTransactionId}" type="button" class="btn btn-primary">Usuń</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                     </tr>
                 </#list>

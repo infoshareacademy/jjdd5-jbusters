@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Stateless
 public class NewTransactionDao {
@@ -32,7 +33,7 @@ public class NewTransactionDao {
         }
     }
 
-    public NewTransaction findById(Long id) {
+    public NewTransaction findById(int id) {
         return entityManager.find(NewTransaction.class, id);
     }
 
@@ -43,4 +44,11 @@ public class NewTransactionDao {
         return query.getResultList();
     }
 
+    public List<NewTransaction> findByUser(User user) {
+
+        final Query query = entityManager.createQuery("SELECT u FROM NewTransaction u WHERE u.newTransactionUser = :user");
+        query.setParameter("user", user);
+
+        return (List<NewTransaction>) query.getResultList();
+    }
 }
