@@ -14,6 +14,7 @@ import javax.mail.internet.MimeMultipart;
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Properties;
 
@@ -81,7 +82,7 @@ public class MailHandler {
 
         try {
             Transport.send(message);
-            LOGGER.info("Mail sent to: {}", recipients);
+            LOGGER.info("Mail sent to: {}", Arrays.toString(recipients));
         } catch (MessagingException e) {
             LOGGER.error("Mail not sent, attachment missing under the following path: {}", ATTACHMENT_PATH);
             throw e;
