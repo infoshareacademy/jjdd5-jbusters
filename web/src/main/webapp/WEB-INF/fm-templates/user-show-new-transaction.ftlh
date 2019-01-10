@@ -5,17 +5,25 @@
         <div class="jumbotron jumbotron-opacity">
 
             <div class="row">
-                <div class="col-8">
+            <div class="col-8">
+                    <#if size =  0>
+                        <h1 class="display-4">Brak zapisanych mieszkań</h1>
+                    <form method="post" action="load-user-menu">
+                        <button type="submit" class="btn btn-primary">Menu</button>
+                    </form>
+                    <#else >
                     <h1 class="display-4">Lista mieszkań</h1>
                     <p class="lead">Obecnie posiadasz: <b>${size}</b></p>
                     <form method="post" action="load-user-menu">
                         <button type="submit" class="btn btn-primary">Menu</button>
                     </form>
-                </div>
+                    </div>
+                    </#if>
 
 <#include "include-user-info.ftlh">
-            </div>
 
+            </div>
+            <#if size gt 0>
             <hr class="my-4">
 
             <table class="table table-striped">
@@ -50,11 +58,12 @@
                         </button>
 
                         <!-- Modal -->
-                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                        <h5 class="modal-title" id="exampleModalLabel">Uwaga!</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -63,17 +72,20 @@
                                         <p>Czy na pewno chcesz usunąć to mieszkanie?</p>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij</button>
-                                        <a href="/delete-new-transaction?id=${flat.newTransactionId}" type="button" class="btn btn-primary">Usuń</a>
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij
+                                        </button>
+                                        <a href="/delete-new-transaction?id=${flat.newTransactionId}" type="button"
+                                           class="btn btn-primary">Usuń</a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </td>
-                    </tr>
+                </tr>
                 </#list>
                 </tbody>
             </table>
+            </#if>
         </div>
 
     </div>
