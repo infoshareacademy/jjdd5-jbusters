@@ -1,8 +1,10 @@
 package com.infoshareacademy.jbusters.data;
 
+import com.infoshareacademy.jbusters.model.AppProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.io.IOException;
@@ -28,16 +30,23 @@ public class StatisticsManager {
    @Inject
     StaticFields staticFields;
 
-    private final Path STATISTICS_PATH = staticFields.getStatisticsFilePath();
+    private Path STATISTICS_PATH;
 
     public StatisticsManager() {
         properties = new PropLoader();
+
+    }
+
+    @PostConstruct
+    public void init() {
         try {
-            properties = new PropLoader(StaticFields.getAppPropertiesURL().openStream());
+            properties = new PropLoader(staticFields.getAppPropertiesURL().openStream());
             currency = properties.getCurrency();
         } catch (Exception e) {
-            LOGGER.error("Missing properties file in path {}", StaticFields.getAppPropertiesURL().toString());
+            LOGGER.error("Missing properties file in path {}", staticFields.getAppPropertiesURL().toString());
         }
+        STATISTICS_PATH = staticFields.getStatisticsFilePath();
+
     }
 
     public void captureNameFromServlet(String cityName, String districtName, String value) throws IOException {

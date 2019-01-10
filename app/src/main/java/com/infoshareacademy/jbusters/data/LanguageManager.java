@@ -45,7 +45,7 @@ public class LanguageManager {
             languageProperties.load(fis);
             fis.close();
         } catch (IOException e) {
-            LOGGER.error("Missing properties file in path {}", StaticFields.getLangPropertiesPath().toString());
+            LOGGER.error("Missing properties file in path {}", staticFields.getLangPropertiesPath().toString());
         }
 
         String language = languageProperties.getProperty(LANGUAGE_KEY, LANGUAGE_DEFAULT_VALUE);

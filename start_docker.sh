@@ -4,6 +4,6 @@ docker rm -f jjdd5-jbusters_app_1
 docker system prune -f --volumes
 docker-compose up -d --build --force-recreate
 docker stop jjdd5-jbusters_app_1
-sleep 60
+sleep 40
 docker start jjdd5-jbusters_app_1
 

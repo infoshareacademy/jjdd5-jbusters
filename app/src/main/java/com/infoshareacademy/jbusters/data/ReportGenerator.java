@@ -1,5 +1,6 @@
 package com.infoshareacademy.jbusters.data;
 
+import com.infoshareacademy.jbusters.model.AppProperty;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.font.PdfFont;
@@ -20,6 +21,7 @@ import com.itextpdf.layout.property.VerticalAlignment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import java.io.IOException;
@@ -34,7 +36,7 @@ public class ReportGenerator {
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Data.class);
-    private StatisticsManager statisticsManager;
+    //private StatisticsManager statisticsManager;
     private PropLoader properties;
     private static final String CITY_TABLE_HEADER = "MIASTO|ILOŚĆ WYSZUKIWAŃ|SUMARYCZNA WARTOŚĆ WYCEN";
     private static final String DISTRICT_TABLE_HEADER = "DZIELNICA|ILOŚĆ WYSZUKIWAŃ|SUMARYCZNA WARTOŚĆ WYCEN|ŚREDNIA WARTOŚĆ WYCEN";
@@ -42,10 +44,16 @@ public class ReportGenerator {
     @Inject
     StaticFields staticFields;
 
+    @Inject
+    StatisticsManager statisticsManager;
 
     public ReportGenerator() {
-        this.statisticsManager = new StatisticsManager();
+        //this.statisticsManager = new StatisticsManager();
         properties = new PropLoader();
+    }
+
+    @PostConstruct
+    public void init() {
         try {
             properties = new PropLoader(staticFields.getAppPropertiesURL().openStream());
             String currency = properties.getCurrency();
@@ -54,7 +62,6 @@ public class ReportGenerator {
         }
 
     }
-
     public void generateReport() throws IOException {
 
         PdfDocument pdf = new PdfDocument(new PdfWriter(staticFields.getReportPathString()));

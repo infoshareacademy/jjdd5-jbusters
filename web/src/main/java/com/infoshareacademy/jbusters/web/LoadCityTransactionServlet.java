@@ -33,9 +33,6 @@ public class LoadCityTransactionServlet extends HttpServlet {
     @Inject
     private SearchOfData searchOfData;
 
-    @Inject
-    private StaticFields staticFieldsManager;
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
