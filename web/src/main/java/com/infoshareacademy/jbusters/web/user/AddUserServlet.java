@@ -71,31 +71,32 @@ public class AddUserServlet extends HttpServlet {
             u.setUserSurname(surname);
             u.setUserRole(2);
 
-            userDao.save(u);
-
-            model.put("email", email);
-            model.put("name", name);
-            model.put("surname", surname);
-            Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_SUCESS);
-
             try {
-                template.process(model, out);
-                LOG.info("confirm-registration!! all ok");
-            } catch (TemplateException e) {
-                LOG.error("Failed confirm-registration!!");
-            }
+                userDao.save(u);
+                model.put("email", email);
+                model.put("name", name);
+                model.put("surname", surname);
+                Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_SUCESS);
 
-        } else {
-            Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_FAILED);
-            try {
-                template.process(model, out);
-                LOG.info("confirm-registration!!no email ");
-            } catch (TemplateException e) {
-                LOG.error("Failed confirm-registration!! no email");
+                try {
+                    template.process(model, out);
+                    LOG.info("confirm-registration!! all ok");
+                } catch (TemplateException e) {
+                    LOG.error("Failed confirm-registration!!");
+                }
+
+            } catch (Exception e) {
+                LOG.error("Failed to add new user due to: {}", e.getMessage());
+                Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_FAILED);
+
+                try {
+                    template.process(model, out);
+                    LOG.info("confirm-registration!!");
+                } catch (TemplateException er) {
+                    LOG.error("Failed confirm-registration due to {}", er.getMessage());
+                }
             }
         }
     }
-
-
 }
 

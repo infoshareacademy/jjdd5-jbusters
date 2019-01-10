@@ -14,6 +14,7 @@ import javax.mail.internet.MimeMultipart;
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Properties;
 
@@ -22,17 +23,16 @@ public class MailHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MailHandler.class);
     private static final String SENDER_NAME = "JBusters Web App";
-    private static final String SENDER_USER_LOGIN = "jbusters.isa";
-    private static final String SENDER_USER_PASS = "";
     private static final String ENCODING_SUBJECT = "UTF-8";
     private static final String ENCODING_CONTENT = "text/html; charset=UTF-8";
-    private static final String[] RECIPIENTS_LIST = {""};
     private static final String SUBJECT = "Raport z dnia ";
-    private static final String CONTENT = "Witaj, w załączniku znajdziesz cykliczny raport, zawierający dane statystyczne wyszukiwań w naszej aplikacji.";
+    private static final String WELCOME = "Witaj,";
+    private static final String CONTENT = "w załączniku znajdziesz cykliczny raport, zawierający dane statystyczne wyszukiwań w naszej aplikacji.";
     private static final String ATTACHMENT_PATH = StaticFields.getReportPathString();
-    private static final String ATTACHMENT_NAME = "Raport.pdf";
+    private static final String ATTACHMENT_NAME = "Raport_";
+    private static final String ATTACHMENT_TYPE = ".pdf";
 
-    public void sendFromGMail() throws UnsupportedEncodingException, MessagingException {
+    public void sendMail(String login, String pass, String[] recipients) throws UnsupportedEncodingException, MessagingException {
 
         Properties props = System.getProperties();
         String host = "smtp.gmail.com";
@@ -44,17 +44,17 @@ public class MailHandler {
         Session session = Session.getInstance(props,
                 new Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(SENDER_USER_LOGIN, SENDER_USER_PASS);
+                        return new PasswordAuthentication(login, pass);
                     }
                 });
 
         Message message = new MimeMessage(session);
 
-        message.setFrom(new InternetAddress(SENDER_USER_LOGIN, SENDER_NAME));
-        InternetAddress[] toAddress = new InternetAddress[RECIPIENTS_LIST.length];
+        message.setFrom(new InternetAddress(login, SENDER_NAME));
+        InternetAddress[] toAddress = new InternetAddress[recipients.length];
 
-        for (int i = 0; i < RECIPIENTS_LIST.length; i++) {
-            toAddress[i] = new InternetAddress(RECIPIENTS_LIST[i]);
+        for (int i = 0; i < recipients.length; i++) {
+            toAddress[i] = new InternetAddress(recipients[i]);
         }
 
         for (int i = 0; i < toAddress.length; i++) {
@@ -62,16 +62,17 @@ public class MailHandler {
         }
 
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat dateFormatAttachment = new SimpleDateFormat("yyyy_MM_dd");
         Date date = new Date();
 
         ((MimeMessage) message).setSubject(SUBJECT + dateFormat.format(date), ENCODING_SUBJECT);
 
         MimeBodyPart textBodyPart = new MimeBodyPart();
-        textBodyPart.setContent(CONTENT, ENCODING_CONTENT);
+        textBodyPart.setContent(WELCOME + System.lineSeparator() + CONTENT, ENCODING_CONTENT);
 
         MimeBodyPart attachmentBodyPart = new MimeBodyPart();
         attachmentBodyPart.setDataHandler(new DataHandler(new FileDataSource(ATTACHMENT_PATH)));
-        attachmentBodyPart.setFileName(ATTACHMENT_NAME);
+        attachmentBodyPart.setFileName(ATTACHMENT_NAME + dateFormatAttachment.format(date) + ATTACHMENT_TYPE);
 
         Multipart multipart = new MimeMultipart();
         multipart.addBodyPart(textBodyPart);
@@ -81,7 +82,7 @@ public class MailHandler {
 
         try {
             Transport.send(message);
-            LOGGER.info("Mail sent to: {}", RECIPIENTS_LIST);
+            LOGGER.info("Mail sent to: {}", Arrays.toString(recipients));
         } catch (MessagingException e) {
             LOGGER.error("Mail not sent, attachment missing under the following path: {}", ATTACHMENT_PATH);
             throw e;

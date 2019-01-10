@@ -23,18 +23,24 @@ public class UploadFileFromUser {
 
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
 
-        File file = new File(uploadFilePath + File.separator + fileName);
+        try {
+            LOG.info("1: ");
+            File file = new File(uploadFilePath + File.separator + fileName);
+            LOG.info("2: " + file.toString());
+            Files.deleteIfExists(file.toPath());
+            LOG.info("3:delete " );
+            InputStream fileContent = filePart.getInputStream();
 
-        Files.deleteIfExists(file.toPath());
+            long bytesWritten  = Files.copy(fileContent, file.toPath());
+            LOG.info("4 writen: " +  bytesWritten);
+            fileContent.close();
+            LOG.info("Uploaded file with name: " + fileName);
+            LOG.info("Directory to " + fileName + " is " + uploadFilePath);
+            return file;
+        } catch (Exception e ) {
+            LOG.error("Error on writing script", e);
+            return null;
+        }
 
-        InputStream fileContent = filePart.getInputStream();
-
-        Files.copy(fileContent, file.toPath());
-
-        fileContent.close();
-        LOG.info("Uploaded file with name: " + fileName);
-        LOG.info("Directory to " + fileName + " is " + uploadFilePath);
-
-        return file;
     }
 }

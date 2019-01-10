@@ -3482,7 +3482,10 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`USER_ID`, `USER_EMAIL`, `USER_password`, `USER_NAME`, `USER_SURNAME`, `USER_ROLE`) VALUES
 (1, 'jbusters.isa@gmail.com', 'jbusters1234', 'Dżej', 'Buster', 1),
-(2, 'tom.ociepa@gmail.com', 'pass123', 'Tomek', 'Ociepa', 2);
+(2, 'tom.ociepa@gmail.com', 'pass123', 'Tomek', 'Ociepa', 2),
+(3, 'karolkarwia@gmail.com', 'pass123', 'Karol', 'Bemka', 2),
+(4, 'jan.odjas@gmail.com', 'pass123', 'Jan', 'Odjas', 2),
+(5, 'lukaszmarwitz@gmail.com', 'pass123', 'Łukasz', 'Marwitz', 2);
 
 --
 -- Indeksy dla zrzutów tabel
@@ -3535,7 +3538,7 @@ ALTER TABLE `users`
 -- Ograniczenia dla tabeli `new_transaction`
 --
 ALTER TABLE `new_transaction`
-  ADD CONSTRAINT `NEW_TRANSACTION_USER_ID` FOREIGN KEY (`NEW_TRANSACTION_USER_ID`) REFERENCES `users` (`USER_ID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `NEW_TRANSACTION_USER_ID` FOREIGN KEY (`NEW_TRANSACTION_USER_ID`) REFERENCES `users` (`USER_ID`) ON DELETE CASCADE ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -122,6 +122,8 @@ public class ValuationServlet extends HttpServlet {
                 flatPriceTotal = newTransaction.getFlatArea().multiply(flatPriceM2).setScale(2, RoundingMode.HALF_UP);
 
             } else {
+                LOG.warn("Failed to calculate price for flat with values: {}, {}, {}, {}, {}", newTransaction.getCity(), newTransaction.getDistrict(),
+                        newTransaction.getTypeOfMarket(), newTransaction.getFlatArea(), newTransaction.getConstructionYearCategory());
 
                 if (sessionEmail == null) {
                     template = templateProvider.getTemplate(getServletContext(), "no-valuation");

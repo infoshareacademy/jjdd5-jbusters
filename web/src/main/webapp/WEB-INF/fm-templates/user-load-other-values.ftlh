@@ -1,40 +1,4 @@
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>JBusters</title>
-    <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-
-    <!-- Google -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <script src="https://apis.google.com/js/client.js" async defer></script>
-    <meta name="google-signin-scope" content="profile email">
-    <meta name="google-signin-client_id">
-
-</head>
-<body>
-<div class="wrap-user">
-    <header>
-        <div class="container-fluid">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <a class="navbar-brand" href="#">JBusters -></a>
-                <a class="navbar-brand" href="#">użytkownik: ${sessionName}</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a href="/logout" class="nav-link" onclick="signOut();">Wyloguj</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </div>
-    </header>
+<#include "include-user-header.ftlh">
 
     <div class="container">
         <br><br>
@@ -49,18 +13,7 @@
                         <button type="submit" class="btn btn-primary">Menu</button>
                     </form>
                 </div>
-
-                <div class="col-4">
-                    <div class="card" style="width: 18rem;">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Zalogowano: <b>${sessionEmail}</b></li>
-                        </ul>
-                        <div class="card-body">
-                            <a href="/logout" class="card-link" onclick="signOut();">Wyloguj</a>
-                        </div>
-                    </div>
-
-                </div>
+<#include "include-user-info.ftlh">
 
             </div>
 
@@ -72,6 +25,18 @@
                 <#if errors??>
                     <h2>Podaj szczegółowe parametry mieszkania: </h2>
                     <hr class="my-4">
+
+                    <div class="form-group">
+                        <label for="Select8">Miasto: </label>
+                        <input name="city" type="text" class="form-control" id="Select8" value="${city}" disabled>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="Select8">Dzielnica: </label>
+                        <input name="district" type="text" class="form-control" id="Select8" value="${district1}" disabled>
+                    </div>
+
                     <form method="get" action="valuation">
 
                         <#if errors['overallError']??>
@@ -93,7 +58,9 @@
                         <div class="form-group">
                             <label for="Select2">Wpisz wielkość mieszkania w m2</label>
                             <input name="flat-area" type="text" class="form-control" id="Select2" required
-                                   pattern="^[1-9][0-9]?[0-9]?$" title="Podaj wartość od 1 do 999" value="${flatArea}">
+                                   pattern="^[1-9][0-9]?[0-9]?$" title="Podaj wartość od 1 do 999" value="${flatArea}"
+                                   oninvalid="this.setCustomValidity('Wpisana wartość jest nieprawidłowa!')"
+                                   oninput="this.setCustomValidity('')">
                         </div>
 
                         <#if errors['flatAreaError']??>
@@ -103,7 +70,9 @@
                         <div class="form-group">
                             <label for="Select3">Wpisz numer pietra</label>
                             <input name="level" type="text" class="form-control" id="Select3" required
-                                   pattern="^[0-1]?[0-9]?[0-9]?$" title="Podaj wartość od 0 do 199" value="${level}">
+                                   pattern="^[0-1]?[0-9]?[0-9]?$" title="Podaj wartość od 0 do 199" value="${level}"
+                                   oninvalid="this.setCustomValidity('Wpisana wartość jest nieprawidłowa!')"
+                                   oninput="this.setCustomValidity('')">
                         </div>
 
                         <#if errors['levelError']??>
@@ -170,11 +139,22 @@
 
                     <h2>Podaj szczegółowe parametry mieszkania: </h2>
                     <hr class="my-4">
+
+                    <div class="form-group">
+                        <label for="Select8">Miasto: </label>
+                        <input name="city" type="text" class="form-control" id="Select8" value="${city}" disabled>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="Select8">Dzielnica: </label>
+                        <input name="district" type="text" class="form-control" id="Select8" value="${district1}" disabled>
+                    </div>
+
                     <form method="get" action="valuation">
                         <div class="form-group">
                             <label for="Select1">Wybierz rodzaj rynku</label>
                             <select name="market-type" class="form-control" id="Select1" required>
-                                <option></option>
                                 <option>RYNEK WTÓRNY</option>
                                 <option>RYNEK PIERWOTNY</option>
                             </select>
@@ -183,7 +163,9 @@
                         <div class="form-group">
                             <label for="Select2">Wpisz wielkość mieszkania w m2</label>
                             <input name="flat-area" type="text" class="form-control" id="Select2" required
-                                   pattern="^[1-9][0-9]?[0-9]?$" title="Podaj wartość od 1 do 999">
+                                   pattern="^[1-9][0-9]?[0-9]?$" title="Podaj wartość od 1 do 999"
+                                   oninvalid="this.setCustomValidity('Wpisana wartość jest nieprawidłowa!')"
+                                   oninput="this.setCustomValidity('')">
                         </div>
 
 
@@ -191,7 +173,9 @@
                         <div class="form-group">
                             <label for="Select3">Wpisz numer pietra</label>
                             <input name="level" type="text" class="form-control" id="Select3" required
-                                   pattern="^[0-1]?[0-9]?[0-9]?$" title="Podaj wartość od 0 do 199">
+                                   pattern="^[0-1]?[0-9]?[0-9]?$" title="Podaj wartość od 0 do 199"
+                                   oninvalid="this.setCustomValidity('Wpisana wartość jest nieprawidłowa!')"
+                                   oninput="this.setCustomValidity('')">
                         </div>
 
 
@@ -199,7 +183,6 @@
                         <div class="form-group">
                             <label for="Select4">Czy posiadasz miejsce parkingowe ?</label>
                             <select name="parking-spot" class="form-control" id="Select4" required>
-                                <option></option>
                                 <option>BRAK MP</option>
                                 <option>MIEJSCE NAZIEMNE</option>
                                 <option>GARAŻ JEDNOSTANOWISKOWY</option>
@@ -210,7 +193,6 @@
                         <div class="form-group">
                             <label for="Select5">Wybierz poziom wykończenia twojego mieszkania</label>
                             <select name="standard-level" class="form-control" id="Select5" required>
-                                <option></option>
                                 <option>WYSOKI</option>
                                 <option>BARDZO DOBRY</option>
                                 <option>DOBRY</option>
@@ -223,7 +205,6 @@
                         <div class="form-group">
                             <label for="Select6">Wybierz przedzial czasowy w jakim zostalo wybudowane Twoje mieszkanie</label>
                             <select name="construction" class="form-control" id="Select6" required>
-                                <option></option>
                                 <option value="1">przed rokiem 1970</option>
                                 <option value="2">między rokiem 1970 a 1990</option>
                                 <option value="3">po roku 1990</option>
@@ -253,32 +234,5 @@
 
 </div>
 </div>
-<footer>&copy; 2018 JBusters</footer>
-
-<script src="js/jquery-3.3.1.slim.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-
-<script>
-    function signOut() {
-        console.log("logging out ...");
-        gapi.auth.authorize(
-            {
-                'client_id': "210558406372-1i31kqkfer8n3pa5dsdkl3udifff4k9v.apps.googleusercontent.com",
-                'scope': "profile email",
-                'immediate': false,
-                cookie_policy: 'single_host_origin',
-                response_type: 'token id_token'
-            },
-            function (authResult) {
-                gapi.auth.signOut();
-                gapi.auth.disconnect();
-            }
-        );
-        console.log("redirecting to logout servlet");
-        window.location.href = '/logout';
-    }
-</script>
-</body>
-</html>
-
+<#include "include-user-footer.ftlh">
 

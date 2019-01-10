@@ -1,10 +1,7 @@
 package com.infoshareacademy.jbusters.web.user;
 
-
-import com.infoshareacademy.jbusters.dao.NewTransactionDao;
 import com.infoshareacademy.jbusters.dao.UserDao;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
-import com.infoshareacademy.jbusters.model.NewTransaction;
 import com.infoshareacademy.jbusters.model.User;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -20,14 +17,13 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-@WebServlet("/show-transaction")
-public class ShowNewTransaction extends HttpServlet {
+@WebServlet(urlPatterns = "/admin-users/editUser")
+public class AdminUsersEditServlet extends HttpServlet {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ShowNewTransaction.class);
-    private static final String TEMPLATE_NAME = "user-show-new-transaction";
+    private static final Logger LOG = LoggerFactory.getLogger(AdminUsersServlet.class);
+    private static final String TEMPLATE_NAME = "admin-users-edit";
 
     @Inject
     private TemplateProvider templateProvider;
@@ -35,37 +31,53 @@ public class ShowNewTransaction extends HttpServlet {
     @Inject
     private UserDao userDao;
 
-    @Inject
-    private NewTransactionDao newTransactionDao;
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         resp.setContentType("text/html;charset=UTF-8");
+        final PrintWriter out = resp.getWriter();
 
-        final PrintWriter writer = resp.getWriter();
         Map<String, Object> model = new HashMap<>();
 
         HttpSession session = req.getSession();
         String sessionEmail = (String) session.getAttribute("userEmail");
         String sessionName = (String) session.getAttribute("userName");
 
-        User user = userDao.findByEmail(sessionEmail);
-        List<NewTransaction> userTransaction  = newTransactionDao.findByUser(user);
-
-        Template template;
-        template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
-
-        model.put("sessionEmail", sessionEmail);
         model.put("sessionName", sessionName);
-        model.put("trans", userTransaction);
-        model.put("size", userTransaction.size());
+        model.put("sessionEmail", sessionEmail);
+
+        int userId = Integer.parseInt(req.getParameter("id"));
+
+        User user = userDao.findById(userId);
+
+        model.put("user", user);
+
+        Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
 
         try {
-            template.process(model, writer);
-            LOG.info("Load list newTransaction");
+            template.process(model, out);
         } catch (TemplateException e) {
-            LOG.error("Failed load list newTransaction");
+            LOG.error("Faield to process model due to {}", e.getMessage());
         }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+
+        int userId = Integer.parseInt(req.getParameter("id"));
+
+        User user = userDao.findById(userId);
+
+        String stringRole = req.getParameter("role");
+
+        if (stringRole.equals("ADMIN")) {
+            user.setUserRole(1);
+        } else {
+            user.setUserRole(2);
+        }
+
+        userDao.update(user);
+
+        resp.sendRedirect("/admin-users");
     }
 }

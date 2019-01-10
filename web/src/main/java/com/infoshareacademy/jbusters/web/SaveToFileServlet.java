@@ -46,14 +46,4 @@ public class SaveToFileServlet extends HttpServlet {
             LOG.error("Failed to save list if flats and send it to user due to {}", e.getMessage());
         }
     }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/my-flats");
-        HttpSession session = req.getSession();
-
-        session.removeAttribute("propertyList");
-        requestDispatcher.forward(req, resp);
-    }
 }
