@@ -35,10 +35,14 @@
                                     <form method="get" action="scheduler">
                                         <div class="input-group clockpicker">
                                             <input name="time" type="text" class="form-control" value="Wybierz porę dnia" id="SelectTime" required
+                                                   autocomplete="off"
                                                    oninvalid="this.setCustomValidity('Proszę ustawić porę dnia w celu zapisu!')"
                                                    oninput="this.setCustomValidity('')">
-                                            <div class="input-group-addon">
-                                                <span class="far fa-clock"></span>
+                                            <div class="input-group-addon input-group-append">
+                                                <span class="input-group-text">
+                                                    <span class="far fa-clock"></span>
+                                                </span>
+
                                             </div>
                                         </div>
                                         <br>
