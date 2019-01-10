@@ -5,6 +5,19 @@
     <#if errors??>
         <h2>Podaj szczegółowe parametry mieszkania: </h2>
         <hr class="my-4">
+
+        <div class="form-group">
+            <label for="Select8">Miasto: </label>
+            <input name="city" type="text" class="form-control" id="Select8" value="${city}" disabled>
+        </div>
+
+
+        <div class="form-group">
+            <label for="Select8">Dzielnica: </label>
+            <input name="district" type="text" class="form-control" id="Select8" value="${district1}" disabled>
+        </div>
+
+
         <form method="get" action="valuation">
 
             <#if errors['overallError']??>
@@ -107,6 +120,19 @@
 
         <h2>Podaj szczegółowe parametry mieszkania: </h2>
         <hr class="my-4">
+
+        <div class="form-group">
+        <label for="Select8">Miasto: </label>
+        <input name="city" type="text" class="form-control" id="Select8" value="${city}" disabled>
+        </div>
+
+
+        <div class="form-group">
+            <label for="Select8">Dzielnica: </label>
+            <input name="district" type="text" class="form-control" id="Select8" value="${district1}" disabled>
+        </div>
+
+
         <form method="get" action="valuation">
         <div class="form-group">
             <label for="Select1">Wybierz rodzaj rynku</label>
@@ -175,15 +201,6 @@
 
         <button type="submit" class="btn btn-primary">Oblicz</button>
 
-        <div class="form-group hidden">
-        <label for="Select8">Dzielnica: </label>
-        <input name="district" type="text" class="form-control" id="Select8" value="${district1}">
-        </div>
-
-        <div class="form-group hidden">
-    <label for="Select8">Miasto: </label>
-    <input name="city" type="text" class="form-control" id="Select8" value="${city}">
-        </div>
 
         </form>
     </#if>
