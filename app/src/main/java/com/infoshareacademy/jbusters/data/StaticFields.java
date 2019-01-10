@@ -3,6 +3,8 @@ package com.infoshareacademy.jbusters.data;
 
 import com.infoshareacademy.jbusters.dao.AppPropertyDao;
 import com.infoshareacademy.jbusters.model.AppProperty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -18,7 +20,7 @@ import java.util.Map;
 
 @ApplicationScoped
 public class StaticFields {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(StaticFields.class);
     private Map<String,String> featuresMap;
     private static final StaticFields staticFields = new StaticFields();
     private static final DecimalFormatSymbols decimalSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
@@ -37,6 +39,8 @@ public class StaticFields {
 
     public StaticFields() {
         appPropertyDao.findAll().forEach(appProperty -> featuresMap.put(appProperty.getApName(),appProperty.getApValue()));
+        LOGGER.info("StaticFields constructor initialized");
+        LOGGER.info("number of properties: "+featuresMap.size());
     }
 
     public String getTestConf(String name) {
@@ -77,15 +81,15 @@ public class StaticFields {
         return LANG_PROPERTIES_FILE;
     }
 
-    public static DecimalFormat getLongDF() {
-        DecimalFormat longDF = LONG_DF;
-        DecimalFormat longDF = new DecimalFormat(get);
+    public DecimalFormat getLongDF() {
+        //DecimalFormat longDF = LONG_DF;
+        DecimalFormat longDF = new DecimalFormat(getTestConf(LONG_DF1));
         longDF.setDecimalFormatSymbols(getCustomizedSymbols());
         longDF.setRoundingMode(RoundingMode.CEILING);
         return longDF;
     }
 
-    public static String formatWithLongDF(Number num) {
+    public String formatWithLongDF(Number num) {
         return getLongDF().format(num);
     }
 

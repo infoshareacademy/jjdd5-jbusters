@@ -39,29 +39,31 @@ public class ReportGenerator {
     private static final String CITY_TABLE_HEADER = "MIASTO|ILOŚĆ WYSZUKIWAŃ|SUMARYCZNA WARTOŚĆ WYCEN";
     private static final String DISTRICT_TABLE_HEADER = "DZIELNICA|ILOŚĆ WYSZUKIWAŃ|SUMARYCZNA WARTOŚĆ WYCEN|ŚREDNIA WARTOŚĆ WYCEN";
 
+    @Inject
+    StaticFields staticFields;
 
 
     public ReportGenerator() {
         this.statisticsManager = new StatisticsManager();
         properties = new PropLoader();
         try {
-            properties = new PropLoader(StaticFields.getAppPropertiesURL().openStream());
+            properties = new PropLoader(staticFields.getAppPropertiesURL().openStream());
             String currency = properties.getCurrency();
         } catch (Exception e) {
-            LOGGER.error("Missing properties file in path {}", StaticFields.getAppPropertiesURL().toString());
+            LOGGER.error("Missing properties file in path {}", staticFields.getAppPropertiesURL().toString());
         }
 
     }
 
     public void generateReport() throws IOException {
 
-        PdfDocument pdf = new PdfDocument(new PdfWriter(StaticFields.getReportPathString()));
+        PdfDocument pdf = new PdfDocument(new PdfWriter(staticFields.getReportPathString()));
         Document doc = new Document(pdf);
 
         PdfFont polishFont = PdfFontFactory.createFont(HELVETICA, CP1250, true, true);
         PdfCanvas canvas = new PdfCanvas(pdf.addNewPage());
         Rectangle rect = new Rectangle(doc.getPageEffectiveArea(PageSize.A4).getWidth() / 2 - 110, doc.getPageEffectiveArea(PageSize.A4).getHeight() / 2 - 100, 300, 300);
-        canvas.addImage(ImageDataFactory.create(StaticFields.getBgImgPath()), rect, false);
+        canvas.addImage(ImageDataFactory.create(staticFields.getBgImgPath()), rect, false);
 
         Text title = new Text("Raport statystyk użycia aplikacji").setFont(polishFont).setFontSize(20f);
         Text author = new Text("JBusters").setFont(polishFont);

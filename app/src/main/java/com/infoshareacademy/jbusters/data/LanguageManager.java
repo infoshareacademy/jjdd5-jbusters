@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -20,6 +21,9 @@ public class LanguageManager {
     private static final String LANGUAGE_DEFAULT_VALUE = "pl";
     private static final Properties languageProperties = new Properties();
 
+    @Inject
+    StaticFields staticFields;
+
     public String translate(String translationKey) throws IOException {
 
         Locale currentLocale = new Locale(getLanguage());
@@ -30,11 +34,11 @@ public class LanguageManager {
 
     public String getLanguage() throws IOException {
 
-        if (!Files.exists(StaticFields.getLangPropertiesPath())) {
-            Files.createFile(StaticFields.getLangPropertiesPath());
+        if (!Files.exists(staticFields.getLangPropertiesPath())) {
+            Files.createFile(staticFields.getLangPropertiesPath());
         }
 
-        String url = StaticFields.getLangPropertiesPath().toString();
+        String url = staticFields.getLangPropertiesPath().toString();
         FileInputStream fis = new FileInputStream(url);
 
         try {
@@ -53,11 +57,11 @@ public class LanguageManager {
 
     public void setLanguage(String language) throws IOException {
 
-        if (!Files.exists(StaticFields.getLangPropertiesPath())) {
-            Files.createFile(StaticFields.getLangPropertiesPath());
+        if (!Files.exists(staticFields.getLangPropertiesPath())) {
+            Files.createFile(staticFields.getLangPropertiesPath());
         }
 
-        String url = StaticFields.getLangPropertiesPath().toString();
+        String url = staticFields.getLangPropertiesPath().toString();
         FileOutputStream fos = new FileOutputStream(url);
 
         languageProperties.setProperty(LANGUAGE_KEY, language);

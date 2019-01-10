@@ -7,9 +7,9 @@ class StaticFieldsTest {
 
     @Test
     void getDecimalFormat() {
-
+        StaticFields staticFields = new StaticFields();
         //given
-        DecimalFormat df = StaticFields.getLongDF();
+        DecimalFormat df = staticFields.getLongDF();
         double actual = 1123456789.894d;
 
         //then

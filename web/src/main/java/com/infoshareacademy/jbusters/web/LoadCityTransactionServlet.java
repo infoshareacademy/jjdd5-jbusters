@@ -39,7 +39,6 @@ public class LoadCityTransactionServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        LOG.info("Call to static fields" + staticFieldsManager.getTestConf());
 
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
         PrintWriter out = resp.getWriter();

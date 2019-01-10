@@ -4,6 +4,7 @@ import com.infoshareacademy.jbusters.console.ConsoleViewer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URL;
@@ -24,17 +25,23 @@ public class CalculatePrice {
     private PropLoader properties;
     private BigDecimal exchangeRate;
 
+    @Inject
+    StaticFields staticFields;
+
+    public CalculatePrice() {
+    }
+
     public CalculatePrice(Transaction transaction, List<Transaction> filteredList) {
         this.userTransaction = transaction;
         this.filteredList = filteredList;
 
         properties = new PropLoader();
         try {
-            properties = new PropLoader(StaticFields.getAppPropertiesURL().openStream());
+            properties = new PropLoader(staticFields.getAppPropertiesURL().openStream());
             exchangeRate = properties.getExchangeRateBigDecimal();
 
         } catch (Exception e) {
-            LOGGER.error("Missing properties file in path {}", StaticFields.getAppPropertiesURL().toString());
+            LOGGER.error("Missing properties file in path {}", staticFields.getAppPropertiesURL().toString());
         }
     }
 
@@ -46,13 +53,13 @@ public class CalculatePrice {
         ConsoleViewer.clearScreen();
         System.out.println(":: Wybrano wycenę mieszkania ::\n");
         System.out.println("Statystyki:\n");
-        System.out.println("Cena minimalna przed aktualizacją o trend to:"+getTabs(3) + StaticFields.formatWithLongDF(min.divide(exchangeRate, BigDecimal.ROUND_UP)) + " " + properties.getCurrency());
+        System.out.println("Cena minimalna przed aktualizacją o trend to:"+getTabs(3) + staticFields.formatWithLongDF(min.divide(exchangeRate, BigDecimal.ROUND_UP)) + " " + properties.getCurrency());
 
         List<Transaction> listToCalculateTrend = getListToCalculateTrend(transactions);
 
         BigDecimal overallTrend = overallTrend(listToCalculateTrend);
 
-        System.out.println("Roczny trend wzrostu cen mieszkań wynosi:"+getTabs(3) + StaticFields.formatWithShortDF(overallTrend.multiply(BigDecimal.valueOf(36500))) + "%");
+        System.out.println("Roczny trend wzrostu cen mieszkań wynosi:"+getTabs(3) + staticFields.formatWithShortDF(overallTrend.multiply(BigDecimal.valueOf(36500))) + "%");
 
 
         List<Transaction> exportList = transactions.stream()
@@ -141,14 +148,14 @@ public class CalculatePrice {
 
         String currencySuffix = properties.getCurrency() +" per m2";
         LOGGER.info("Average price calculated from similar flats set equals:"+getTabs(3)
-                + StaticFields.formatWithLongDF(
+                + staticFields.formatWithLongDF(
                         average.setScale(2, RoundingMode.HALF_UP).divide(exchangeRate, BigDecimal.ROUND_UP))
                 + " " + properties.getCurrency() + currencySuffix);
         LOGGER.info("Maximum prise in similar flats set equals:"+getTabs(3)
-                + StaticFields.formatWithLongDF(max.divide(exchangeRate, BigDecimal.ROUND_UP))
+                + staticFields.formatWithLongDF(max.divide(exchangeRate, BigDecimal.ROUND_UP))
                 + " " + properties.getCurrency() + currencySuffix);
         System.out.println("Minimum prise in similar flats set equals:"+getTabs(4)
-                + StaticFields.formatWithLongDF(min.divide(exchangeRate, BigDecimal.ROUND_UP))
+                + staticFields.formatWithLongDF(min.divide(exchangeRate, BigDecimal.ROUND_UP))
                 + " " + properties.getCurrency() + currencySuffix);
 
         BigDecimal lowerFactor = min.divide(average, 3, RoundingMode.HALF_UP);
@@ -193,7 +200,7 @@ public class CalculatePrice {
 
         BigDecimal pricePerM2 = average.multiply(finalWeight);
         LOGGER.info("Calculated price per square meter equals:"+getTabs(5)
-                + StaticFields.formatWithLongDF(
+                + staticFields.formatWithLongDF(
                         pricePerM2.setScale(2, RoundingMode.HALF_UP).divide(exchangeRate, BigDecimal.ROUND_UP))
                 + " " + properties.getCurrency());
 

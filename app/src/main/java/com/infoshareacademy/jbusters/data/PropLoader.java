@@ -1,7 +1,5 @@
 package com.infoshareacademy.jbusters.data;
 
-import com.sun.xml.internal.stream.buffer.sax.Features;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -27,8 +25,6 @@ public class PropLoader {
     private Properties properties;
 
     public PropLoader() {
-
-        //String feature = Features.get(Features.KONFUGURACJADLA_GDYNI;
     }
 
 

@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -37,13 +38,15 @@ public class DataLoader {
     private static final int INDEX_IMPORTANT = 14;
     private static final String separator = ",";
 
+    @Inject
+    StaticFields staticFields;
     public List<Transaction> createTransactionList(List<String> listFileTransakcjeCSV, boolean userFile) {
 
         PropLoader properties = new PropLoader();
         try {
-            properties = new PropLoader(StaticFields.getAppPropertiesURL().openStream());
+            properties = new PropLoader(staticFields.getAppPropertiesURL().openStream());
         } catch (Exception e) {
-            LOGGER.error("Missing properties file in path {}", StaticFields.getAppPropertiesURL().toString());
+            LOGGER.error("Missing properties file in path {}", staticFields.getAppPropertiesURL().toString());
         }
 
 

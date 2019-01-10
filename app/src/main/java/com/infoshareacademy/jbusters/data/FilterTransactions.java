@@ -32,20 +32,23 @@ public class FilterTransactions {
     @Inject
     private Data data;
 
+    @Inject
+    StaticFields staticFields;
+
     public FilterTransactions() {
         PropLoader properties = new PropLoader();
         try {
-            InputStream is = StaticFields.getAppPropertiesURL().openStream();
+            InputStream is = staticFields.getAppPropertiesURL().openStream();
             properties = new PropLoader(is);
             areaDiff = properties.getAreaDiff();
             areaDiffExpanded = properties.getAreaDiffExpanded();
             minResultsNumber = properties.getMinResultsNumber();
             priceDiff = properties.getPriceDiff();
 
-            is = StaticFields.getDistrPropertiesURL().openStream();
+            is = staticFields.getDistrPropertiesURL().openStream();
             distrWagesHandler = new DistrWagesHandler(is);
         } catch (Exception e) {
-            LOGGER.error("Missing properties file in path {} or {}", StaticFields.getAppPropertiesURL().toString(), StaticFields.getDistrPropertiesURL().toString());
+            LOGGER.error("Missing properties file in path {} or {}", staticFields.getAppPropertiesURL().toString(), staticFields.getDistrPropertiesURL().toString());
         }
     }
 
