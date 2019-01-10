@@ -5,9 +5,9 @@ import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.mail.MessagingException;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -22,26 +22,51 @@ import java.util.concurrent.TimeUnit;
 public class MailScheduler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MailScheduler.class);
+    private static final String REPORT_PATH = StaticFields.getReportPathString();
     private static final Properties scheduleProperties = new Properties();
     private static final MailHandler mailHandler = new MailHandler();
+    private static final ReportGenerator reportGenerator = new ReportGenerator();
     private static final String DAY_KEY = "day";
+    private static final String DAY_DEFAULT_VALUE = "2";
     private static final String HOUR_KEY = "hour";
+    private static final String HOUR_DEFAULT_VALUE = "08";
     private static final String MINUTE_KEY = "minute";
-    private static final int PERIOD = 604800;
-    private static final int DAY = 4;       //from properties
-    private static final int HOUR = 14;     //from properties
-    private static final int MINUTE = 58;   //from properties
+    private static final String MINUTE_DEFAULT_VALUE = "30";
+    private static final int PERIOD = 604800;   // seconds in week
     private static final int SECOND = 00;
     private static final int MILLISECOND = 00;
-    private static final ScheduledExecutorService SCHEDULER = Executors.newSingleThreadScheduledExecutor();
-    private static ScheduledFuture<?> SCHEDULED_TASK;
+    private static ScheduledExecutorService scheduledExecutorService;
+    private static ScheduledFuture<?> scheduledFuture;
 
-    public long getDelay() {
+    public long getDelay() throws IOException {
+
+        if (!Files.exists(StaticFields.getSchedulerPropertiesFile())) {
+            Files.createFile(StaticFields.getSchedulerPropertiesFile());
+        }
+
+        String url = StaticFields.getSchedulerPropertiesFile().toString();
+        FileInputStream fis = new FileInputStream(url);
+
+        try {
+            scheduleProperties.load(fis);
+            fis.close();
+        } catch (IOException e) {
+            LOGGER.error("Missing properties file in path {}", StaticFields.getSchedulerPropertiesFile().toString());
+            LOGGER.info("Date stamp default values will be set.");
+        }
+
+        String dayString = scheduleProperties.getProperty(DAY_KEY, DAY_DEFAULT_VALUE);
+        String hourString = scheduleProperties.getProperty(HOUR_KEY, HOUR_DEFAULT_VALUE);
+        String minuteString = scheduleProperties.getProperty(MINUTE_KEY, MINUTE_DEFAULT_VALUE);
+
+        int day = Integer.parseInt(dayString);
+        int hour = Integer.parseInt(hourString);
+        int minute = Integer.parseInt(minuteString);
 
         Calendar runTime = Calendar.getInstance();
-        runTime.set(Calendar.DAY_OF_WEEK, DAY);
-        runTime.set(Calendar.HOUR_OF_DAY, HOUR);
-        runTime.set(Calendar.MINUTE, MINUTE);
+        runTime.set(Calendar.DAY_OF_WEEK, day);
+        runTime.set(Calendar.HOUR_OF_DAY, hour);
+        runTime.set(Calendar.MINUTE, minute);
         runTime.set(Calendar.SECOND, SECOND);
         runTime.set(Calendar.MILLISECOND, MILLISECOND);
         Date runTimeCompose = runTime.getTime();
@@ -74,31 +99,38 @@ public class MailScheduler {
         }
     }
 
-    private void start() {
-
-        //scheduler(getDelay(), PERIOD);
+    private void stopScheduler() {
+        scheduledFuture.cancel(false);
+        scheduledExecutorService.shutdown();
     }
 
-    private void update(int period) {
+    private void scheduler(String login, String pass, String[] recipients) throws IOException {
 
-        SCHEDULED_TASK.cancel(false);
-        SCHEDULER.shutdown();
-        //scheduler(getDelay(), PERIOD);
-    }
+        LOGGER.info("Checking if some schedule task is running.");
 
-    private void scheduler(String login, String pass, String[] recipients) {
+        if (scheduledFuture != null){
+            stopScheduler();
+            LOGGER.warn("The following schedule task was found and terminated: {}", scheduledExecutorService.toString());
+        } else {
+            LOGGER.info("No schedule tasks found.");
+        }
+
+        LOGGER.info("Proceeding with schedule task initiation.");
 
         Runnable task = () -> {
             try {
+                reportGenerator.generateReport();
+                LOGGER.info("Report generated under following path: {}", REPORT_PATH);
                 mailHandler.sendMail(login, pass, recipients);
-            } catch (UnsupportedEncodingException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             } catch (MessagingException e) {
                 e.printStackTrace();
             }
         };
 
-        SCHEDULED_TASK = SCHEDULER.scheduleAtFixedRate(task, getDelay(), PERIOD, TimeUnit.SECONDS);
+        scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+        scheduledFuture = scheduledExecutorService.scheduleAtFixedRate(task, getDelay(), PERIOD, TimeUnit.SECONDS);
     }
 
     public void saveScheduleAndInit(String dayString, String hourString, String minuteString, String login, String pass, String[] recipients) throws IOException, MessagingException {

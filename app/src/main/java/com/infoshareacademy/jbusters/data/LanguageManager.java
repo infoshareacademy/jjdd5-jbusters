@@ -46,7 +46,7 @@ public class LanguageManager {
 
         String language = languageProperties.getProperty(LANGUAGE_KEY, LANGUAGE_DEFAULT_VALUE);
 
-        LOGGER.info("Language set to default: {}", LANGUAGE_DEFAULT_VALUE);
+        LOGGER.info("Language set to: {}", language);
 
         return language;
     }

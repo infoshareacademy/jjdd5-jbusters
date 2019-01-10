@@ -27,16 +27,25 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">Raporty e-mail</h5>
+
                                     <hr class="my-4">
-                                    <p class="card-text">Wysłanie korespondencji do subskrybentów wraz z załączonym raportem.</p>
-                                    <a href="/generate-email-report" class="btn btn-primary" style="float: left">Wyślij teraz</a>
-                                    <p class="text-muted btn"><em>${sentStatus}</em></p>
-                                    <br>
-                                    <hr class="my-4">
+
                                     <p class="card-text">Ustaw termin cyklicznej wysyłki korespondencji.</p>
+
                                     <form method="get" action="scheduler">
-                                        <select name="day" class="form-control" id="Select1" required>
-                                            <option selected>Wybierz dzień tygodnia</option>
+                                        <div class="input-group clockpicker">
+                                            <input name="time" type="text" class="form-control" value="Wybierz porę dnia" id="SelectTime" required
+                                                   oninvalid="this.setCustomValidity('Proszę ustawić porę dnia w celu zapisu!')"
+                                                   oninput="this.setCustomValidity('')">
+                                            <div class="input-group-addon">
+                                                <span class="far fa-clock"></span>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <select name="day" type="text" class="form-control" id="SelectDay" required
+                                                oninvalid="this.setCustomValidity('Proszę wybrać dzień z listy w celu zapisu!')"
+                                                oninput="this.setCustomValidity('')">
+                                            <option selected="true" disabled="true" value="">Wybierz dzień tygodnia</option>
                                             <option value="2">Poniedziałek</option>
                                             <option value="3">Wtorek</option>
                                             <option value="4">Środa</option>
@@ -46,16 +55,16 @@
                                             <option value="1">Niedziela</option>
                                         </select>
                                         <br>
-                                        <div class="input-group clockpicker">
-                                            <input name="time" type="text" class="form-control" value="Wybierz porę dnia" required>
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-time"></span>
-                                            </span>
-                                        </div>
-                                        <br>
                                         <button type="submit" class="btn btn-primary" style="float: left">Zapisz</button>
                                         <p class="text-muted btn"><em>${scheduleStatus}</em></p>
                                     </form>
+
+                                    <hr class="my-4">
+
+                                    <p class="card-text">Wysłanie korespondencji do subskrybentów wraz z załączonym raportem.</p>
+                                    <a href="/generate-email-report" class="btn btn-primary" style="float: left">Wyślij teraz</a>
+                                    <p class="text-muted btn"><em>${sentStatus}</em></p>
+
                                 </div>
                             </div>
                         </div>
