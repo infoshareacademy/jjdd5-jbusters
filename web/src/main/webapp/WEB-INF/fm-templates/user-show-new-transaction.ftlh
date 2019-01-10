@@ -53,7 +53,7 @@
                         <a href="/edit-transaction?id=${flat.newTransactionId}" class="btn btn-dark">Edytuj</a>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
                             Usuń
                         </button>
 
@@ -72,10 +72,10 @@
                                         <p>Czy na pewno chcesz usunąć to mieszkanie?</p>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Zamknij
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Zamknij
                                         </button>
                                         <a href="/delete-new-transaction?id=${flat.newTransactionId}" type="button"
-                                           class="btn btn-primary">Usuń</a>
+                                           class="btn btn-danger">Usuń</a>
                                     </div>
                                 </div>
                             </div>

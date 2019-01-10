@@ -39,12 +39,12 @@
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
 
-                    <div class="jumbotron jumbotron-opacity-1">
+                    <div class="jumbotron jumbotron-opacity-1 my-border-top">
 
                         <h1 class="display-4">Wartość Twojego mieszkania  to:</h1>
                         <hr class="my-4">
-                        <h1 id="price" class="display-4"><b>${price}</b> zł za m<sup>2</sup></h1>
-                        <h1 id="price" class="display-4"><b>${priceTotal}</b> zł za całe mieszkanie</h1>
+                        <h1 class="display-4"><b><span style="color: #007bff">${price}</span></b><span style="color: #343a40"> zł za m<sup>2</sup></span></h1>
+                        <h1 class="display-4"><b><span style="color: #007bff">${priceTotal}</span></b><span style="color: #343a40"> zł za całe mieszkanie</span></h1>
                         <hr class="my-4">
 
                     </div>
@@ -65,7 +65,7 @@
                                 );
                             });
                         </script>
-                    <p class="lead">Do wyceny Twojego mieszkania wykorzystano <b>${listTransactionUseValuation?size}</b> transakcje</p>
+                    <p class="lead">Liczba transakcji użytych do sporządzenia wyceny: <b>${listTransactionUseValuation?size}</b></p>
                     <br>
                     <p>Lista wykorzystanych transakcji:</p>
                     <table id="flats" class="display nowrap" style="width: 400px">

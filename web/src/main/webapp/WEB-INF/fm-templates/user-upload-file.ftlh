@@ -20,7 +20,7 @@
 
             <hr class="my-4">
             <br>
-            <form method="POST" action="/users-transactions" enctype="multipart/form-data">
+            <form method="POST" action="/upload-file" enctype="multipart/form-data">
                 <input class="btn btn-primary" type="file" name="file" id="file"/> <br/>
                 </br>
 

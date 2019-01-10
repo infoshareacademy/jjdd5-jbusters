@@ -87,6 +87,7 @@
                     </select>
                 </div>
                 <input class="btn btn-primary" type="submit" value="Zapisz" name="upload" id="upload"/>
+                <a href="/show-transaction" type="button" class="btn btn-secondary">Wróć</a>
             </form>
         </div>
     </div>
