@@ -1,15 +1,13 @@
 package com.infoshareacademy.jbusters.data;
 
-
-import com.infoshareacademy.jbusters.dao.AppPropertyDao;
-import com.infoshareacademy.jbusters.model.AppProperty;
+import com.infoshareacademy.jbusters.dao.ConfigurationDao;
+import com.infoshareacademy.jbusters.model.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.net.URL;
 import java.nio.file.Path;
@@ -21,20 +19,17 @@ import java.util.*;
 @ApplicationScoped
 public class StaticFields {
     private static final Logger LOGGER = LoggerFactory.getLogger(StaticFields.class);
-    private Map<String,String> featuresMap = new HashMap<>();
-    private  final DecimalFormatSymbols decimalSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
-    private  final DecimalFormat LONG_DF = new DecimalFormat("###,###.##");
-    private final DecimalFormat SHORT_DF = new DecimalFormat("##.##");
-    private  final String LONG_DF1 = "longDFPattern";
+
     private  final URL APP_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("app.properties");
     private  final URL DISTR_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("districts.properties");
     private  final Path STATISTICS_FILE_PATH = Paths.get(System.getProperty("jboss.home.dir"), "data", "statistics.txt");
     private  final String REPORT_PATH_STRING = Paths.get(System.getProperty("jboss.server.temp.dir"), "report.pdf").toString();
     private  final URL BG_IMG_PATH = Thread.currentThread().getContextClassLoader().getResource(Paths.get("img", "JBusters_logo.png").toString());
     private  final Path LANG_PROPERTIES_FILE = Paths.get(System.getProperty("jboss.home.dir"), "data", "language.properties");
+    private Configuration config;
 
     @Inject
-    private AppPropertyDao appPropertyDao;
+    private ConfigurationDao configurationDao;
 
     public StaticFields() {
         LOGGER.info("StaticFields constructor initialized");
@@ -42,29 +37,9 @@ public class StaticFields {
 
     @PostConstruct
     public void init() {
-        List<AppProperty> appPropertyList = appPropertyDao.findAll();;
-        LOGGER.info("AppPropertyList created");
-
-        LOGGER.info("AppPropertyList filled with {} values",appPropertyList.size());
-        appPropertyDao.findAll().forEach(appProperty -> featuresMap.put(appProperty.getApName(),appProperty.getApValue()));
-
-        LOGGER.info("number of properties: "+featuresMap.size());
-
-    }
-
-    public String getTestConf(String name) {
-        return featuresMap.get(name);
-//        //DecimalFormat longDF = LONG_DF;
-//        DecimalFormat longDF = new DecimalFormat(appPropertyDao.findByName(2).getApValue());
-//        longDF.setDecimalFormatSymbols(getCustomizedSymbols());
-//        longDF.setRoundingMode(RoundingMode.CEILING);
-//        return longDF;
-    }
-
-
-    //public StaticFields getStaticFields() {
-    //    return staticFields;
-    //}
+        int id = 1;
+        config = configurationDao.findById(id);
+}
 
     public  URL getAppPropertiesURL() {
         return APP_PROPERTIES_FILE;
@@ -91,8 +66,7 @@ public class StaticFields {
     }
 
     public DecimalFormat getLongDF() {
-        //DecimalFormat longDF = LONG_DF;
-        DecimalFormat longDF = new DecimalFormat(getTestConf(LONG_DF1));
+        DecimalFormat longDF = new DecimalFormat(config.getLongDFPattern());
         longDF.setDecimalFormatSymbols(getCustomizedSymbols());
         longDF.setRoundingMode(RoundingMode.CEILING);
         return longDF;
@@ -103,20 +77,48 @@ public class StaticFields {
     }
 
     public  DecimalFormat getShortDF() {
-        SHORT_DF.setDecimalFormatSymbols(getCustomizedSymbols());
-        SHORT_DF.setRoundingMode(RoundingMode.CEILING);
-        return SHORT_DF;
+        DecimalFormat shortDF = new DecimalFormat(config.getShortDFPattern());
+        shortDF.setDecimalFormatSymbols(getCustomizedSymbols());
+        shortDF.setRoundingMode(RoundingMode.CEILING);
+        return shortDF;
     }
 
     public  String formatWithShortDF(Number num) {
-        SHORT_DF.setDecimalFormatSymbols(getCustomizedSymbols());
-        SHORT_DF.setRoundingMode(RoundingMode.CEILING);
-        return SHORT_DF.format(num);
+        return getShortDF().format(num);
     }
 
     private DecimalFormatSymbols getCustomizedSymbols() {
-        decimalSymbols.setDecimalSeparator('.');
-        decimalSymbols.setGroupingSeparator(' ');
+        DecimalFormatSymbols decimalSymbols = new DecimalFormatSymbols(Locale.ENGLISH);
+        decimalSymbols.setDecimalSeparator(config.getDecimalSep().charAt(0));
+        decimalSymbols.setGroupingSeparator(config.getGroupingSep().charAt(0));
         return decimalSymbols;
     }
+
+    public int getMinResultsReq(){
+        return config.getMinResultsReq();
+    }
+    public BigDecimal getExchangeRate() {
+        return config.getExchangeRate();
+    }
+
+    public String getCurrency() {
+        return config.getCurrency();
+    }
+
+    public BigDecimal getAreaDiff() {
+        return config.getAreaDiff();
+    }
+
+    public BigDecimal getAreaDiffExpanded() {
+        return config.getAreaDiffExpanded();
+    }
+
+    public int getDecimalPlaces() {
+        return config.getDecimalPlaces();
+    }
+
+    public BigDecimal getPriceDiff() {
+        return config.getPriceDiff();
+    }
+
 }

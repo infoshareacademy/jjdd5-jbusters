@@ -1,8 +1,6 @@
-CREATE DATABASE  IF NOT EXISTS `jbusters` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_polish_ci */;
-USE `jbusters`;
 -- MySQL dump 10.13  Distrib 5.7.24, for Linux (x86_64)
 --
--- Host: 127.0.0.1    Database: jbusters
+-- Host: localhost    Database: jbusters
 -- ------------------------------------------------------
 -- Server version	8.0.13
 
@@ -41,6 +39,40 @@ LOCK TABLES `appProperties` WRITE;
 /*!40000 ALTER TABLE `appProperties` DISABLE KEYS */;
 INSERT INTO `appProperties` VALUES (1,'minResults','11'),(2,'exchangeRate','1.00'),(3,'currency','PLN'),(4,'areaDiff','20'),(5,'areaDiffExpanded','25'),(6,'decimalPlaces','2'),(7,'priceDiff','600'),(8,'longDFPattern','###,###'),(9,'shortDFPattern','##.##'),(10,'decimalSeparator','.'),(11,'groupingSeparator',' ');
 /*!40000 ALTER TABLE `appProperties` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `configurations`
+--
+
+DROP TABLE IF EXISTS `configurations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `configurations` (
+  `CONFIGURATION_ID` int(11) NOT NULL AUTO_INCREMENT,
+  `MIN_RESULTS_REQUIRED` int(11) NOT NULL DEFAULT '11',
+  `EXCHANGE_RATE` DECIMAL NOT NULL DEFAULT '1',
+  `CURRENCY` varchar(3) COLLATE utf8_polish_ci NOT NULL DEFAULT 'PLN',
+  `AREA_DIFF` DECIMAL NOT NULL DEFAULT '20',
+  `AREA_DIFF_EXPANDED` DECIMAL NOT NULL DEFAULT '25',
+  `DECIMAL_PLACES` int(11) NOT NULL DEFAULT '2',
+  `PRICE_DIFF` DECIMAL NOT NULL DEFAULT '600',
+  `LONG_DF_PATTERN` varchar(45) COLLATE utf8_polish_ci NOT NULL DEFAULT '###,###',
+  `SHORT_DF_PATTERN` varchar(45) COLLATE utf8_polish_ci NOT NULL DEFAULT '##.##',
+  `DECIMAL_SEPARATOR` varchar(1) COLLATE utf8_polish_ci NOT NULL DEFAULT '.',
+  `GROUPING_SEPARATOR` varchar(1) COLLATE utf8_polish_ci NOT NULL DEFAULT ' ',
+  PRIMARY KEY (`CONFIGURATION_ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `configurations`
+--
+
+LOCK TABLES `configurations` WRITE;
+/*!40000 ALTER TABLE `configurations` DISABLE KEYS */;
+INSERT INTO `configurations` VALUES (1,11,1,'PLN',20,25,2,600,'###,###','##.##','.',' ');
+/*!40000 ALTER TABLE `configurations` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -159,4 +191,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-01-09  0:21:06
+-- Dump completed on 2019-01-10 17:00:55

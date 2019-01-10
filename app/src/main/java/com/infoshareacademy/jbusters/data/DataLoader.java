@@ -3,6 +3,7 @@ package com.infoshareacademy.jbusters.data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import java.io.IOException;
@@ -37,17 +38,23 @@ public class DataLoader {
     private static final int INDEX_TRANSACTION_NAME = 13;
     private static final int INDEX_IMPORTANT = 14;
     private static final String separator = ",";
+    PropLoader properties;
 
     @Inject
     StaticFields staticFields;
-    public List<Transaction> createTransactionList(List<String> listFileTransakcjeCSV, boolean userFile) {
 
-        PropLoader properties = new PropLoader();
+    @PostConstruct
+    public void init() {
+        properties = new PropLoader();
+
         try {
             properties = new PropLoader(staticFields.getAppPropertiesURL().openStream());
         } catch (Exception e) {
             LOGGER.error("Missing properties file in path {}", staticFields.getAppPropertiesURL().toString());
         }
+    }
+    public List<Transaction> createTransactionList(List<String> listFileTransakcjeCSV, boolean userFile) {
+
 
 
         List<Transaction> listOfTransaction = new ArrayList<>();

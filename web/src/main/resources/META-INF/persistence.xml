@@ -9,6 +9,7 @@
         <class>com.infoshareacademy.jbusters.model.User</class>
         <class>com.infoshareacademy.jbusters.model.NewTransaction</class>
         <class>com.infoshareacademy.jbusters.model.AppProperty</class>
+        <class>com.infoshareacademy.jbusters.model.Configuration</class>
         <properties>
             <!-- Hibernate settings -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
