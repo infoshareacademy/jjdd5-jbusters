@@ -53,6 +53,7 @@
                 </div>
 
                 <input class="btn btn-primary" type="submit" value="Zapisz" name="upload" id="upload"/>
+                <a href="/admin-users" type="button" class="btn btn-secondary">Wróć</a>
             </form>
         </div>
     </div>
