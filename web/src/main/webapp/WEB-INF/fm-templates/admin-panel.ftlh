@@ -34,8 +34,8 @@
                                     <br>
                                     <hr class="my-4">
                                     <p class="card-text">Ustaw termin cyklicznej wysyłki korespondencji.</p>
-                                    <form method="get" action="address">
-                                        <select name="construction" class="form-control" id="Select1" required>
+                                    <form method="get" action="scheduler">
+                                        <select name="day" class="form-control" id="Select1" required>
                                             <option selected>Wybierz dzień tygodnia</option>
                                             <option value="2">Poniedziałek</option>
                                             <option value="3">Wtorek</option>
@@ -46,19 +46,15 @@
                                             <option value="1">Niedziela</option>
                                         </select>
                                         <br>
-                                        <select name="construction" class="form-control" id="Select1" required>
-                                            <option selected>Wybierz dzień tygodnia</option>
-                                            <option value="2">Poniedziałek</option>
-                                            <option value="3">Wtorek</option>
-                                            <option value="4">Środa</option>
-                                            <option value="5">Czwartek</option>
-                                            <option value="6">Piątek</option>
-                                            <option value="7">Sobota</option>
-                                            <option value="1">Niedziela</option>
-                                        </select>
+                                        <div class="input-group clockpicker">
+                                            <input name="time" type="text" class="form-control" value="Wybierz porę dnia" required>
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-time"></span>
+                                            </span>
+                                        </div>
                                         <br>
-                                            <button type="submit" class="btn btn-primary" style="float: left">Zapisz</button>
-                                        <p class="text-muted btn"><em>test</em></p>
+                                        <button type="submit" class="btn btn-primary" style="float: left">Zapisz</button>
+                                        <p class="text-muted btn"><em>${scheduleStatus}</em></p>
                                     </form>
                                 </div>
                             </div>

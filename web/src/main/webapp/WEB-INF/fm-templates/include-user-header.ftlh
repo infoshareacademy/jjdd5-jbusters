@@ -13,6 +13,9 @@
     <meta name="google-signin-scope" content="profile email">
     <meta name="google-signin-client_id">
 
+    <!-- ClockPicker Stylesheet -->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap-clockpicker.min.css">
+
 </head>
 <body>
 <div class="wrap-user">
