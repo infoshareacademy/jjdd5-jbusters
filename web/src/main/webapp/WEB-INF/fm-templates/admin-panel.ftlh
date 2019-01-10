@@ -86,8 +86,8 @@
                         <div class="col-sm-6">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">Edycja użytokowników</h5>
-                                    <p class="card-text">Usuwanie oraz zmiana uprawnień urzytkowników</p>
+                                    <h5 class="card-title">Edycja użytkowników</h5>
+                                    <p class="card-text">Usuwanie oraz zmiana uprawnień użytkowników</p>
                                     <a href="/admin-users" class="btn btn-primary">Przejdź dalej</a>
                                 </div>
                             </div>
