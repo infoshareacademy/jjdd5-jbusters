@@ -19,6 +19,11 @@
             </div>
             <button type="submit" class="btn btn-primary">Dalej</button>
 
+            <div class="form-group hidden">
+                <label for="Select1">Miasto: </label>
+                <input name="city" type="text" class="form-control" id="Select1" value="${city}">
+            </div>
+
         </form>
     </div>
 
