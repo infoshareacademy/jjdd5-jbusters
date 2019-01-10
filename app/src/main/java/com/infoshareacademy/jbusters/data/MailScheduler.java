@@ -38,7 +38,7 @@ public class MailScheduler {
     private static ScheduledExecutorService scheduledExecutorService;
     private static ScheduledFuture<?> scheduledFuture;
 
-    public long getDelay() throws IOException {
+    public static long getDelay() throws IOException {
 
         if (!Files.exists(StaticFields.getSchedulerPropertiesFile())) {
             Files.createFile(StaticFields.getSchedulerPropertiesFile());
@@ -99,17 +99,13 @@ public class MailScheduler {
         }
     }
 
-    private void stopScheduler() {
-        scheduledFuture.cancel(false);
-        scheduledExecutorService.shutdown();
-    }
-
-    private void scheduler(String login, String pass, String[] recipients) throws IOException {
+    private static void scheduler(String login, String pass, String[] recipients) throws IOException {
 
         LOGGER.info("Checking if some schedule task is running.");
 
         if (scheduledFuture != null){
-            stopScheduler();
+            scheduledFuture.cancel(false);
+            scheduledExecutorService.shutdown();
             LOGGER.warn("The following schedule task was found and terminated: {}", scheduledExecutorService.toString());
         } else {
             LOGGER.info("No schedule tasks found.");
