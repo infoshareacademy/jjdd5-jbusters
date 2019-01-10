@@ -1,40 +1,60 @@
 <#include "include-user-header.ftlh">
-    <div class="container">
-        <br><br>
 
-        <div class="jumbotron jumbotron-opacity">
+<div class="container">
+    <br><br>
 
-            <div class="row">
+    <div class="jumbotron jumbotron-opacity">
+
+        <div class="row">
             <div class="col-8">
-                    <#if size =  0>
-                        <h1 class="display-4">Brak zapisanych mieszkań</h1>
-                    <form method="post" action="load-user-menu">
-                        <button type="submit" class="btn btn-primary">Menu</button>
-                    </form>
-                    <#else >
-                    <h1 class="display-4">Lista mieszkań</h1>
-                    <p class="lead">Obecnie posiadasz: <b>${size}</b></p>
-                    <form method="post" action="load-user-menu">
-                        <button type="submit" class="btn btn-primary">Menu</button>
-                    </form>
-                    </div>
-                    </#if>
-
-<#include "include-user-info.ftlh">
-
+                <#if size =  0>
+                <h1 class="display-4">Brak zapisanych mieszkań</h1>
+                <form method="post" action="load-user-menu">
+                    <button type="submit" class="btn btn-primary">Menu</button>
+                </form>
+                <#else >
+                <h1 class="display-4">Lista mieszkań</h1>
+                <p class="lead">Obecnie posiadasz: <b>${size}</b></p>
+                <form method="post" action="load-user-menu">
+                    <button type="submit" class="btn btn-primary">Menu</button>
+                </form>
             </div>
-            <#if size gt 0>
+            </#if>
+
+            <#include "include-user-info.ftlh">
+        </div>
+
+        <#if size gt 0>
             <hr class="my-4">
 
-            <table class="table table-striped">
+            <link rel="stylesheet" type="text/css"
+                  href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+            <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+            <script type="text/javascript" charset="utf8"
+                    src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+            <script>
+                $(document).ready(function () {
+                    $('#flats').DataTable({
+                            "dom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>',
+                            "language": {
+                                "url": "js/dataTable.json"
+                            }
+                        }
+                    );
+                });
+            </script>
+
+            <table id="flats" class="display nowrap" style="width: 100%">
                 <thead>
-                <tr>
-                    <th scope="col">Opis</th>
-                    <th scope="col">Miasto</th>
-                    <th scope="col">Dzielnica</th>
-                    <th scope="col">Ulica</th>
-                    <th scope="col">Sprzedane</th>
-                </tr>
+                <th></th>
+                <th>Opis</th>
+                <th>Miasto</th>
+                <th>Dzielnica</th>
+                <th>Ulica</th>
+                <th>Sprzedane</th>
+                <th></th>
+                <th></th>
                 </thead>
                 <tbody>
                 <#list trans as flat>
@@ -44,6 +64,11 @@
                     <#else>
                         <tr>
                     </#if>
+                    <td>
+                        <a class="btn btn-primary btn-lg btn-dark active" role="button"
+                           aria-pressed="true" href="/valuation?city=${flat.newTransactionCity}&district=${flat.newTransactionDistrict}&market-type=${flat.newTransactionTypeOfMarket}&flat-area=${flat.newTransactionFlatArea}&level=${flat.newTransactionLevel}&parking-spot=${flat.newTransactionParkingSpot}&standard-level=${flat.newTransactionStandardLevel}&construction=${flat.newTransactionConstructionYearCategory}">
+                            Wyceń ponownie</a>
+                    </td>
                     <td>${flat.newTransactionDescription}</td>
                     <td>${flat.newTransactionCity}</td>
                     <td>${flat.newTransactionDistrict}</td>
@@ -81,14 +106,14 @@
                             </div>
                         </div>
                     </td>
-                </tr>
+                    </tr>
                 </#list>
                 </tbody>
             </table>
-            </#if>
-        </div>
-
+        </#if>
     </div>
+
+</div>
 
 </div>
 </div>
