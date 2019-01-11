@@ -1,6 +1,7 @@
 package com.infoshareacademy.jbusters.data;
 
 import com.infoshareacademy.jbusters.console.ConsoleViewer;
+import com.infoshareacademy.jbusters.dao.TranzactionDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +35,9 @@ public class FilterTransactions {
 
     @Inject
     StaticFields staticFields;
+
+    @Inject
+    TranzactionDao tranzactionDao;
 
     public FilterTransactions() {
         PropLoader properties = new PropLoader();
@@ -151,7 +155,7 @@ public class FilterTransactions {
         return lista;
     }
 
-    //TODO add district weight evaluation
+
     private List<Transaction> multiDistrictFilter(List<Transaction> transactionsBase, Transaction userTransaction) {
         List<Transaction> lista = transactionsBase.stream()
 

@@ -4,9 +4,11 @@ import com.infoshareacademy.jbusters.model.NewTransaction;
 import com.infoshareacademy.jbusters.model.Tranzaction;
 
 import javax.ejb.Stateless;
+import javax.persistence.Cacheable;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import java.time.LocalDate;
 import java.util.List;
 
 @Stateless
@@ -39,6 +41,16 @@ public class TranzactionDao {
         final Query query = entityManager.createQuery("SELECT t FROM Tranzaction t");
 
         return query.getResultList();
+    }
+
+    public List<Tranzaction> basicFilter(LocalDate date, String city, String marketType, int yearConstructCategory){
+
+        final Query query = entityManager.createQuery("SELECT t FROM Tranzaction t WHERE t.transactionDataTransaction >= :date AND t.transactionTypeOfMarket = :marketType AND t.transactionCity = :city AND t.transactionConstructionYearCategory = :constructYearCat");
+        query.setParameter("date", date);
+        query.setParameter("marketType", marketType);
+        query.setParameter("constructYearCat", yearConstructCategory);
+        query.setParameter("city", city);
+    return query.getResultList();
     }
 
 }
