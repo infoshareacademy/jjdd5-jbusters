@@ -1,6 +1,6 @@
 package com.infoshareacademy.jbusters.web.user;
 
-import com.infoshareacademy.jbusters.authentication.AuthUser;
+import com.infoshareacademy.jbusters.authentication.Auth;
 import com.infoshareacademy.jbusters.dao.NewTransactionDao;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import com.infoshareacademy.jbusters.model.NewTransaction;
@@ -30,7 +30,7 @@ public class UserEditTransactionServlet extends HttpServlet {
     private TemplateProvider templateProvider;
 
     @Inject
-    AuthUser authUser;
+    Auth auth;
 
     @Inject
     NewTransactionDao newTransactionDao;
@@ -48,7 +48,7 @@ public class UserEditTransactionServlet extends HttpServlet {
         String sessionName = (String) session.getAttribute("userName");
         int transactionId = Integer.parseInt(req.getParameter("id"));
 
-        if (authUser.isUserAuthorizedToEdit(sessionEmail, transactionId)) {
+        if (auth.isUserAuthorizedToEdit(sessionEmail, transactionId)) {
             NewTransaction transactionToEdit = newTransactionDao.findById(transactionId);
 
             model.put("transactionId", transactionId);
@@ -88,7 +88,7 @@ public class UserEditTransactionServlet extends HttpServlet {
         String sessionEmail = (String) session.getAttribute("userEmail");
         int transactionId = Integer.parseInt(req.getParameter("id"));
 
-        if (authUser.isUserAuthorizedToEdit(sessionEmail, transactionId)) {
+        if (auth.isUserAuthorizedToEdit(sessionEmail, transactionId)) {
             NewTransaction transactionToEdit = newTransactionDao.findById(transactionId);
 
             if (req.getParameter("important").equals("tak") || req.getParameter("important").equals("nie")) {
