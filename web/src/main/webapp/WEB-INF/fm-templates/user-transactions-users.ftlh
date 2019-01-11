@@ -1,34 +1,20 @@
-<#include "include-user-header.ftlh">
+<#if sessionRole == 1 >
+    <#include "header-admin.ftlh">
+<#elseif sessionRole == 2>
+    <#include "include-user-header.ftlh">
+</#if>
 
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.3.1.js"></script>
 <script type="text/javascript" charset="utf8"
         src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
-<div class="container">
-    <br><br>
-
-    <div class="jumbotron jumbotron-opacity" style="width: auto">
-
-        <div class="row">
-            <div class="col-8">
-                <form method="post" action="load-user-menu">
-                    <button type="submit" class="btn btn-primary">Menu</button>
-                </form>
-            </div>
-            <#include "include-user-info.ftlh">
-        </div>
-    </div>
-</div>
-
-
 <#if error?? >
-
     <div class="container">
         <div class="jumbotron jumbotron-opacity">
             <h1 class="display-10"><p>${error} </p></h1>
             <hr class="my-4">
-            <a class="btn btn-secondary btn-lg btn-dark" href="uploadFile.html" role="button">Załaduj plik</a>
+            <a class="btn btn-secondary btn-lg btn-dark" href="/upload-file" role="button">Załaduj plik</a>
             <a class="btn btn-secondary btn-lg btn-dark" href="/load-city" role="button">Wyceń mieszkanie</a>
         </div>
     </div>
@@ -36,7 +22,6 @@
 <#elseif flats?has_content>
 
 <div class="jumbotron jumbotron-opacity my-border-top" style="width: auto">
-    <hr class="my-4">
     <script>
         $(document).ready(function () {
             $('#flats').DataTable({

@@ -1,3 +1,4 @@
+
 <html>
 <head>
     <meta charset="UTF-8">
@@ -47,7 +48,6 @@
             </nav>
         </div>
     </header>
-
     <div class="container">
         <div class="jumbotron jumbotron-opacity">
             <h1 class="display-4">${home_headline}</h1>
@@ -57,6 +57,9 @@
         </div>
     </div>
 </div>
+
+
+
 <footer>&copy; 2018 JBusters</footer>
 
 <script src="js/jquery-3.3.1.slim.min.js"></script>

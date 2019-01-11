@@ -31,12 +31,12 @@ public class ShowNewTransaction extends HttpServlet {
 
     @Inject
     private TemplateProvider templateProvider;
-
     @Inject
     private UserDao userDao;
-
     @Inject
     private NewTransactionDao newTransactionDao;
+    @Inject
+    private User sessionUser;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -49,6 +49,7 @@ public class ShowNewTransaction extends HttpServlet {
         HttpSession session = req.getSession();
         String sessionEmail = (String) session.getAttribute("userEmail");
         String sessionName = (String) session.getAttribute("userName");
+        sessionUser = (User) session.getAttribute("user");
 
         User user = userDao.findByEmail(sessionEmail);
         List<NewTransaction> userTransaction  = newTransactionDao.findByUser(user);
@@ -58,6 +59,7 @@ public class ShowNewTransaction extends HttpServlet {
 
         model.put("sessionEmail", sessionEmail);
         model.put("sessionName", sessionName);
+        model.put("sessionRole", sessionUser.getUserId());
         model.put("trans", userTransaction);
         model.put("size", userTransaction.size());
 

@@ -1,4 +1,8 @@
-<#include "include-user-header.ftlh">
+<#if sessionRole == 1 >
+    <#include "header-admin.ftlh">
+<#elseif sessionRole == 2>
+    <#include "include-user-header.ftlh">
+</#if>
 
     <div class="container">
         <br><br>

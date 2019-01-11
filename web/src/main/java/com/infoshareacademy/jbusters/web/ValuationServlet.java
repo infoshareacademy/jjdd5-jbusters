@@ -5,6 +5,7 @@ import com.infoshareacademy.jbusters.data.FilterTransactions;
 import com.infoshareacademy.jbusters.data.StatisticsManager;
 import com.infoshareacademy.jbusters.data.Transaction;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
+import com.infoshareacademy.jbusters.model.User;
 import com.infoshareacademy.jbusters.web.validator.NumericDataValidator;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -48,16 +49,14 @@ public class ValuationServlet extends HttpServlet {
 
     @Inject
     private Transaction newTransaction;
-
     @Inject
     private TemplateProvider templateProvider;
-
     @Inject
     private FilterTransactions filterTransactions;
-
     @Inject
     private StatisticsManager statisticsManager;
-
+    @Inject
+    private User sessionUser;
     private NumericDataValidator numericDataValidator = new NumericDataValidator();
 
     @Override
@@ -77,9 +76,11 @@ public class ValuationServlet extends HttpServlet {
         HttpSession session = req.getSession(true);
         String sessionEmail = (String) session.getAttribute("userEmail");
         String sessionName = (String) session.getAttribute("userName");
+        sessionUser = (User) session.getAttribute("user");
 
         model.put("sessionEmail", sessionEmail);
         model.put("sessionName", sessionName);
+        model.put("sessionRole", sessionUser.getUserId());
 
         Template template;
 

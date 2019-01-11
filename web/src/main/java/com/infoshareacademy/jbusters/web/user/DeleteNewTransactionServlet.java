@@ -3,6 +3,7 @@ package com.infoshareacademy.jbusters.web.user;
 import com.infoshareacademy.jbusters.authentication.Auth;
 import com.infoshareacademy.jbusters.dao.NewTransactionDao;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
+import com.infoshareacademy.jbusters.model.User;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.slf4j.Logger;
@@ -27,13 +28,12 @@ public class DeleteNewTransactionServlet extends HttpServlet {
 
     @Inject
     private TemplateProvider templateProvider;
-
     @Inject
     private NewTransactionDao newTransactionDao;
-
     @Inject
     private Auth auth;
-
+    @Inject
+    private User sessionUser;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
@@ -43,6 +43,8 @@ public class DeleteNewTransactionServlet extends HttpServlet {
         HttpSession session = req.getSession(true);
         String sessionName = (String) session.getAttribute("userName");
         String sessionEmail = (String) session.getAttribute("userEmail");
+        sessionUser = (User) session.getAttribute("user");
+
         int transactionId = Integer.parseInt(req.getParameter("id"));
 
         if (auth.isUserAuthorizedToEdit(sessionEmail, transactionId)) {
@@ -55,6 +57,7 @@ public class DeleteNewTransactionServlet extends HttpServlet {
             Map<String, Object> model = new HashMap<>();
             model.put("sessionName", sessionName);
             model.put("sessionEmail", sessionEmail);
+            model.put("sessionRole", sessionUser.getUserId());
 
             try {
                 template.process(model, out);

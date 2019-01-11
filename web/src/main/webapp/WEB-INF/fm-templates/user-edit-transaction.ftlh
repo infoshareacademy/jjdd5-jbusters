@@ -1,4 +1,8 @@
-<#include "include-user-header.ftlh">
+<#if sessionRole == 1 >
+    <#include "header-admin.ftlh">
+<#elseif sessionRole == 2>
+    <#include "include-user-header.ftlh">
+</#if>
 <div class="container">
     <br><br>
 
@@ -8,7 +12,6 @@
             <div class="col-8">
                 <h1 class="display-4">Edycja zapisanego mieszkania</h1>
             </div>
-            <#include "include-user-info.ftlh">
         </div>
 
         <div class="jumbotron jumbotron-opacity-1">
