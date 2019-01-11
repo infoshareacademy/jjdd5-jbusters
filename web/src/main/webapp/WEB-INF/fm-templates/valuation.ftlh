@@ -52,7 +52,7 @@
 
                 </div>
                 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                    <div class="jumbotron jumbotron-opacity" style="width: 1200px">
+                    <div class="jumbotron jumbotron-opacity" style="width: auto">
                     <hr class="my-4">
                         <script>
                             $(document).ready(function () {
