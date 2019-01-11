@@ -38,21 +38,32 @@ public class DataLoader {
     private static final int INDEX_TRANSACTION_NAME = 13;
     private static final int INDEX_IMPORTANT = 14;
     private static final String separator = ",";
+    private URL APP_PROPERTIES_URL = Thread.currentThread().getContextClassLoader().getResource("app.properties");
     PropLoader properties;
 
     @Inject
     StaticFields staticFields;
 
-    @PostConstruct
-    public void init() {
-        properties = new PropLoader();
-
+    public DataLoader() {
         try {
-            properties = new PropLoader(staticFields.getAppPropertiesURL().openStream());
+            properties = new PropLoader(APP_PROPERTIES_URL.openStream());
         } catch (Exception e) {
-            LOGGER.error("Missing properties file in path {}", staticFields.getAppPropertiesURL().toString());
+            LOGGER.error("Missing properties file in path {}", APP_PROPERTIES_URL.toString());
         }
     }
+
+    @PostConstruct
+    public void init() {
+
+//        try {
+//            properties = new PropLoader(staticFields.getAppPropertiesURL().openStream());
+//        } catch (Exception e) {
+//            LOGGER.error("Missing properties file in path {}", staticFields.getAppPropertiesURL().toString());
+//        }
+
+
+    }
+
     public List<Transaction> createTransactionList(List<String> listFileTransakcjeCSV, boolean userFile) {
 
 
