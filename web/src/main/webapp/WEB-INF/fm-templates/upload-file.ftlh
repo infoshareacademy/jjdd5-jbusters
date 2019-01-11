@@ -2,7 +2,7 @@
 
     <div class="container">
         <div class="jumbotron jumbotron-opacity">
-            <h1 class="display-10">Wybierz plik, z którego chcesz załadować swoją listę mieszkań do wyceny.</h1>
+            <h1 class="display">Wybierz plik csv</h1>
             <hr class="my-4">
 
             <form method="POST" action="/upload-file" enctype="multipart/form-data">

@@ -11,7 +11,7 @@
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="https://apis.google.com/js/client.js" async defer></script>
     <meta name="google-signin-scope" content="profile email">
-    <meta name="google-signin-client_id">
+    <meta name="google-signin-client_id" content="210558406372-1i31kqkfer8n3pa5dsdkl3udifff4k9v.apps.googleusercontent.com">
 
     <!-- ClockPicker Stylesheet -->
     <link rel="stylesheet" type="text/css" href="css/bootstrap-clockpicker.min.css">
@@ -23,7 +23,7 @@
 <div class="wrap">
     <header>
         <div class="container-fluid">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <nav class="navbar navbar-expand-lg navbar navbar-light" style="background-color: rgba(233, 236, 239, 0.8);">
                 <a class="navbar-brand" href="index.html">JBusters</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">

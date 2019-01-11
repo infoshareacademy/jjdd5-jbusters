@@ -12,7 +12,7 @@
 <#if error?? >
     <div class="container">
         <div class="jumbotron jumbotron-opacity">
-            <h1 class="display-10"><p>${error} </p></h1>
+            <h1 class="display"><p>${error} </p></h1>
             <hr class="my-4">
             <a class="btn btn-secondary btn-lg btn-dark" href="/upload-file" role="button">Załaduj plik</a>
             <a class="btn btn-secondary btn-lg btn-dark" href="/load-city" role="button">Wyceń mieszkanie</a>
@@ -107,7 +107,7 @@
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="jumbotron">
-                                <h1 class="display-4">Uważaj!!!😕</h1>
+                                <h1 class="display">Uwaga!!! 😕</h1>
                                 <p class="lead">Operacja "Wyszczyść listę" usuwa z bieżącej sesji transakcje,
                                     które załadowałeś."</p>
                                 <hr class="my-4">
@@ -127,7 +127,7 @@
     <#else>
         <div class="container">
             <div class="jumbotron jumbotron-opacity">
-                <h1 class="display-10">Twój plik zawiera błędy i nie jesteśmy w stanie go odczytać. Przykro
+                <h1 class="display">Twój plik zawiera błędy i nie jesteśmy w stanie go odczytać. Przykro
                     nam.</h1>
                 <hr class="my-4">
             </div>

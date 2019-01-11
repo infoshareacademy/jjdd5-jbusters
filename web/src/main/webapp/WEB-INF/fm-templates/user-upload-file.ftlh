@@ -20,7 +20,7 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="jumbotron">
-                            <h1 class="display-4">Uwaga!!!</h1>
+                            <h1 class="display">Uwaga!!!</h1>
                             <p class="lead">Wczytanie nowego pliku usunie wszystkie Twoje niezapisane transakcje z
                                 bieżącej sesji.</p>
                             <hr class="my-4">

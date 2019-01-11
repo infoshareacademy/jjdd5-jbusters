@@ -4,16 +4,14 @@
     <#include "include-user-header.ftlh">
 </#if>
 <div class="container">
-    <br><br>
-
     <div class="jumbotron jumbotron-opacity">
 
         <div class="row">
             <div class="col-8">
                 <#if size =  0>
-                <h1 class="display-4">Brak zapisanych mieszkań</h1>
+                <h1 class="display">Brak zapisanych mieszkań</h1>
                 <#else >
-                <h1 class="display-4">Lista mieszkań</h1>
+                <h1 class="display">Lista mieszkań</h1>
                 <p class="lead">Obecnie posiadasz: <b>${size}</b></p>
             </div>
             </#if>

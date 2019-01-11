@@ -1,7 +1,7 @@
 <#include "header.ftlh">
     <div class="container">
         <div class="jumbotron jumbotron-opacity">
-            <h1 class="display-4">Zaloguj</h1>
+            <h1 class="display">Zaloguj</h1>
             <p class="lead">Zaloguj się przy użyciu Twojego konta w naszej aplikacji.</p>
             <hr class="my-4">
             <form method="post" action="/login">

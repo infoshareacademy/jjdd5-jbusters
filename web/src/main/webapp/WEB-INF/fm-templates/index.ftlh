@@ -11,7 +11,7 @@
 <div class="wrap">
     <header>
         <div class="container-fluid">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <nav class="navbar navbar-expand-lg navbar navbar-light" style="background-color: rgba(233, 236, 239, 0.8);">
                 <a class="navbar-brand" href="index.html">JBusters</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,7 +19,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
-                        <li class="nav-item active">
+                        <li class="nav-item">
                             <a class="nav-link" href="/index.html">Home <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
@@ -50,7 +50,7 @@
     </header>
     <div class="container">
         <div class="jumbotron jumbotron-opacity">
-            <h1 class="display-4">${home_headline}</h1>
+            <h1 class="display">${home_headline}</h1>
             <p class="lead">${home_subheadline}</p>
             <hr class="my-4">
             <a class="btn btn-primary btn-lg btn-dark" href="/load-city" role="button">${home_button_valuation}</a>

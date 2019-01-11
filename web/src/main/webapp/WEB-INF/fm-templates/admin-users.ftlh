@@ -6,7 +6,7 @@
 
         <div class="row">
             <div class="col-8">
-                <h1 class="display-4">Lista użytkowników</h1>
+                <h1 class="display">Lista użytkowników</h1>
                 <p class="lead">Licba użytkowników w bazie: <b>${size}</b></p>
             </div>
         </div>
