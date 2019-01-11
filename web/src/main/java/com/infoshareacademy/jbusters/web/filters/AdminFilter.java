@@ -2,7 +2,6 @@ package com.infoshareacademy.jbusters.web.filters;
 
 
 import com.infoshareacademy.jbusters.authentication.AuthAdmin;
-import com.infoshareacademy.jbusters.web.LoadCityTransactionServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,39 +15,21 @@ import java.io.IOException;
 
 @WebFilter(
         filterName = "AdminFilter",
-        urlPatterns = {"/*"})
+        urlPatterns = {"/admin-panel",
+                "/admin-users/editUser",
+                "/admin-users"
+        })
 public class AdminFilter implements Filter {
     private static final Logger LOG = LoggerFactory.getLogger(AdminFilter.class);
 
     private static final String INDEX_PAGE = "/index";
-
-//    private static final String EXCLUDED_ROOT_PATH = "/";
-//    private static final String[] EXCLUDED_PATH_BEGINNINGS = new String[]{
-//            WELCOME_PAGE_TO_REDIRECT,
-//            "/id-token",
-//            "/logout",
-//            "/login",
-//            "/dev-panel",
-//            "/images",
-//            "/create-hall",
-//            "/error-handler"
-//    };
-//
-//    private static final String[] EXCLUDED_PATH_ENDINGS = new String[]{
-//            ".css",
-//            ".js",
-//            ".ico",
-//            ".jpeg",
-//            ".jpg",
-//            ".png"
-//    };
 
     @Inject
     private AuthAdmin authAdmin;
 
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
 
     }
 
@@ -61,13 +42,17 @@ public class AdminFilter implements Filter {
         HttpSession session = req.getSession(true);
         String sessionEmail = (String) session.getAttribute("userEmail");
 
-
-        if (authAdmin.isAdmin(sessionEmail)) {
-            LOG.info("User {} entered ADMIN page {}",sessionEmail, reqUri);
-            filterChain.doFilter(servletRequest, servletResponse);
+        if (sessionEmail != null) {
+            if (authAdmin.isAdmin(sessionEmail)) {
+                LOG.info("User {} entered ADMIN page {}", sessionEmail, reqUri);
+                filterChain.doFilter(servletRequest, servletResponse);
+            } else {
+                resp.sendRedirect(INDEX_PAGE);
+                LOG.error("Auth ERROR! User {} tried to enter ADMIN page: {}", sessionEmail, reqUri);
+            }
         } else {
             resp.sendRedirect(INDEX_PAGE);
-            LOG.error("Auth ERROR! User {} tried to enter ADMIN page: {}", sessionEmail, reqUri);
+            LOG.error("Auth ERROR! Unlogged user tried to enter ADMIN page: {} ", reqUri);
         }
     }
 
