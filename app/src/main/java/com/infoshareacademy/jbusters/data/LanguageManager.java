@@ -23,9 +23,15 @@ public class LanguageManager {
     public String translate(String translationKey) throws IOException {
 
         Locale currentLocale = new Locale(getLanguage());
-        ResourceBundle messages = ResourceBundle.getBundle("translations", currentLocale);
+        //ResourceBundle messages = ResourceBundle.getBundle("translations", currentLocale);
 
-        return messages.getString(translationKey);
+        ResourceBundle.Control utf8Control = new Utf8ResourceBundleControl(false);
+        ResourceBundle bundle = ResourceBundle.getBundle("translations",
+                currentLocale, utf8Control);
+        String msg = bundle.getString(translationKey);
+
+        //return messages.getString(translationKey);
+        return msg;
     }
 
     public String getLanguage() throws IOException {
