@@ -1,6 +1,6 @@
 package com.infoshareacademy.jbusters.web.user;
 
-import com.infoshareacademy.jbusters.authentication.AuthUser;
+import com.infoshareacademy.jbusters.authentication.Auth;
 import com.infoshareacademy.jbusters.dao.NewTransactionDao;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import freemarker.template.Template;
@@ -32,7 +32,7 @@ public class DeleteNewTransactionServlet extends HttpServlet {
     private NewTransactionDao newTransactionDao;
 
     @Inject
-    private AuthUser authUser;
+    private Auth auth;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -45,7 +45,7 @@ public class DeleteNewTransactionServlet extends HttpServlet {
         String sessionEmail = (String) session.getAttribute("userEmail");
         int transactionId = Integer.parseInt(req.getParameter("id"));
 
-        if (authUser.isUserAuthorizedToEdit(sessionEmail, transactionId)) {
+        if (auth.isUserAuthorizedToEdit(sessionEmail, transactionId)) {
 
             newTransactionDao.delete(transactionId);
             LOG.info("User {} deleted transaction with id {}", sessionEmail, transactionId);
