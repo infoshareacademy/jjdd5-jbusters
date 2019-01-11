@@ -1,6 +1,5 @@
 package com.infoshareacademy.jbusters.data;
 
-import com.infoshareacademy.jbusters.console.ConsoleViewer;
 import com.infoshareacademy.jbusters.dao.TranzactionDao;
 import com.infoshareacademy.jbusters.model.Tranzaction;
 import org.slf4j.Logger;
@@ -96,8 +95,6 @@ public class FilterTransactions {
 
     private List<Tranzaction> notEnoughtResultsAction() {
 
-        ConsoleViewer.clearScreen();
-        System.out.println(":: Wycena niemożliwa, baza zawiera zbyt małą ilość pasujących transakcji ::\n");
         return new ArrayList<>();
     }
 

@@ -1,6 +1,7 @@
 package com.infoshareacademy.jbusters.console;
 
 import com.infoshareacademy.jbusters.data.*;
+import com.infoshareacademy.jbusters.model.Tranzaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -110,7 +111,7 @@ public class Menu {
             System.out.println(":: Wycena niemożliwa, najpierw wprowadź mieszkanie, które chcesz wycenić ::\n\n" +
                     "Mieszkanie możesz wprowadzić ręcznie, bądź wczytać z pliku, jeśli zostało wcześniej zapisane.\n");
         } else {
-            List<Transaction> filteredList = filterTransactions.theGreatFatFilter(newTransactionCreator.getNewTransaction());
+            List<Tranzaction> filteredList = filterTransactions.theGreatFatFilter(newTransactionCreator.getNewTransaction());
             if (filteredList.size() >= 11) {
                 CalculatePrice calc = new CalculatePrice(newTransactionCreator.getNewTransaction(), filteredList);
                 BigDecimal valueOfFlat = newTransactionCreator.getNewTransaction().getFlatArea().multiply(calc.calculatePrice());

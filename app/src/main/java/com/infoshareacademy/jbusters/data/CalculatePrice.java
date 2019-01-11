@@ -1,6 +1,5 @@
 package com.infoshareacademy.jbusters.data;
 
-import com.infoshareacademy.jbusters.console.ConsoleViewer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,17 +49,9 @@ public class CalculatePrice {
 
         BigDecimal min = getMinimumPriceInList(transactions);
 
-        ConsoleViewer.clearScreen();
-        System.out.println(":: Wybrano wycenę mieszkania ::\n");
-        System.out.println("Statystyki:\n");
-        System.out.println("Cena minimalna przed aktualizacją o trend to:"+getTabs(3) + staticFields.formatWithLongDF(min.divide(exchangeRate, BigDecimal.ROUND_UP)) + " " + properties.getCurrency());
-
         List<Transaction> listToCalculateTrend = getListToCalculateTrend(transactions);
 
         BigDecimal overallTrend = overallTrend(listToCalculateTrend);
-
-        System.out.println("Roczny trend wzrostu cen mieszkań wynosi:"+getTabs(3) + staticFields.formatWithShortDF(overallTrend.multiply(BigDecimal.valueOf(36500))) + "%");
-
 
         List<Transaction> exportList = transactions.stream()
                 .map(item -> new Transaction(item))
