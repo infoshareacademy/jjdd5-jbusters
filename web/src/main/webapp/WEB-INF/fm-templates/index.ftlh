@@ -25,16 +25,16 @@
                             <a class="nav-link" href="/load-city">${menu_valuation}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="uploadFile.html">${menu_upload}</a>
+                            <a class="nav-link" href="/upload-file">${menu_upload}</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/my-flats">${menu_my_apartments}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="add-user.html">${menu_create_account}</a>
+                            <a class="nav-link" href="/add-user-form">${menu_create_account}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="login-user.html">${menu_login}</a>
+                            <a class="nav-link" href="/select-login-form">${menu_login}</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/language?lang=pl"><img src="img/poland-flag-icon-64.png" alt="pl" height="22" width="38"></a>
