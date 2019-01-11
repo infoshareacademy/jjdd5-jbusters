@@ -17,7 +17,8 @@ import java.util.Map;
 @WebServlet(urlPatterns = "index.html")
 public class IndexServlet extends HttpServlet {
 
-    private static final String TEMPLATE_NAME = "index";
+    private static final String TEMPLATE_INDEX = "index";
+    private static final String TEMPLATE_USER_INDEX = "index";
     private static final String MENU_VALUATION = "menu_valuation";
     private static final String MENU_UPLOAD = "menu_upload";
     private static final String MENU_MY_APARTMENTS = "menu_my_apartments";
@@ -49,7 +50,7 @@ public class IndexServlet extends HttpServlet {
         modelHandler(model, HOME_BUTTON_VALUATION);
 
         Template template = templateProvider.getTemplate(
-                getServletContext(), TEMPLATE_NAME);
+                getServletContext(), TEMPLATE_INDEX);
 
         try {
             template.process(model, resp.getWriter());
