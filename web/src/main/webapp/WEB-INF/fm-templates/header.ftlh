@@ -26,16 +26,16 @@
                             <a class="nav-link" href="/load-city">Wyceń mieszkanie</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="uploadFile.html">Załaduj plik <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="/upload-file">Załaduj plik <span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/my-flats">Moje mieszkania</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="add-user.html">Załóż konto</a>
+                            <a class="nav-link" href="/add-user-form">Załóż konto</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="login-user.html">Zaloguj </a>
+                            <a class="nav-link" href="/select-login-form">Zaloguj </a>
                         </li>
                     </ul>
                 </div>

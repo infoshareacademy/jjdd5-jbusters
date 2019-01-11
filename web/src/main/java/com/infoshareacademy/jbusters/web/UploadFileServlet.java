@@ -31,8 +31,9 @@ import java.util.Map;
         , maxRequestSize = 1024 * 1024 * 5 * 5)
 public class UploadFileServlet extends HttpServlet {
 
-    private static final String TEMPLATE_NAME = "user-upload-file";
     private static final Logger LOG = LoggerFactory.getLogger(UploadFileServlet.class);
+    private static final String TEMPLATE_USERS_UPLOAD_FILE = "user-upload-file";
+    private static final String TEMPLATE_UPLOAD_FILE = "upload-file";
 
     @Inject
     private TemplateProvider templateProvider;
@@ -55,16 +56,32 @@ public class UploadFileServlet extends HttpServlet {
         String sessionEmail = (String) session.getAttribute("userEmail");
         String sessionName = (String) session.getAttribute("userName");
 
-        Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
-        model.put("sessionEmail", sessionEmail);
-        model.put("sessionName", sessionName);
+        Template template;
 
-        try {
-            template.process(model, out);
-            LOG.info("Loaded file");
-        } catch (TemplateException e) {
-            LOG.error("Failed to load file");
+
+        if (sessionEmail == null){
+            template = templateProvider.getTemplate(getServletContext(), TEMPLATE_UPLOAD_FILE);
+            try {
+                template.process(model, out);
+                LOG.info("Loaded file");
+            } catch (TemplateException e) {
+                LOG.error("Failed to load file");
+            }
+
+        }else {
+            template = templateProvider.getTemplate(getServletContext(), TEMPLATE_USERS_UPLOAD_FILE);
+            model.put("sessionEmail", sessionEmail);
+            model.put("sessionName", sessionName);
+            try {
+                template.process(model, out);
+                LOG.info("Loaded file");
+            } catch (TemplateException e) {
+                LOG.error("Failed to load file");
+            }
+
         }
+
+
     }
 
     @Override
@@ -72,14 +89,24 @@ public class UploadFileServlet extends HttpServlet {
         resp.setContentType("text/html;charset=UTF-8");
 
         HttpSession session = req.getSession();
+        String sessionEmail = (String) session.getAttribute("userEmail");
+        String sessionName = (String) session.getAttribute("userName");
+
         final PrintWriter writer = resp.getWriter();
         final Part filePart = req.getPart("file");
         List<Transaction> usersTransactions = new ArrayList<>();
         Map<String, Object> model = new HashMap<>();
+        model.put("sessionEmail", sessionEmail);
+        model.put("sessionName", sessionName);
 
-        Template template = templateProvider.getTemplate(
-                getServletContext(),
-                TEMPLATE_NAME);
+        Template template;
+        if (sessionEmail == null){
+            template = templateProvider.getTemplate(getServletContext(), TEMPLATE_UPLOAD_FILE);
+
+        }else {
+            template = templateProvider.getTemplate(getServletContext(), TEMPLATE_USERS_UPLOAD_FILE);
+
+        }
 
         // TODO błąd gdy wybierze się plik do pobrania a następnie go przeniesie/usunie z dysku i kliknie się na pobierz
 
