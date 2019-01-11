@@ -8,8 +8,8 @@
                 <div class="col-8">
                     <h1 class="display-4">🚮</h1>
                     <p class="lead">Usunięto mieszkanie</p>
-                    <form method="post" action="load-user-menu">
-                        <button type="submit" class="btn btn-primary">Menu</button>
+                    <form method="get" action="show-transaction">
+                        <button type="submit" class="btn btn-primary">OK</button>
                     </form>
                 </div>
 

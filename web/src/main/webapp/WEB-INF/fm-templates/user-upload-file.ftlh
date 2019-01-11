@@ -21,6 +21,12 @@
             <hr class="my-4">
             <br>
             <form method="POST" action="/upload-file" enctype="multipart/form-data">
+
+                <#if error?? >
+                    <div class="alert alert-danger">
+                        <strong>${error}</strong>
+                    </div>
+                </#if>
                 <input class="btn btn-primary" type="file" name="file" id="file"/> <br/>
                 </br>
 

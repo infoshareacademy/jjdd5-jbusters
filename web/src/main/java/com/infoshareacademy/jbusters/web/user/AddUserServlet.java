@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
+import com.infoshareacademy.jbusters.authentication.PasswordHashing;
 import com.infoshareacademy.jbusters.dao.UserDao;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import com.infoshareacademy.jbusters.model.User;
@@ -38,6 +39,9 @@ public class AddUserServlet extends HttpServlet {
     @Inject
     private TemplateProvider templateProvider;
 
+    @Inject
+    PasswordHashing passwordHashing;
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
@@ -66,7 +70,7 @@ public class AddUserServlet extends HttpServlet {
             String name = req.getParameter("name");
             String surname = req.getParameter("surname");
             u.setUserEmail(email);
-            u.setUserPassword(password);
+            u.setUserPassword(passwordHashing.generateHash(password));
             u.setUserName(name);
             u.setUserSurname(surname);
             u.setUserRole(2);

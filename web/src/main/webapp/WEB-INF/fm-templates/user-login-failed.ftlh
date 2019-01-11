@@ -4,7 +4,7 @@
             <h1 class="display-4">Nie udało się. 😥</h1>
             <p class="lead">Podałeś niepoprawny email lub hasło...</p>
             <hr class="my-4">
-            <a class="btn btn-primary btn-lg btn-dark" href="form-login.html" role="button">Spróbuj ponownie</a>
+            <a class="btn btn-primary btn-lg btn-dark" href="form-login" role="button">Spróbuj ponownie</a>
         </div>
     </div>
 
