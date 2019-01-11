@@ -1,5 +1,6 @@
 package com.infoshareacademy.jbusters.data;
 
+import com.infoshareacademy.jbusters.model.Tranzaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.IOException;
@@ -9,7 +10,6 @@ import java.util.Properties;
 public class DistrWagesHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(Data.class);
     private Properties properties;
-
 
     public DistrWagesHandler(InputStream is) {
         this.properties = new Properties();
@@ -31,9 +31,9 @@ public class DistrWagesHandler {
             LOGGER.error("Error loading file: {}");
         }
     }
-
-    public boolean districtWageComparator(Transaction checkedTransaction, Transaction userTransaction) {
-        String checkedTransactionDistrict = districtStringParser(checkedTransaction.getDistrict());
+//todo properties zamienic na dane z tabeli
+    public boolean districtWageComparator(Tranzaction checkedTransaction, Transaction userTransaction) {
+        String checkedTransactionDistrict = districtStringParser(checkedTransaction.getTranzactionDistrict());
         String userTransactionDistrict = districtStringParser(userTransaction.getDistrict());
 
         if(properties.containsKey(userTransactionDistrict)){
