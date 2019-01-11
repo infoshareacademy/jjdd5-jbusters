@@ -42,6 +42,8 @@ public class LoadFormLogin extends HttpServlet {
         HttpSession session = req.getSession(true);
         String sessionEmail = (String) session.getAttribute("userEmail");
         String sessionName = (String) session.getAttribute("userName");
+        sessionuser = (User) session.getAttribute("user");
+
         model.put("sessionEmail", sessionEmail);
         model.put("sessionName", sessionName);
 
