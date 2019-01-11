@@ -51,4 +51,6 @@ public class NewTransactionDao {
 
         return (List<NewTransaction>) query.getResultList();
     }
+
+    //TODO dopisać querke na usuwanie wszystkich transakcji danego użytkownika np. gdy jest kasowany dany użytkownik
 }

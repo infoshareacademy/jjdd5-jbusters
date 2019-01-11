@@ -25,6 +25,18 @@
                 <#if errors??>
                     <h2>Podaj szczegółowe parametry mieszkania: </h2>
                     <hr class="my-4">
+
+                    <div class="form-group">
+                        <label for="Select8">Miasto: </label>
+                        <input name="city" type="text" class="form-control" id="Select8" value="${city}" disabled>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="Select8">Dzielnica: </label>
+                        <input name="district" type="text" class="form-control" id="Select8" value="${district1}" disabled>
+                    </div>
+
                     <form method="get" action="valuation">
 
                         <#if errors['overallError']??>
@@ -127,11 +139,22 @@
 
                     <h2>Podaj szczegółowe parametry mieszkania: </h2>
                     <hr class="my-4">
+
+                    <div class="form-group">
+                        <label for="Select8">Miasto: </label>
+                        <input name="city" type="text" class="form-control" id="Select8" value="${city}" disabled>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="Select8">Dzielnica: </label>
+                        <input name="district" type="text" class="form-control" id="Select8" value="${district1}" disabled>
+                    </div>
+
                     <form method="get" action="valuation">
                         <div class="form-group">
                             <label for="Select1">Wybierz rodzaj rynku</label>
                             <select name="market-type" class="form-control" id="Select1" required>
-                                <option></option>
                                 <option>RYNEK WTÓRNY</option>
                                 <option>RYNEK PIERWOTNY</option>
                             </select>
@@ -160,7 +183,6 @@
                         <div class="form-group">
                             <label for="Select4">Czy posiadasz miejsce parkingowe ?</label>
                             <select name="parking-spot" class="form-control" id="Select4" required>
-                                <option></option>
                                 <option>BRAK MP</option>
                                 <option>MIEJSCE NAZIEMNE</option>
                                 <option>GARAŻ JEDNOSTANOWISKOWY</option>
@@ -171,7 +193,6 @@
                         <div class="form-group">
                             <label for="Select5">Wybierz poziom wykończenia twojego mieszkania</label>
                             <select name="standard-level" class="form-control" id="Select5" required>
-                                <option></option>
                                 <option>WYSOKI</option>
                                 <option>BARDZO DOBRY</option>
                                 <option>DOBRY</option>
@@ -184,7 +205,6 @@
                         <div class="form-group">
                             <label for="Select6">Wybierz przedzial czasowy w jakim zostalo wybudowane Twoje mieszkanie</label>
                             <select name="construction" class="form-control" id="Select6" required>
-                                <option></option>
                                 <option value="1">przed rokiem 1970</option>
                                 <option value="2">między rokiem 1970 a 1990</option>
                                 <option value="3">po roku 1990</option>
