@@ -103,7 +103,9 @@ public class UploadFileServlet extends HttpServlet {
         Map<String, Object> model = new HashMap<>();
         model.put("sessionEmail", sessionEmail);
         model.put("sessionName", sessionName);
-        model.put("sessionRole", sessionUser.getUserRole());
+        if (sessionUser != null) {
+            model.put("sessionRole", sessionUser.getUserRole());
+        }
 
         Template template;
         if (sessionEmail == null){
