@@ -53,7 +53,7 @@ public class MyFlatsServlet extends HttpServlet {
 
             model.put("sessionEmail", sessionEmail);
             model.put("sessionName", sessionName);
-            model.put("sessionRole", sessionUser.getUserId());
+            model.put("sessionRole", sessionUser.getUserRole());
         }
 
         if (propertyList == null || propertyList.isEmpty()) {

@@ -13,7 +13,7 @@ public class User {
     @Column(name = "USER_ID")
     private int userId;
 
-    @Column(name = "USER_EMAIL")
+    @Column(name = "USER_EMAIL", unique = true)
     @NotNull
     private String userEmail;
 
