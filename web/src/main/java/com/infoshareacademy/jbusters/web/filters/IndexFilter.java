@@ -1,6 +1,5 @@
 package com.infoshareacademy.jbusters.web.filters;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,19 +10,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(filterName = "UserFilter",
-        urlPatterns = {"/load-user-menu",
-                "/edit-transaction",
-                "/show-transaction",
-                "/delete-new-transaction",
-                "/add-transaction",
-        })
-
-public class UserFilter implements Filter {
+@WebFilter(filterName = "IndexFilter",
+        urlPatterns = {"/index.html",
+                "add-user-form",
+                "select-login-form",
+                "login-form"})
+public class IndexFilter implements Filter {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserFilter.class);
+    private static final String INDEX_PAGE = "/load-user-menu";
 
-    private static final String INDEX_PAGE = "/index.html";
 
     @Override
     public void init(FilterConfig filterConfig) {
@@ -32,6 +28,7 @@ public class UserFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
         String reqUri = req.getRequestURI();
@@ -39,12 +36,11 @@ public class UserFilter implements Filter {
         HttpSession session = req.getSession(true);
         String sessionEmail = (String) session.getAttribute("userEmail");
 
-        if (sessionEmail != null) {
+        if (sessionEmail == null) {
             filterChain.doFilter(servletRequest, servletResponse);
-            LOG.info("User {} entered page {}", sessionEmail, reqUri);
         } else {
             resp.sendRedirect(INDEX_PAGE);
-            LOG.warn("Unlogged user tried to enter user-acces page: {}", reqUri);
+            LOG.info("Redirecting user {} from {} page to menu", sessionEmail, reqUri);
         }
     }
 

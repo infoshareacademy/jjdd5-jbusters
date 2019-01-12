@@ -35,13 +35,14 @@ public class LogoutServlet extends HttpServlet {
 
             Map<String, Object> model = new HashMap<>();
             HttpSession session = req.getSession(true);
+            String sessionEmail = (String) session.getAttribute("userEmail");
             session.invalidate();
 
             Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
 
             try {
                 template.process(model, writer);
-                LOG.info("Logout user");
+                LOG.info("User {} logged out", sessionEmail);
             } catch (TemplateException e) {
                 LOG.error("Failed to logout user");
             }

@@ -2,7 +2,6 @@ package com.infoshareacademy.jbusters.web.login;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.infoshareacademy.jbusters.authentication.Auth;
-import com.infoshareacademy.jbusters.authentication.PasswordHashing;
 import com.infoshareacademy.jbusters.dao.UserDao;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import com.infoshareacademy.jbusters.model.User;

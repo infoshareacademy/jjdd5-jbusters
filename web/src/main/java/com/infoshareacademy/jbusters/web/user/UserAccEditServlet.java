@@ -28,6 +28,10 @@ public class UserAccEditServlet extends HttpServlet {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserAccEditServlet.class);
     private static final String TEMPLATE_NAME = "user-acc-edit";
+    private static final String EMAIL_STATUS = "emailStatus";
+    private static final String UPDATE_STATUS = "updateStatus";
+    private static final String FAILED = "failed";
+    private static final String SUCCESS = "success";
 
     @Inject
     private TemplateProvider templateProvider;
@@ -49,7 +53,7 @@ public class UserAccEditServlet extends HttpServlet {
         String sessionEmail = (String) session.getAttribute("userEmail");
 
 
-        model.put("updateStatus", checkUpdateStatus(session));
+        model.put(UPDATE_STATUS, checkUpdateStatus(session));
 
         User user = userDao.findByEmail(sessionEmail);
 
@@ -75,10 +79,10 @@ public class UserAccEditServlet extends HttpServlet {
             if (checkEmail.checkIfEmailCanBeEdited(newEmail, user.getUserId())) {
                 user.setUserEmail(newEmail);
                 LOG.info("User {} has changed his email to {}", sessionEmail, newEmail);
-                session.setAttribute("emailStatus", "emailSuccess");
+                session.setAttribute(EMAIL_STATUS, "emailSuccess");
             } else {
-                session.setAttribute("updateStatus", "failed");
-                session.setAttribute("emailStatus", "emailExist");
+                session.setAttribute(UPDATE_STATUS, FAILED);
+                session.setAttribute(EMAIL_STATUS, "emailExist");
                 doGet(req, resp);
                 return;
             }
@@ -90,12 +94,12 @@ public class UserAccEditServlet extends HttpServlet {
         try {
             userDao.update(user);
             session.setAttribute("userEmail", user.getUserEmail());
-            session.setAttribute("updateStatus", "success");
+            session.setAttribute(UPDATE_STATUS, SUCCESS);
             LOG.info("User {}, has changed his acc detials", sessionEmail);
             doGet(req, resp);
         } catch (Exception e) {
             LOG.error("Failed to update user {} account due to: {}", sessionEmail, e.getMessage());
-            session.setAttribute("updateStatus", "failed");
+            session.setAttribute(UPDATE_STATUS, FAILED);
             doGet(req, resp);
         }
     }
@@ -103,21 +107,21 @@ public class UserAccEditServlet extends HttpServlet {
     private Map checkUpdateStatus(HttpSession session) {
         Map<String, String> model = new HashMap<>();
 
-        String updateStatus = (String) session.getAttribute("updateStatus");
-        if ("success".equals(updateStatus)) {
+        String updateStatus = (String) session.getAttribute(UPDATE_STATUS);
+        if (SUCCESS.equals(updateStatus)) {
             model.put("updateSuccess", "Zmiany zostały zapisane");
-        } else if ("failed".equals(updateStatus)) {
+        } else if (FAILED.equals(updateStatus)) {
             model.put("updateFailed", "Nie udało się zapisać twoich zmian");
         }
-        session.removeAttribute("updateStatus");
+        session.removeAttribute(UPDATE_STATUS);
 
-        String emailStatus = (String) session.getAttribute("emailStatus");
+        String emailStatus = (String) session.getAttribute(EMAIL_STATUS);
         if ("emailSuccess".equals(emailStatus)) {
             model.put("emailSuccess", "Twój Email został zmieniony!");
         } else if ("emailExist".equals(emailStatus)) {
             model.put("emailFailed", "Taki adres Email już istnieje!");
         }
-        session.removeAttribute("emailStatus");
+        session.removeAttribute(EMAIL_STATUS);
 
         return model;
     }
