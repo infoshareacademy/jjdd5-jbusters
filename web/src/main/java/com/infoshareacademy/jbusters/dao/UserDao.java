@@ -53,4 +53,11 @@ public class UserDao {
 
        return (User) query.getSingleResult();
     }
+
+    public List<User> findByEmailList(String sessionEmail) {
+        final Query query = entityManager.createQuery("SELECT u FROM User u WHERE u.userEmail = :email");
+        query.setParameter("email", sessionEmail);
+
+        return (List<User>) query.getResultList();
+    }
 }
