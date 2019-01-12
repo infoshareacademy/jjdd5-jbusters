@@ -25,7 +25,7 @@ public class NewTransaction {
     private String newTransactionSale;
 
     @Column(name = "NEW_TRANSACTION_IMPORTANT")
-    private String newTransactionImportant;
+    private boolean newTransactionImportant;
 
     @Column(name = "NEW_TRANSACTION_DATA_TRANSACTION")
     private LocalDate newTransactionDataTransaction;
@@ -69,7 +69,7 @@ public class NewTransaction {
     public NewTransaction() {
     }
 
-    public NewTransaction(User newTransactionUser, String newTransactionDescription, String newTransactionSale, String newTransactionImportant, LocalDate newTransactionDataTransaction, String newTransactionCity, String newTransactionDistrict, String newTransactionStreet, String newTransactionTypeOfMarket, BigDecimal newTransactionPrice, BigDecimal newTransactionFlatArea, BigDecimal newTransactionPricePerM2, int newTransactionLevel, String newTransactionParkingSpot, String newTransactionStandardLevel, String newTransactionConstructionYear, int newTransactionConstructionYearCategory) {
+    public NewTransaction(User newTransactionUser, String newTransactionDescription, String newTransactionSale, boolean newTransactionImportant, LocalDate newTransactionDataTransaction, String newTransactionCity, String newTransactionDistrict, String newTransactionStreet, String newTransactionTypeOfMarket, BigDecimal newTransactionPrice, BigDecimal newTransactionFlatArea, BigDecimal newTransactionPricePerM2, int newTransactionLevel, String newTransactionParkingSpot, String newTransactionStandardLevel, String newTransactionConstructionYear, int newTransactionConstructionYearCategory) {
         this.newTransactionUser = newTransactionUser;
         this.newTransactionDescription = newTransactionDescription;
         this.newTransactionSale = newTransactionSale;
@@ -121,11 +121,11 @@ public class NewTransaction {
         this.newTransactionSale = newTransactionSale;
     }
 
-    public String getNewTransactionImportant() {
+    public boolean isNewTransactionImportant() {
         return newTransactionImportant;
     }
 
-    public void setNewTransactionImportant(String newTransactionImportant) {
+    public void setNewTransactionImportant(boolean newTransactionImportant) {
         this.newTransactionImportant = newTransactionImportant;
     }
 

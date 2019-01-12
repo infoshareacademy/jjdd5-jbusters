@@ -51,7 +51,7 @@ public class AddNewTransactionServlet extends HttpServlet {
         transaction.setNewTransactionUser(user);
         transaction.setNewTransactionSale("nie");
         transaction.setNewTransactionDescription(req.getParameter("description"));
-        transaction.setNewTransactionImportant(req.getParameter("important"));
+        transaction.setNewTransactionImportant(Boolean.valueOf(req.getParameter("important")));
         transaction.setNewTransactionDataTransaction(LocalDate.now());
         transaction.setNewTransactionCity(newTransaction.getCity());
         transaction.setNewTransactionDistrict(newTransaction.getDistrict());

@@ -62,7 +62,7 @@ public class UserEditTransactionServlet extends HttpServlet {
             model.put("parkingSpot", transactionToEdit.getNewTransactionParkingSpot());
             model.put("standardLevel", transactionToEdit.getNewTransactionStandardLevel());
             model.put("construction", transactionToEdit.getNewTransactionConstructionYearCategory());
-            model.put("important", transactionToEdit.getNewTransactionImportant());
+            model.put("important", transactionToEdit.isNewTransactionImportant());
             model.put("sale", transactionToEdit.getNewTransactionSale());
 
             Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_EDIT_TRANSACTION);
@@ -93,8 +93,12 @@ public class UserEditTransactionServlet extends HttpServlet {
         if (auth.isUserAuthorizedToEdit(sessionEmail, transactionId)) {
             NewTransaction transactionToEdit = newTransactionDao.findById(transactionId);
 
-            if (req.getParameter("important").equals("tak") || req.getParameter("important").equals("nie")) {
-                transactionToEdit.setNewTransactionImportant(req.getParameter("important"));
+            if (req.getParameter("important") != null) {
+                if (req.getParameter("important").equals("tak")) {
+                    transactionToEdit.setNewTransactionImportant(true);
+                } else {
+                    transactionToEdit.setNewTransactionImportant(false);
+                }
             }
 
             if (req.getParameter("sale").equals("tak") || req.getParameter("sale").equals("nie")) {

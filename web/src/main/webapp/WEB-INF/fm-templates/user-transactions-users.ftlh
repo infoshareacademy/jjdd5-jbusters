@@ -101,6 +101,7 @@
                 <button type="button" class="btn btn-primary" data-toggle="modal"
                         data-target=".bd-example-modal-lg">Wyczyść listę
                 </button>
+                <a class="btn btn-primary" href="upload-file" role="button">Załaduj nowy plik</a>
 
                 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
                      aria-labelledby="myLargeModalLabel" aria-hidden="true">
