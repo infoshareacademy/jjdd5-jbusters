@@ -47,7 +47,7 @@ public class AdminUsersEditServlet extends HttpServlet {
 
         model.put("sessionName", sessionName);
         model.put("sessionEmail", sessionEmail);
-        model.put("sessionRole", sessionUser.getUserId());
+        model.put("sessionRole", sessionUser.getUserRole());
 
         int userId = Integer.parseInt(req.getParameter("id"));
 

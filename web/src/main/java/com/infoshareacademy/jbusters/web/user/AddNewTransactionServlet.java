@@ -75,7 +75,7 @@ public class AddNewTransactionServlet extends HttpServlet {
             Map<String, Object> model = new HashMap<>();
             model.put("sessionName", sessionName);
             model.put("sessionEmail", sessionEmail);
-            model.put("sessionRole", sessionUser.getUserId());
+            model.put("sessionRole", sessionUser.getUserRole());
             try {
                 template.process(model, out);
                 LOG.info("Save ok");

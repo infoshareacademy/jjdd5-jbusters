@@ -74,7 +74,7 @@ public class LoadOtherValuesTransactionServlet extends HttpServlet {
             Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_USER);
             model.put("sessionEmail", sessionEmail);
             model.put("sessionName", sessionName);
-            model.put("sessionRole", sessionUser.getUserId());
+            model.put("sessionRole", sessionUser.getUserRole());
 
 
             try {
