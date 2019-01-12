@@ -2,7 +2,7 @@
 
     <div class="container">
         <div class="jumbotron jumbotron-opacity">
-            <h1 class="display-4">Konto zostało utworzone. 🤗</h1>
+            <h1 class="display">Konto zostało utworzone. 🤗</h1>
             <p class="lead">Dziekujemy.</p>
             <hr class="my-4">
             <form>

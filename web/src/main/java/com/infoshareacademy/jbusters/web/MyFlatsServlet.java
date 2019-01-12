@@ -2,6 +2,7 @@ package com.infoshareacademy.jbusters.web;
 
 import com.infoshareacademy.jbusters.data.Transaction;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
+import com.infoshareacademy.jbusters.model.User;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
@@ -25,9 +26,10 @@ public class MyFlatsServlet extends HttpServlet {
     private static final String TEMPLATE_USERS_TRANSACTION = "transactions-users";
     private static final String TEMPLATE_LOGGED_USERS_TRANSACTION = "user-transactions-users";
 
-
     @Inject
     private TemplateProvider templateProvider;
+    @Inject
+    private User sessionUser;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -40,6 +42,7 @@ public class MyFlatsServlet extends HttpServlet {
         List<Transaction> propertyList = (List<Transaction>) session.getAttribute("propertyList");
         String sessionEmail = (String) session.getAttribute("userEmail");
         String sessionName = (String) session.getAttribute("userName");
+        sessionUser = (User) session.getAttribute("user");
 
         Template template;
 
@@ -50,6 +53,7 @@ public class MyFlatsServlet extends HttpServlet {
 
             model.put("sessionEmail", sessionEmail);
             model.put("sessionName", sessionName);
+            model.put("sessionRole", sessionUser.getUserId());
         }
 
         if (propertyList == null || propertyList.isEmpty()) {

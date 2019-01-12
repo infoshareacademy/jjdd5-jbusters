@@ -1,4 +1,4 @@
-<#include "include-user-header.ftlh">
+<#include "header-admin.ftlh">
 
     <div class="container">
         <br><br>
@@ -6,14 +6,8 @@
         <div class="jumbotron jumbotron-opacity">
             <div class="row my-border-bootom">
                 <div class="col-8">
-                    <h1 class="display-4">Panel administracyjny ⚙</h1>
-                    <p class="lead">Skorzystaj z poniższych funkcjonalności...</p>
-                    <form method="post" action="load-user-menu">
-                        <button type="submit" class="btn btn-primary">Menu</button>
-                    </form>
+                    <h1 class="display">Panel administracyjny ⚙</h1>
                 </div>
-
-<#include "include-user-info.ftlh">
             </div>
             <br>
             <br>
