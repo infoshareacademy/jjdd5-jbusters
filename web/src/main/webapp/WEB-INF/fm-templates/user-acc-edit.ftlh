@@ -53,6 +53,7 @@
 
                 <input class="btn btn-primary" type="submit" value="Zapisz" name="upload" id="upload"/>
                 <a href="/load-user-menu" type="button" class="btn btn-secondary">Wróć</a>
+                <a href="/acc-edit/pass-change" type="button" class="btn btn-secondary">Zmiana hasła</a>
             </form>
             <button type="button" class="btn btn-danger float-right" data-toggle="modal"
                     data-target="#exampleModal">Usuń moje konto

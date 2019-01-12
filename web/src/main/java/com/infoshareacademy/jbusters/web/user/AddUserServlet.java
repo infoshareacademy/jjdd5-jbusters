@@ -1,7 +1,6 @@
 package com.infoshareacademy.jbusters.web.user;
 
 import javax.inject.Inject;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -43,7 +42,7 @@ public class AddUserServlet extends HttpServlet {
     PasswordHashing passwordHashing;
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
 
         PrintWriter out = resp.getWriter();
