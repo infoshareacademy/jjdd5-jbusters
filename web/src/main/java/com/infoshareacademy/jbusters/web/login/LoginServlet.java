@@ -76,6 +76,9 @@ public class LoginServlet extends HttpServlet {
                 user.setUserRole(2);
                 userDao.save(user);
                 session.setAttribute(SESSION_ATTRIBUTE_USER, user);
+            }else {
+                user = emailList.get(0);
+                session.setAttribute(SESSION_ATTRIBUTE_USER, user);
             }
 
         } catch (Exception e) {
