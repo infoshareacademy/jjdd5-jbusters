@@ -1,27 +1,8 @@
-<#include "include-user-header.ftlh">
-<div class="container">
-    <br><br>
-
-    <div class="jumbotron jumbotron-opacity">
-
-        <div class="row">
-            <div class="col-8">
-                <h1 class="display-4">Twoje mieszkanie zostało wycenione. Dziękujemy</h1>
-                <p class="lead">Poniżej znajdziesz szczegółowe informacje...</p>
-                <form method="post" action="load-user-menu">
-                    <button type="submit" class="btn btn-primary">Menu</button>
-                </form>
-            </div>
-
-            <#include "include-user-info.ftlh">
-
-        </div>
-
-        <hr class="my-4">
-
-    </div>
-</div>
-<!--Początek formularza szczegółowych informacji o mieszkaniu-->
+<#if sessionRole == 1 >
+    <#include "header-admin.ftlh">
+<#elseif sessionRole == 2>
+    <#include "include-user-header.ftlh">
+</#if>
 
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
 <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.3.1.js"></script>
@@ -29,8 +10,6 @@
         src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
 <div class="jumbotron-opacity-1 jumbotron-fluid">
-    <br>
-    <br>
     <br>
     <div class="row">
         <div class="col-2 my-border">
@@ -69,17 +48,13 @@
 
                             <div class="jumbotron jumbotron-opacity-1 my-border-top">
 
-                                <h1 class="display-4">Wartość Twojego mieszkania to:</h1>
+                                <h1 class="display">Wartość Twojego mieszkania to:</h1>
                                 <hr class="my-4">
-                                <h1 class="display-4"><b><span style="color: #007bff">${price}</span></b><span
+                                <h1 class="display"><b><span style="color: #007bff">${price}</span></b><span
                                             style="color: #343a40"> zł za m<sup>2</sup></span></h1>
-                                <h1 class="display-4"><b><span style="color: #007bff">${priceTotal}</span></b><span
+                                <h1 class="display"><b><span style="color: #007bff">${priceTotal}</span></b><span
                                             style="color: #343a40"> zł za całe mieszkanie</span></h1>
-                                <hr class="my-4">
-
                             </div>
-
-
                         </div>
                         <div class="tab-pane fade" id="pills-profile" role="tabpanel"
                              aria-labelledby="pills-profile-tab">
@@ -172,7 +147,6 @@
                 <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
 
                     <div class="jumbotron jumbotron-opacity-1 my-border-top">
-                        <p class="lead"><b>Twoje mieszkanie:</b></p>
                         <form method="get" action="valuation">
 
                             <div class="form-group">

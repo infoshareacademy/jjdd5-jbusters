@@ -29,9 +29,10 @@ public class AdminUsersServlet extends HttpServlet {
     private static final String TEMPLATE_NAME = "admin-users";
     @Inject
     private TemplateProvider templateProvider;
-
     @Inject
     private UserDao userDao;
+    @Inject
+    private User sessionUser;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -42,12 +43,13 @@ public class AdminUsersServlet extends HttpServlet {
         HttpSession session = req.getSession(true);
         String sessionEmail = (String) session.getAttribute("userEmail");
         String sessionName = (String) session.getAttribute("userName");
+        sessionUser = (User) session.getAttribute("user");
 
         Map<String, Object> model = new HashMap<>();
         Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
         model.put("sessionEmail", sessionEmail);
         model.put("sessionName", sessionName);
-
+        model.put("sessionRole", sessionUser.getUserRole());
 
         List<User> usersList = userDao.findAll();
 

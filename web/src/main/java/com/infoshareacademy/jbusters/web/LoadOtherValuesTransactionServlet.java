@@ -1,6 +1,7 @@
 package com.infoshareacademy.jbusters.web;
 
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
+import com.infoshareacademy.jbusters.model.User;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.slf4j.Logger;
@@ -26,6 +27,8 @@ public class LoadOtherValuesTransactionServlet extends HttpServlet {
 
     @Inject
     private TemplateProvider templateProvider;
+    @Inject
+    private User sessionUser;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -55,7 +58,7 @@ public class LoadOtherValuesTransactionServlet extends HttpServlet {
         HttpSession session = req.getSession(true);
         String sessionEmail = (String) session.getAttribute("userEmail");
         String sessionName = (String) session.getAttribute("userName");
-
+        sessionUser = (User) session.getAttribute("user");
 
         if (sessionEmail == null){
             Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_GUEST);
@@ -71,6 +74,7 @@ public class LoadOtherValuesTransactionServlet extends HttpServlet {
             Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_USER);
             model.put("sessionEmail", sessionEmail);
             model.put("sessionName", sessionName);
+            model.put("sessionRole", sessionUser.getUserRole());
 
 
             try {

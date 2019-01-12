@@ -4,6 +4,7 @@ import com.infoshareacademy.jbusters.data.DataLoader;
 import com.infoshareacademy.jbusters.data.Transaction;
 import com.infoshareacademy.jbusters.data.UploadFileFromUser;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
+import com.infoshareacademy.jbusters.model.User;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.slf4j.Logger;
@@ -35,14 +36,15 @@ public class UploadFileServlet extends HttpServlet {
     private static final String TEMPLATE_USERS_UPLOAD_FILE = "user-upload-file";
     private static final String TEMPLATE_UPLOAD_FILE = "upload-file";
 
+
     @Inject
     private TemplateProvider templateProvider;
-
     @Inject
     private UploadFileFromUser uploadFileFromUser;
-
     @Inject
     private DataLoader dataLoader;
+    @Inject
+    private User sessionUser;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -55,6 +57,7 @@ public class UploadFileServlet extends HttpServlet {
         HttpSession session = req.getSession(true);
         String sessionEmail = (String) session.getAttribute("userEmail");
         String sessionName = (String) session.getAttribute("userName");
+        sessionUser = (User) session.getAttribute("user");
 
         Template template;
 
@@ -72,6 +75,7 @@ public class UploadFileServlet extends HttpServlet {
             template = templateProvider.getTemplate(getServletContext(), TEMPLATE_USERS_UPLOAD_FILE);
             model.put("sessionEmail", sessionEmail);
             model.put("sessionName", sessionName);
+            model.put("sessionRole", sessionUser.getUserRole());
             try {
                 template.process(model, out);
                 LOG.info("Loaded file");
@@ -91,6 +95,7 @@ public class UploadFileServlet extends HttpServlet {
         HttpSession session = req.getSession();
         String sessionEmail = (String) session.getAttribute("userEmail");
         String sessionName = (String) session.getAttribute("userName");
+        sessionUser = (User) session.getAttribute("user");
 
         final PrintWriter writer = resp.getWriter();
         final Part filePart = req.getPart("file");
@@ -98,6 +103,9 @@ public class UploadFileServlet extends HttpServlet {
         Map<String, Object> model = new HashMap<>();
         model.put("sessionEmail", sessionEmail);
         model.put("sessionName", sessionName);
+        if (sessionUser != null) {
+            model.put("sessionRole", sessionUser.getUserRole());
+        }
 
         Template template;
         if (sessionEmail == null){
@@ -105,7 +113,6 @@ public class UploadFileServlet extends HttpServlet {
 
         }else {
             template = templateProvider.getTemplate(getServletContext(), TEMPLATE_USERS_UPLOAD_FILE);
-
         }
 
         // TODO błąd gdy wybierze się plik do pobrania a następnie go przeniesie/usunie z dysku i kliknie się na pobierz

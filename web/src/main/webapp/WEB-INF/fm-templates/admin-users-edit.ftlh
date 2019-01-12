@@ -1,4 +1,4 @@
-<#include "include-user-header.ftlh">
+<#include "header-admin.ftlh">
 <div class="container">
     <br><br>
 
@@ -6,11 +6,9 @@
 
         <div class="row my-border-bootom">
             <div class="col-8">
-                <h1 class="display-4">Edycja użytkownika</h1>
+                <h1 class="display">Edycja użytkownika</h1>
             </div>
-            <#include "include-user-info.ftlh">
         </div>
-
         <div class="jumbotron jumbotron-opacity-1">
             <p class="lead"><b>Użytkownik</b></p>
             <form method="post" action="editUser?id=${user.userId}">

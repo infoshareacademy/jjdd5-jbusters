@@ -27,9 +27,10 @@ public class AdminUsersEditServlet extends HttpServlet {
 
     @Inject
     private TemplateProvider templateProvider;
-
     @Inject
     private UserDao userDao;
+    @Inject
+    private User sessionUser;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -42,9 +43,11 @@ public class AdminUsersEditServlet extends HttpServlet {
         HttpSession session = req.getSession();
         String sessionEmail = (String) session.getAttribute("userEmail");
         String sessionName = (String) session.getAttribute("userName");
+        sessionUser = (User) session.getAttribute("user");
 
         model.put("sessionName", sessionName);
         model.put("sessionEmail", sessionEmail);
+        model.put("sessionRole", sessionUser.getUserRole());
 
         int userId = Integer.parseInt(req.getParameter("id"));
 

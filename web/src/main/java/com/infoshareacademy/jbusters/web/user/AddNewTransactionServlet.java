@@ -33,7 +33,8 @@ public class AddNewTransactionServlet extends HttpServlet {
     private TemplateProvider templateProvider;
     @Inject
     private NewTransactionDao newTransactionDao;
-
+    @Inject
+    private User sessionUser;
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
@@ -70,10 +71,11 @@ public class AddNewTransactionServlet extends HttpServlet {
             Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
             String sessionName = (String) session.getAttribute("userName");
             String sessionEmail = (String) session.getAttribute("userEmail");
+            sessionUser = (User) session.getAttribute("user");
             Map<String, Object> model = new HashMap<>();
             model.put("sessionName", sessionName);
             model.put("sessionEmail", sessionEmail);
-
+            model.put("sessionRole", sessionUser.getUserRole());
             try {
                 template.process(model, out);
                 LOG.info("Save ok");

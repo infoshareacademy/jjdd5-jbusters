@@ -1,7 +1,7 @@
 <#include "header.ftlh">
     <div class="container">
         <div class="jumbotron jumbotron-opacity jumbotron-login">
-            <h1 class="display-4">Zaloguj się do naszej aplikacji.</h1>
+            <h1 class="display">Zaloguj się do naszej aplikacji.</h1>
             <p class="lead">Logując się otrzymasz dodatkowe funkcjonalności. Wybierz jeden z dwóch sposobów logowania poniżej...</p>
             <hr class="my-4">
             <div class="card-deck">

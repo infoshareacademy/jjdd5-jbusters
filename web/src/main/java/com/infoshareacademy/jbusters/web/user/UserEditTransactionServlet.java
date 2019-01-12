@@ -4,6 +4,7 @@ import com.infoshareacademy.jbusters.authentication.Auth;
 import com.infoshareacademy.jbusters.dao.NewTransactionDao;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import com.infoshareacademy.jbusters.model.NewTransaction;
+import com.infoshareacademy.jbusters.model.User;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.slf4j.Logger;
@@ -28,12 +29,12 @@ public class UserEditTransactionServlet extends HttpServlet {
 
     @Inject
     private TemplateProvider templateProvider;
-
     @Inject
     Auth auth;
-
     @Inject
     NewTransactionDao newTransactionDao;
+    @Inject
+    private User sessionUser;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -46,13 +47,13 @@ public class UserEditTransactionServlet extends HttpServlet {
         HttpSession session = req.getSession();
         String sessionEmail = (String) session.getAttribute("userEmail");
         String sessionName = (String) session.getAttribute("userName");
+        sessionUser = (User) session.getAttribute("user");
         int transactionId = Integer.parseInt(req.getParameter("id"));
 
         if (auth.isUserAuthorizedToEdit(sessionEmail, transactionId)) {
             NewTransaction transactionToEdit = newTransactionDao.findById(transactionId);
 
             model.put("transactionId", transactionId);
-
             model.put("city", transactionToEdit.getNewTransactionCity());
             model.put("district", transactionToEdit.getNewTransactionDistrict());
             model.put("marketType", transactionToEdit.getNewTransactionTypeOfMarket());
@@ -68,6 +69,7 @@ public class UserEditTransactionServlet extends HttpServlet {
 
             model.put("sessionName", sessionName);
             model.put("sessionEmail", sessionEmail);
+            model.put("sessionRole", sessionUser.getUserRole());
 
             try {
                 template.process(model, out);

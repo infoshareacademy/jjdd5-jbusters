@@ -37,7 +37,7 @@ public class UserLoadMenuServlet extends HttpServlet {
     private UserDao userDao;
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         resp.setContentType("text/html;charset=UTF-8");
         final PrintWriter writer = resp.getWriter();

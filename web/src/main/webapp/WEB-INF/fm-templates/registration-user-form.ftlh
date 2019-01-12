@@ -1,9 +1,9 @@
 <#include "header.ftlh">
     <div class="container">
         <div class="jumbotron jumbotron-opacity">
-            <h1 class="display-4">Rejestracja</h1>
+            <h1 class="display">Rejestracja</h1>
             <p class="lead">Załóż konto lub zaloguj sie przy pomocy <b>GOOGLE</b>.</p>
-            <a href="login-user.html" class="btn btn-primary">Loguj w Google</a>
+            <a href="/select-login-form" class="btn btn-primary">Loguj w Google</a>
             <hr class="my-4">
             <form method="post" action="/add-user">
 
