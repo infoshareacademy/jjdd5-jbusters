@@ -1,6 +1,7 @@
 package com.infoshareacademy.jbusters.web.login;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.infoshareacademy.jbusters.authentication.PasswordHashing;
 import com.infoshareacademy.jbusters.dao.UserDao;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import com.infoshareacademy.jbusters.model.User;
@@ -40,6 +41,8 @@ public class LoginServlet extends HttpServlet {
     private TemplateProvider templateProvider;
     @Inject
     private UserDao userDao;
+    @Inject
+    PasswordHashing passwordHashing;
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -90,8 +93,9 @@ public class LoginServlet extends HttpServlet {
             if (!userList.isEmpty()) {
 
                 user = userList.get(0);
+                String userHashedPassword = user.getUserPassword();
 
-                if (user != null && user.getUserPassword().equals(password)) {
+                if (user != null && passwordHashing.checkPassword(password, userHashedPassword)) {
 
                     session.setAttribute(SESSION_ATTRIBUTE_NAME, user.getUserName());
                     session.setAttribute(SESSION_ATTRIBUTE_EMAIL, user.getUserEmail());

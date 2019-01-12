@@ -36,6 +36,7 @@ public class UploadFileServlet extends HttpServlet {
     private static final String TEMPLATE_USERS_UPLOAD_FILE = "user-upload-file";
     private static final String TEMPLATE_UPLOAD_FILE = "upload-file";
 
+
     @Inject
     private TemplateProvider templateProvider;
     @Inject

@@ -14,7 +14,7 @@
     <meta name="google-signin-client_id" content="210558406372-1i31kqkfer8n3pa5dsdkl3udifff4k9v.apps.googleusercontent.com">
 
     <!-- ClockPicker Stylesheet -->
-    <link rel="stylesheet" type="text/css" href="css/bootstrap-clockpicker.min.css">
+    <link rel="stylesheet" type="text/css" href="../../css/bootstrap-clockpicker.min.css">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
