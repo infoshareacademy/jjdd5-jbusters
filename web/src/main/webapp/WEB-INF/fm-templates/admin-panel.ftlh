@@ -111,8 +111,9 @@
                                                     oninvalid="this.setCustomValidity('Proszę wybrać walutę z listy!')"
                                                     oninput="this.setCustomValidity('')">
                                                 <option selected="true" disabled="true" value="">Wybierz walutę</option>
+                                                <option value="PLN1.0000">PLN=1.0000</option>
                                                 <#list exRatesMap as key, value>
-                                                    <option value="${key}${value}">${key}=${value}</option>
+                                                <option value="${key}${value}">${key}=${value}</option>
                                                 </#list>
                                             </select>
                                             <br>
