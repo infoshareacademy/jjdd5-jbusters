@@ -75,7 +75,11 @@
                 <div class="form-group">
                     <label for="Select13">Chcesz wyróżnić mieszkanie?</label>
                     <select name="important" class="form-control" id="Select13" required>
-                        <option>${important}</option>
+                        <#if important>
+                        <option>tak</option>
+                        <#else>
+                        <option>nie</option>
+                        </#if>
                         <option>nie</option>
                         <option>tak</option>
                     </select>
