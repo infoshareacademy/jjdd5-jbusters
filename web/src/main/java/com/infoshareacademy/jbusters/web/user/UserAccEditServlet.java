@@ -79,6 +79,8 @@ public class UserAccEditServlet extends HttpServlet {
                 LOG.info("User {} has changed his email to {}", sessionEmail, newEmail);
                 session.setAttribute(EMAIL_STATUS, "emailSuccess");
             } else {
+                LOG.warn("User ({}) failed to update his email because entered email ({}) already exist in DB",
+                        sessionUser.getUserEmail(), newEmail);
                 session.setAttribute(UPDATE_STATUS, FAILED);
                 session.setAttribute(EMAIL_STATUS, "emailExist");
                 doGet(req, resp);

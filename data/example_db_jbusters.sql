@@ -3525,7 +3525,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT dla tabeli `new_transaction`
 --
 ALTER TABLE `new_transaction`
-  MODIFY `NEW_TRANSACTION_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `NEW_TRANSACTION_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT dla tabeli `transactions`
 --
@@ -3535,7 +3535,7 @@ ALTER TABLE `transactions`
 -- AUTO_INCREMENT dla tabeli `users`
 --
 ALTER TABLE `users`
-  MODIFY `USER_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `USER_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- Ograniczenia dla zrzutów tabel
 --
