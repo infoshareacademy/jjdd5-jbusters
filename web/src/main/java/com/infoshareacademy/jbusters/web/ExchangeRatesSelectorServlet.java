@@ -20,8 +20,9 @@ public class ExchangeRatesSelectorServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
 
-        String code = req.getParameter("code");
-        String value = req.getParameter("value");
+        String rateCombined = req.getParameter("ratecombined");
+        String code = rateCombined.substring(0, 3);
+        String value = rateCombined.substring(3, 9);
 
         exchangeRatesManager.updateExchangeRates();
         exchangeRatesManager.setExchangeRate(code, value);

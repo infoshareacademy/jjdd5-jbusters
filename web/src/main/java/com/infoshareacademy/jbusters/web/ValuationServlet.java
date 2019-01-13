@@ -1,9 +1,6 @@
 package com.infoshareacademy.jbusters.web;
 
-import com.infoshareacademy.jbusters.data.CalculatePrice;
-import com.infoshareacademy.jbusters.data.FilterTransactions;
-import com.infoshareacademy.jbusters.data.StatisticsManager;
-import com.infoshareacademy.jbusters.data.Transaction;
+import com.infoshareacademy.jbusters.data.*;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import com.infoshareacademy.jbusters.model.User;
 import com.infoshareacademy.jbusters.web.validator.NumericDataValidator;
@@ -46,6 +43,7 @@ public class ValuationServlet extends HttpServlet {
     public static final String PARKING_SPOT = "parkingSpot";
     public static final String STANDARD_LEVEL = "standardLevel";
     public static final String CONSTRUCTION = "construction";
+    public static final String CURRENCYCODE = "currencyCode";
 
     @Inject
     private Transaction newTransaction;
@@ -56,6 +54,8 @@ public class ValuationServlet extends HttpServlet {
     @Inject
     private StatisticsManager statisticsManager;
     private NumericDataValidator numericDataValidator = new NumericDataValidator();
+    @Inject
+    private ExchangeRatesManager exchangeRatesManager;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -140,6 +140,7 @@ public class ValuationServlet extends HttpServlet {
             model.put(PARKING_SPOT, newTransaction.getParkingSpot());
             model.put(STANDARD_LEVEL, newTransaction.getStandardLevel());
             model.put(CONSTRUCTION, newTransaction.getConstructionYearCategory());
+            model.put(CURRENCYCODE, exchangeRatesManager.getExchangeRateCode());
 
             String cityName = req.getParameter("city");
             String districtName = req.getParameter("district");

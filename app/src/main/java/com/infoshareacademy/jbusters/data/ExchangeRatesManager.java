@@ -58,6 +58,59 @@ public class ExchangeRatesManager {
         }
     }
 
+    public String getExchangeRateCode() {
+
+        if (!Files.exists(EXCHANGE_RATES_SELECTION_FILE)) {
+            return "PLN";
+        } else {
+            FileInputStream fis = null;
+            try {
+                fis = new FileInputStream(EXCHANGE_RATES_SELECTION_FILE.toString());
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            try {
+                exchangeRatesSelection.load(fis);
+                fis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            String code = exchangeRatesSelection.getProperty("code");
+
+            return code;
+        }
+    }
+
+    public BigDecimal getExRate() {
+
+        if (!Files.exists(EXCHANGE_RATES_SELECTION_FILE)) {
+            return EXCHANGE_RATE_DEFAULT_VALUE;
+        } else {
+            FileInputStream fis = null;
+            try {
+                fis = new FileInputStream(EXCHANGE_RATES_SELECTION_FILE.toString());
+            } catch (FileNotFoundException e) {
+                LOGGER.error("Missing exchange rates selection file in path: {}", EXCHANGE_RATES_SELECTION_FILE.toString());
+            }
+
+            try {
+                exchangeRatesSelection.load(fis);
+                LOGGER.info("Exchange rate loaded from path: {}", EXCHANGE_RATES_SELECTION_FILE.toString());
+                fis.close();
+            } catch (IOException e) {
+                LOGGER.error("Missing exchange rates selection file in path: {}", EXCHANGE_RATES_SELECTION_FILE.toString());
+            }
+
+            String exchangeRateCodeString = exchangeRatesSelection.getProperty("code");
+            String exchangeRateValueString = exchangeRatesSelection.getProperty("value");
+            BigDecimal exchangeRate = new BigDecimal(exchangeRateValueString);
+            LOGGER.info("Returned following exchange rate: {} {}", exchangeRateCodeString, exchangeRateValueString);
+
+            return exchangeRate;
+        }
+    }
+
     public void updateExchangeRates() throws IOException {
 
         if (!Files.exists(EXCHANGE_RATES_PROPERTIES_FILE)) {
@@ -104,30 +157,6 @@ public class ExchangeRatesManager {
         LOGGER.info("URL is: " + EXCHANGE_RATES_URL);
 
         return EXCHANGE_RATES_URL;
-    }
-
-    public BigDecimal getExRate() throws FileNotFoundException {
-
-        if (!Files.exists(EXCHANGE_RATES_SELECTION_FILE)) {
-            return EXCHANGE_RATE_DEFAULT_VALUE;
-        } else {
-            FileInputStream fis = new FileInputStream(EXCHANGE_RATES_SELECTION_FILE.toString());
-
-            try {
-                exchangeRatesProperties.load(fis);
-                LOGGER.info("Exchange rate loaded from path: {}", EXCHANGE_RATES_SELECTION_FILE.toString());
-                fis.close();
-            } catch (IOException e) {
-                LOGGER.error("Missing exchange rates selection file in path: {}", EXCHANGE_RATES_SELECTION_FILE.toString());
-            }
-
-            String exchangeRateCodeString = exchangeRatesSelection.getProperty("code");
-            String exchangeRateValueString = exchangeRatesSelection.getProperty("value");
-            BigDecimal exchangeRate = new BigDecimal(exchangeRateValueString);
-            LOGGER.info("Returned following exchange rate: {} {}", exchangeRateCodeString, exchangeRateValueString);
-
-            return exchangeRate;
-        }
     }
 
     public String getExCode() throws FileNotFoundException {

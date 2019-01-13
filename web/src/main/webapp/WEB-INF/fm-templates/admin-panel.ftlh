@@ -61,6 +61,7 @@
                             </div>
                         </div>
 
+
                         <script>
                             //google callback. This function will redirect to our login servlet
                             function onSignIn(googleUser) {
@@ -83,16 +84,6 @@
                             }
                         </script>
 
-                        <div class="col-sm-6">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Edycja użytkowników</h5>
-                                    <p class="card-text">Usuwanie oraz zmiana uprawnień użytkowników</p>
-                                    <a href="/admin-users" class="btn btn-primary">Przejdź dalej</a>
-                                </div>
-                            </div>
-                        </div>
-
 
                         <div class="col-sm-6">
                             <div class="card">
@@ -113,45 +104,66 @@
                                     <#if exRatesMapSize gt 0>
 
                                         <hr class="my-4">
-                                        <h5 class="card-title"><em>Wybrany kurs: ${exRatesGetCurrent}</em></h5>
+                                        <h5 class="card-title"><em>Aktualna waluta: ${exRatesGetCurrent}</em></h5>
+
+                                        <form method="get" action="selectexrate">
+                                            <select name="ratecombined" type="text" class="form-control" id="SelectRate" required
+                                                    oninvalid="this.setCustomValidity('Proszę wybrać walutę z listy!')"
+                                                    oninput="this.setCustomValidity('')">
+                                                <option selected="true" disabled="true" value="">Wybierz walutę</option>
+                                                <#list exRatesMap as key, value>
+                                                    <option value="${key}${value}">${key}=${value}</option>
+                                                </#list>
+                                            </select>
+                                            <br>
+                                            <button type="submit" class="btn btn-primary" style="float: left">Zapisz</button>
+                                        </form>
+
+                                        <br>
                                         <hr class="my-4">
                                         <ul style="list-style-type: disc">
-                                            <li><p class="card-text"><em>Data aktualizacji kursów: ${exRatesMapDate}</em></p></li>
-                                            <li><p class="card-text"><em>Kursy pobrane z: ${exRatesURL}</em></p></li>
+                                            <li><p class="card-text"><em>Data aktualizacji kursów:<br>${exRatesMapDate}</em></p></li>
+                                            <br>
+                                            <li><p class="card-text"><em>Kursy pobrane z:<br>${exRatesURL}</em></p></li>
                                         </ul>
-                                        <br>
-                                        <table class="table table-condensed">
-                                            <thead>
-                                            <tr>
-                                                <th scope="col">Waluta</th>
-                                                <th scope="col">Kurs</th>
-                                                <th scope="col"></th>
 
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            <tr>
-                                                <td>PLN</td>
-                                                <td>1.0000</td>
-                                                <td><a href="/selectexrate?code=PLN&value=1.0000" class="btn btn-secondary btn-sm">Użyj</a></td>
-                                            </tr>
-
-                                            <#list exRatesMap as key, value>
-                                            <tr>
-                                                <td>${key}</td>
-                                                <td>${value}</td>
-                                                <td><a href="/selectexrate?code=${key}&value=${value}" class="btn btn-secondary btn-sm">Użyj</a></td>
-                                            </tr>
-                                            </#list>
-
-                                            </tbody>
-                                        </table>
                                     </#if>
                                 </div>
                             </div>
                         </div>
 
+
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Edycja użytkowników</h5>
+                                    <p class="card-text">Usuwanie oraz zmiana uprawnień użytkowników</p>
+                                    <a href="/admin-users" class="btn btn-primary">Przejdź dalej</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                            //google callback. This function will redirect to our login servlet
+                            function onSignIn(googleUser) {
+                                var profile = googleUser.getBasicProfile();
+                                console.log('ID: ' + profile.getId());
+                                console.log('Name: ' + profile.getName());
+                                console.log('Image URL: ' + profile.getImageUrl());
+                                console.log('Email: ' + profile.getEmail());
+                                console.log('id_token: ' + googleUser.getAuthResponse().id_token);
+                                //do not post all above info to the server because that is not secure.
+                                //just send the id_token
+                                var redirectUrl = 'login';
+                                //using jquery to post data dynamically
+                                var form = $('<form action="' + redirectUrl + '" method="post">' +
+                                    '<input type="text" name="id_token" value="' +
+                                    googleUser.getAuthResponse().id_token + '" />' +
+                                    '</form>');
+                                $('body').append(form);
+                                form.submit();
+                            }
+                        </script>
 
                     </div>
                 </div>
