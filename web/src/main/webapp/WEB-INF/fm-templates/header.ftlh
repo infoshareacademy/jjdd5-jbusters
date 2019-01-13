@@ -33,7 +33,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item active">
-                            <a class="nav-link" href="/index.html">Home </a>
+                            <a class="nav-link" href="/index.html">Strona główna </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/load-city">Wyceń mieszkanie</a>

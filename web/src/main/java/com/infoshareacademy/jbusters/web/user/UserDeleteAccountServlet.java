@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -31,23 +30,20 @@ public class UserDeleteAccountServlet extends HttpServlet {
     private UserDao userDao;
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         resp.setContentType("text/html;charset=UTF-8");
         final PrintWriter out = resp.getWriter();
         Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
 
-
         Map<String, Object> model = new HashMap<>();
 
         HttpSession session = req.getSession();
-        String sessionEmail = (String) session.getAttribute("userEmail");
+        User sessionUser = (User) session.getAttribute("user");
 
-        User user = userDao.findByEmail(sessionEmail);
-
-        userDao.delete(user.getUserId());
-        LOG.warn("Account ({}) has been deleted", sessionEmail);
-        session.removeAttribute("userEmail");
+        userDao.delete(sessionUser.getUserId());
+        LOG.warn("Account ({}) has been deleted", sessionUser.getUserEmail());
+        session.removeAttribute("user");
 
         try {
             template.process(model, out);

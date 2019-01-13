@@ -1,6 +1,6 @@
-<#if sessionRole == 1 >
+<#if user.userRole == 1 >
     <#include "header-admin.ftlh">
-<#elseif sessionRole == 2>
+<#elseif user.userRole == 2>
     <#include "include-user-header.ftlh">
 </#if>
 
@@ -101,6 +101,7 @@
                 <button type="button" class="btn btn-primary" data-toggle="modal"
                         data-target=".bd-example-modal-lg">Wyczyść listę
                 </button>
+                <a class="btn btn-primary" href="upload-file" role="button">Załaduj nowy plik</a>
 
                 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
                      aria-labelledby="myLargeModalLabel" aria-hidden="true">

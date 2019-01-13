@@ -21,14 +21,12 @@ import java.util.Map;
 @WebServlet(urlPatterns = ("/load-other-values"))
 public class LoadOtherValuesTransactionServlet extends HttpServlet {
 
-    private static final String TEMPLATE_NAME_GUEST  = "load-other-values";
+    private static final String TEMPLATE_NAME_GUEST = "load-other-values";
     private static final String TEMPLATE_NAME_USER = "user-load-other-values";
     private static final Logger LOG = LoggerFactory.getLogger(LoadOtherValuesTransactionServlet.class);
 
     @Inject
     private TemplateProvider templateProvider;
-    @Inject
-    private User sessionUser;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -56,32 +54,24 @@ public class LoadOtherValuesTransactionServlet extends HttpServlet {
         model.put(ValuationServlet.DISTRICT_1, district);
 
         HttpSession session = req.getSession(true);
-        String sessionEmail = (String) session.getAttribute("userEmail");
-        String sessionName = (String) session.getAttribute("userName");
-        sessionUser = (User) session.getAttribute("user");
+        User sessionUser = (User) session.getAttribute("user");
+        model.put("user", sessionUser);
 
-        if (sessionEmail == null){
+        if (sessionUser == null) {
             Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_GUEST);
-
             try {
                 template.process(model, out);
                 LOG.info("Sending city of {} and district of {} to template", city, district);
             } catch (TemplateException e) {
                 LOG.error("Failed to export data to tamplate {} {}", city, district);
             }
-        }   else {
-
+        } else {
             Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_USER);
-            model.put("sessionEmail", sessionEmail);
-            model.put("sessionName", sessionName);
-            model.put("sessionRole", sessionUser.getUserRole());
-
-
             try {
                 template.process(model, out);
-                LOG.info("Sending city of {} and district of {} to template for {}", city, district, sessionEmail);
+                LOG.info("Sending city of {} and district of {} to template for {}", city, district, sessionUser.getUserEmail());
             } catch (TemplateException e) {
-                LOG.error("Failed to export data to tamplate {} {} for", city, district, sessionEmail);
+                LOG.error("Failed to export data to tamplate {} {} for", city, district, sessionUser.getUserEmail());
             }
         }
     }
