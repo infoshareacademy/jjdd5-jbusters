@@ -72,6 +72,8 @@ public class LoginServlet extends HttpServlet {
 
             if (emailList.isEmpty()){
                 user.setUserEmail(email);
+                user.setUserName(nameGoogle);
+                user.setUserSurname("brak");
                 user.setUserRole(2);
                 userDao.save(user);
                 session.setAttribute(SESSION_ATTRIBUTE_USER, user);
