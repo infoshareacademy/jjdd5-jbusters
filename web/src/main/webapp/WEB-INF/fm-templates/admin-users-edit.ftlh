@@ -15,7 +15,8 @@
 
                 <div class="form-group">
                     <label for="Select1"><b>Id użytkownika:</b></label>
-                    <input name="city" type="text" class="form-control" id="Select1" value="${userToEdit.userId}" disabled>
+                    <input name="city" type="text" class="form-control" id="Select1" value="${userToEdit.userId}"
+                           disabled>
                 </div>
 
                 <div class="form-group">
@@ -26,30 +27,36 @@
 
                 <div class="form-group">
                     <label for="Select3"><b>Imię</b></label>
-                    <input name="market-type" type="text" class="form-control" id="Select3" value="${userToEdit.userName}"
+                    <input name="market-type" type="text" class="form-control" id="Select3"
+                           value="${userToEdit.userName}"
                            disabled>
                 </div>
 
                 <div class="form-group">
                     <label for="Select4"><b>Nazwisko</b></label>
-                    <input name="flat-area" type="text" class="form-control" id="Select4" value="${userToEdit.userSurname}"
+                    <input name="flat-area" type="text" class="form-control" id="Select4"
+                           value="${userToEdit.userSurname}"
                            disabled>
                 </div>
 
 
                 <div class="form-group">
                     <label for="Select5">Uprawnienia użytkownika</label>
-                    <select name="role" class="form-control" id="Select5" required>
-                        <#if userToEdit.userRole = 1>
+                    <#if user.userId = userToEdit.userId>
+                        <input name="flat-area" type="text" class="form-control" id="Select4"
+                               value="ADMIN" disabled>
+                    <#else >
+                        <select name="role" class="form-control" id="Select5" required>
+                            <#if userToEdit.userRole = 1>
+                                <option>ADMIN</option>
+                            <#elseif userToEdit.userRole = 2>
+                                <option>Podstawowe</option>
+                            </#if>
                             <option>ADMIN</option>
-                        <#elseif userToEdit.userRole = 2>
                             <option>Podstawowe</option>
-                        </#if>
-                        <option>ADMIN</option>
-                        <option>Podstawowe</option>
-                    </select>
+                        </select>
+                    </#if>
                 </div>
-
                 <input class="btn btn-primary" type="submit" value="Zapisz" name="upload" id="upload"/>
                 <a href="/admin-users" type="button" class="btn btn-secondary">Wróć</a>
             </form>

@@ -8,41 +8,26 @@
 <script src="js/bootstrap-clockpicker.min.js"></script>
 
 <script>
-    $('.clockpicker').clockpicker()
-        .find('input').change(function(){
-        // TODO: time changed
-        console.log(this.value);
-    });
-    $('#demo-input').clockpicker({
-        autoclose: true
-    });
-
-    if (something) {
-        // Manual operations (after clockpicker is initialized).
-        $('#demo-input').clockpicker('show') // Or hide, remove ...
-            .clockpicker('toggleView', 'minutes');
+    //google callback. This function will redirect to our login servlet
+    function onSignIn(googleUser) {
+        var profile = googleUser.getBasicProfile();
+        console.log('ID: ' + profile.getId());
+        console.log('Name: ' + profile.getName());
+        console.log('Image URL: ' + profile.getImageUrl());
+        console.log('Email: ' + profile.getEmail());
+        console.log('id_token: ' + googleUser.getAuthResponse().id_token);
+        //do not post all above info to the server because that is not secure.
+        //just send the id_token
+        var redirectUrl = 'login';
+        //using jquery to post data dynamically
+        var form = $('<form action="' + redirectUrl + '" method="post">' +
+            '<input type="text" name="id_token" value="' +
+            googleUser.getAuthResponse().id_token + '" />' +
+            '</form>');
+        $('body').append(form);
+        form.submit();
     }
 </script>
 
-<script>
-    function signOut() {
-        console.log("logging out ...");
-        gapi.auth.authorize(
-            {
-                'client_id': "210558406372-1i31kqkfer8n3pa5dsdkl3udifff4k9v.apps.googleusercontent.com",
-                'scope': "profile email",
-                'immediate': false,
-                cookie_policy: 'single_host_origin',
-                response_type: 'token id_token'
-            },
-            function (authResult) {
-                gapi.auth.signOut();
-                gapi.auth.disconnect();
-            }
-        );
-        console.log("redirecting to logout servlet");
-        window.location.href = '/logout';
-    }
-</script>
 </body>
 </html>

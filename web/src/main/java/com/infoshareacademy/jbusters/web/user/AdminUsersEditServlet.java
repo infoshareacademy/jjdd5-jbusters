@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @WebServlet(urlPatterns = "/admin-users/editUser")
 public class AdminUsersEditServlet extends HttpServlet {
@@ -71,15 +72,18 @@ public class AdminUsersEditServlet extends HttpServlet {
 
         String stringRole = req.getParameter("role");
 
-        if (stringRole.equals("ADMIN")) {
-            user.setUserRole(1);
+        if (stringRole != null) {
+            if (stringRole.equals("ADMIN")) {
+                user.setUserRole(1);
+            } else {
+                user.setUserRole(2);
+            }
+            userDao.update(user);
+            LOG.warn("ADMIN user {} has changed role of user {} to: {}", sessionUser.getUserEmail(),
+                    user.getUserEmail(), user.getUserRole());
+            resp.sendRedirect("/admin-users");
         } else {
-            user.setUserRole(2);
+            resp.sendRedirect("/admin-users");
         }
-
-        userDao.update(user);
-        LOG.warn("ADMIN user {} has changed role of user {} to: {}", sessionUser.getUserEmail(),
-                user.getUserEmail(), user.getUserRole());
-        resp.sendRedirect("/admin-users");
     }
 }
