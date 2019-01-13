@@ -28,8 +28,6 @@ public class MyFlatsServlet extends HttpServlet {
 
     @Inject
     private TemplateProvider templateProvider;
-    @Inject
-    private User sessionUser;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
