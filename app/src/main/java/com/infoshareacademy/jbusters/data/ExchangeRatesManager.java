@@ -118,14 +118,8 @@ public class ExchangeRatesManager {
         }
 
         URL onlineExchangeRates = new URL(EXCHANGE_RATES_URL);
-        BufferedReader in = null;
-        try {
-            in = new BufferedReader(new InputStreamReader(onlineExchangeRates.openStream()));
-        } catch (IOException e) {
-            LOGGER.warn("File not found.");
-        } finally {
-            in.close();
-        }
+
+        try (BufferedReader in = new BufferedReader(new InputStreamReader(onlineExchangeRates.openStream()))) {
 
         String inputLine;
         String[] splitLine;
@@ -135,6 +129,10 @@ public class ExchangeRatesManager {
             splitLine = inputLine.split(SEPARATOR);
 
             exchangeRatesProperties.setProperty(splitLine[0], splitLine[2]);
+        }
+
+        } catch (IOException | NullPointerException e) {
+            LOGGER.warn("File not found.");
         }
 
         FileWriter write = new FileWriter(EXCHANGE_RATES_PROPERTIES_FILE.toString());
@@ -179,9 +177,7 @@ public class ExchangeRatesManager {
                 LOGGER.error("Missing exchange rates selection file in path: {}", EXCHANGE_RATES_SELECTION_FILE.toString());
             }
 
-            String exchangeRateCodeString = exchangeRatesSelection.getProperty(CODE);
-
-            return exchangeRateCodeString;
+            return exchangeRatesSelection.getProperty(CODE);
         }
     }
 
