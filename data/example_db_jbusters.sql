@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 05 Sty 2019, 11:34
+-- Czas generowania: 13 Sty 2019, 18:46
 -- Wersja serwera: 10.1.25-MariaDB
 -- Wersja PHP: 7.1.7
 
@@ -35,8 +35,8 @@ CREATE TABLE `new_transaction` (
   `NEW_TRANSACTION_USER_ID` int(11) DEFAULT NULL,
   `NEW_TRANSACTION_DESCRIPTION` varchar(45) COLLATE utf8_polish_ci DEFAULT NULL,
   `NEW_TRANSACTION_SALE` varchar(45) COLLATE utf8_polish_ci DEFAULT 'nie',
-  `NEW_TRANSACTION_IMPORTANT` boolean DEFAULT false,
-  `NEW_TRANSACTION_DATA_TRANSACTION` date COLLATE utf8_polish_ci DEFAULT NULL,
+  `NEW_TRANSACTION_IMPORTANT` tinyint(1) DEFAULT '0',
+  `NEW_TRANSACTION_DATA_TRANSACTION` date DEFAULT NULL,
   `NEW_TRANSACTION_CITY` varchar(45) COLLATE utf8_polish_ci DEFAULT NULL,
   `NEW_TRANSACTION_DISTRICT` varchar(45) COLLATE utf8_polish_ci DEFAULT NULL,
   `NEW_TRANSACTION_STREET` varchar(45) COLLATE utf8_polish_ci DEFAULT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE `new_transaction` (
   `NEW_TRANSACTION_PARKING_SPOT` varchar(45) COLLATE utf8_polish_ci DEFAULT NULL,
   `NEW_TRANSACTION_STANDARD_LEVEL` varchar(45) COLLATE utf8_polish_ci DEFAULT NULL,
   `NEW_TRANSACTION_CONSTRUCTION_YEAR` varchar(45) COLLATE utf8_polish_ci DEFAULT NULL,
-  `NEW_TRANSACTION_CONSTRUCTION_YEAR_CATEGORY` int(11) COLLATE utf8_polish_ci DEFAULT NULL
+  `NEW_TRANSACTION_CONSTRUCTION_YEAR_CATEGORY` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
 
 --
@@ -56,14 +56,36 @@ CREATE TABLE `new_transaction` (
 --
 
 INSERT INTO `new_transaction` (`NEW_TRANSACTION_ID`, `NEW_TRANSACTION_USER_ID`, `NEW_TRANSACTION_DESCRIPTION`, `NEW_TRANSACTION_SALE`, `NEW_TRANSACTION_IMPORTANT`, `NEW_TRANSACTION_DATA_TRANSACTION`, `NEW_TRANSACTION_CITY`, `NEW_TRANSACTION_DISTRICT`, `NEW_TRANSACTION_STREET`, `NEW_TRANSACTION_TYPE_OF_MARKET`, `NEW_TRANSACTION_PRICE`, `NEW_TRANSACTION_FLAT_AREA`, `NEW_TRANSACTION_PRICE_PER_M2`, `NEW_TRANSACTION_LEVEL`, `NEW_TRANSACTION_PARKING_SPOT`, `NEW_TRANSACTION_STANDARD_LEVEL`, `NEW_TRANSACTION_CONSTRUCTION_YEAR`, `NEW_TRANSACTION_CONSTRUCTION_YEAR_CATEGORY`) VALUES
-(1, 1, 'Moje mieszkanie', 'nie', FALSE,  '2018-12-16', 'Gdynia', 'Witomino', 'Promienna', 'RYNEK WTÓRNY', NULL, '60', NULL, 4, 'BRAK MP', 'DOBRY', '1990', 2),
-(2, 2, 'Moje nowe mieszkanie', 'nie', TRUE , '2018-12-16', 'Gdynia', 'Chylonia', 'Morska', 'RYNEK WTÓRNY', NULL, '80', NULL, 4, 'MIEJSCE POSTOJOWE W HALI GARAŻOWEJ', 'DOBRY', '2008', 2),
-(3, 1, 'NOWER ORŁOWO Apartament', 'nie', FALSE , '2018-12-16', 'Gdynia', 'Orłowo', 'Morska', 'RYNEK WTÓRNY', NULL, '45', NULL, 4, 'MIEJSCE POSTOJOWE W HALI GARAŻOWEJ', 'DOBRY', '2008', 3),
-(4, 1, 'Na Strzelców', 'nie', FALSE , '2018-12-16', 'Gdynia', 'Wielki Kack', 'Morska', 'RYNEK WTÓRNY', NULL, '70', NULL, 4, 'MIEJSCE POSTOJOWE W HALI GARAŻOWEJ', 'DOBRY', '2008', 3),
-(5, 1, 'Wielka płyta Gdynia', 'nie', TRUE , '2018-12-16', 'Gdynia', 'Pogórze', 'Morska', 'RYNEK WTÓRNY', NULL, '70', NULL, 4, 'MIEJSCE POSTOJOWE W HALI GARAŻOWEJ', 'DOBRY', '2008', 2),
-(6, 1, 'W Centrum', 'nie', FALSE , '2018-12-16', 'Gdynia', 'Śródmieście z Portem', 'Morska', 'RYNEK WTÓRNY', NULL, '63', NULL, 4, 'MIEJSCE POSTOJOWE W HALI GARAŻOWEJ', 'DOBRY', '2008', 3),
-(7, 1, 'Uzdrowisko Sopot', 'nie', FALSE , '2018-12-16', 'Sopot', 'Sopot', 'Morska', 'RYNEK WTÓRNY', NULL, '40', NULL, 4, 'MIEJSCE POSTOJOWE W HALI GARAŻOWEJ', 'DOBRY', '2008', 3),
-(8, 1, 'CISOWA', 'nie', TRUE , '2018-12-16', 'Gdynia', 'Cisowa', 'Morska', 'RYNEK WTÓRNY', NULL, '45', NULL, 4, 'MIEJSCE POSTOJOWE W HALI GARAŻOWEJ', 'DOBRY', '2008', 2);
+(1, 1, 'Moje mieszkanie', 'nie', 0, '2018-12-16', 'Gdynia', 'Witomino', 'Promienna', 'RYNEK WTÓRNY', NULL, '60', NULL, 4, 'BRAK MP', 'DOBRY', '1990', 2),
+(2, 2, 'Moje nowe mieszkanie', 'nie', 1, '2018-12-16', 'Gdynia', 'Chylonia', 'Morska', 'RYNEK WTÓRNY', NULL, '80', NULL, 4, 'MIEJSCE POSTOJOWE W HALI GARAŻOWEJ', 'DOBRY', '2008', 2),
+(3, 1, 'NOWER ORŁOWO Apartament', 'nie', 0, '2018-12-16', 'Gdynia', 'Orłowo', 'Morska', 'RYNEK WTÓRNY', NULL, '45', NULL, 4, 'MIEJSCE POSTOJOWE W HALI GARAŻOWEJ', 'DOBRY', '2008', 3),
+(4, 1, 'Na Strzelców', 'nie', 0, '2018-12-16', 'Gdynia', 'Wielki Kack', 'Morska', 'RYNEK WTÓRNY', NULL, '70', NULL, 4, 'MIEJSCE POSTOJOWE W HALI GARAŻOWEJ', 'DOBRY', '2008', 3),
+(5, 1, 'Wielka płyta Gdynia', 'nie', 1, '2018-12-16', 'Gdynia', 'Pogórze', 'Morska', 'RYNEK WTÓRNY', NULL, '70', NULL, 4, 'MIEJSCE POSTOJOWE W HALI GARAŻOWEJ', 'DOBRY', '2008', 2),
+(6, 1, 'W Centrum', 'nie', 0, '2018-12-16', 'Gdynia', 'Śródmieście z Portem', 'Morska', 'RYNEK WTÓRNY', NULL, '63', NULL, 4, 'MIEJSCE POSTOJOWE W HALI GARAŻOWEJ', 'DOBRY', '2008', 3),
+(7, 1, 'Uzdrowisko Sopot', 'nie', 0, '2018-12-16', 'Sopot', 'Sopot', 'Morska', 'RYNEK WTÓRNY', NULL, '40', NULL, 4, 'MIEJSCE POSTOJOWE W HALI GARAŻOWEJ', 'DOBRY', '2008', 3),
+(8, 1, 'CISOWA', 'nie', 1, '2018-12-16', 'Gdynia', 'Cisowa', 'Morska', 'RYNEK WTÓRNY', NULL, '45', NULL, 4, 'MIEJSCE POSTOJOWE W HALI GARAŻOWEJ', 'DOBRY', '2008', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `suggestions`
+--
+
+CREATE TABLE `suggestions` (
+  `SUGGESTIONS_ID` int(11) NOT NULL,
+  `SUGGESTIONS_CITY` varchar(128) COLLATE utf8_polish_ci DEFAULT NULL,
+  `SUGGESTIONS_DISTRICT` varchar(128) COLLATE utf8_polish_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci;
+
+--
+-- Zrzut danych tabeli `suggestions`
+--
+
+INSERT INTO `suggestions` (`SUGGESTIONS_ID`, `SUGGESTIONS_CITY`, `SUGGESTIONS_DISTRICT`) VALUES
+(1, 'Gdańsk', 'Wrzeszcz'),
+(2, 'Gdańsk', 'Oliwa'),
+(3, 'Gdańsk', 'Chełm'),
+(4, 'Gdańsk', 'Orunia');
 
 -- --------------------------------------------------------
 
@@ -3505,6 +3527,12 @@ ALTER TABLE `new_transaction`
   ADD KEY `NEW_TRANSACTION_USER_ID` (`NEW_TRANSACTION_USER_ID`);
 
 --
+-- Indexes for table `suggestions`
+--
+ALTER TABLE `suggestions`
+  ADD PRIMARY KEY (`SUGGESTIONS_ID`);
+
+--
 -- Indexes for table `transactions`
 --
 ALTER TABLE `transactions`
@@ -3526,6 +3554,11 @@ ALTER TABLE `users`
 --
 ALTER TABLE `new_transaction`
   MODIFY `NEW_TRANSACTION_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+--
+-- AUTO_INCREMENT dla tabeli `suggestions`
+--
+ALTER TABLE `suggestions`
+  MODIFY `SUGGESTIONS_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT dla tabeli `transactions`
 --
