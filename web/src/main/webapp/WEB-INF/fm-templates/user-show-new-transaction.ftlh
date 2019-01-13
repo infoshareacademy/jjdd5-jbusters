@@ -1,6 +1,6 @@
-<#if sessionRole == 1 >
+<#if user.userRole == 1 >
     <#include "header-admin.ftlh">
-<#elseif sessionRole == 2>
+<#elseif user.userRole == 2>
     <#include "include-user-header.ftlh">
 </#if>
 <div class="container">
@@ -52,14 +52,15 @@
                 <tbody>
                 <#list trans as flat>
 
-                    <#if flat.newTransactionImportant == "tak">
+                    <#if flat.newTransactionImportant>
                         <tr style="background: lawngreen">
                     <#else>
                         <tr>
                     </#if>
                     <td>
                         <a class="btn btn-primary btn-lg btn-dark active" role="button"
-                           aria-pressed="true" href="/valuation?city=${flat.newTransactionCity}&district=${flat.newTransactionDistrict}&market-type=${flat.newTransactionTypeOfMarket}&flat-area=${flat.newTransactionFlatArea}&level=${flat.newTransactionLevel}&parking-spot=${flat.newTransactionParkingSpot}&standard-level=${flat.newTransactionStandardLevel}&construction=${flat.newTransactionConstructionYearCategory}">
+                           aria-pressed="true"
+                           href="/valuation?city=${flat.newTransactionCity}&district=${flat.newTransactionDistrict}&market-type=${flat.newTransactionTypeOfMarket}&flat-area=${flat.newTransactionFlatArea}&level=${flat.newTransactionLevel}&parking-spot=${flat.newTransactionParkingSpot}&standard-level=${flat.newTransactionStandardLevel}&construction=${flat.newTransactionConstructionYearCategory}">
                             Wyceń ponownie</a>
                     </td>
                     <td>${flat.newTransactionDescription}</td>
@@ -103,6 +104,16 @@
                 </#list>
                 </tbody>
             </table>
+            <div class="jumbotron jumbotron-opacity" style="margin: 10px, 30%, 0, 30%">
+                <div style="text-align: center">
+                    <form method="post" action="/saveAs">
+                        <input class="btn btn-primary btn-lg btn-dark active" type="submit"
+                               value="Pobierz listę mieszkań">
+                    </form>
+                    <hr class="my-4">
+
+                </div>
+            </div>
         </#if>
     </div>
 

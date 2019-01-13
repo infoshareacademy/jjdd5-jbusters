@@ -1,10 +1,12 @@
 package com.infoshareacademy.jbusters.web.login;
 
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
+import com.infoshareacademy.jbusters.model.User;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,23 +29,25 @@ public class LogoutServlet extends HttpServlet {
     private TemplateProvider templateProvider;
 
     @Override
-    protected void doGet (HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         resp.setContentType("text/html;charset=UTF-8");
 
         final PrintWriter writer = resp.getWriter();
 
-            Map<String, Object> model = new HashMap<>();
-            HttpSession session = req.getSession(true);
-            session.invalidate();
+        Map<String, Object> model = new HashMap<>();
+        HttpSession session = req.getSession(true);
+        User sessionUser = (User) session.getAttribute("user");
 
-            Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
+        session.invalidate();
 
-            try {
-                template.process(model, writer);
-                LOG.info("Logout user");
-            } catch (TemplateException e) {
-                LOG.error("Failed to logout user");
-            }
+        Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
+
+        try {
+            template.process(model, writer);
+            LOG.info("User {} logged out", sessionUser.getUserEmail());
+        } catch (TemplateException e) {
+            LOG.error("Failed to logout user");
+        }
     }
 }

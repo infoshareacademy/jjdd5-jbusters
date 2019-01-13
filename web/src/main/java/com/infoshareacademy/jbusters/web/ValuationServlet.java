@@ -55,13 +55,12 @@ public class ValuationServlet extends HttpServlet {
     private FilterTransactions filterTransactions;
     @Inject
     private StatisticsManager statisticsManager;
-    @Inject
-    private User sessionUser;
     private NumericDataValidator numericDataValidator = new NumericDataValidator();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
+        HttpSession session = req.getSession(true);
 
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("/load-other-values");
         Map<String, Object> model = new HashMap<>();
@@ -73,18 +72,13 @@ public class ValuationServlet extends HttpServlet {
         BigDecimal flatPriceTotal = BigDecimal.valueOf(0);
         PrintWriter out = resp.getWriter();
 
-        HttpSession session = req.getSession(true);
-        String sessionEmail = (String) session.getAttribute("userEmail");
-        String sessionName = (String) session.getAttribute("userName");
-        sessionUser = (User) session.getAttribute("user");
 
-        model.put("sessionEmail", sessionEmail);
-        model.put("sessionName", sessionName);
-        model.put("sessionRole", sessionUser.getUserRole());
+        User sessionUser = (User) session.getAttribute("user");
+        model.put("user", sessionUser);
 
         Template template;
 
-        if (sessionEmail == null) {
+        if (sessionUser == null) {
             template = templateProvider.getTemplate(
                     getServletContext(),
                     TEMPLATE_VALUATION);
@@ -126,7 +120,7 @@ public class ValuationServlet extends HttpServlet {
                 LOG.warn("Failed to calculate price for flat with values: {}, {}, {}, {}, {}", newTransaction.getCity(), newTransaction.getDistrict(),
                         newTransaction.getTypeOfMarket(), newTransaction.getFlatArea(), newTransaction.getConstructionYearCategory());
 
-                if (sessionEmail == null) {
+                if (sessionUser == null) {
                     template = templateProvider.getTemplate(getServletContext(), "no-valuation");
                 } else {
                     template = templateProvider.getTemplate(getServletContext(), "user-no-valuation");
@@ -153,7 +147,7 @@ public class ValuationServlet extends HttpServlet {
 
             if (req.getAttribute("constructionYearError") != null) {
 
-                if (sessionEmail == null) {
+                if (sessionUser == null) {
                     template = templateProvider.getTemplate(
                             getServletContext(), TEMPLATE_VALUATION);
                 } else {

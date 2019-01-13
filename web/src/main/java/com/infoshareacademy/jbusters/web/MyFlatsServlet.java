@@ -28,8 +28,6 @@ public class MyFlatsServlet extends HttpServlet {
 
     @Inject
     private TemplateProvider templateProvider;
-    @Inject
-    private User sessionUser;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -39,21 +37,19 @@ public class MyFlatsServlet extends HttpServlet {
         Map<String, Object> model = new HashMap<>();
 
         HttpSession session = req.getSession();
+        User sessionUser = (User) session.getAttribute("user");
+
         List<Transaction> propertyList = (List<Transaction>) session.getAttribute("propertyList");
-        String sessionEmail = (String) session.getAttribute("userEmail");
-        String sessionName = (String) session.getAttribute("userName");
-        sessionUser = (User) session.getAttribute("user");
+
 
         Template template;
 
-        if (sessionEmail == null){
+        if (sessionUser == null){
             template = templateProvider.getTemplate(getServletContext(), TEMPLATE_USERS_TRANSACTION);
         } else {
             template = templateProvider.getTemplate(getServletContext(), TEMPLATE_LOGGED_USERS_TRANSACTION);
 
-            model.put("sessionEmail", sessionEmail);
-            model.put("sessionName", sessionName);
-            model.put("sessionRole", sessionUser.getUserRole());
+            model.put("user", sessionUser);
         }
 
         if (propertyList == null || propertyList.isEmpty()) {

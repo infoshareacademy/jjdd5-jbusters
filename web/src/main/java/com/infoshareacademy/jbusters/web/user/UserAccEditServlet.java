@@ -28,6 +28,11 @@ public class UserAccEditServlet extends HttpServlet {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserAccEditServlet.class);
     private static final String TEMPLATE_NAME = "user-acc-edit";
+    private static final String EMAIL_STATUS = "emailStatus";
+    private static final String UPDATE_STATUS = "updateStatus";
+    private static final String FAILED = "failed";
+    private static final String SUCCESS = "success";
+    public static final String EMAIL_SUCCESS = "emailSuccess";
 
     @Inject
     private TemplateProvider templateProvider;
@@ -46,15 +51,12 @@ public class UserAccEditServlet extends HttpServlet {
         Map<String, Object> model = new HashMap<>();
 
         HttpSession session = req.getSession();
-        String sessionEmail = (String) session.getAttribute("userEmail");
+        User sessionUser = (User) session.getAttribute("user");
 
 
-        model.put("updateStatus", checkUpdateStatus(session));
+        model.put(UPDATE_STATUS, checkUpdateStatus(session));
 
-        User user = userDao.findByEmail(sessionEmail);
-
-        model.put("sessionEmail", sessionEmail);
-        model.put("user", user);
+        model.put("user", sessionUser);
 
         try {
             template.process(model, out);
@@ -67,7 +69,8 @@ public class UserAccEditServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         HttpSession session = req.getSession();
-        String sessionEmail = (String) session.getAttribute("userEmail");
+        User sessionUser = (User) session.getAttribute("user");
+        String sessionEmail = sessionUser.getUserEmail();
         User user = userDao.findByEmail(sessionEmail);
         String newEmail = req.getParameter("email");
 
@@ -75,10 +78,12 @@ public class UserAccEditServlet extends HttpServlet {
             if (checkEmail.checkIfEmailCanBeEdited(newEmail, user.getUserId())) {
                 user.setUserEmail(newEmail);
                 LOG.info("User {} has changed his email to {}", sessionEmail, newEmail);
-                session.setAttribute("emailStatus", "emailSuccess");
+                session.setAttribute(EMAIL_STATUS, EMAIL_SUCCESS);
             } else {
-                session.setAttribute("updateStatus", "failed");
-                session.setAttribute("emailStatus", "emailExist");
+                LOG.warn("User ({}) failed to update his email because entered email ({}) already exist in DB",
+                        sessionUser.getUserEmail(), newEmail);
+                session.setAttribute(UPDATE_STATUS, FAILED);
+                session.setAttribute(EMAIL_STATUS, "emailExist");
                 doGet(req, resp);
                 return;
             }
@@ -89,13 +94,13 @@ public class UserAccEditServlet extends HttpServlet {
 
         try {
             userDao.update(user);
-            session.setAttribute("userEmail", user.getUserEmail());
-            session.setAttribute("updateStatus", "success");
+            session.setAttribute("user", user);
+            session.setAttribute(UPDATE_STATUS, SUCCESS);
             LOG.info("User {}, has changed his acc detials", sessionEmail);
             doGet(req, resp);
         } catch (Exception e) {
             LOG.error("Failed to update user {} account due to: {}", sessionEmail, e.getMessage());
-            session.setAttribute("updateStatus", "failed");
+            session.setAttribute(UPDATE_STATUS, FAILED);
             doGet(req, resp);
         }
     }
@@ -103,21 +108,21 @@ public class UserAccEditServlet extends HttpServlet {
     private Map checkUpdateStatus(HttpSession session) {
         Map<String, String> model = new HashMap<>();
 
-        String updateStatus = (String) session.getAttribute("updateStatus");
-        if ("success".equals(updateStatus)) {
+        String updateStatus = (String) session.getAttribute(UPDATE_STATUS);
+        if (SUCCESS.equals(updateStatus)) {
             model.put("updateSuccess", "Zmiany zostały zapisane");
-        } else if ("failed".equals(updateStatus)) {
+        } else if (FAILED.equals(updateStatus)) {
             model.put("updateFailed", "Nie udało się zapisać twoich zmian");
         }
-        session.removeAttribute("updateStatus");
+        session.removeAttribute(UPDATE_STATUS);
 
-        String emailStatus = (String) session.getAttribute("emailStatus");
-        if ("emailSuccess".equals(emailStatus)) {
-            model.put("emailSuccess", "Twój Email został zmieniony!");
+        String emailStatus = (String) session.getAttribute(EMAIL_STATUS);
+        if (EMAIL_SUCCESS.equals(emailStatus)) {
+            model.put(EMAIL_SUCCESS, "Twój Email został zmieniony!");
         } else if ("emailExist".equals(emailStatus)) {
             model.put("emailFailed", "Taki adres Email już istnieje!");
         }
-        session.removeAttribute("emailStatus");
+        session.removeAttribute(EMAIL_STATUS);
 
         return model;
     }

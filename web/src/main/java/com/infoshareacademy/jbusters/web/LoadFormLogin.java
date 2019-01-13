@@ -36,21 +36,17 @@ public class LoadFormLogin extends HttpServlet {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
         PrintWriter out = resp.getWriter();
         Template template;
-        User sessionuser = new User();
         Map<String, Object> model = new HashMap<>();
 
         HttpSession session = req.getSession(true);
-        String sessionEmail = (String) session.getAttribute("userEmail");
-        String sessionName = (String) session.getAttribute("userName");
-        sessionuser = (User) session.getAttribute("user");
+        User sessionUser = (User) session.getAttribute("user");
+        model.put("user", sessionUser);
 
-        model.put("sessionEmail", sessionEmail);
-        model.put("sessionName", sessionName);
 
-        if (sessionEmail == null){
+        if (sessionUser == null) {
             template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_GUEST);
         } else {
-            if (sessionuser.getUserRole() == ADMIN) {
+            if (sessionUser.getUserRole() == ADMIN) {
                 template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_LOGIN_ADMIN);
             } else {
                 template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_LOGIN_OK);

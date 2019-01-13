@@ -76,9 +76,7 @@ public class AddUserServlet extends HttpServlet {
 
             try {
                 userDao.save(u);
-                model.put("email", email);
-                model.put("name", name);
-                model.put("surname", surname);
+                model.put("user", u);
                 Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_SUCESS);
 
                 try {

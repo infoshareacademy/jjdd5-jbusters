@@ -31,8 +31,6 @@ public class LoadDistrictTransactionServlet extends HttpServlet {
 
     @Inject
     private TemplateProvider templateProvider;
-    @Inject
-    private User sessionUser;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -47,13 +45,11 @@ public class LoadDistrictTransactionServlet extends HttpServlet {
         model.put("district", districtsList);
 
         HttpSession session = req.getSession(true);
-        String sessionEmail = (String) session.getAttribute("userEmail");
-        String sessionName = (String) session.getAttribute("userName");
-        sessionUser = (User) session.getAttribute("user");
+        User sessionUser = (User) session.getAttribute("user");
+        model.put("user", sessionUser);
 
-        if (sessionEmail == null){
+        if (sessionUser == null) {
             Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_GUEST);
-
             try {
                 template.process(model, out);
                 LOG.info("Loaded district list of size {}", districtsList.size());
@@ -61,21 +57,13 @@ public class LoadDistrictTransactionServlet extends HttpServlet {
                 LOG.error("Failed to load district list. Size of list: {}" + districtsList.size());
             }
         } else {
-
             Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_USER);
-            model.put("sessionEmail", sessionEmail);
-            model.put("sessionName", sessionName);
-            model.put("sessionRole", sessionUser.getUserRole());
-
-
             try {
                 template.process(model, out);
-                LOG.info("Loaded district for {}, List of size {}", sessionEmail, districtsList.size());
+                LOG.info("Loaded district for {}, List of size {}", sessionUser.getUserEmail(), districtsList.size());
             } catch (TemplateException e) {
-                LOG.error("Failed to load district for {}. List size: {}", sessionEmail, districtsList.size());
+                LOG.error("Failed to load district for {}. List size: {}", sessionUser.getUserEmail(), districtsList.size());
             }
         }
-
-
     }
 }
