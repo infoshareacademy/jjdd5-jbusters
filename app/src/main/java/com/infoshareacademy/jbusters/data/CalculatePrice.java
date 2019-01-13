@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -15,25 +16,32 @@ import java.util.stream.Collectors;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
+@Stateless
 public class CalculatePrice {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CalculatePrice.class);
     private Transaction userTransaction;
     private List<Transaction> filteredList;
     private BigDecimal exchangeRate;
+    private String currency;
+
+
 
     @Inject
     StaticFields staticFields;
 
     public CalculatePrice() {
+
     }
 
     @PostConstruct
     public void init(){
+        currency = staticFields.getCurrency();
         exchangeRate = staticFields.getExchangeRate();
     }
 
     public CalculatePrice(Transaction transaction, List<Transaction> filteredList) {
+        super();
         this.userTransaction = transaction;
         this.filteredList = filteredList;
     }
@@ -131,17 +139,17 @@ public class CalculatePrice {
 
         BigDecimal max = getMaxPriceInList(transactions);
 
-        String currencySuffix = staticFields.getCurrency() +" per m2";
+        String currencySuffix = currency +" per m2";
         LOGGER.info("Average price calculated from similar flats set equals:"+getTabs(3)
                 + staticFields.formatWithLongDF(
                         average.setScale(2, RoundingMode.HALF_UP).divide(exchangeRate, BigDecimal.ROUND_UP))
-                + " " + staticFields.getCurrency() + currencySuffix);
+                + " " + currencySuffix);
         LOGGER.info("Maximum prise in similar flats set equals:"+getTabs(3)
                 + staticFields.formatWithLongDF(max.divide(exchangeRate, BigDecimal.ROUND_UP))
-                + " " + staticFields.getCurrency() + currencySuffix);
+                + " " + currencySuffix);
         System.out.println("Minimum prise in similar flats set equals:"+getTabs(4)
                 + staticFields.formatWithLongDF(min.divide(exchangeRate, BigDecimal.ROUND_UP))
-                + " " + staticFields.getCurrency() + currencySuffix);
+                + " " + currencySuffix);
 
         BigDecimal lowerFactor = min.divide(average, 3, RoundingMode.HALF_UP);
         BigDecimal upperFactor = max.divide(average, 3, RoundingMode.HALF_UP);
@@ -187,7 +195,7 @@ public class CalculatePrice {
         LOGGER.info("Calculated price per square meter equals:"+getTabs(5)
                 + staticFields.formatWithLongDF(
                         pricePerM2.setScale(2, RoundingMode.HALF_UP).divide(exchangeRate, BigDecimal.ROUND_UP))
-                + " " + staticFields.getCurrency());
+                + " " + currency);
 
         return pricePerM2;
     }
@@ -247,5 +255,13 @@ public class CalculatePrice {
             sb.append("\t");
         }
         return sb.toString();
+    }
+
+    public void setUserTransaction(Transaction userTransaction) {
+        this.userTransaction = userTransaction;
+    }
+
+    public void setFilteredList(List<Transaction> filteredList) {
+        this.filteredList = filteredList;
     }
 }

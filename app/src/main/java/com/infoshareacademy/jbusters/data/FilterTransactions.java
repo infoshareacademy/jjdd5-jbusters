@@ -23,13 +23,12 @@ public class FilterTransactions {
 
 
     private BigDecimal areaDiff;
-    private BigDecimal areaDiffExpanded;
+   private BigDecimal areaDiffExpanded;
     private int minResultsNumber;
     private BigDecimal priceDiff;
 
     @Inject
     StaticFields staticFields;
-
     @Inject
     TranzactionDao tranzactionDao;
     @Inject
@@ -55,7 +54,7 @@ public class FilterTransactions {
     //kolejnosc filtrow:  data tranzakcji/miasto/dzielnica/rynek/kategoria budowy/powierzchnia mieszkania
 
     public List<Transaction> theGreatFatFilter(Transaction userTransaction) {
-//        List<Transaction> basicFilter = basicFilter(userTransaction);
+        //        List<Transaction> basicFilter = basicFilter(userTransaction);
 //        if (basicFilter.size() < 11) {
 //            return new ArrayList<>();
 //        }
@@ -66,8 +65,23 @@ public class FilterTransactions {
         int userConstrYearCat = userTransaction.getConstructionYearCategory();
 
         List<Transaction> transactionsBase = new ArrayList<>();
-        tranzactionDao.basicFilter(oldestDateAccepted, userCity, userTransactionType, userConstrYearCat).forEach(t -> transactionsBase.add(new Transaction(t)));
-        transactionsBase.forEach(t->t.init());
+        tranzactionDao.basicFilter(oldestDateAccepted, userCity, userTransactionType, userConstrYearCat).forEach(t ->{
+            Transaction trans = new Transaction();
+            trans.setTransactionDate(t.getTranzactionDataTransaction());
+            trans.setCity(t.getTranzactionCity());
+            trans.setDistrict(t.getTranzactionDistrict().trim());
+            trans.setStreet(t.getTranzactionStreet());
+            trans.setTypeOfMarket(t.getTranzactionTypeOfMarket());
+            trans.setPrice(t.getTranzactionPrice());
+            trans.setFlatArea(t.getTranzactionFlatArea());
+            trans.setPricePerM2(t.getTranzactionPricePerM2());
+            trans.setLevel(t.getTranzactionLevel());
+            trans.setConstructionYearCategory(t.getTranzactionConstructionYearCategory());
+            trans.setConstructionYear(t.getTranzactionConstructionYear());
+            trans.setStandardLevel(t.getTranzactionStandardLevel());
+            trans.setParkingSpot(t.getTranzactionParkingSpot());
+            transactionsBase.add(new Transaction(t));
+        } );
         LOGGER.info("uruchomiono filtr bazowy: tabela wynikowa zawiera {} element/ów", transactionsBase.size());
         if (transactionsBase.size() < 11) {
             return new ArrayList<>();
@@ -83,28 +97,18 @@ public class FilterTransactions {
         return new ArrayList<>();
     }
 
-//    public List<Transaction> basicFilter(Transaction userTransaction) {
-//        List<Transaction> lista = transactionsBase.stream()
-//                .filter(transaction -> transaction.getTransactionDate().isAfter(userTransaction.getTransactionDate().minusYears(2)))
-//                .filter(transaction -> transaction.getCity().equalsIgnoreCase(userTransaction.getCity()))
-//                .filter(transaction -> transaction.getTypeOfMarket().equalsIgnoreCase(userTransaction.getTypeOfMarket()))
-//                .filter(transaction -> transaction.getConstructionYearCategory() == (userTransaction.getConstructionYearCategory()))
-//                .collect(Collectors.toList());
-//
-//        return lista;
-//    }
 
     private List<Transaction> selectorFilter(boolean isSingleDistrict, boolean isAreaDiffSmall, List<Transaction> transactionsList, Transaction userTransaction) {
+
         if (isSingleDistrict) {
             List<Transaction> singleDistrictFilter = singleDistrictFilter(transactionsList, userTransaction);
             if (isAreaDiffSmall) {
-
                 List<Transaction> flatAreafilter = flatAreaFilter(singleDistrictFilter, userTransaction, areaDiff);
                 flatAreafilter = invalidTransactionsRemover(flatAreafilter);
                 if (isEnoughtResults(flatAreafilter, minResultsNumber)) {
                     return flatAreafilter;
                 } else {
-                    return selectorFilter(true, false, singleDistrictFilter, userTransaction);
+                    return selectorFilter(true, false, transactionsList, userTransaction);
                 }
 
             } else {
@@ -149,8 +153,7 @@ public class FilterTransactions {
     public List<Transaction> singleDistrictFilter(List<Transaction> transactionsBase, Transaction userTransaction) {
         LOGGER.info("Single District filter aktywowany");
         List<Transaction> lista = transactionsBase.stream()
-                .peek(t -> System.out.println("Tranzakcja z dzielnicy: "+t.getDistrict()))
-                .filter(transaction -> (transaction.getDistrict()).equalsIgnoreCase(userTransaction.getDistrict()))
+                .filter(transaction -> (transaction.getDistrict().trim()).equalsIgnoreCase(userTransaction.getDistrict().trim()))
                 .collect(Collectors.toList());
         LOGGER.info("Po przefiltrowaniu SingleDistrictFilter uzyskano {} element/ów",lista.size());
         return lista;
@@ -161,6 +164,7 @@ public class FilterTransactions {
         LOGGER.info("Multi District filter aktywowany");
         List<Transaction> lista = transactionsBase.stream()
                 .filter(transaction -> distrWagesHandler.districtWageComparator(transaction, userTransaction))
+                .peek(t-> System.out.println("dzielnica badana:___"+t.getDistrict()+"___"+"Dzielnica usera:___"+ userTransaction.getDistrict()))
                 .collect(Collectors.toList());
         LOGGER.info("Po przefiltrowaniu MultiDistrictFilter uzyskano {} element/ów",lista.size());
         return lista;

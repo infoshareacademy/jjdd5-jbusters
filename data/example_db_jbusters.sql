@@ -32,12 +32,12 @@ DROP TABLE IF EXISTS `configurations`;
 CREATE TABLE `configurations` (
   `CONFIGURATION_ID` int(11) NOT NULL,
   `MIN_RESULTS_REQUIRED` int(11) NOT NULL DEFAULT '11',
-  `EXCHANGE_RATE` decimal(10,0) NOT NULL DEFAULT '1',
+  `EXCHANGE_RATE` decimal(10,3) NOT NULL DEFAULT '1',
   `CURRENCY` varchar(3) COLLATE utf8_polish_ci NOT NULL DEFAULT 'PLN',
   `AREA_DIFF` decimal(10,0) NOT NULL DEFAULT '20',
   `AREA_DIFF_EXPANDED` decimal(10,0) NOT NULL DEFAULT '25',
   `DECIMAL_PLACES` int(11) NOT NULL DEFAULT '2',
-  `PRICE_DIFF` decimal(10,0) NOT NULL DEFAULT '600',
+  `PRICE_DIFF` decimal(10,2) NOT NULL DEFAULT '600',
   `LONG_DF_PATTERN` varchar(45) COLLATE utf8_polish_ci NOT NULL DEFAULT '###,###',
   `SHORT_DF_PATTERN` varchar(45) COLLATE utf8_polish_ci NOT NULL DEFAULT '##.##',
   `DECIMAL_SEPARATOR` varchar(1) COLLATE utf8_polish_ci NOT NULL DEFAULT '.',
@@ -49,7 +49,7 @@ CREATE TABLE `configurations` (
 --
 
 INSERT INTO `configurations` (`CONFIGURATION_ID`, `MIN_RESULTS_REQUIRED`, `EXCHANGE_RATE`, `CURRENCY`, `AREA_DIFF`, `AREA_DIFF_EXPANDED`, `DECIMAL_PLACES`, `PRICE_DIFF`, `LONG_DF_PATTERN`, `SHORT_DF_PATTERN`, `DECIMAL_SEPARATOR`, `GROUPING_SEPARATOR`) VALUES
-(1, 11, '1', 'PLN', '20', '25', 2, '600', '###,###', '##.##', '.', ' ');
+(1, 11, 1.000, 'PLN', 20, 25, 2, 600, '###,###', '##.##', '.', ' ');
 
 -- --------------------------------------------------------
 
@@ -141,12 +141,12 @@ CREATE TABLE `transactions` (
   `TRANSACTION_ID` int(11) NOT NULL,
   `TRANSACTION_DATE` date NOT NULL,
   `CITY` varchar(45) COLLATE utf8_polish_ci DEFAULT NULL,
-  `DISTRICT` varchar(2545) COLLATE utf8_polish_ci DEFAULT NULL,
+  `DISTRICT` varchar(45) COLLATE utf8_polish_ci DEFAULT NULL,
   `STREET` varchar(45) COLLATE utf8_polish_ci DEFAULT NULL,
   `TYPE_OF_MARKET` varchar(45) COLLATE utf8_polish_ci DEFAULT NULL,
-  `PRICE` decimal(10,0) DEFAULT NULL,
-  `FLAT_AREA` decimal(10,0) DEFAULT NULL,
-  `PRICE_PER_M2` decimal(10,0) DEFAULT NULL,
+  `PRICE` decimal(15,5) DEFAULT NULL,
+  `FLAT_AREA` decimal(10,2) DEFAULT NULL,
+  `PRICE_PER_M2` decimal(15,5) DEFAULT NULL,
   `LEVEL` int(4) DEFAULT NULL,
   `PARKING_SPOT` varchar(45) COLLATE utf8_polish_ci DEFAULT NULL,
   `STANDARD_LEVEL` varchar(45) COLLATE utf8_polish_ci DEFAULT NULL,

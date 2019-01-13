@@ -4,8 +4,12 @@ import com.infoshareacademy.jbusters.dao.DistrictWageDao;
 import com.infoshareacademy.jbusters.model.DistrictWage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.ejb.Stateless;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 
+@Stateless
 public class DistrWagesHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(DistrWagesHandler.class);
 
@@ -15,6 +19,7 @@ public class DistrWagesHandler {
     public DistrWagesHandler() {
     }
 
+    @Inject
     public DistrWagesHandler(DistrictWageDao districtWageDao) {
         this.districtWageDao = districtWageDao;
     }
@@ -28,8 +33,8 @@ public class DistrWagesHandler {
         DistrictWage userDistrictWage = districtWageDao.findByName(cityUser,districtUser);
         DistrictWage checkedDistrictWage = districtWageDao.findByName(cityChecked,districtChecked);
 
-        if(userDistrictWage.equals(new DistrictWage())){
-
+        if(userDistrictWage==(new DistrictWage())){
+            LOGGER.warn(userDistrictWage +" <--- ta dzielnica nie znajduje sie w bazie");
             return false;
         }
 
@@ -37,8 +42,9 @@ public class DistrWagesHandler {
     }
 
     public boolean isDistrictWageEqual(DistrictWage checked, DistrictWage user){
-
-        return checked.getWage()==user.getWage();
+        boolean result = checked.getWage()==user.getWage();
+        LOGGER.info("Porównywanie wag dzielnic {} i {} dało wynik {}", checked.getDistrictName(),user.getDistrictName(),result);
+        return result;
     }
     private String StringParser(String name) {
         return name.trim().replace(" ", "_").toLowerCase();

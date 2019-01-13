@@ -1,9 +1,5 @@
 package com.infoshareacademy.jbusters.model;
 
-import com.infoshareacademy.jbusters.data.StaticFields;
-import com.infoshareacademy.jbusters.data.Transaction;
-
-import javax.inject.Inject;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -57,16 +53,6 @@ public class Tranzaction {
     @Column(name = "CONSTRUCTION_YEAR_CATEGORY")
     private int transactionConstructionYearCategory;
 
-    @Transient
-    private String transactionName;
-    @Transient
-    private boolean important;
-    @Transient
-    private String currency;
-
-    @Transient
-    @Inject
-    StaticFields staticFields;
 
 
     public Tranzaction() {

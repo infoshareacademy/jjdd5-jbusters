@@ -56,6 +56,9 @@ public class ValuationServlet extends HttpServlet {
     private StatisticsManager statisticsManager;
 
     @Inject
+    private CalculatePrice calc;
+
+    @Inject
     StaticFields staticFields;
 
 
@@ -106,7 +109,9 @@ public class ValuationServlet extends HttpServlet {
         } else {
 
             if (filteredList.size() >= 11) {
-                CalculatePrice calc = new CalculatePrice(newTransaction, filteredList);
+                calc.setUserTransaction(newTransaction);
+                calc.setFilteredList(filteredList);
+                //CalculatePrice calc = new CalculatePrice(newTransaction, filteredList);
                 BigDecimal yearlyTrendOfPriceChange = calc.overallTrend(filteredList);
                 model.put("trend", yearlyTrendOfPriceChange);
 

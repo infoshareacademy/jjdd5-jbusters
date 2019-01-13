@@ -43,7 +43,7 @@ public class Transaction implements Serializable {
 
     @PostConstruct
     public void init(){
-        currency = staticFields.getCurrency();;
+        currency = staticFields.getCurrency();
         exchangeRate = staticFields.getExchangeRate();
     }
 
@@ -104,9 +104,9 @@ public class Transaction implements Serializable {
                         "Dzielnica:\t\t" + district + "\n" +
                         "Ulica:\t\t\t" + street + "\n" +
                         "Rodzaj rynku:\t\t" + typeOfMarket + "\n" +
-                        "Cena:\t\t\t" + price + " " + currency + "\n" +
+                        "Cena:\t\t\t" + price + " " + staticFields.getCurrency() + "\n" +
                         "Wielkość:\t\t" + flatArea + " m2\n" +
-                        "Cena za m2:\t\t" + pricePerM2 + " " + currency + "\n" +
+                        "Cena za m2:\t\t" + pricePerM2 + " " + staticFields.getCurrency() + "\n" +
                         "Piętro:\t\t\t" + level + "\n" +
                         "Miejsce postojowe:\t" + parkingSpot + "\n" +
                         "Standard wykończenia:\t" + standardLevel + "\n" +
