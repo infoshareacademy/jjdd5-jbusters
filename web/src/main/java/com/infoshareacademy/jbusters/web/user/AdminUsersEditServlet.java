@@ -62,6 +62,8 @@ public class AdminUsersEditServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        HttpSession session = req.getSession();
+        User sessionUser = (User) session.getAttribute("user");
 
         int userId = Integer.parseInt(req.getParameter("id"));
 
@@ -76,7 +78,8 @@ public class AdminUsersEditServlet extends HttpServlet {
         }
 
         userDao.update(user);
-
+        LOG.warn("ADMIN user {} has changed role of user {} to: {}", sessionUser.getUserEmail(),
+                user.getUserEmail(), user.getUserRole());
         resp.sendRedirect("/admin-users");
     }
 }

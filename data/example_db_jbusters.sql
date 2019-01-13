@@ -56,8 +56,14 @@ CREATE TABLE `new_transaction` (
 --
 
 INSERT INTO `new_transaction` (`NEW_TRANSACTION_ID`, `NEW_TRANSACTION_USER_ID`, `NEW_TRANSACTION_DESCRIPTION`, `NEW_TRANSACTION_SALE`, `NEW_TRANSACTION_IMPORTANT`, `NEW_TRANSACTION_DATA_TRANSACTION`, `NEW_TRANSACTION_CITY`, `NEW_TRANSACTION_DISTRICT`, `NEW_TRANSACTION_STREET`, `NEW_TRANSACTION_TYPE_OF_MARKET`, `NEW_TRANSACTION_PRICE`, `NEW_TRANSACTION_FLAT_AREA`, `NEW_TRANSACTION_PRICE_PER_M2`, `NEW_TRANSACTION_LEVEL`, `NEW_TRANSACTION_PARKING_SPOT`, `NEW_TRANSACTION_STANDARD_LEVEL`, `NEW_TRANSACTION_CONSTRUCTION_YEAR`, `NEW_TRANSACTION_CONSTRUCTION_YEAR_CATEGORY`) VALUES
-(1, 1, 'Moje mieszkanie', 'nie', FALSE,  NULL, 'Gdynia', 'Witomino', 'Promienna', 'RYNEK PIERWOTNY', NULL, '115', NULL, 4, 'BRAK MP', 'DOBRY', '1990', 2),
-(2, 2, 'Mieszkanie Gdynia', 'nie', TRUE , NULL, 'Gdynia', 'Chylonia', 'Morska', 'RYNEK WTÓRNY', NULL, '80', NULL, 4, 'MIEJSCE POSTOJOWE W HALI GARAŻOWEJ', 'DOBRY', '2008', 3);
+(1, 1, 'Moje mieszkanie', 'nie', FALSE,  '2018-12-16', 'Gdynia', 'Witomino', 'Promienna', 'RYNEK WTÓRNY', NULL, '60', NULL, 4, 'BRAK MP', 'DOBRY', '1990', 2),
+(2, 2, 'Moje nowe mieszkanie', 'nie', TRUE , '2018-12-16', 'Gdynia', 'Chylonia', 'Morska', 'RYNEK WTÓRNY', NULL, '80', NULL, 4, 'MIEJSCE POSTOJOWE W HALI GARAŻOWEJ', 'DOBRY', '2008', 2),
+(3, 1, 'NOWER ORŁOWO Apartament', 'nie', FALSE , '2018-12-16', 'Gdynia', 'Orłowo', 'Morska', 'RYNEK WTÓRNY', NULL, '45', NULL, 4, 'MIEJSCE POSTOJOWE W HALI GARAŻOWEJ', 'DOBRY', '2008', 3),
+(4, 1, 'Na Strzelców', 'nie', FALSE , '2018-12-16', 'Gdynia', 'Wielki Kack', 'Morska', 'RYNEK WTÓRNY', NULL, '70', NULL, 4, 'MIEJSCE POSTOJOWE W HALI GARAŻOWEJ', 'DOBRY', '2008', 3),
+(5, 1, 'Wielka płyta Gdynia', 'nie', TRUE , '2018-12-16', 'Gdynia', 'Pogórze', 'Morska', 'RYNEK WTÓRNY', NULL, '70', NULL, 4, 'MIEJSCE POSTOJOWE W HALI GARAŻOWEJ', 'DOBRY', '2008', 2),
+(6, 1, 'W Centrum', 'nie', FALSE , '2018-12-16', 'Gdynia', 'Śródmieście z Portem', 'Morska', 'RYNEK WTÓRNY', NULL, '63', NULL, 4, 'MIEJSCE POSTOJOWE W HALI GARAŻOWEJ', 'DOBRY', '2008', 3),
+(7, 1, 'Uzdrowisko Sopot', 'nie', FALSE , '2018-12-16', 'Sopot', 'Sopot', 'Morska', 'RYNEK WTÓRNY', NULL, '40', NULL, 4, 'MIEJSCE POSTOJOWE W HALI GARAŻOWEJ', 'DOBRY', '2008', 3),
+(8, 1, 'CISOWA', 'nie', TRUE , '2018-12-16', 'Gdynia', 'Cisowa', 'Morska', 'RYNEK WTÓRNY', NULL, '45', NULL, 4, 'MIEJSCE POSTOJOWE W HALI GARAŻOWEJ', 'DOBRY', '2008', 2);
 
 -- --------------------------------------------------------
 

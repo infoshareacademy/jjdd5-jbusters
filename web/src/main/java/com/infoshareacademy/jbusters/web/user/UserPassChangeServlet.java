@@ -64,11 +64,12 @@ public class UserPassChangeServlet extends HttpServlet {
         resp.setContentType("text/html;charset=UTF-8");
         final PrintWriter out = resp.getWriter();
         Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
-        Map<String, String> model = new HashMap<>();
+        Map<String, Object> model = new HashMap<>();
 
         HttpSession session = req.getSession();
         User sessionUser = (User) session.getAttribute("user");
         String sessionEmail = sessionUser.getUserEmail();
+        model.put("user", sessionUser);
 
         String oldPassword = req.getParameter("oldPassword");
 

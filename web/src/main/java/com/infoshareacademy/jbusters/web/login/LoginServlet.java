@@ -78,14 +78,13 @@ public class LoginServlet extends HttpServlet {
             }
 
         } catch (Exception e) {
-            LOG.warn("Failed to login user in google api");
+            LOG.warn("Failed to login user with google api");
             LOG.info("Trying to log in using our user account");
 
             String email = req.getParameter("email");
             String password = req.getParameter("password");
 
-            List<User> userList = userDao.findAll()
-                    .stream()
+            List<User> userList = userDao.findAll().stream()
                     .filter(u -> u.getUserEmail().equals(email))
                     .collect(Collectors.toList());
 
@@ -123,7 +122,6 @@ public class LoginServlet extends HttpServlet {
             template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_LOGIN_FAILED);
             LOG.warn("Failed to login. Incorrect login or password");
         }
-
         setDataTemplate(writer, model, sessionName, template);
     }
 
