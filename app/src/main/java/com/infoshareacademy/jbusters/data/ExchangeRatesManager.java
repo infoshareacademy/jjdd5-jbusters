@@ -60,28 +60,6 @@ public class ExchangeRatesManager {
         }
     }
 
-    public String getExchangeRateCode() {
-
-        if (!Files.exists(EXCHANGE_RATES_SELECTION_FILE)) {
-            return "PLN";
-        } else {
-            FileInputStream fis = null;
-            try {
-                fis = new FileInputStream(EXCHANGE_RATES_SELECTION_FILE.toString());
-            } catch (FileNotFoundException e) {
-                LOGGER.error("File not found.");
-            }
-            try {
-                exchangeRatesSelection.load(fis);
-                fis.close();
-            } catch (IOException | NullPointerException e) {
-                LOGGER.error("File could not be laded.");
-            }
-
-            return exchangeRatesSelection.getProperty(CODE);
-        }
-    }
-
     public BigDecimal getExRate() {
 
         if (!Files.exists(EXCHANGE_RATES_SELECTION_FILE)) {
@@ -170,7 +148,7 @@ public class ExchangeRatesManager {
             FileInputStream fis = new FileInputStream(EXCHANGE_RATES_SELECTION_FILE.toString());
 
             try {
-                exchangeRatesProperties.load(fis);
+                exchangeRatesSelection.load(fis);
                 LOGGER.info("Exchange rate code loaded from path: {}", EXCHANGE_RATES_SELECTION_FILE.toString());
                 fis.close();
             } catch (IOException e) {
