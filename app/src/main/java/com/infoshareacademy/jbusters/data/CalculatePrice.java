@@ -6,8 +6,6 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.net.URL;
-import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -24,6 +22,7 @@ public class CalculatePrice {
     private List<Transaction> filteredList;
     private PropLoader properties;
     private BigDecimal exchangeRate;
+    private ExchangeRatesManager exchangeRatesManager = new ExchangeRatesManager();
     private static final double MAX_TREND_RATE_PER_DAY = 0.000274;
     private static final double MIN_TREND_RATE_PER_DAY = -0.000274;
 
@@ -202,7 +201,7 @@ public class CalculatePrice {
                         pricePerM2.setScale(2, RoundingMode.HALF_UP).divide(exchangeRate, BigDecimal.ROUND_UP))
                 + " " + properties.getCurrency());
 
-        return pricePerM2;
+        return pricePerM2.divide(exchangeRatesManager.getExRate(), 2, RoundingMode.HALF_UP);
     }
 
     public BigDecimal getMaxPriceInList(List<Transaction> transactions) {

@@ -12,8 +12,8 @@ import java.util.ResourceBundle;
 
 public class Utf8ResourceBundleControl extends PackageableResourceControl {
 
-
-    public Utf8ResourceBundleControl() {}
+    public Utf8ResourceBundleControl() {
+    }
 
     public Utf8ResourceBundleControl(boolean isPackageBased) {
         super(isPackageBased);
@@ -67,6 +67,4 @@ public class Utf8ResourceBundleControl extends PackageableResourceControl {
         }
         return stream;
     }
-
-
 }

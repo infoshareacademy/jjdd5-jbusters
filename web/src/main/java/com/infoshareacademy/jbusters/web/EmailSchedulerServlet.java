@@ -33,14 +33,13 @@ public class EmailSchedulerServlet extends HttpServlet {
 
         String email = userDao.findById(1).getUserEmail();
         String login = email.substring(0, email.indexOf('@'));
-        String pass = userDao.findById(1).getUserPassword();
         String[] recipients = new String[userDao.findAll().size()-1];
         for (int i = 0; i < userDao.findAll().size()-1; i++) {
             recipients[i] = userDao.findById(i + 2).getUserEmail();
         }
 
         try {
-            mailScheduler.saveScheduleAndInit(dayString, hourString, minuteString, login, pass, recipients);
+            mailScheduler.saveScheduleAndInit(dayString, hourString, minuteString, login, recipients);
             scheduleStatus = "Zapisano i uruchomiono!";
         } catch (MessagingException e) {
             scheduleStatus ="Problem z zapisem, sprawdź logi...";

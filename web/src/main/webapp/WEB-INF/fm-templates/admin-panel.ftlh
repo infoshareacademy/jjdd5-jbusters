@@ -21,11 +21,8 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title">Raporty e-mail</h5>
-
                                     <hr class="my-4">
-
                                     <p class="card-text">Ustaw termin cyklicznej wysyłki korespondencji.</p>
-
                                     <form method="get" action="scheduler">
                                         <div class="input-group clockpicker">
                                             <input name="time" type="text" class="form-control" value="Wybierz porę dnia" id="SelectTime" required
@@ -36,7 +33,6 @@
                                                 <span class="input-group-text">
                                                     <span class="far fa-clock"></span>
                                                 </span>
-
                                             </div>
                                         </div>
                                         <br>
@@ -56,9 +52,7 @@
                                         <button type="submit" class="btn btn-primary" style="float: left">Zapisz</button>
                                         <p class="text-muted btn"><em>${scheduleStatus}</em></p>
                                     </form>
-
                                     <hr class="my-4">
-
                                     <p class="card-text">Wysłanie korespondencji do subskrybentów wraz z załączonym raportem.</p>
                                     <a href="/generate-email-report" class="btn btn-primary" style="float: left">Wyślij teraz</a>
                                     <p class="text-muted btn"><em>${sentStatus}</em></p>
@@ -66,6 +60,7 @@
                                 </div>
                             </div>
                         </div>
+
 
                         <script>
                             //google callback. This function will redirect to our login servlet
@@ -93,12 +88,51 @@
                         <div class="col-sm-6">
                             <div class="card">
                                 <div class="card-body">
-                                    <h5 class="card-title">Opcja...</h5>
-                                    <p class="card-text">Tekst...</p>
-                                    <a href="/load-city" class="btn btn-primary">Przejdź dalej</a>
+                                    <h5 class="card-title">Waluta</h5>
+                                    <hr class="my-4">
+                                    <p class="card-text">Załaduj listę aktualnych kursów walut i wybierz, który ma zostać użyty na stronie.</p>
+                                    <a href="/exrates" class="btn btn-primary">Załaduj</a>
+
+                                    <#if exRatesMapSize =  0>
+
+                                        <hr class="my-4">
+                                        <p class="card-text"><em>Brak kursów, załaduj listę...</em></p>
+                                        <p class="card-text"><em>Domyślny kurs: PLN=1.0000</em></p>
+
+                                    </#if>
+
+                                    <#if exRatesMapSize gt 0>
+
+                                        <hr class="my-4">
+                                        <h5 class="card-title"><em>Aktualna waluta: ${exRatesGetCurrent}</em></h5>
+
+                                        <form method="get" action="selectexrate">
+                                            <select name="ratecombined" type="text" class="form-control" id="SelectRate" required
+                                                    oninvalid="this.setCustomValidity('Proszę wybrać walutę z listy!')"
+                                                    oninput="this.setCustomValidity('')">
+                                                <option selected="true" disabled="true" value="">Wybierz walutę</option>
+                                                <option value="PLN1.0000">PLN=1.0000</option>
+                                                <#list exRatesMap as key, value>
+                                                <option value="${key}${value}">${key}=${value}</option>
+                                                </#list>
+                                            </select>
+                                            <br>
+                                            <button type="submit" class="btn btn-primary" style="float: left">Zapisz</button>
+                                        </form>
+
+                                        <br>
+                                        <hr class="my-4">
+                                        <ul style="list-style-type: disc">
+                                            <li><p class="card-text"><em>Data aktualizacji kursów:<br>${exRatesMapDate}</em></p></li>
+                                            <br>
+                                            <li><p class="card-text"><em>Kursy pobrane z:<br>${exRatesURL}</em></p></li>
+                                        </ul>
+
+                                    </#if>
                                 </div>
                             </div>
                         </div>
+
 
                         <div class="col-sm-6">
                             <div class="card">
@@ -109,12 +143,50 @@
                                 </div>
                             </div>
                         </div>
+
+                        <script>
+                            //google callback. This function will redirect to our login servlet
+                            function onSignIn(googleUser) {
+                                var profile = googleUser.getBasicProfile();
+                                console.log('ID: ' + profile.getId());
+                                console.log('Name: ' + profile.getName());
+                                console.log('Image URL: ' + profile.getImageUrl());
+                                console.log('Email: ' + profile.getEmail());
+                                console.log('id_token: ' + googleUser.getAuthResponse().id_token);
+                                //do not post all above info to the server because that is not secure.
+                                //just send the id_token
+                                var redirectUrl = 'login';
+                                //using jquery to post data dynamically
+                                var form = $('<form action="' + redirectUrl + '" method="post">' +
+                                    '<input type="text" name="id_token" value="' +
+                                    googleUser.getAuthResponse().id_token + '" />' +
+                                    '</form>');
+                                $('body').append(form);
+                                form.submit();
+                            }
+                        </script>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- ClockPicker script -->
+<script src="../../js/bootstrap-clockpicker.min.js"></script>
+<script>
+    $('.clockpicker').clockpicker(
+        {
+            placement: "bottom",
+            align: "left",
+            autoclose: true
+        })
+        .find('input').change(function(){
+        console.log(this.value);
+    });
+</script>
+
 <#include "include-user-footer.ftlh">
 
 

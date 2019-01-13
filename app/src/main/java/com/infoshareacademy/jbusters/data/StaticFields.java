@@ -24,6 +24,9 @@ public class StaticFields {
     private static final URL BG_IMG_PATH = Thread.currentThread().getContextClassLoader().getResource(Paths.get("img", "JBusters_logo.png").toString());
     private static final Path LANG_PROPERTIES_FILE = Paths.get(System.getProperty(JBOSS_HOME_DIR), "data", "language.properties");
     private static final Path SCHEDULER_PROPERTIES_FILE = Paths.get(System.getProperty(JBOSS_HOME_DIR), "data", "scheduler.properties");
+    private static final Path EXCHANGE_RATES_PROPERTIES_FILE = Paths.get(System.getProperty(JBOSS_HOME_DIR), "data", "exchange_rates.properties");
+    private static final Path EXCHANGE_RATES_SELECTION_FILE = Paths.get(System.getProperty(JBOSS_HOME_DIR), "data", "exchange_rates_selection.properties");
+    private static final String EXCHANGE_RATES_URL = "http://bossa.pl/pub/waluty/omega/nbp/ndohlcv.txt";
 
     private StaticFields() {
     }
@@ -47,6 +50,12 @@ public class StaticFields {
     public static Path getLangPropertiesPath() { return LANG_PROPERTIES_FILE; }
 
     public static Path getSchedulerPropertiesFile() { return SCHEDULER_PROPERTIES_FILE; }
+
+    public static Path getExchangeRatesPropertiesFile() { return EXCHANGE_RATES_PROPERTIES_FILE; }
+
+    public static Path getExchangeRatesSelectionFile() { return EXCHANGE_RATES_SELECTION_FILE; }
+
+    public static String getExchangeRatesUrl() { return EXCHANGE_RATES_URL; }
 
     public static DecimalFormat getLongDF() {
         LONG_DF.setDecimalFormatSymbols(getCustomizedSymbols());
@@ -77,6 +86,4 @@ public class StaticFields {
         decimalSymbols.setGroupingSeparator(' ');
         return decimalSymbols;
     }
-
-
 }
