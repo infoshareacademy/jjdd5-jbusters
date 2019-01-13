@@ -50,15 +50,9 @@ public class FilterTransactions {
     public FilterTransactions() {
     }
 
-// metoda zwracajaca liste tranzakcji, ktora jest wynikiem wielokrotnego przefiltrowania gwnej bazy tranzakcji
-    //kolejnosc filtrow:  data tranzakcji/miasto/dzielnica/rynek/kategoria budowy/powierzchnia mieszkania
 
     public List<Transaction> theGreatFatFilter(Transaction userTransaction) {
-        //        List<Transaction> basicFilter = basicFilter(userTransaction);
-//        if (basicFilter.size() < 11) {
-//            return new ArrayList<>();
-//        }
-//        return selectorFilter(true, true, basicFilter, userTransaction);
+
         LocalDate oldestDateAccepted = LocalDate.now().minusYears(2);
         String userCity = userTransaction.getCity();
         String userTransactionType = userTransaction.getTypeOfMarket();
@@ -88,7 +82,7 @@ public class FilterTransactions {
         }
 
 
-        return selectorFilter(true, true, transactionsBase, userTransaction);
+        return selectorFilter(true, true, transactionsBase,new ArrayList<>(), userTransaction);
     }
 
 
@@ -98,49 +92,50 @@ public class FilterTransactions {
     }
 
 
-    private List<Transaction> selectorFilter(boolean isSingleDistrict, boolean isAreaDiffSmall, List<Transaction> transactionsList, Transaction userTransaction) {
+    private List<Transaction> selectorFilter(boolean isSingleDistrict, boolean isAreaDiffSmall, List<Transaction> outerTransactionsList, List<Transaction> innerTransactionsList,Transaction userTransaction) {
 
         if (isSingleDistrict) {
-            List<Transaction> singleDistrictFilter = singleDistrictFilter(transactionsList, userTransaction);
+
             if (isAreaDiffSmall) {
+                List<Transaction> singleDistrictFilter = singleDistrictFilter(outerTransactionsList, userTransaction);
                 List<Transaction> flatAreafilter = flatAreaFilter(singleDistrictFilter, userTransaction, areaDiff);
                 flatAreafilter = invalidTransactionsRemover(flatAreafilter);
                 if (isEnoughtResults(flatAreafilter, minResultsNumber)) {
                     return flatAreafilter;
                 } else {
-                    return selectorFilter(true, false, transactionsList, userTransaction);
+                    return selectorFilter(true, false,outerTransactionsList, singleDistrictFilter, userTransaction);
                 }
 
             } else {
 
-                List<Transaction> areaExpanded = flatAreaFilter(singleDistrictFilter, userTransaction, areaDiffExpanded);
+                List<Transaction> areaExpanded = flatAreaFilter(innerTransactionsList, userTransaction, areaDiffExpanded);
                 areaExpanded = invalidTransactionsRemover(areaExpanded);
                 if (isEnoughtResults(areaExpanded, minResultsNumber)) {
                     return areaExpanded;
                 } else {
-                    return selectorFilter(false, true, transactionsList, userTransaction);
+                    return selectorFilter(false, true, outerTransactionsList, new ArrayList<>(), userTransaction);
                 }
 
             }
         } else {
-            List<Transaction> multiDistrictFilter = multiDistrictFilter(transactionsList, userTransaction);
-            if (isAreaDiffSmall) {
 
+            if (isAreaDiffSmall) {
+                List<Transaction> multiDistrictFilter = multiDistrictFilter(outerTransactionsList, userTransaction);
                 List<Transaction> flatAreafilter = flatAreaFilter(multiDistrictFilter, userTransaction, areaDiff);
                 flatAreafilter = invalidTransactionsRemover(flatAreafilter);
 
                 if (isEnoughtResults(flatAreafilter, minResultsNumber)) {
                     return flatAreafilter;
                 } else {
-                    return selectorFilter(false, false, multiDistrictFilter, userTransaction);
+                    return selectorFilter(false, false, outerTransactionsList, multiDistrictFilter, userTransaction);
                 }
 
             } else {
 
-                List<Transaction> areaExpanded = flatAreaFilter(multiDistrictFilter, userTransaction, areaDiffExpanded);
+                List<Transaction> areaExpanded = flatAreaFilter(innerTransactionsList, userTransaction, areaDiffExpanded);
                 areaExpanded = invalidTransactionsRemover(areaExpanded);
                 if (isEnoughtResults(areaExpanded, minResultsNumber)) {
-                    return flatAreaFilter(multiDistrictFilter, userTransaction, areaDiffExpanded);
+                    return areaExpanded;
                 } else {
                     return notEnoughtResultsAction();
                 }
