@@ -31,7 +31,6 @@
                        pattern="^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$"
                        oninvalid="this.setCustomValidity('Wpisana wartość jest nieprawidłowa!')"
                        oninput="this.setCustomValidity('')">
-
             </div>
 
             <div class="form-group">

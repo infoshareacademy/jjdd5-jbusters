@@ -16,8 +16,8 @@
 
                 <div class="form-group">
                     <label for="Select1">Miasto: </label>
-                    <input name="city" type="text" class="form-control" id="Select1" value="${city}" disabled>
-                </div
+                    <input type="text" class="form-control" id="Select1" value="${city}" disabled>
+                </div>
 
                 <div class="form-group">
                     <label for="Select2">Wybierz dzielnice</label>
@@ -35,15 +35,20 @@
                     <input name="city" type="text" class="form-control" id="Select1" value="${city}">
                 </div>
             </form>
-            <div class="card float-right" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Brak twojego miasta lub dzielnicy?</h5>
-                    <p class="card-text">Jeśli twojego miasta nie ma na liście, daj nam o tym znać! Postaramy się
-                        wkrótce
-                        uzupełnić naszą bazę!</p>
-                    <a href=/send-info class="btn btn-primary">Wyślij wiadomość</a>
+            <div class="row ">
+                <div class="col col-lg-8 float-right">
+                    <div class="card bg-light mb-3 float-right">
+                        <div class="card-header"><b>Brak twojego miasta lub dzielnicy?</b></div>
+                        <div class="card-body">
+                            <p class="card-text">Jeśli twojego miasta nie ma na liście, daj nam o tym znać! Postaramy
+                                się wkrótce
+                                uzupełnić naszą bazę!</p>
+                            <a href=/send-info class="btn btn-primary float-right">Wyślij wiadomość</a>
+                        </div>
+                    </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
