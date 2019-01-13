@@ -139,6 +139,21 @@
         </div>
     </div>
 </div>
+
+<!-- ClockPicker script -->
+<script src="../../js/bootstrap-clockpicker.min.js"></script>
+<script>
+    $('.clockpicker').clockpicker(
+        {
+            placement: "bottom",
+            align: "left",
+            autoclose: true
+        })
+        .find('input').change(function(){
+        console.log(this.value);
+    });
+</script>
+
 <#include "include-user-footer.ftlh">
 
 

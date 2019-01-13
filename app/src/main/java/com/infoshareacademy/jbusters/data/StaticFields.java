@@ -86,6 +86,4 @@ public class StaticFields {
         decimalSymbols.setGroupingSeparator(' ');
         return decimalSymbols;
     }
-
-
 }
