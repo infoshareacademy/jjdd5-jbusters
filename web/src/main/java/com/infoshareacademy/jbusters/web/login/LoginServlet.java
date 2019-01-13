@@ -112,6 +112,7 @@ public class LoginServlet extends HttpServlet {
 
             model.put("sessionName", sessionName);
             model.put("sessionEmail", sessionEmail);
+            model.put("user", user);
 
             if (user.getUserRole() == ADMIN) {
                 template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_LOGIN_ADMIN);
@@ -120,7 +121,7 @@ public class LoginServlet extends HttpServlet {
             }
         } else {
             template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_LOGIN_FAILED);
-            LOG.warn("Failed to. Incorrect login or password");
+            LOG.warn("Failed to login. Incorrect login or password");
         }
 
         setDataTemplate(writer, model, sessionName, template);
@@ -131,7 +132,6 @@ public class LoginServlet extends HttpServlet {
             template.process(model, writer);
             LOG.info("Login user {}", sessionName);
         } catch (TemplateException e) {
-
             LOG.error("Failed to login user");
         }
     }

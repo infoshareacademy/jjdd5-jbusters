@@ -2,6 +2,7 @@ package com.infoshareacademy.jbusters.web.filters;
 
 
 import com.infoshareacademy.jbusters.authentication.Auth;
+import com.infoshareacademy.jbusters.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,15 +41,15 @@ public class AdminFilter implements Filter {
         String reqUri = req.getRequestURI();
 
         HttpSession session = req.getSession(true);
-        String sessionEmail = (String) session.getAttribute("userEmail");
+        User sessionUser = (User) session.getAttribute("user");
 
-        if (sessionEmail != null) {
-            if (auth.isAdmin(sessionEmail)) {
+        if (sessionUser != null) {
+            if (auth.isAdmin(sessionUser.getUserEmail())) {
                 filterChain.doFilter(servletRequest, servletResponse);
-                LOG.info("User {} entered ADMIN page {}", sessionEmail, reqUri);
+                LOG.info("User {} entered ADMIN page {}", sessionUser.getUserEmail(), reqUri);
             } else {
                 resp.sendRedirect(INDEX_PAGE);
-                LOG.error("Auth ERROR! User {} tried to enter ADMIN page: {}", sessionEmail, reqUri);
+                LOG.error("Auth ERROR! User {} tried to enter ADMIN page: {}", sessionUser.getUserEmail(), reqUri);
             }
         } else {
             resp.sendRedirect(INDEX_PAGE);

@@ -29,8 +29,7 @@ public class AdminUsersEditServlet extends HttpServlet {
     private TemplateProvider templateProvider;
     @Inject
     private UserDao userDao;
-    @Inject
-    private User sessionUser;
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -41,19 +40,16 @@ public class AdminUsersEditServlet extends HttpServlet {
         Map<String, Object> model = new HashMap<>();
 
         HttpSession session = req.getSession();
-        String sessionEmail = (String) session.getAttribute("userEmail");
-        String sessionName = (String) session.getAttribute("userName");
-        sessionUser = (User) session.getAttribute("user");
+        User sessionUser = (User) session.getAttribute("user");
 
-        model.put("sessionName", sessionName);
-        model.put("sessionEmail", sessionEmail);
-        model.put("sessionRole", sessionUser.getUserRole());
+        model.put("user", sessionUser);
+
 
         int userId = Integer.parseInt(req.getParameter("id"));
 
-        User user = userDao.findById(userId);
+        User userToEdit = userDao.findById(userId);
 
-        model.put("user", user);
+        model.put("userToEdit", userToEdit);
 
         Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
 

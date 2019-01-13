@@ -50,15 +50,12 @@ public class UserAccEditServlet extends HttpServlet {
         Map<String, Object> model = new HashMap<>();
 
         HttpSession session = req.getSession();
-        String sessionEmail = (String) session.getAttribute("userEmail");
+        User sessionUser = (User) session.getAttribute("user");
 
 
         model.put(UPDATE_STATUS, checkUpdateStatus(session));
 
-        User user = userDao.findByEmail(sessionEmail);
-
-        model.put("sessionEmail", sessionEmail);
-        model.put("user", user);
+        model.put("user", sessionUser);
 
         try {
             template.process(model, out);
@@ -71,7 +68,8 @@ public class UserAccEditServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         HttpSession session = req.getSession();
-        String sessionEmail = (String) session.getAttribute("userEmail");
+        User sessionUser = (User) session.getAttribute("user");
+        String sessionEmail = sessionUser.getUserEmail();
         User user = userDao.findByEmail(sessionEmail);
         String newEmail = req.getParameter("email");
 
@@ -93,7 +91,7 @@ public class UserAccEditServlet extends HttpServlet {
 
         try {
             userDao.update(user);
-            session.setAttribute("userEmail", user.getUserEmail());
+            session.setAttribute("user", user);
             session.setAttribute(UPDATE_STATUS, SUCCESS);
             LOG.info("User {}, has changed his acc detials", sessionEmail);
             doGet(req, resp);

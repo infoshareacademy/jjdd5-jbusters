@@ -1,5 +1,6 @@
 package com.infoshareacademy.jbusters.web.filters;
 
+import com.infoshareacademy.jbusters.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,13 +35,13 @@ public class IndexFilter implements Filter {
         String reqUri = req.getRequestURI();
 
         HttpSession session = req.getSession(true);
-        String sessionEmail = (String) session.getAttribute("userEmail");
+        User sessionUser = (User) session.getAttribute("user");
 
-        if (sessionEmail == null) {
+        if (sessionUser == null) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
             resp.sendRedirect(INDEX_PAGE);
-            LOG.info("Redirecting user {} from {} page to menu", sessionEmail, reqUri);
+            LOG.info("Redirecting user {} from {} page to menu", sessionUser.getUserEmail(), reqUri);
         }
     }
 

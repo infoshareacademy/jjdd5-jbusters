@@ -66,11 +66,11 @@ public class SaveToFileServlet extends HttpServlet {
         resp.setContentType("lista_mieszkan/csv");
         resp.setHeader("Content-Disposition", "attachment; filename=\"lista_mieszkan.csv\"");
         HttpSession session = req.getSession();
-        String sessionEmail = (String) session.getAttribute("userEmail");
+        User sessionUser = (User) session.getAttribute("user");
+
         OutputStream outputStream = resp.getOutputStream();
 
-        User user = userDao.findByEmail(sessionEmail);
-        List<NewTransaction> newTransactionList = newTransactionDao.findByUser(user);
+        List<NewTransaction> newTransactionList = newTransactionDao.findByUser(sessionUser);
 
         try {
             for (NewTransaction newTransaction : newTransactionList) {
