@@ -144,17 +144,16 @@ public class ExchangeRatesManager {
     public String getExCode() {
         if (!Files.exists(EXCHANGE_RATES_SELECTION_FILE)) {
             return EXCHANGE_RATE_DEFAULT_CODE;
-        } else {
-            try {
-                FileInputStream fis = new FileInputStream(EXCHANGE_RATES_SELECTION_FILE.toString());
-                exchangeRatesSelection.load(fis);
-                LOGGER.info("Exchange rate code loaded from path: {}", EXCHANGE_RATES_SELECTION_FILE.toString());
-                fis.close();
-            } catch (IOException e) {
-                LOGGER.error("Missing exchange rates selection file in path: {}", EXCHANGE_RATES_SELECTION_FILE.toString());
-            }
-            return exchangeRatesSelection.getProperty(CODE);
         }
+        try {
+            FileInputStream fis = new FileInputStream(EXCHANGE_RATES_SELECTION_FILE.toString());
+            exchangeRatesSelection.load(fis);
+            LOGGER.info("Exchange rate code loaded from path: {}", EXCHANGE_RATES_SELECTION_FILE.toString());
+            fis.close();
+        } catch (IOException e) {
+            LOGGER.error("Missing exchange rates selection file in path: {}", EXCHANGE_RATES_SELECTION_FILE.toString());
+        }
+        return exchangeRatesSelection.getProperty(CODE);
     }
 
     public Map<String, String> getExRatesMap() {

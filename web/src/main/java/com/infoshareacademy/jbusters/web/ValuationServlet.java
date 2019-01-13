@@ -53,9 +53,9 @@ public class ValuationServlet extends HttpServlet {
     private FilterTransactions filterTransactions;
     @Inject
     private StatisticsManager statisticsManager;
-    private NumericDataValidator numericDataValidator = new NumericDataValidator();
     @Inject
     private ExchangeRatesManager exchangeRatesManager;
+    private NumericDataValidator numericDataValidator = new NumericDataValidator();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
