@@ -4,38 +4,51 @@
     <#include "include-user-header.ftlh">
 </#if>
 
-    <div class="container">
-        <br><br>
+<div class="container">
+    <br><br>
 
-        <div class="jumbotron jumbotron-opacity">
+    <div class="jumbotron jumbotron-opacity">
 
-            <div class="row">
-                <div class="col-8">
-                    <h1 class="display">Wyceń mieszkanie</h1>
-                </div>
-
+        <div class="row">
+            <div class="col-sm-6">
+                <h1 class="display float text-center">Wyceń mieszkanie</h1>
             </div>
+        </div>
 
-            <hr class="my-4">
-            <div class="container  container-form">
+        <hr class="my-4">
+        <div class="container  container-form">
 
-                <form method="get" action="/load-district">
-                    <div class="form-group">
-                        <label for="Select1">Wybierz miasto</label>
-                        <select name="city" class="form-control" id="Select1" required>
-                            <option></option>
-                            <#list cities as c>
-                                <option>${c}</option>
-                            </#list>
-                        </select>
+            <form method="get" action="/load-district">
+                <div class="form-group">
+                    <label for="Select1">Wybierz miasto</label>
+                    <select name="city" class="form-control" id="Select1" required>
+                        <option></option>
+                        <#list cities as c>
+                            <option>${c}</option>
+                        </#list>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Dalej</button>
+
+            </form>
+
+            <div class="row ">
+                <div class="col col-lg-8 float-right">
+                    <div class="card bg-light mb-3 float-right">
+                        <div class="card-header"><b>Brak twojego miasta lub dzielnicy?</b></div>
+                        <div class="card-body">
+                            <p class="card-text">Jeśli twojego miasta nie ma na liście, daj nam o tym znać! Postaramy
+                                się wkrótce
+                                uzupełnić naszą bazę!</p>
+                            <a href=/send-info class="btn btn-primary float-right">Wyślij wiadomość</a>
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Dalej</button>
-                </form>
+                </div>
             </div>
 
         </div>
-
     </div>
+</div>
 
 </div>
 </div>

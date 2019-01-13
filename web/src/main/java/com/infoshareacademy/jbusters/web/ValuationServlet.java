@@ -55,8 +55,6 @@ public class ValuationServlet extends HttpServlet {
     private FilterTransactions filterTransactions;
     @Inject
     private StatisticsManager statisticsManager;
-//    @Inject
-//    private User sessionUser;
     private NumericDataValidator numericDataValidator = new NumericDataValidator();
 
     @Override

@@ -32,6 +32,7 @@ public class UserAccEditServlet extends HttpServlet {
     private static final String UPDATE_STATUS = "updateStatus";
     private static final String FAILED = "failed";
     private static final String SUCCESS = "success";
+    public static final String EMAIL_SUCCESS = "emailSuccess";
 
     @Inject
     private TemplateProvider templateProvider;
@@ -77,7 +78,7 @@ public class UserAccEditServlet extends HttpServlet {
             if (checkEmail.checkIfEmailCanBeEdited(newEmail, user.getUserId())) {
                 user.setUserEmail(newEmail);
                 LOG.info("User {} has changed his email to {}", sessionEmail, newEmail);
-                session.setAttribute(EMAIL_STATUS, "emailSuccess");
+                session.setAttribute(EMAIL_STATUS, EMAIL_SUCCESS);
             } else {
                 LOG.warn("User ({}) failed to update his email because entered email ({}) already exist in DB",
                         sessionUser.getUserEmail(), newEmail);
@@ -116,8 +117,8 @@ public class UserAccEditServlet extends HttpServlet {
         session.removeAttribute(UPDATE_STATUS);
 
         String emailStatus = (String) session.getAttribute(EMAIL_STATUS);
-        if ("emailSuccess".equals(emailStatus)) {
-            model.put("emailSuccess", "Twój Email został zmieniony!");
+        if (EMAIL_SUCCESS.equals(emailStatus)) {
+            model.put(EMAIL_SUCCESS, "Twój Email został zmieniony!");
         } else if ("emailExist".equals(emailStatus)) {
             model.put("emailFailed", "Taki adres Email już istnieje!");
         }

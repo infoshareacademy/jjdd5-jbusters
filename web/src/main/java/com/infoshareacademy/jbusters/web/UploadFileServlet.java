@@ -43,8 +43,6 @@ public class UploadFileServlet extends HttpServlet {
     private UploadFileFromUser uploadFileFromUser;
     @Inject
     private DataLoader dataLoader;
-    @Inject
-    private User sessionUser;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -78,7 +76,6 @@ public class UploadFileServlet extends HttpServlet {
             } catch (TemplateException e) {
                 LOG.error("Failed to load file");
             }
-
         }
     }
 
