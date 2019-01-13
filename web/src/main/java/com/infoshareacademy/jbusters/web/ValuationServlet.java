@@ -1,9 +1,6 @@
 package com.infoshareacademy.jbusters.web;
 
-import com.infoshareacademy.jbusters.data.CalculatePrice;
-import com.infoshareacademy.jbusters.data.FilterTransactions;
-import com.infoshareacademy.jbusters.data.StatisticsManager;
-import com.infoshareacademy.jbusters.data.Transaction;
+import com.infoshareacademy.jbusters.data.*;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import com.infoshareacademy.jbusters.model.User;
 import com.infoshareacademy.jbusters.web.validator.NumericDataValidator;
@@ -46,6 +43,7 @@ public class ValuationServlet extends HttpServlet {
     public static final String PARKING_SPOT = "parkingSpot";
     public static final String STANDARD_LEVEL = "standardLevel";
     public static final String CONSTRUCTION = "construction";
+    public static final String CURRENCY_CODE = "currencyCode";
 
     @Inject
     private Transaction newTransaction;
@@ -55,6 +53,8 @@ public class ValuationServlet extends HttpServlet {
     private FilterTransactions filterTransactions;
     @Inject
     private StatisticsManager statisticsManager;
+    @Inject
+    private ExchangeRatesManager exchangeRatesManager;
     private NumericDataValidator numericDataValidator = new NumericDataValidator();
 
     @Override
@@ -128,7 +128,7 @@ public class ValuationServlet extends HttpServlet {
 
             }
             session.setAttribute("priceM2", flatPriceM2);
-            session.setAttribute("price", flatPriceTotal);
+            session.setAttribute(PRICE, flatPriceTotal);
 
             model.put(PRICE, flatPriceM2);
             model.put(PRICE_TOTAL, flatPriceTotal);
@@ -140,6 +140,7 @@ public class ValuationServlet extends HttpServlet {
             model.put(PARKING_SPOT, newTransaction.getParkingSpot());
             model.put(STANDARD_LEVEL, newTransaction.getStandardLevel());
             model.put(CONSTRUCTION, newTransaction.getConstructionYearCategory());
+            model.put(CURRENCY_CODE, exchangeRatesManager.getExCode());
 
             String cityName = req.getParameter("city");
             String districtName = req.getParameter("district");
@@ -187,17 +188,17 @@ public class ValuationServlet extends HttpServlet {
                         new BigDecimal(0)));
 
         newTransaction.setLevel(
-                numericDataValidator.validate(req.getParameter("level"),
+                numericDataValidator.validate(req.getParameter(LEVEL),
                         errorsMap,
-                        () -> Integer.valueOf(req.getParameter("level")),
+                        () -> Integer.valueOf(req.getParameter(LEVEL)),
                         "levelError",
                         "Błąd podczas zapisu piętra!",
                         0));
 
         newTransaction.setConstructionYearCategory(
-                numericDataValidator.validate(req.getParameter("construction"),
+                numericDataValidator.validate(req.getParameter(CONSTRUCTION),
                         errorsMap,
-                        () -> Integer.valueOf(req.getParameter("construction")),
+                        () -> Integer.valueOf(req.getParameter(CONSTRUCTION)),
                         "constructionYearError", "Zła kategoria roku budowy!", 0));
 
         return errorsMap;

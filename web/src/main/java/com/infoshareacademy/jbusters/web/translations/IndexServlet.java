@@ -20,7 +20,7 @@ import java.util.Map;
 public class IndexServlet extends HttpServlet {
 
     private static final String TEMPLATE_INDEX = "index";
-    private static final String TEMPLATE_USER_INDEX = "index";
+    private static final String MENU_HOME = "menu_home";
     private static final String MENU_VALUATION = "menu_valuation";
     private static final String MENU_UPLOAD = "menu_upload";
     private static final String MENU_MY_APARTMENTS = "menu_my_apartments";
@@ -32,6 +32,7 @@ public class IndexServlet extends HttpServlet {
 
     @Inject
     private TemplateProvider templateProvider;
+
     @Inject
     private LanguageManager languageManager;
 
@@ -44,6 +45,7 @@ public class IndexServlet extends HttpServlet {
         String sessionName = (String) session.getAttribute("userName");
 
         Map<String, Object> model = new HashMap<>();
+        modelHandler(model, MENU_HOME);
         modelHandler(model, MENU_VALUATION);
         modelHandler(model, MENU_UPLOAD);
         modelHandler(model, MENU_MY_APARTMENTS);

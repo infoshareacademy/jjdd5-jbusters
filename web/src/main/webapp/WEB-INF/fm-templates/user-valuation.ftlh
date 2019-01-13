@@ -51,9 +51,9 @@
                                 <h1 class="display">Wartość Twojego mieszkania to:</h1>
                                 <hr class="my-4">
                                 <h1 class="display"><b><span style="color: #007bff">${price}</span></b><span
-                                            style="color: #343a40"> zł za m<sup>2</sup></span></h1>
+                                            style="color: #343a40"> ${currencyCode} za m<sup>2</sup></span></h1>
                                 <h1 class="display"><b><span style="color: #007bff">${priceTotal}</span></b><span
-                                            style="color: #343a40"> zł za całe mieszkanie</span></h1>
+                                            style="color: #343a40"> ${currencyCode} za całe mieszkanie</span></h1>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="pills-profile" role="tabpanel"
@@ -132,9 +132,9 @@
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td><b>${minimumPrice} zł za m<sup>2</sup></b></td>
-                                        <td><b>${averagePrice} zł za m<sup>2</sup></b></td>
-                                        <td><b>${maxPrice} zł za m<sup>2</sup></b></td>
+                                        <td><b>${minimumPrice} ${currencyCode} za m<sup>2</sup></b></td>
+                                        <td><b>${averagePrice} ${currencyCode} za m<sup>2</sup></b></td>
+                                        <td><b>${maxPrice} ${currencyCode} za m<sup>2</sup></b></td>
                                     </tr>
                                     </tbody>
                                 </table>
