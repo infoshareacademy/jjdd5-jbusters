@@ -99,7 +99,7 @@ public class MailScheduler {
         }
     }
 
-    private static void scheduler(String login, String pass, String[] recipients) throws IOException {
+    private static void scheduler(String login, String[] recipients) throws IOException {
 
         LOGGER.info("Checking if some schedule task is running.");
 
@@ -117,7 +117,7 @@ public class MailScheduler {
             try {
                 reportGenerator.generateReport();
                 LOGGER.info("Report generated under following path: {}", REPORT_PATH);
-                mailHandler.sendMail(login, pass, recipients);
+                mailHandler.sendMail(login, recipients);
             } catch (IOException e) {
                 LOGGER.warn("Exception: {}", e);
             } catch (MessagingException e) {
@@ -129,7 +129,7 @@ public class MailScheduler {
         scheduledFuture = scheduledExecutorService.scheduleAtFixedRate(task, getDelay(), PERIOD, TimeUnit.SECONDS);
     }
 
-    public void saveScheduleAndInit(String dayString, String hourString, String minuteString, String login, String pass, String[] recipients) throws IOException, MessagingException {
+    public void saveScheduleAndInit(String dayString, String hourString, String minuteString, String login, String[] recipients) throws IOException, MessagingException {
 
         if (!Files.exists(StaticFields.getSchedulerPropertiesFile())) {
             Files.createFile(StaticFields.getSchedulerPropertiesFile());
@@ -157,7 +157,7 @@ public class MailScheduler {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE 'at' HH:mm");
 
-        scheduler(login, pass, recipients);
+        scheduler(login, recipients);
 
         LOGGER.info("New schedule [ {} ] stored and initiated.", dateFormat.format(scheduleCompose));
     }

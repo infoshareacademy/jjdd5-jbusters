@@ -1,5 +1,6 @@
 package com.infoshareacademy.jbusters.web.user;
 
+import com.infoshareacademy.jbusters.data.ExchangeRatesManager;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -21,7 +22,6 @@ import java.util.Map;
 @WebServlet(urlPatterns = "/admin-panel")
 public class AdminPanelServlet extends HttpServlet {
 
-
     private static final Logger LOG = LoggerFactory.getLogger(AdminPanelServlet.class);
     private static final String TEMPLATE_NAME = "admin-panel";
     private static final String SENT_STATUS = "sentStatus";
@@ -29,6 +29,9 @@ public class AdminPanelServlet extends HttpServlet {
 
     @Inject
     private TemplateProvider templateProvider;
+
+    @Inject
+    private ExchangeRatesManager exchangeRatesManager;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -43,6 +46,11 @@ public class AdminPanelServlet extends HttpServlet {
         Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
         model.put("sessionEmail", sessionEmail);
         model.put("sessionName", sessionName);
+        model.put("exRatesMap", exchangeRatesManager.getExRatesMap());
+        model.put("exRatesMapSize", exchangeRatesManager.getExRatesMap().size());
+        model.put("exRatesMapDate", exchangeRatesManager.getLastModifiedDate());
+        model.put("exRatesURL", exchangeRatesManager.getURL());
+        model.put("exRatesGetCurrent", exchangeRatesManager.getExchangeRate());
 
         if(req.getAttribute(SENT_STATUS) == null) {
             model.put(SENT_STATUS, "");
