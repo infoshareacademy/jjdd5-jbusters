@@ -2,7 +2,6 @@ package com.infoshareacademy.jbusters.web;
 
 import com.infoshareacademy.jbusters.console.Menu;
 import com.infoshareacademy.jbusters.dao.NewTransactionDao;
-import com.infoshareacademy.jbusters.dao.UserDao;
 import com.infoshareacademy.jbusters.data.Transaction;
 import com.infoshareacademy.jbusters.model.NewTransaction;
 import com.infoshareacademy.jbusters.model.User;
@@ -11,8 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,14 +20,11 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.List;
 
-
 @WebServlet("/saveAs")
 public class SaveToFileServlet extends HttpServlet {
 
     private static final Logger LOG = LoggerFactory.getLogger(SaveToFileServlet.class);
 
-    @Inject
-    private UserDao userDao;
     @Inject
     private NewTransactionDao newTransactionDao;
     @Inject

@@ -110,7 +110,7 @@ public class LoginServlet extends HttpServlet {
         Map<String, Object> model = new HashMap<>();
         Template template;
 
-        if (sessionEmail != null) {
+        if (user != null) {
 
             model.put("sessionName", sessionName);
             model.put("sessionEmail", sessionEmail);
