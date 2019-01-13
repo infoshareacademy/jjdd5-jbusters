@@ -55,14 +55,12 @@ public class UploadFileServlet extends HttpServlet {
         Map<String, Object> model = new HashMap<>();
 
         HttpSession session = req.getSession(true);
-        String sessionEmail = (String) session.getAttribute("userEmail");
-        String sessionName = (String) session.getAttribute("userName");
-        sessionUser = (User) session.getAttribute("user");
+        User sessionUser = (User) session.getAttribute("user");
 
         Template template;
 
 
-        if (sessionEmail == null){
+        if (sessionUser == null){
             template = templateProvider.getTemplate(getServletContext(), TEMPLATE_UPLOAD_FILE);
             try {
                 template.process(model, out);
@@ -73,9 +71,7 @@ public class UploadFileServlet extends HttpServlet {
 
         }else {
             template = templateProvider.getTemplate(getServletContext(), TEMPLATE_USERS_UPLOAD_FILE);
-            model.put("sessionEmail", sessionEmail);
-            model.put("sessionName", sessionName);
-            model.put("sessionRole", sessionUser.getUserRole());
+            model.put("user", sessionUser);
             try {
                 template.process(model, out);
                 LOG.info("Loaded file");
@@ -84,8 +80,6 @@ public class UploadFileServlet extends HttpServlet {
             }
 
         }
-
-
     }
 
     @Override
@@ -93,29 +87,20 @@ public class UploadFileServlet extends HttpServlet {
         resp.setContentType("text/html;charset=UTF-8");
 
         HttpSession session = req.getSession();
-        String sessionEmail = (String) session.getAttribute("userEmail");
-        String sessionName = (String) session.getAttribute("userName");
-        sessionUser = (User) session.getAttribute("user");
+        User sessionUser = (User) session.getAttribute("user");
 
         final PrintWriter writer = resp.getWriter();
         final Part filePart = req.getPart("file");
         List<Transaction> usersTransactions = new ArrayList<>();
         Map<String, Object> model = new HashMap<>();
-        model.put("sessionEmail", sessionEmail);
-        model.put("sessionName", sessionName);
-        if (sessionUser != null) {
-            model.put("sessionRole", sessionUser.getUserRole());
-        }
+        model.put("user", sessionUser);
 
         Template template;
-        if (sessionEmail == null){
+        if (sessionUser == null){
             template = templateProvider.getTemplate(getServletContext(), TEMPLATE_UPLOAD_FILE);
-
         }else {
             template = templateProvider.getTemplate(getServletContext(), TEMPLATE_USERS_UPLOAD_FILE);
         }
-
-        // TODO błąd gdy wybierze się plik do pobrania a następnie go przeniesie/usunie z dysku i kliknie się na pobierz
 
         String fileName;
         LOG.info("DEBUG zaczynam zapis");

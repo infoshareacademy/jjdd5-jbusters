@@ -11,7 +11,7 @@
     <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="https://apis.google.com/js/client.js" async defer></script>
     <meta name="google-signin-scope" content="profile email">
-    <meta name="google-signin-client_id">
+    <meta name="google-signin-client_id" content="210558406372-1i31kqkfer8n3pa5dsdkl3udifff4k9v.apps.googleusercontent.com">
 
     <!-- ClockPicker Stylesheet -->
     <link rel="stylesheet" type="text/css" href="css/bootstrap-clockpicker.min.css">
@@ -53,7 +53,7 @@
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Zalogowano: ${sessionEmail}
+                                Zalogowano: ${user.userEmail}
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="/admin-panel">Panel administracyjny</a>

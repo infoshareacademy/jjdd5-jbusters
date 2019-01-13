@@ -2,7 +2,6 @@ package com.infoshareacademy.jbusters.web.login;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.infoshareacademy.jbusters.authentication.Auth;
-import com.infoshareacademy.jbusters.authentication.PasswordHashing;
 import com.infoshareacademy.jbusters.dao.UserDao;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import com.infoshareacademy.jbusters.model.User;
@@ -76,17 +75,19 @@ public class LoginServlet extends HttpServlet {
                 user.setUserRole(2);
                 userDao.save(user);
                 session.setAttribute(SESSION_ATTRIBUTE_USER, user);
+            }else {
+                user = emailList.get(0);
+                session.setAttribute(SESSION_ATTRIBUTE_USER, user);
             }
 
         } catch (Exception e) {
-            LOG.warn("Failed to login user in google api");
+            LOG.warn("Failed to login user with google api");
             LOG.info("Trying to log in using our user account");
 
             String email = req.getParameter("email");
             String password = req.getParameter("password");
 
-            List<User> userList = userDao.findAll()
-                    .stream()
+            List<User> userList = userDao.findAll().stream()
                     .filter(u -> u.getUserEmail().equals(email))
                     .collect(Collectors.toList());
 
@@ -113,6 +114,7 @@ public class LoginServlet extends HttpServlet {
 
             model.put("sessionName", sessionName);
             model.put("sessionEmail", sessionEmail);
+            model.put("user", user);
 
             if (user.getUserRole() == ADMIN) {
                 template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_LOGIN_ADMIN);
@@ -121,9 +123,8 @@ public class LoginServlet extends HttpServlet {
             }
         } else {
             template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_LOGIN_FAILED);
-            LOG.warn("Failed to. Incorrect login or password");
+            LOG.warn("Failed to login. Incorrect login or password");
         }
-
         setDataTemplate(writer, model, sessionName, template);
     }
 
@@ -132,7 +133,6 @@ public class LoginServlet extends HttpServlet {
             template.process(model, writer);
             LOG.info("Login user {}", sessionName);
         } catch (TemplateException e) {
-
             LOG.error("Failed to login user");
         }
     }

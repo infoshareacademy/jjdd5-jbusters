@@ -2,6 +2,7 @@ package com.infoshareacademy.jbusters.web.user;
 
 import com.infoshareacademy.jbusters.data.ExchangeRatesManager;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
+import com.infoshareacademy.jbusters.model.User;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.slf4j.Logger;
@@ -37,29 +38,27 @@ public class AdminPanelServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
         PrintWriter writter = resp.getWriter();
+        Map<String, Object> model = new HashMap<>();
 
         HttpSession session = req.getSession(true);
-        String sessionEmail = (String) session.getAttribute("userEmail");
-        String sessionName = (String) session.getAttribute("userName");
-
-        Map<String, Object> model = new HashMap<>();
-        Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
-        model.put("sessionEmail", sessionEmail);
-        model.put("sessionName", sessionName);
+        User sessionUser = (User) session.getAttribute("user");
+        model.put("user", sessionUser);
         model.put("exRatesMap", exchangeRatesManager.getExRatesMap());
         model.put("exRatesMapSize", exchangeRatesManager.getExRatesMap().size());
         model.put("exRatesMapDate", exchangeRatesManager.getLastModifiedDate());
         model.put("exRatesURL", exchangeRatesManager.getURL());
         model.put("exRatesGetCurrent", exchangeRatesManager.getExchangeRate());
 
-        if(req.getAttribute(SENT_STATUS) == null) {
+        Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
+
+        if (req.getAttribute(SENT_STATUS) == null) {
             model.put(SENT_STATUS, "");
         } else {
             String sentStatus = req.getAttribute(SENT_STATUS).toString();
             model.put(SENT_STATUS, sentStatus);
         }
 
-        if(req.getAttribute(SCHEDULE_STATUS) == null) {
+        if (req.getAttribute(SCHEDULE_STATUS) == null) {
             model.put(SCHEDULE_STATUS, "");
         } else {
             String scheduleStatus = req.getAttribute(SCHEDULE_STATUS).toString();
@@ -72,7 +71,5 @@ public class AdminPanelServlet extends HttpServlet {
         } catch (TemplateException e) {
             LOG.error("Failed load admin panel");
         }
-
-
     }
 }

@@ -30,11 +30,10 @@ public class UserEditTransactionServlet extends HttpServlet {
     @Inject
     private TemplateProvider templateProvider;
     @Inject
-    Auth auth;
+    private Auth auth;
     @Inject
-    NewTransactionDao newTransactionDao;
-    @Inject
-    private User sessionUser;
+    private NewTransactionDao newTransactionDao;
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -45,9 +44,10 @@ public class UserEditTransactionServlet extends HttpServlet {
         Map<String, Object> model = new HashMap<>();
 
         HttpSession session = req.getSession();
-        String sessionEmail = (String) session.getAttribute("userEmail");
-        String sessionName = (String) session.getAttribute("userName");
-        sessionUser = (User) session.getAttribute("user");
+        User sessionUser = (User) session.getAttribute("user");
+        String sessionEmail = sessionUser.getUserEmail();
+        model.put("user", sessionUser);
+
         int transactionId = Integer.parseInt(req.getParameter("id"));
 
         if (auth.isUserAuthorizedToEdit(sessionEmail, transactionId)) {
@@ -62,14 +62,10 @@ public class UserEditTransactionServlet extends HttpServlet {
             model.put("parkingSpot", transactionToEdit.getNewTransactionParkingSpot());
             model.put("standardLevel", transactionToEdit.getNewTransactionStandardLevel());
             model.put("construction", transactionToEdit.getNewTransactionConstructionYearCategory());
-            model.put("important", transactionToEdit.getNewTransactionImportant());
+            model.put("important", transactionToEdit.isNewTransactionImportant());
             model.put("sale", transactionToEdit.getNewTransactionSale());
 
             Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_EDIT_TRANSACTION);
-
-            model.put("sessionName", sessionName);
-            model.put("sessionEmail", sessionEmail);
-            model.put("sessionRole", sessionUser.getUserRole());
 
             try {
                 template.process(model, out);
@@ -87,14 +83,19 @@ public class UserEditTransactionServlet extends HttpServlet {
         resp.setContentType("text/html;charset=UTF-8");
 
         HttpSession session = req.getSession();
-        String sessionEmail = (String) session.getAttribute("userEmail");
+        User sessionUser = (User) session.getAttribute("user");
+        String sessionEmail = sessionUser.getUserEmail();
         int transactionId = Integer.parseInt(req.getParameter("id"));
 
         if (auth.isUserAuthorizedToEdit(sessionEmail, transactionId)) {
             NewTransaction transactionToEdit = newTransactionDao.findById(transactionId);
 
-            if (req.getParameter("important").equals("tak") || req.getParameter("important").equals("nie")) {
-                transactionToEdit.setNewTransactionImportant(req.getParameter("important"));
+            if (req.getParameter("important") != null) {
+                if (req.getParameter("important").equals("tak")) {
+                    transactionToEdit.setNewTransactionImportant(true);
+                } else {
+                    transactionToEdit.setNewTransactionImportant(false);
+                }
             }
 
             if (req.getParameter("sale").equals("tak") || req.getParameter("sale").equals("nie")) {

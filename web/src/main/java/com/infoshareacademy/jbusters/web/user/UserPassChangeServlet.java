@@ -24,7 +24,6 @@ import java.util.Map;
 
 @WebServlet(urlPatterns = "/acc-edit/pass-change")
 
-
 public class UserPassChangeServlet extends HttpServlet {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserPassChangeServlet.class);
@@ -49,8 +48,8 @@ public class UserPassChangeServlet extends HttpServlet {
         Map<String, Object> model = new HashMap<>();
 
         HttpSession session = req.getSession();
-        String sessionEmail = (String) session.getAttribute("userEmail");
-        model.put("sessionEmail", sessionEmail);
+        User sessionUser = (User) session.getAttribute("user");
+        model.put("user", sessionUser);
 
         try {
             template.process(model, out);
@@ -65,12 +64,12 @@ public class UserPassChangeServlet extends HttpServlet {
         resp.setContentType("text/html;charset=UTF-8");
         final PrintWriter out = resp.getWriter();
         Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
+        Map<String, Object> model = new HashMap<>();
 
         HttpSession session = req.getSession();
-        String sessionEmail = (String) session.getAttribute("userEmail");
-        Map<String, String> model = new HashMap<>();
-        model.put("sessionEmail", sessionEmail);
-
+        User sessionUser = (User) session.getAttribute("user");
+        String sessionEmail = sessionUser.getUserEmail();
+        model.put("user", sessionUser);
 
         String oldPassword = req.getParameter("oldPassword");
 

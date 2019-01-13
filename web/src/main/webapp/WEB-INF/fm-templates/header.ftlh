@@ -13,6 +13,7 @@
     <meta name="google-signin-scope" content="profile email">
     <meta name="google-signin-client_id" content="210558406372-1i31kqkfer8n3pa5dsdkl3udifff4k9v.apps.googleusercontent.com">
 
+
     <!-- ClockPicker Stylesheet -->
     <link rel="stylesheet" type="text/css" href="css/bootstrap-clockpicker.min.css">
 
@@ -32,7 +33,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item active">
-                            <a class="nav-link" href="/index.html">Home </a>
+                            <a class="nav-link" href="/index.html">Strona główna </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/load-city">Wyceń mieszkanie</a>

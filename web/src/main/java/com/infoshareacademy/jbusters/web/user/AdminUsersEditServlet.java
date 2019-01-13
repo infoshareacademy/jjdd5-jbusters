@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @WebServlet(urlPatterns = "/admin-users/editUser")
 public class AdminUsersEditServlet extends HttpServlet {
@@ -29,8 +30,7 @@ public class AdminUsersEditServlet extends HttpServlet {
     private TemplateProvider templateProvider;
     @Inject
     private UserDao userDao;
-    @Inject
-    private User sessionUser;
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -41,19 +41,16 @@ public class AdminUsersEditServlet extends HttpServlet {
         Map<String, Object> model = new HashMap<>();
 
         HttpSession session = req.getSession();
-        String sessionEmail = (String) session.getAttribute("userEmail");
-        String sessionName = (String) session.getAttribute("userName");
-        sessionUser = (User) session.getAttribute("user");
+        User sessionUser = (User) session.getAttribute("user");
 
-        model.put("sessionName", sessionName);
-        model.put("sessionEmail", sessionEmail);
-        model.put("sessionRole", sessionUser.getUserRole());
+        model.put("user", sessionUser);
+
 
         int userId = Integer.parseInt(req.getParameter("id"));
 
-        User user = userDao.findById(userId);
+        User userToEdit = userDao.findById(userId);
 
-        model.put("user", user);
+        model.put("userToEdit", userToEdit);
 
         Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
 
@@ -66,6 +63,8 @@ public class AdminUsersEditServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        HttpSession session = req.getSession();
+        User sessionUser = (User) session.getAttribute("user");
 
         int userId = Integer.parseInt(req.getParameter("id"));
 
@@ -73,14 +72,18 @@ public class AdminUsersEditServlet extends HttpServlet {
 
         String stringRole = req.getParameter("role");
 
-        if (stringRole.equals("ADMIN")) {
-            user.setUserRole(1);
+        if (stringRole != null) {
+            if (stringRole.equals("ADMIN")) {
+                user.setUserRole(1);
+            } else {
+                user.setUserRole(2);
+            }
+            userDao.update(user);
+            LOG.warn("ADMIN user {} has changed role of user {} to: {}", sessionUser.getUserEmail(),
+                    user.getUserEmail(), user.getUserRole());
+            resp.sendRedirect("/admin-users");
         } else {
-            user.setUserRole(2);
+            resp.sendRedirect("/admin-users");
         }
-
-        userDao.update(user);
-
-        resp.sendRedirect("/admin-users");
     }
 }

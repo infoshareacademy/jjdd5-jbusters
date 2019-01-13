@@ -32,8 +32,8 @@ public class DeleteNewTransactionServlet extends HttpServlet {
     private NewTransactionDao newTransactionDao;
     @Inject
     private Auth auth;
-    @Inject
-    private User sessionUser;
+
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
@@ -41,9 +41,8 @@ public class DeleteNewTransactionServlet extends HttpServlet {
         PrintWriter out = resp.getWriter();
 
         HttpSession session = req.getSession(true);
-        String sessionName = (String) session.getAttribute("userName");
-        String sessionEmail = (String) session.getAttribute("userEmail");
-        sessionUser = (User) session.getAttribute("user");
+        User sessionUser = (User) session.getAttribute("user");
+        String sessionEmail = sessionUser.getUserEmail();
 
         int transactionId = Integer.parseInt(req.getParameter("id"));
 
@@ -55,9 +54,7 @@ public class DeleteNewTransactionServlet extends HttpServlet {
             Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
 
             Map<String, Object> model = new HashMap<>();
-            model.put("sessionName", sessionName);
-            model.put("sessionEmail", sessionEmail);
-            model.put("sessionRole", sessionUser.getUserRole());
+            model.put("user", sessionUser);
 
             try {
                 template.process(model, out);

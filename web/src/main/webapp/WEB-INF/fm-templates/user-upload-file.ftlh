@@ -1,6 +1,6 @@
-<#if sessionRole == 1 >
+<#if user.userRole == 1 >
     <#include "header-admin.ftlh">
-<#elseif sessionRole == 2>
+<#elseif user.userRole == 2>
     <#include "include-user-header.ftlh">
 </#if>
 

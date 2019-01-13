@@ -31,25 +31,19 @@ public class AdminUsersServlet extends HttpServlet {
     private TemplateProvider templateProvider;
     @Inject
     private UserDao userDao;
-    @Inject
-    private User sessionUser;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
         PrintWriter writter = resp.getWriter();
+        Map<String, Object> model = new HashMap<>();
 
         HttpSession session = req.getSession(true);
-        String sessionEmail = (String) session.getAttribute("userEmail");
-        String sessionName = (String) session.getAttribute("userName");
-        sessionUser = (User) session.getAttribute("user");
+        User sessionUser = (User) session.getAttribute("user");
 
-        Map<String, Object> model = new HashMap<>();
         Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
-        model.put("sessionEmail", sessionEmail);
-        model.put("sessionName", sessionName);
-        model.put("sessionRole", sessionUser.getUserRole());
+        model.put("user", sessionUser);
 
         List<User> usersList = userDao.findAll();
 
