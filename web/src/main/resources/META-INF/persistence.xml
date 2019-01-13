@@ -8,7 +8,6 @@
         <jta-data-source>java:ds/jbusters</jta-data-source>
         <class>com.infoshareacademy.jbusters.model.User</class>
         <class>com.infoshareacademy.jbusters.model.NewTransaction</class>
-        <class>com.infoshareacademy.jbusters.model.AppProperty</class>
         <class>com.infoshareacademy.jbusters.model.Configuration</class>
         <class>com.infoshareacademy.jbusters.model.Tranzaction</class>
         <class>com.infoshareacademy.jbusters.model.DistrictWage</class>

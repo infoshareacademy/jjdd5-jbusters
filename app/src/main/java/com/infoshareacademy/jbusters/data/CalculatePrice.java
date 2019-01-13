@@ -3,11 +3,10 @@ package com.infoshareacademy.jbusters.data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.net.URL;
-import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -18,10 +17,9 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 public class CalculatePrice {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Data.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CalculatePrice.class);
     private Transaction userTransaction;
     private List<Transaction> filteredList;
-    private PropLoader properties;
     private BigDecimal exchangeRate;
 
     @Inject
@@ -30,18 +28,14 @@ public class CalculatePrice {
     public CalculatePrice() {
     }
 
+    @PostConstruct
+    public void init(){
+        exchangeRate = staticFields.getExchangeRate();
+    }
+
     public CalculatePrice(Transaction transaction, List<Transaction> filteredList) {
         this.userTransaction = transaction;
         this.filteredList = filteredList;
-
-        properties = new PropLoader();
-        try {
-            properties = new PropLoader(staticFields.getAppPropertiesURL().openStream());
-            exchangeRate = properties.getExchangeRateBigDecimal();
-
-        } catch (Exception e) {
-            LOGGER.error("Missing properties file in path {}", staticFields.getAppPropertiesURL().toString());
-        }
     }
 
     private List<Transaction> updatePricesInList() {
@@ -137,17 +131,17 @@ public class CalculatePrice {
 
         BigDecimal max = getMaxPriceInList(transactions);
 
-        String currencySuffix = properties.getCurrency() +" per m2";
+        String currencySuffix = staticFields.getCurrency() +" per m2";
         LOGGER.info("Average price calculated from similar flats set equals:"+getTabs(3)
                 + staticFields.formatWithLongDF(
                         average.setScale(2, RoundingMode.HALF_UP).divide(exchangeRate, BigDecimal.ROUND_UP))
-                + " " + properties.getCurrency() + currencySuffix);
+                + " " + staticFields.getCurrency() + currencySuffix);
         LOGGER.info("Maximum prise in similar flats set equals:"+getTabs(3)
                 + staticFields.formatWithLongDF(max.divide(exchangeRate, BigDecimal.ROUND_UP))
-                + " " + properties.getCurrency() + currencySuffix);
+                + " " + staticFields.getCurrency() + currencySuffix);
         System.out.println("Minimum prise in similar flats set equals:"+getTabs(4)
                 + staticFields.formatWithLongDF(min.divide(exchangeRate, BigDecimal.ROUND_UP))
-                + " " + properties.getCurrency() + currencySuffix);
+                + " " + staticFields.getCurrency() + currencySuffix);
 
         BigDecimal lowerFactor = min.divide(average, 3, RoundingMode.HALF_UP);
         BigDecimal upperFactor = max.divide(average, 3, RoundingMode.HALF_UP);
@@ -193,7 +187,7 @@ public class CalculatePrice {
         LOGGER.info("Calculated price per square meter equals:"+getTabs(5)
                 + staticFields.formatWithLongDF(
                         pricePerM2.setScale(2, RoundingMode.HALF_UP).divide(exchangeRate, BigDecimal.ROUND_UP))
-                + " " + properties.getCurrency());
+                + " " + staticFields.getCurrency());
 
         return pricePerM2;
     }

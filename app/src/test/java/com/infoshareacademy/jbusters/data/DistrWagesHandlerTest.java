@@ -1,6 +1,7 @@
 package com.infoshareacademy.jbusters.data;
 
 
+import com.infoshareacademy.jbusters.model.DistrictWage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -15,20 +16,22 @@ import java.util.Properties;
 
 public class DistrWagesHandlerTest {
 
-    @Test
-    public void nullFileInputTest(){
-        InputStream is = null;
-        DistrWagesHandler distr = new DistrWagesHandler(is);
-
-        Assertions.assertEquals(new Properties(), distr.getProperties());
-    }
-    @Test
-    public void wrongFileTypeInputTest() throws IOException{
-
-        DistrWagesHandler distr = new DistrWagesHandler(Thread.currentThread().getContextClassLoader().getResource("app.txt").openStream());
-        Assertions.assertEquals(new Properties(), distr.getProperties());
-    }
-
+//
+//
+//
+//    @Test
+//    public void EqualPropertykeyTest(){
+//
+//        Properties properties = new Properties();
+//        properties.setProperty("first", "12");
+//        properties.setProperty("second", "20");
+//        properties.setProperty("third", "12");
+//
+//        DistrWagesHandler distr = new DistrWagesHandler(properties);
+//
+//        Assertions.assertEquals(true,distr.isDistrictWageEqual("first", "third"));
+//
+//    }
 
 
 

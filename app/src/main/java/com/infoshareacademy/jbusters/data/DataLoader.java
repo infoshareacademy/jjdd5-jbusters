@@ -20,7 +20,6 @@ import java.util.List;
 
 @RequestScoped
 public class DataLoader {
-    //private static final URL APP_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("app.properties");
     private static final Logger LOGGER = LoggerFactory.getLogger(DataLoader.class);
     private static final int INDEX_TRANSACTION_DATE = 0;
     private static final int INDEX_CITY = 1;
@@ -38,30 +37,18 @@ public class DataLoader {
     private static final int INDEX_TRANSACTION_NAME = 13;
     private static final int INDEX_IMPORTANT = 14;
     private static final String separator = ",";
-    private URL APP_PROPERTIES_URL = Thread.currentThread().getContextClassLoader().getResource("app.properties");
-    PropLoader properties;
+    private int decimalPlaces;
 
     @Inject
     StaticFields staticFields;
 
     public DataLoader() {
-        try {
-            properties = new PropLoader(APP_PROPERTIES_URL.openStream());
-        } catch (Exception e) {
-            LOGGER.error("Missing properties file in path {}", APP_PROPERTIES_URL.toString());
-        }
     }
+
 
     @PostConstruct
     public void init() {
-
-//        try {
-//            properties = new PropLoader(staticFields.getAppPropertiesURL().openStream());
-//        } catch (Exception e) {
-//            LOGGER.error("Missing properties file in path {}", staticFields.getAppPropertiesURL().toString());
-//        }
-
-
+        decimalPlaces=staticFields.getDecimalPlaces();
     }
 
     public List<Transaction> createTransactionList(List<String> listFileTransakcjeCSV, boolean userFile) {
@@ -91,13 +78,12 @@ public class DataLoader {
             newRowOfTransactionList.setTransactionDate(transactionDate);
 
             // convert String to BigDecimal
-            DecimalFormat decimalFormat = new DecimalFormat("#.##");
             String price = listTransaction.get(INDEX_PRICE);
-            newRowOfTransactionList.setPrice(new BigDecimal(price).setScale(properties.getDecimalPlaces(), BigDecimal.ROUND_UP));
+            newRowOfTransactionList.setPrice(new BigDecimal(price).setScale(decimalPlaces, BigDecimal.ROUND_UP));
             String flatArea = listTransaction.get(INDEX_FLAT_AREA);
-            newRowOfTransactionList.setFlatArea(new BigDecimal(flatArea).setScale(properties.getDecimalPlaces(), BigDecimal.ROUND_UP));
+            newRowOfTransactionList.setFlatArea(new BigDecimal(flatArea).setScale(decimalPlaces, BigDecimal.ROUND_UP));
             String pricePerM2 = listTransaction.get(INDEX_PRICE_PER_M2);
-            newRowOfTransactionList.setPricePerM2(new BigDecimal(pricePerM2).setScale(properties.getDecimalPlaces(), BigDecimal.ROUND_UP));
+            newRowOfTransactionList.setPricePerM2(new BigDecimal(pricePerM2).setScale(decimalPlaces, BigDecimal.ROUND_UP));
 
             //convert String to int
             String levelString = listTransaction.get(INDEX_LEVEL);
@@ -119,12 +105,4 @@ public class DataLoader {
         return listOfTransaction;
     }
 
-    public List<Transaction> createFlatsListFromFile(Path path, boolean userFile) {
-        try {
-            return createTransactionList(Files.readAllLines(path), userFile);
-        } catch (IOException e) {
-            System.out.println("Brak pliku z zapisanymi transakcjami użytkownika. Tego nie pomalujesz");
-        }
-        return new ArrayList<>();
-    }
 }

@@ -1,5 +1,9 @@
 package com.infoshareacademy.jbusters.model;
 
+import com.infoshareacademy.jbusters.data.StaticFields;
+import com.infoshareacademy.jbusters.data.Transaction;
+
+import javax.inject.Inject;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -11,47 +15,59 @@ public class Tranzaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "TRANSACTIONS_ID")
+    @Column(name = "TRANSACTION_ID")
     private int transactionId;
     
-    @Column(name = "TRANSACTIONS_DATA_TRANSACTION")
+    @Column(name = "TRANSACTION_DATE")
     private LocalDate transactionDataTransaction;
 
-    @Column(name = "TRANSACTIONS_CITY")
+    @Column(name = "CITY")
     private String transactionCity;
 
-    @Column(name = "TRANSACTIONS_DISTRICT")
+    @Column(name = "DISTRICT")
     private String transactionDistrict;
 
-    @Column(name = "TRANSACTIONS_STREET")
+    @Column(name = "STREET")
     private String transactionStreet;
 
-    @Column(name = "TRANSACTIONS_TYPE_OF_MARKET")
+    @Column(name = "TYPE_OF_MARKET")
     private String transactionTypeOfMarket;
 
-    @Column(name = "TRANSACTIONS_PRICE")
+    @Column(name = "PRICE")
     private BigDecimal transactionPrice;
 
-    @Column(name = "TRANSACTIONS_FLAT_AREA")
+    @Column(name = "FLAT_AREA")
     private BigDecimal transactionFlatArea;
 
-    @Column(name = "TRANSACTIONS_PRICE_PER_M2")
+    @Column(name = "PRICE_PER_M2")
     private BigDecimal transactionPricePerM2;
 
-    @Column(name = "TRANSACTIONS_LEVEL")
+    @Column(name = "LEVEL")
     private int transactionLevel;
 
-    @Column(name = "TRANSACTIONS_PARKING_SPOT")
+    @Column(name = "PARKING_SPOT")
     private String transactionParkingSpot;
 
-    @Column(name = "TRANSACTIONS_STANDARD_LEVEL")
+    @Column(name = "STANDARD_LEVEL")
     private String transactionStandardLevel;
 
-    @Column(name = "TRANSACTIONS_CONSTRUCTION_YEAR")
+    @Column(name = "CONSTRUCTION_YEAR")
     private String transactionConstructionYear;
 
-    @Column(name = "TRANSACTIONS_CONSTRUCTION_YEAR_CATEGORY")
+    @Column(name = "CONSTRUCTION_YEAR_CATEGORY")
     private int transactionConstructionYearCategory;
+
+    @Transient
+    private String transactionName;
+    @Transient
+    private boolean important;
+    @Transient
+    private String currency;
+
+    @Transient
+    @Inject
+    StaticFields staticFields;
+
 
     public Tranzaction() {
     }
@@ -80,6 +96,10 @@ public class Tranzaction {
         this.transactionConstructionYearCategory = transactionConstructionYearCategory;
     }
 
+
+
+
+    // -----------------GETTERS & SETTERS----------------------------------
     public int getTranzactionId() {
         return transactionId;
     }
@@ -192,4 +212,5 @@ public class Tranzaction {
     public void setTranzactionConstructionYearCategory(int transactionConstructionYearCategory) {
         this.transactionConstructionYearCategory = transactionConstructionYearCategory;
     }
+
 }

@@ -2,7 +2,7 @@ package com.infoshareacademy.jbusters.web;
 
 import com.infoshareacademy.jbusters.data.ReportGenerator;
 import com.infoshareacademy.jbusters.data.StaticFields;
-import com.infoshareacademy.jbusters.model.AppProperty;
+
 import org.apache.commons.io.IOUtils;
 
 import javax.annotation.PostConstruct;

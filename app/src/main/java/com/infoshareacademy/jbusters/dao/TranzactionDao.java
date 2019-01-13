@@ -53,4 +53,16 @@ public class TranzactionDao {
     return query.getResultList();
     }
 
+    public List<String> getCitiesList(){
+        final Query query = entityManager.createQuery("SELECT DISTINCT t.transactionCity FROM Tranzaction t ORDER BY t.transactionCity ASC");
+        return query.getResultList();
+
+    }
+    public List<String> getDistrictsList(String city){
+        final Query query = entityManager.createQuery("SELECT DISTINCT t.transactionDistrict FROM Tranzaction t WHERE t.transactionCity = :city ORDER BY t.transactionDistrict ASC");
+        query.setParameter("city", city);
+        return query.getResultList();
+
+    }
+
 }

@@ -1,6 +1,6 @@
 package com.infoshareacademy.jbusters.data;
 
-import com.infoshareacademy.jbusters.model.AppProperty;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,9 +19,8 @@ import java.nio.file.StandardOpenOption;
 
 @ApplicationScoped
 public class StatisticsManager {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Data.class);
-    private PropLoader properties;
-    private String currency ="PLN";
+    private static final Logger LOGGER = LoggerFactory.getLogger(StatisticsManager.class);
+    private String currency;
     private static final String SEPARATOR = ",";
     private static final int COUNT = 0;
     private static final int ALL = 1;
@@ -33,18 +32,12 @@ public class StatisticsManager {
     private Path STATISTICS_PATH;
 
     public StatisticsManager() {
-        properties = new PropLoader();
 
     }
 
     @PostConstruct
     public void init() {
-        try {
-            properties = new PropLoader(staticFields.getAppPropertiesURL().openStream());
-            currency = properties.getCurrency();
-        } catch (Exception e) {
-            LOGGER.error("Missing properties file in path {}", staticFields.getAppPropertiesURL().toString());
-        }
+        currency = staticFields.getCurrency();
         STATISTICS_PATH = staticFields.getStatisticsFilePath();
 
     }
