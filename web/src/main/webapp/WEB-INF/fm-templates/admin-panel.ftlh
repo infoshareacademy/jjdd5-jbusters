@@ -89,17 +89,6 @@
                             }
                         </script>
 
-
-                        <div class="col-sm-6">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Opcja...</h5>
-                                    <p class="card-text">Tekst...</p>
-                                    <a href="/load-city" class="btn btn-primary">Przejdź dalej</a>
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="col-sm-6">
                             <div class="card">
                                 <div class="card-body">
@@ -109,6 +98,18 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Sugestie</h5>
+                                    <p class="card-text">Sugestie miast i dzielnic Twoich użytkowników</p>
+                                    <a href="/load-suggestions" class="btn btn-primary">Przejdź dalej</a>
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
             </div>

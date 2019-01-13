@@ -13,7 +13,7 @@
 
         <#if success??>
             <div class="alert alert-success">
-                <strong>${success}</strong>
+                <strong>${success}<a href="index.html"> Główna Strona</a></strong>
             </div>
         </#if>
         <#if fail??>
@@ -22,19 +22,19 @@
             </div>
         </#if>
 
-        <h2 class="lead">Daj nam znać jakie miejsce cię interesuje</h2>
-
+        <h2 class="lead">Jeśli Twojego miasta nie ma na liście, poinformuj nas! Postaramy się uzupełnić naszą listę.</h2>
+        <br><br>
         <form method="post" action="/send-info">
             <div class="form-group">
-                <label for="Select10">Jakiego miasta szukasz</label>
-                <input name="city" type="text" class="form-control" id="Select10"
+                <label for="Select10">Jakiego miasta szukasz ?</label>
+                <input name="city" type="text" class="form-control" id="Select10 "
                        pattern="^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$"
                        oninvalid="this.setCustomValidity('Wpisana wartość jest nieprawidłowa!')"
-                       oninput="this.setCustomValidity('')">
+                       oninput="this.setCustomValidity('')" required>
             </div>
 
             <div class="form-group">
-                <label for="Select11">Jakiej dzielnicy szukasz</label>
+                <label for="Select11">Jakiej dzielnicy szukasz ?</label>
                 <input name="district" type="text" class="form-control" id="Select11"
                        pattern="^[a-zA-Z]+(?:[\s-][a-zA-Z]+)*$"
                        oninvalid="this.setCustomValidity('Wpisana wartość jest nieprawidłowa!')"
@@ -42,7 +42,6 @@
             </div>
 
             <input class="btn btn-primary" type="submit" value="Wyślij" name="upload" id="upload"/>
-            <a class="btn btn-secondary" href="index.html" role="button">Strona Główna</a>
         </form>
     </div>
 </div>

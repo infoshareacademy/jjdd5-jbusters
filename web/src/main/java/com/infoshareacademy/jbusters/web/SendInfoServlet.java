@@ -1,6 +1,8 @@
 package com.infoshareacademy.jbusters.web;
 
+import com.infoshareacademy.jbusters.dao.SuggestionsDao;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
+import com.infoshareacademy.jbusters.model.Suggestions;
 import com.infoshareacademy.jbusters.model.User;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -26,6 +28,10 @@ public class SendInfoServlet extends HttpServlet {
     private static final String TEMPLATE_SEND_INFO = "send-info";
     @Inject
     private TemplateProvider templateProvider;
+//    @Inject
+//    private Suggestions suggestions;
+    @Inject
+    private SuggestionsDao suggestionsDao;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -57,10 +63,15 @@ public class SendInfoServlet extends HttpServlet {
         String city = req.getParameter("city");
         String district = req.getParameter("district");
 
+        Suggestions suggestions = new Suggestions();
+        suggestions.setSuggestionsCity(city);
+        suggestions.setSuggestionsDistrict(district);
+        suggestionsDao.save(suggestions);
+
         if (city.isEmpty() && district.isEmpty()) {
             model.put("fail", "Musisz wypełnić przynajmniej jedno pole");
         } else {
-            model.put("success", "Twoja wiadomość została wysłana");
+            model.put("success", "Twoja wiadomość została wysłana.");
         }
 
         try {
