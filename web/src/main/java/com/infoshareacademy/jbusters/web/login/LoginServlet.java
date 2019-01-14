@@ -1,6 +1,7 @@
 package com.infoshareacademy.jbusters.web.login;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.infoshareacademy.jbusters.authentication.Auth;
 import com.infoshareacademy.jbusters.dao.UserDao;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import com.infoshareacademy.jbusters.model.User;
@@ -10,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -40,9 +40,11 @@ public class LoginServlet extends HttpServlet {
     private TemplateProvider templateProvider;
     @Inject
     private UserDao userDao;
+    @Inject
+    private Auth auth;
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         resp.setContentType("text/html;charset=UTF-8");
         final PrintWriter writer = resp.getWriter();
@@ -70,20 +72,24 @@ public class LoginServlet extends HttpServlet {
 
             if (emailList.isEmpty()){
                 user.setUserEmail(email);
+                user.setUserName(nameGoogle);
+                user.setUserSurname("brak");
                 user.setUserRole(2);
                 userDao.save(user);
+                session.setAttribute(SESSION_ATTRIBUTE_USER, user);
+            }else {
+                user = emailList.get(0);
                 session.setAttribute(SESSION_ATTRIBUTE_USER, user);
             }
 
         } catch (Exception e) {
-            LOG.warn("Failed to login user in google api");
+            LOG.warn("Failed to login user with google api");
             LOG.info("Trying to log in using our user account");
 
             String email = req.getParameter("email");
             String password = req.getParameter("password");
 
-            List<User> userList = userDao.findAll()
-                    .stream()
+            List<User> userList = userDao.findAll().stream()
                     .filter(u -> u.getUserEmail().equals(email))
                     .collect(Collectors.toList());
 
@@ -91,7 +97,7 @@ public class LoginServlet extends HttpServlet {
 
                 user = userList.get(0);
 
-                if (user != null && user.getUserPassword().equals(password)) {
+                if (user != null && auth.checkCredensials(password, email)) {
 
                     session.setAttribute(SESSION_ATTRIBUTE_NAME, user.getUserName());
                     session.setAttribute(SESSION_ATTRIBUTE_EMAIL, user.getUserEmail());
@@ -106,10 +112,11 @@ public class LoginServlet extends HttpServlet {
         Map<String, Object> model = new HashMap<>();
         Template template;
 
-        if (sessionEmail != null) {
+        if (user != null) {
 
             model.put("sessionName", sessionName);
             model.put("sessionEmail", sessionEmail);
+            model.put("user", user);
 
             if (user.getUserRole() == ADMIN) {
                 template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_LOGIN_ADMIN);
@@ -118,11 +125,9 @@ public class LoginServlet extends HttpServlet {
             }
         } else {
             template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_LOGIN_FAILED);
-            LOG.warn("Failed to. Incorrect login or password");
+            LOG.warn("Failed to login. Incorrect login or password");
         }
-
         setDataTemplate(writer, model, sessionName, template);
-
     }
 
     private void setDataTemplate(PrintWriter writer, Map<String, Object> model, Object sessionName, Template template) throws IOException {
@@ -130,7 +135,6 @@ public class LoginServlet extends HttpServlet {
             template.process(model, writer);
             LOG.info("Login user {}", sessionName);
         } catch (TemplateException e) {
-
             LOG.error("Failed to login user");
         }
     }

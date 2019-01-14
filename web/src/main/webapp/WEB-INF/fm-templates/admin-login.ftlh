@@ -1,19 +1,13 @@
-<#include "include-user-header.ftlh">
+<#include "header-admin.ftlh">
     <div class="container">
         <br><br>
-
         <div class="jumbotron jumbotron-opacity">
 
             <div class="row my-border-bootom">
                 <div class="col-8">
-                    <h1 class="display-4">Witaj w naszej wyceniarce 😎</h1>
-                    <p class="lead">Skorzystaj z poniższych funkcjonalności...</p>
+                    <h1 class="display">Twoje menu</h1>
                 </div>
-
-<#include "include-user-info.ftlh">
-
             </div>
-            <br>
             <br>
             <div class="row">
 
@@ -26,7 +20,7 @@
                                     <h5 class="card-title">Panel administracyjny</h5>
                                     <h1>⚙️</h1>
                                     <p class="card-text"></p>
-                                    <a href="/admin-panel" class="btn btn-primary">Przejdz dalej</a>
+                                    <a href="/admin-panel" class="btn btn-primary">Przejdź dalej</a>
                                 </div>
                             </div>
                         </div>
@@ -36,7 +30,7 @@
                                     <h5 class="card-title">Wyceń mieszkanie</h5>
                                     <p class="card-text">Wypełnij formularz. Będziesz musiał podać nam parametry Twojego
                                         mieszkania.</p>
-                                    <a href="/load-city" class="btn btn-primary">Przejdz dalej</a>
+                                    <a href="/load-city" class="btn btn-primary">Przejdź dalej</a>
                                 </div>
                             </div>
                         </div>
@@ -46,7 +40,16 @@
                                 <div class="card-body">
                                     <h5 class="card-title">Załaduj plik</h5>
                                     <p class="card-text">Załaduj Twój plik z wcześniej wycenionymi mieszkaniami</p>
-                                    <a href="/upload-file" class="btn btn-primary">Przejdz dalej</a>
+                                    <a href="/upload-file" class="btn btn-primary">Przejdź dalej</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Twój plik CSV</h5>
+                                    <p class="card-text">Mieszkania załadowane z Twojego pliku CSV</p>
+                                    <a href="/my-flats" class="btn btn-primary">Przejdź dalej</a>
                                 </div>
                             </div>
                         </div>
@@ -95,7 +98,7 @@
                                 <div class="card-body">
                                     <h5 class="card-title">Twoje mieszkania</h5>
                                     <p class="card-text">Sprawdź listę mieszkań, które zapisałes w naszym systemie</p>
-                                    <a href="/show-transaction" class="btn btn-primary">Przejdz dalej</a>
+                                    <a href="/show-transaction" class="btn btn-primary">Przejdź dalej</a>
                                 </div>
                             </div>
                         </div>

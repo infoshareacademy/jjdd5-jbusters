@@ -2,7 +2,6 @@ package com.infoshareacademy.jbusters.web.user;
 
 
 import com.infoshareacademy.jbusters.dao.NewTransactionDao;
-import com.infoshareacademy.jbusters.dao.UserDao;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import com.infoshareacademy.jbusters.model.NewTransaction;
 import com.infoshareacademy.jbusters.model.User;
@@ -31,10 +30,6 @@ public class ShowNewTransaction extends HttpServlet {
 
     @Inject
     private TemplateProvider templateProvider;
-
-    @Inject
-    private UserDao userDao;
-
     @Inject
     private NewTransactionDao newTransactionDao;
 
@@ -47,17 +42,14 @@ public class ShowNewTransaction extends HttpServlet {
         Map<String, Object> model = new HashMap<>();
 
         HttpSession session = req.getSession();
-        String sessionEmail = (String) session.getAttribute("userEmail");
-        String sessionName = (String) session.getAttribute("userName");
+        User sessionUser = (User) session.getAttribute("user");
 
-        User user = userDao.findByEmail(sessionEmail);
-        List<NewTransaction> userTransaction  = newTransactionDao.findByUser(user);
+        List<NewTransaction> userTransaction = newTransactionDao.findByUser(sessionUser);
 
         Template template;
         template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
 
-        model.put("sessionEmail", sessionEmail);
-        model.put("sessionName", sessionName);
+        model.put("user", sessionUser);
         model.put("trans", userTransaction);
         model.put("size", userTransaction.size());
 

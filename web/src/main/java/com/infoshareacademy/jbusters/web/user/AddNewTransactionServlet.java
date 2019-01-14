@@ -41,16 +41,16 @@ public class AddNewTransactionServlet extends HttpServlet {
         PrintWriter out = resp.getWriter();
         HttpSession session = req.getSession();
         Transaction newTransaction = (Transaction) session.getAttribute("newTransaction");
-        User user = (User) session.getAttribute("user");
+        User sessionUser = (User) session.getAttribute("user");
         BigDecimal priceM2 = (BigDecimal) session.getAttribute("priceM2");
         BigDecimal price = (BigDecimal) session.getAttribute("price");
 
         NewTransaction transaction = new NewTransaction();
 
-        transaction.setNewTransactionUser(user);
+        transaction.setNewTransactionUser(sessionUser);
         transaction.setNewTransactionSale("nie");
         transaction.setNewTransactionDescription(req.getParameter("description"));
-        transaction.setNewTransactionImportant(req.getParameter("important"));
+        transaction.setNewTransactionImportant(Boolean.valueOf(req.getParameter("important")));
         transaction.setNewTransactionDataTransaction(LocalDate.now());
         transaction.setNewTransactionCity(newTransaction.getCity());
         transaction.setNewTransactionDistrict(newTransaction.getDistrict());
@@ -68,12 +68,8 @@ public class AddNewTransactionServlet extends HttpServlet {
         try {
             newTransactionDao.save(transaction);
             Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
-            String sessionName = (String) session.getAttribute("userName");
-            String sessionEmail = (String) session.getAttribute("userEmail");
             Map<String, Object> model = new HashMap<>();
-            model.put("sessionName", sessionName);
-            model.put("sessionEmail", sessionEmail);
-
+            model.put("user", sessionUser);
             try {
                 template.process(model, out);
                 LOG.info("Save ok");

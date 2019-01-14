@@ -1,27 +1,20 @@
-<#include "include-user-header.ftlh">
-
+<#if user.userRole == 1 >
+    <#include "header-admin.ftlh">
+<#elseif user.userRole == 2>
+    <#include "include-user-header.ftlh">
+</#if>
 <div class="container">
-    <br><br>
-
     <div class="jumbotron jumbotron-opacity">
 
         <div class="row">
             <div class="col-8">
                 <#if size =  0>
-                <h1 class="display-4">Brak zapisanych mieszkań</h1>
-                <form method="post" action="load-user-menu">
-                    <button type="submit" class="btn btn-primary">Menu</button>
-                </form>
+                <h1 class="display">Brak zapisanych mieszkań</h1>
                 <#else >
-                <h1 class="display-4">Lista mieszkań</h1>
+                <h1 class="display">Lista mieszkań</h1>
                 <p class="lead">Obecnie posiadasz: <b>${size}</b></p>
-                <form method="post" action="load-user-menu">
-                    <button type="submit" class="btn btn-primary">Menu</button>
-                </form>
             </div>
             </#if>
-
-            <#include "include-user-info.ftlh">
         </div>
 
         <#if size gt 0>
@@ -59,14 +52,15 @@
                 <tbody>
                 <#list trans as flat>
 
-                    <#if flat.newTransactionImportant == "tak">
+                    <#if flat.newTransactionImportant>
                         <tr style="background: lawngreen">
                     <#else>
                         <tr>
                     </#if>
                     <td>
                         <a class="btn btn-primary btn-lg btn-dark active" role="button"
-                           aria-pressed="true" href="/valuation?city=${flat.newTransactionCity}&district=${flat.newTransactionDistrict}&market-type=${flat.newTransactionTypeOfMarket}&flat-area=${flat.newTransactionFlatArea}&level=${flat.newTransactionLevel}&parking-spot=${flat.newTransactionParkingSpot}&standard-level=${flat.newTransactionStandardLevel}&construction=${flat.newTransactionConstructionYearCategory}">
+                           aria-pressed="true"
+                           href="/valuation?city=${flat.newTransactionCity}&district=${flat.newTransactionDistrict}&market-type=${flat.newTransactionTypeOfMarket}&flat-area=${flat.newTransactionFlatArea}&level=${flat.newTransactionLevel}&parking-spot=${flat.newTransactionParkingSpot}&standard-level=${flat.newTransactionStandardLevel}&construction=${flat.newTransactionConstructionYearCategory}">
                             Wyceń ponownie</a>
                     </td>
                     <td>${flat.newTransactionDescription}</td>
@@ -110,6 +104,16 @@
                 </#list>
                 </tbody>
             </table>
+            <div class="jumbotron jumbotron-opacity" style="margin: 10px, 30%, 0, 30%">
+                <div style="text-align: center">
+                    <form method="post" action="/saveAs">
+                        <input class="btn btn-primary btn-lg btn-dark active" type="submit"
+                               value="Pobierz listę mieszkań">
+                    </form>
+                    <hr class="my-4">
+
+                </div>
+            </div>
         </#if>
     </div>
 

@@ -12,7 +12,8 @@ public class Auth {
 
     @Inject
     private UserDao userDao;
-
+    @Inject
+    private PasswordHashing passwordHashing;
     @Inject
     private NewTransactionDao newTransactionDao;
 
@@ -31,5 +32,14 @@ public class Auth {
         return newTransactionDao.findByUser(user).stream()
                 .anyMatch(newTransaction -> newTransaction.getNewTransactionId() == transactionId);
 
+    }
+
+
+    public boolean checkCredensials(String password, String email) {
+
+        User user = userDao.findByEmail(email);
+        String hashedPassword = user.getUserPassword();
+
+        return passwordHashing.checkPassword(password, hashedPassword);
     }
 }

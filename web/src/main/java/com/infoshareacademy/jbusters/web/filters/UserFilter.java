@@ -1,6 +1,6 @@
 package com.infoshareacademy.jbusters.web.filters;
 
-
+import com.infoshareacademy.jbusters.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +26,7 @@ public class UserFilter implements Filter {
     private static final String INDEX_PAGE = "/index.html";
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
 
     }
 
@@ -37,11 +37,11 @@ public class UserFilter implements Filter {
         String reqUri = req.getRequestURI();
 
         HttpSession session = req.getSession(true);
-        String sessionEmail = (String) session.getAttribute("userEmail");
+        User sessionUser = (User) session.getAttribute("user");
 
-        if (sessionEmail != null) {
+        if (sessionUser != null) {
             filterChain.doFilter(servletRequest, servletResponse);
-            LOG.info("User {} entered page {}", sessionEmail, reqUri);
+            LOG.info("User {} entered page {}", sessionUser.getUserEmail(), reqUri);
         } else {
             resp.sendRedirect(INDEX_PAGE);
             LOG.warn("Unlogged user tried to enter user-acces page: {}", reqUri);

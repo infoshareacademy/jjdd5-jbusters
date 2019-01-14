@@ -25,6 +25,7 @@ public class MailHandler {
     private static final String SENDER_NAME = "JBusters Web App";
     private static final String ENCODING_SUBJECT = "UTF-8";
     private static final String ENCODING_CONTENT = "text/html; charset=UTF-8";
+    private static final String TEMP = "jbusters1234";
     private static final String SUBJECT = "Raport z dnia ";
     private static final String WELCOME = "Witaj,";
     private static final String CONTENT = "w załączniku znajdziesz cykliczny raport, zawierający dane statystyczne wyszukiwań w naszej aplikacji.";
@@ -32,7 +33,7 @@ public class MailHandler {
     private static final String ATTACHMENT_NAME = "Raport_";
     private static final String ATTACHMENT_TYPE = ".pdf";
 
-    public void sendMail(String login, String pass, String[] recipients) throws UnsupportedEncodingException, MessagingException {
+    public void sendMail(String login, String[] recipients) throws UnsupportedEncodingException, MessagingException {
 
         Properties props = System.getProperties();
         String host = "smtp.gmail.com";
@@ -44,7 +45,7 @@ public class MailHandler {
         Session session = Session.getInstance(props,
                 new Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(login, pass);
+                        return new PasswordAuthentication(login, TEMP);
                     }
                 });
 

@@ -65,6 +65,4 @@ public class GenerateReportServlet extends HttpServlet {
         Files.deleteIfExists(Paths.get(REPORT_PATH));
 
     }
-
-
 }

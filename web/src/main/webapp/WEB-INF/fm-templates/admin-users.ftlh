@@ -1,4 +1,4 @@
-<#include "include-user-header.ftlh">
+<#include "header-admin.ftlh">
 <div class="container">
     <br><br>
 
@@ -6,17 +6,10 @@
 
         <div class="row">
             <div class="col-8">
-                <h1 class="display-4">Lista użytkowników</h1>
+                <h1 class="display">Lista użytkowników</h1>
                 <p class="lead">Licba użytkowników w bazie: <b>${size}</b></p>
-                <form method="post" action="load-user-menu">
-                    <button type="submit" class="btn btn-primary">Menu</button>
-                </form>
             </div>
-
-            <#include "include-user-info.ftlh">
         </div>
-
-        <hr class="my-4">
 
         <table class="table table-striped">
             <thead>
@@ -32,7 +25,6 @@
             <#list usersList as u>
 
             <tr>
-
                 <td><h5>${u.userId}</h5></td>
                 <td><h5>${u.userEmail}</h5></td>
                 <td><h5>${u.userName}</h5></td>

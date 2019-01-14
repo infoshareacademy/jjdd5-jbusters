@@ -29,7 +29,6 @@ public class AdminUsersServlet extends HttpServlet {
     private static final String TEMPLATE_NAME = "admin-users";
     @Inject
     private TemplateProvider templateProvider;
-
     @Inject
     private UserDao userDao;
 
@@ -38,16 +37,13 @@ public class AdminUsersServlet extends HttpServlet {
 
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
         PrintWriter writter = resp.getWriter();
+        Map<String, Object> model = new HashMap<>();
 
         HttpSession session = req.getSession(true);
-        String sessionEmail = (String) session.getAttribute("userEmail");
-        String sessionName = (String) session.getAttribute("userName");
+        User sessionUser = (User) session.getAttribute("user");
 
-        Map<String, Object> model = new HashMap<>();
         Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
-        model.put("sessionEmail", sessionEmail);
-        model.put("sessionName", sessionName);
-
+        model.put("user", sessionUser);
 
         List<User> usersList = userDao.findAll();
 

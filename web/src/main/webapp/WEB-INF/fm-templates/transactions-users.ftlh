@@ -9,9 +9,9 @@
 
     <div class="container">
         <div class="jumbotron jumbotron-opacity">
-            <h1 class="display-10"><p>${error} </p></h1>
+            <h1 class="display"><p>${error} </p></h1>
             <hr class="my-4">
-            <a class="btn btn-secondary btn-lg btn-dark" href="uploadFile.html" role="button">Załaduj plik</a>
+            <a class="btn btn-secondary btn-lg btn-dark" href="upload-file" role="button">Załaduj plik</a>
             <a class="btn btn-secondary btn-lg btn-dark" href="/load-city" role="button">Wyceń mieszkanie</a>
         </div>
     </div>
@@ -92,10 +92,10 @@
             <form method="POST" action="/my-flats">
 
                 <!-- Large modal -->
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">
-                    Wyczyść
-                    listę
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target=".bd-example-modal-lg">
+                    Wyczyść listę
                 </button>
+                <a class="btn btn-primary" href="upload-file" role="button">Załaduj nowy plik</a>
 
                 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog"
                      aria-labelledby="myLargeModalLabel"
@@ -116,6 +116,7 @@
                         </div>
                     </div>
                 </div>
+
 
             </form>
         </div>
