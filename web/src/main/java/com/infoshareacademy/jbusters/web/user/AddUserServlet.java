@@ -57,12 +57,13 @@ public class AddUserServlet extends HttpServlet {
                 .collect(Collectors.toList());
 
         setDataTemplate(req, out, u, email, password, password2, emailList);
-
     }
 
     private void setDataTemplate(HttpServletRequest req, PrintWriter out, User u, String email, String password, String password2, List<User> emailList) throws IOException {
 
         Map<String, Object> model = new HashMap<>();
+
+        Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_SUCESS);
 
         if (emailList.isEmpty() && !email.isEmpty() && !password.isEmpty() && password.equals(password2)) {
 
@@ -77,7 +78,6 @@ public class AddUserServlet extends HttpServlet {
             try {
                 userDao.save(u);
                 model.put("user", u);
-                Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_SUCESS);
 
                 try {
                     template.process(model, out);
@@ -86,16 +86,24 @@ public class AddUserServlet extends HttpServlet {
                     LOG.error("Failed confirm-registration!!");
                 }
 
-            } catch (Exception e) {
+            }  catch (Exception e) {
                 LOG.error("Failed to add new user due to: {}", e.getMessage());
-                Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_FAILED);
+                template = templateProvider.getTemplate(getServletContext(), TEMPLATE_FAILED);
 
                 try {
                     template.process(model, out);
-                    LOG.info("confirm-registration!!");
+                    LOG.info("Login failed!");
                 } catch (TemplateException er) {
                     LOG.error("Failed confirm-registration due to {}", er.getMessage());
                 }
+            }
+        } else {
+            template = templateProvider.getTemplate(getServletContext(), TEMPLATE_FAILED);
+            try {
+                template.process(model, out);
+                LOG.info("Login failed!");
+            } catch (TemplateException er) {
+                LOG.error("Failed confirm-registration due to {}", er.getMessage());
             }
         }
     }
