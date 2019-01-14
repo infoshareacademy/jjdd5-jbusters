@@ -28,8 +28,6 @@ public class SendInfoServlet extends HttpServlet {
     private static final String TEMPLATE_SEND_INFO = "send-info";
     @Inject
     private TemplateProvider templateProvider;
-//    @Inject
-//    private Suggestions suggestions;
     @Inject
     private SuggestionsDao suggestionsDao;
 

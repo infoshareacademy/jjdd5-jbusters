@@ -21,7 +21,7 @@ SET time_zone = "+00:00";
 --
 -- Baza danych: `jbusters`
 --
-CREATE DATABASE IF NOT EXISTS `jbusters` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_polish_ci;
+CREATE DATABASE IF NOT EXISTS `jbusters` DEFAULT CHARACTER SET utf8 COLLATE utf8_polish_ci;
 USE `jbusters`;
 
 -- --------------------------------------------------------
@@ -101,7 +101,7 @@ INSERT INTO `districts_wages` (`DISTRICT_ID`, `CITY_NAME`, `DISTRICT_NAME`, `WAG
 --
 -- Struktura tabeli dla tabeli `new_transaction`
 --
-
+DROP TABLE IF EXISTS `new_transactions`;
 CREATE TABLE `new_transaction` (
   `NEW_TRANSACTION_ID` int(11) NOT NULL,
   `NEW_TRANSACTION_USER_ID` int(11) DEFAULT NULL,
@@ -142,7 +142,7 @@ INSERT INTO `new_transaction` (`NEW_TRANSACTION_ID`, `NEW_TRANSACTION_USER_ID`, 
 --
 -- Struktura tabeli dla tabeli `suggestions`
 --
-
+DROP TABLE IF EXISTS `suggestions`;
 CREATE TABLE `suggestions` (
   `SUGGESTIONS_ID` int(11) NOT NULL,
   `SUGGESTIONS_CITY` varchar(128) COLLATE utf8_polish_ci DEFAULT NULL,
@@ -164,7 +164,7 @@ INSERT INTO `suggestions` (`SUGGESTIONS_ID`, `SUGGESTIONS_CITY`, `SUGGESTIONS_DI
 --
 -- Struktura tabeli dla tabeli `transactions`
 --
-
+DROP TABLE IF EXISTS `transactions`;
 CREATE TABLE `transactions` (
   `TRANSACTION_ID` int(11) NOT NULL,
   `TRANSACTION_DATE` date NOT NULL,
@@ -3566,7 +3566,7 @@ INSERT INTO `transactions` (`TRANSACTION_ID`, `TRANSACTION_DATE`, `CITY`, `DISTR
 --
 -- Struktura tabeli dla tabeli `users`
 --
-
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `USER_ID` int(11) NOT NULL,
   `USER_EMAIL` varchar(45) COLLATE utf8_polish_ci NOT NULL,
