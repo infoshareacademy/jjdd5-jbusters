@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Stateless
 public class UserDao {
@@ -24,7 +25,7 @@ public class UserDao {
         return entityManager.merge(u);
     }
 
-    public void delete(Long id) {
+    public void delete(int id) {
         final User u = entityManager.find(User.class, id);
         if (u != null) {
             entityManager.remove(u);
@@ -43,7 +44,20 @@ public class UserDao {
     public List<User> findAll() {
         final Query query = entityManager.createQuery("SELECT u FROM User u");
 
-        return query.getResultList();
+        return (List<User>) query.getResultList();
     }
 
+    public User findByEmail(String sessionEmail) {
+        final Query query = entityManager.createQuery("SELECT u FROM User u WHERE u.userEmail = :email");
+        query.setParameter("email", sessionEmail);
+
+       return (User) query.getSingleResult();
+    }
+
+    public List<User> findByEmailList(String sessionEmail) {
+        final Query query = entityManager.createQuery("SELECT u FROM User u WHERE u.userEmail = :email");
+        query.setParameter("email", sessionEmail);
+
+        return (List<User>) query.getResultList();
+    }
 }

@@ -39,6 +39,9 @@ public class CalculatePrice {
         currency = staticFields.getCurrency();
         exchangeRate = staticFields.getExchangeRate();
     }
+    private ExchangeRatesManager exchangeRatesManager = new ExchangeRatesManager();
+    private static final double MAX_TREND_RATE_PER_DAY = 0.000274;
+    private static final double MIN_TREND_RATE_PER_DAY = -0.000274;
 
     public CalculatePrice(Transaction transaction, List<Transaction> filteredList) {
         super();
@@ -113,8 +116,10 @@ public class CalculatePrice {
 
         BigDecimal trendPerDay = (((priceOfNewest.subtract(priceOfOldest)).divide(priceOfOldest, 6, RoundingMode.HALF_UP)).divide(BigDecimal.valueOf(duration), 6, RoundingMode.HALF_UP));
 
-        if (trendPerDay.compareTo(BigDecimal.valueOf(0.000274)) > 0) {
-            return BigDecimal.valueOf(0.000274);
+        if (trendPerDay.compareTo(BigDecimal.valueOf(MAX_TREND_RATE_PER_DAY)) > 0) {
+            return BigDecimal.valueOf(MAX_TREND_RATE_PER_DAY);
+        } else if (trendPerDay.compareTo(BigDecimal.valueOf(MIN_TREND_RATE_PER_DAY)) < 0) {
+            return BigDecimal.valueOf(MIN_TREND_RATE_PER_DAY);
         } else {
             return trendPerDay;
         }
@@ -197,7 +202,7 @@ public class CalculatePrice {
                         pricePerM2.setScale(2, RoundingMode.HALF_UP).divide(exchangeRate, BigDecimal.ROUND_UP))
                 + " " + currency);
 
-        return pricePerM2;
+        return pricePerM2.divide(exchangeRatesManager.getExRate(), 2, RoundingMode.HALF_UP);
     }
 
     public BigDecimal getMaxPriceInList(List<Transaction> transactions) {
@@ -226,7 +231,7 @@ public class CalculatePrice {
         BigDecimal averageFlatArea = BigDecimal.valueOf(finallySortedList.stream()
                 .mapToDouble(t -> t.getFlatArea().doubleValue())
                 .average().orElse((double) 0));
-        System.out.println("Average flat size in similar flats set equals: "+getTabs(2) + averageFlatArea.setScale(2, RoundingMode.HALF_UP) + " m2");
+        System.out.println("Średnia wielkość mieszkań dla dobranego zbioru to:"+getTabs(2) + averageFlatArea.setScale(2, RoundingMode.HALF_UP) + " m2");
         return transToCheck.getFlatArea().compareTo(averageFlatArea) < 0;
     }
 

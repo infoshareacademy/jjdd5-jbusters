@@ -2,6 +2,7 @@ package com.infoshareacademy.jbusters.web;
 
 import com.infoshareacademy.jbusters.dao.TranzactionDao;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
+import com.infoshareacademy.jbusters.model.User;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.slf4j.Logger;
@@ -44,12 +45,11 @@ public class LoadCityTransactionServlet extends HttpServlet {
         model.put("cities", cities);
 
         HttpSession session = req.getSession(true);
-        String sessionEmail = (String) session.getAttribute("userEmail");
-        String sessionName = (String) session.getAttribute("userName");
+        User sessionUser = (User) session.getAttribute("user");
+        model.put("user", sessionUser);
 
-        if (sessionEmail == null){
+        if (sessionUser == null) {
             Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_GUEST);
-
             try {
                 template.process(model, out);
                 LOG.info("Loaded city for list of size {}", cities.size());
@@ -57,19 +57,13 @@ public class LoadCityTransactionServlet extends HttpServlet {
                 LOG.error("Failed to load city list. Size of list: {}", cities.size());
             }
         } else {
-
             Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_USER);
-            model.put("sessionEmail", sessionEmail);
-            model.put("sessionName", sessionName);
-
-
             try {
                 template.process(model, out);
-                LOG.info("Loaded city for {}. List of size {}", sessionEmail, cities.size());
+                LOG.info("Loaded city for {}. List of size {}", sessionUser.getUserEmail(), cities.size());
             } catch (TemplateException e) {
-                LOG.error("Failed to load city for {}. List. Size of list: {}",sessionEmail, cities.size());
+                LOG.error("Failed to load city for {}. List. Size of list: {}", sessionUser.getUserEmail(), cities.size());
             }
         }
-
     }
 }

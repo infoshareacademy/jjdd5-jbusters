@@ -48,14 +48,13 @@ public class EmailReportServlet extends HttpServlet {
         String sentStatus;
         String email = userDao.findById(1).getUserEmail();
         String login = email.substring(0, email.indexOf('@'));
-        String pass = userDao.findById(1).getUserPassword();
         String[] recipients = new String[userDao.findAll().size()-1];
         for (int i = 0; i < userDao.findAll().size()-1; i++) {
             recipients[i] = userDao.findById(i + 2).getUserEmail();
         }
 
         try {
-            mailHandler.sendMail(login, pass, recipients);
+            mailHandler.sendMail(login, recipients);
             sentStatus = "Wysłano!";
         } catch (MessagingException e) {
             sentStatus ="Problem z wysłaniem, sprawdź logi...";
@@ -65,7 +64,7 @@ public class EmailReportServlet extends HttpServlet {
         LOGGER.info("Report deleted from following path: {}", REPORT_PATH);
 
         RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/admin-panel");
-        req.setAttribute("status", sentStatus);
+        req.setAttribute("sentStatus", sentStatus);
         dispatcher.forward(req, resp);
     }
 }

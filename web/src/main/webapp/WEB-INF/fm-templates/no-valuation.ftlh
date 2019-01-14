@@ -2,7 +2,7 @@
 
     <div class="container">
     <div class="jumbotron jumbotron-opacity">
-    <h1 class="display-4">Posiadamy za mało transakcji !!! 😓</h1>
+    <h1 class="display">Posiadamy za mało transakcji !!! 😓</h1>
         <p class="lead">Do prawidłowej wyceny potrzeba min 11 transakcji.</p>
     <hr class="my-4">
 

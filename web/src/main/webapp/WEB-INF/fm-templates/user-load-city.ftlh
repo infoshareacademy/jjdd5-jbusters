@@ -1,42 +1,46 @@
-<#include "include-user-header.ftlh">
-    <div class="container">
-        <br><br>
+<#if user.userRole == 1 >
+    <#include "header-admin.ftlh">
+<#elseif user.userRole == 2>
+    <#include "include-user-header.ftlh">
+</#if>
 
-        <div class="jumbotron jumbotron-opacity">
+<div class="container">
+    <br><br>
 
-            <div class="row">
-                <div class="col-8">
-                    <h1 class="display-4">Wyceń mieszkanie</h1>
-                    <p class="lead">Wypełnij formularz. Musisz podać parametry Twojego mieszkania..</p>
-                    <form method="post" action="load-user-menu">
-                        <button type="submit" class="btn btn-primary">Menu</button>
-                    </form>
-                </div>
+    <div class="jumbotron jumbotron-opacity">
 
-<#include "include-user-info.ftlh">
-
+        <div class="row">
+            <div class="col-sm-6">
+                <h1 class="display float text-center">Wyceń mieszkanie</h1>
             </div>
+        </div>
 
-            <hr class="my-4">
-            <div class="container  container-form">
+        <hr class="my-4">
+        <div class="container  container-form">
 
-                <form method="get" action="/load-district">
-                    <div class="form-group">
-                        <label for="Select1">Wybierz miasto</label>
-                        <select name="city" class="form-control" id="Select1" required>
-                            <option></option>
-                            <#list cities as c>
-                                <option>${c}</option>
-                            </#list>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Dalej</button>
-                </form>
+            <form method="get" action="/load-district">
+                <div class="form-group">
+                    <label for="Select1">Wybierz miasto</label>
+                    <select name="city" class="form-control" id="Select1" required>
+                        <option></option>
+                        <#list cities as c>
+                            <option>${c}</option>
+                        </#list>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Dalej</button>
+
+            </form>
+
+            <div class="row ">
+                <div class="col col-lg-8">
+                    <a href=/send-info>Brak Twojego miasta lub dzielnicy?</a>
+                </div>
             </div>
 
         </div>
-
     </div>
+</div>
 
 </div>
 </div>

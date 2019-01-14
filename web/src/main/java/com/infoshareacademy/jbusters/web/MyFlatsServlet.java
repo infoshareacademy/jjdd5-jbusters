@@ -2,6 +2,7 @@ package com.infoshareacademy.jbusters.web;
 
 import com.infoshareacademy.jbusters.data.Transaction;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
+import com.infoshareacademy.jbusters.model.User;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
@@ -25,7 +26,6 @@ public class MyFlatsServlet extends HttpServlet {
     private static final String TEMPLATE_USERS_TRANSACTION = "transactions-users";
     private static final String TEMPLATE_LOGGED_USERS_TRANSACTION = "user-transactions-users";
 
-
     @Inject
     private TemplateProvider templateProvider;
 
@@ -37,19 +37,19 @@ public class MyFlatsServlet extends HttpServlet {
         Map<String, Object> model = new HashMap<>();
 
         HttpSession session = req.getSession();
+        User sessionUser = (User) session.getAttribute("user");
+
         List<Transaction> propertyList = (List<Transaction>) session.getAttribute("propertyList");
-        String sessionEmail = (String) session.getAttribute("userEmail");
-        String sessionName = (String) session.getAttribute("userName");
+
 
         Template template;
 
-        if (sessionEmail == null){
+        if (sessionUser == null){
             template = templateProvider.getTemplate(getServletContext(), TEMPLATE_USERS_TRANSACTION);
         } else {
             template = templateProvider.getTemplate(getServletContext(), TEMPLATE_LOGGED_USERS_TRANSACTION);
 
-            model.put("sessionEmail", sessionEmail);
-            model.put("sessionName", sessionName);
+            model.put("user", sessionUser);
         }
 
         if (propertyList == null || propertyList.isEmpty()) {

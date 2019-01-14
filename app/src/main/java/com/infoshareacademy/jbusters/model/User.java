@@ -13,7 +13,7 @@ public class User {
     @Column(name = "USER_ID")
     private int userId;
 
-    @Column(name = "USER_EMAIL")
+    @Column(name = "USER_EMAIL", unique = true)
     @NotNull
     private String userEmail;
 
@@ -29,7 +29,7 @@ public class User {
     @Column(name = "USER_ROLE")
     private int userRole;
 
-    @OneToMany(mappedBy = "newTransactionUserId", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "newTransactionUser", fetch = FetchType.EAGER)
     private List<NewTransaction> newTransactionsList;
 
     public User() {

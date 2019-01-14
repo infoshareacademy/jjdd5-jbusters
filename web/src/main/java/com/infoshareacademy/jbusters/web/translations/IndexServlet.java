@@ -2,6 +2,7 @@ package com.infoshareacademy.jbusters.web.translations;
 
 import com.infoshareacademy.jbusters.data.LanguageManager;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
+import com.infoshareacademy.jbusters.model.User;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
@@ -10,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +19,8 @@ import java.util.Map;
 @WebServlet(urlPatterns = "index.html")
 public class IndexServlet extends HttpServlet {
 
-    private static final String TEMPLATE_NAME = "index";
+    private static final String TEMPLATE_INDEX = "index";
+    private static final String MENU_HOME = "menu_home";
     private static final String MENU_VALUATION = "menu_valuation";
     private static final String MENU_UPLOAD = "menu_upload";
     private static final String MENU_MY_APARTMENTS = "menu_my_apartments";
@@ -37,8 +40,12 @@ public class IndexServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
+        HttpSession session = req.getSession();
+        String sessionEmail = (String) session.getAttribute("userEmail");
+        String sessionName = (String) session.getAttribute("userName");
 
         Map<String, Object> model = new HashMap<>();
+        modelHandler(model, MENU_HOME);
         modelHandler(model, MENU_VALUATION);
         modelHandler(model, MENU_UPLOAD);
         modelHandler(model, MENU_MY_APARTMENTS);
@@ -48,8 +55,11 @@ public class IndexServlet extends HttpServlet {
         modelHandler(model, HOME_SUBHEADLINE);
         modelHandler(model, HOME_BUTTON_VALUATION);
 
+        model.put("sessionName", sessionName);
+        model.put("sessionEmail", sessionEmail);
+
         Template template = templateProvider.getTemplate(
-                getServletContext(), TEMPLATE_NAME);
+                getServletContext(), TEMPLATE_INDEX);
 
         try {
             template.process(model, resp.getWriter());

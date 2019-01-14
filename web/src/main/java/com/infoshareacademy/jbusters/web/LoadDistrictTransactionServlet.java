@@ -3,6 +3,7 @@ package com.infoshareacademy.jbusters.web;
 
 import com.infoshareacademy.jbusters.dao.TranzactionDao;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
+import com.infoshareacademy.jbusters.model.User;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.slf4j.Logger;
@@ -48,12 +49,11 @@ public class LoadDistrictTransactionServlet extends HttpServlet {
         model.put("district", districtsList);
 
         HttpSession session = req.getSession(true);
-        String sessionEmail = (String) session.getAttribute("userEmail");
-        String sessionName = (String) session.getAttribute("userName");
+        User sessionUser = (User) session.getAttribute("user");
+        model.put("user", sessionUser);
 
-        if (sessionEmail == null){
+        if (sessionUser == null) {
             Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_GUEST);
-
             try {
                 template.process(model, out);
                 LOG.info("Loaded district list of size {}", districtsList.size());
@@ -61,20 +61,13 @@ public class LoadDistrictTransactionServlet extends HttpServlet {
                 LOG.error("Failed to load district list. Size of list: {}" + districtsList.size());
             }
         } else {
-
             Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_USER);
-            model.put("sessionEmail", sessionEmail);
-            model.put("sessionName", sessionName);
-
-
             try {
                 template.process(model, out);
-                LOG.info("Loaded district for {}, List of size {}", sessionEmail, districtsList.size());
+                LOG.info("Loaded district for {}, List of size {}", sessionUser.getUserEmail(), districtsList.size());
             } catch (TemplateException e) {
-                LOG.error("Failed to load district for {}. List size: {}", sessionEmail, districtsList.size());
+                LOG.error("Failed to load district for {}. List size: {}", sessionUser.getUserEmail(), districtsList.size());
             }
         }
-
-
     }
 }

@@ -1,6 +1,7 @@
 package com.infoshareacademy.jbusters.web;
 
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
+import com.infoshareacademy.jbusters.model.User;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.slf4j.Logger;
@@ -20,7 +21,7 @@ import java.util.Map;
 @WebServlet(urlPatterns = ("/load-other-values"))
 public class LoadOtherValuesTransactionServlet extends HttpServlet {
 
-    private static final String TEMPLATE_NAME_GUEST  = "load-other-values";
+    private static final String TEMPLATE_NAME_GUEST = "load-other-values";
     private static final String TEMPLATE_NAME_USER = "user-load-other-values";
     private static final Logger LOG = LoggerFactory.getLogger(LoadOtherValuesTransactionServlet.class);
 
@@ -53,31 +54,24 @@ public class LoadOtherValuesTransactionServlet extends HttpServlet {
         model.put(ValuationServlet.DISTRICT_1, district);
 
         HttpSession session = req.getSession(true);
-        String sessionEmail = (String) session.getAttribute("userEmail");
-        String sessionName = (String) session.getAttribute("userName");
+        User sessionUser = (User) session.getAttribute("user");
+        model.put("user", sessionUser);
 
-
-        if (sessionEmail == null){
+        if (sessionUser == null) {
             Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_GUEST);
-
             try {
                 template.process(model, out);
                 LOG.info("Sending city of {} and district of {} to template", city, district);
             } catch (TemplateException e) {
                 LOG.error("Failed to export data to tamplate {} {}", city, district);
             }
-        }   else {
-
+        } else {
             Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME_USER);
-            model.put("sessionEmail", sessionEmail);
-            model.put("sessionName", sessionName);
-
-
             try {
                 template.process(model, out);
-                LOG.info("Sending city of {} and district of {} to template for {}", city, district, sessionEmail);
+                LOG.info("Sending city of {} and district of {} to template for {}", city, district, sessionUser.getUserEmail());
             } catch (TemplateException e) {
-                LOG.error("Failed to export data to tamplate {} {} for", city, district, sessionEmail);
+                LOG.error("Failed to export data to tamplate {} {} for", city, district, sessionUser.getUserEmail());
             }
         }
     }

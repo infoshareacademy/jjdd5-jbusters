@@ -4,6 +4,7 @@ import com.infoshareacademy.jbusters.dao.ConfigurationDao;
 import com.infoshareacademy.jbusters.model.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -20,13 +21,17 @@ import java.util.*;
 public class StaticFields {
     private static final Logger LOGGER = LoggerFactory.getLogger(StaticFields.class);
 
-    private  final URL APP_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("app.properties");
-    private  final Path STATISTICS_FILE_PATH = Paths.get(System.getProperty("jboss.home.dir"), "data", "statistics.txt");
-    private  final String REPORT_PATH_STRING = Paths.get(System.getProperty("jboss.server.temp.dir"), "report.pdf").toString();
+    private static final String JBOSS_HOME_DIR = "jboss.home.dir";
+    private static final String JBOSS_TEMP_DIR = "jboss.server.temp.dir";
+    private  final Path STATISTICS_FILE_PATH = Paths.get(System.getProperty(JBOSS_HOME_DIR), "data", "statistics.txt");
+    private  final String REPORT_PATH_STRING = Paths.get(System.getProperty(JBOSS_TEMP_DIR), "report.pdf").toString();
     private  final URL BG_IMG_PATH = Thread.currentThread().getContextClassLoader().getResource(Paths.get("img", "JBusters_logo.png").toString());
-    private  final Path LANG_PROPERTIES_FILE = Paths.get(System.getProperty("jboss.home.dir"), "data", "language.properties");
     private Configuration config;
-
+    private static final Path LANG_PROPERTIES_FILE = Paths.get(System.getProperty(JBOSS_HOME_DIR), "data", "language.properties");
+    private static final Path SCHEDULER_PROPERTIES_FILE = Paths.get(System.getProperty(JBOSS_HOME_DIR), "data", "scheduler.properties");
+    private static final Path EXCHANGE_RATES_PROPERTIES_FILE = Paths.get(System.getProperty(JBOSS_HOME_DIR), "data", "exchange_rates.properties");
+    private static final Path EXCHANGE_RATES_SELECTION_FILE = Paths.get(System.getProperty(JBOSS_HOME_DIR), "data", "exchange_rates_selection.properties");
+    private static final String EXCHANGE_RATES_URL = "http://bossa.pl/pub/waluty/omega/nbp/ndohlcv.txt";
     @Inject
     private ConfigurationDao configurationDao;
 
@@ -40,25 +45,18 @@ public class StaticFields {
         config = configurationDao.findById(id);
 }
 
-    public  URL getAppPropertiesURL() {
-        return APP_PROPERTIES_FILE;
-    }
 
-    public  Path getStatisticsFilePath() {
-        return STATISTICS_FILE_PATH;
-    }
+        public Path getStatisticsFilePath(){ return STATISTICS_FILE_PATH; }
 
-    public  String getReportPathString() {
-        return REPORT_PATH_STRING;
-    }
+        public String getReportPathString(){ return REPORT_PATH_STRING; }
 
-    public  URL getBgImgPath() {
-        return BG_IMG_PATH;
-    }
+        public URL getBgImgPath(){ return BG_IMG_PATH; }
 
-    public  Path getLangPropertiesPath() {
-        return LANG_PROPERTIES_FILE;
-    }
+        public Path getLangPropertiesPath(){ return LANG_PROPERTIES_FILE; }
+
+
+
+
 
     public DecimalFormat getLongDF() {
         DecimalFormat longDF = new DecimalFormat(config.getLongDFPattern());
@@ -66,6 +64,14 @@ public class StaticFields {
         longDF.setRoundingMode(RoundingMode.CEILING);
         return longDF;
     }
+    public static Path getSchedulerPropertiesFile() { return SCHEDULER_PROPERTIES_FILE; }
+
+    public static Path getExchangeRatesPropertiesFile() { return EXCHANGE_RATES_PROPERTIES_FILE; }
+
+    public static Path getExchangeRatesSelectionFile() { return EXCHANGE_RATES_SELECTION_FILE; }
+
+    public static String getExchangeRatesUrl() { return EXCHANGE_RATES_URL; }
+
 
     public String formatWithLongDF(Number num) {
         return getLongDF().format(num);

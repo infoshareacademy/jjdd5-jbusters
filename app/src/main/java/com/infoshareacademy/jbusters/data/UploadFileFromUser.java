@@ -1,6 +1,5 @@
 package com.infoshareacademy.jbusters.data;
 
-import jdk.nashorn.internal.runtime.ECMAException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +38,7 @@ public class UploadFileFromUser {
             LOG.info("Directory to " + fileName + " is " + uploadFilePath);
             return file;
         } catch (Exception e ) {
-            LOG.error("Error on writing script", e);
+            LOG.error("Error on file writing script", e);
             return null;
         }
 

@@ -1,136 +1,126 @@
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>JBusters</title>
-    <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+<#if user.userRole == 1 >
+    <#include "header-admin.ftlh">
+<#elseif user.userRole == 2>
+    <#include "include-user-header.ftlh">
+</#if>
+<div class="container">
+    <div class="jumbotron jumbotron-opacity">
 
-    <!-- Google -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-    <script src="https://apis.google.com/js/client.js" async defer></script>
-    <meta name="google-signin-scope" content="profile email">
-    <meta name="google-signin-client_id">
-
-</head>
-<body>
-<div class="wrap-user">
-    <header>
-        <div class="container-fluid">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <a class="navbar-brand" href="#">JBusters -></a>
-                <a class="navbar-brand" href="#">użytkownik: ${sessionName}</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a href="/logout" class="nav-link" onclick="signOut();">Wyloguj</a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </div>
-    </header>
-
-    <div class="container">
-        <br><br>
-
-        <div class="jumbotron jumbotron-opacity">
-
-            <div class="row">
-                <div class="col-8">
-                    <h1 class="display-4">Lista mieszkań</h1>
-                    <p class="lead">Obecnie posiadasz: <b>${size}</b></p>
-                    <form method="post" action="load-user-menu">
-                        <button type="submit" class="btn btn-primary">Menu</button>
-                    </form>
-                </div>
-
-                <div class="col-4">
-                    <div class="card" style="width: 18rem;">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Zalogowano: <b>${sessionEmail}</b></li>
-                        </ul>
-                        <div class="card-body">
-                            <a href="/logout" class="card-link" onclick="signOut();">Wyloguj</a>
-                        </div>
-                    </div>
-
-                </div>
-
+        <div class="row">
+            <div class="col-8">
+                <#if size =  0>
+                <h1 class="display">Brak zapisanych mieszkań</h1>
+                <#else >
+                <h1 class="display">Lista mieszkań</h1>
+                <p class="lead">Obecnie posiadasz: <b>${size}</b></p>
             </div>
+            </#if>
+        </div>
 
+        <#if size gt 0>
             <hr class="my-4">
 
-            <table class="table table-striped">
+            <link rel="stylesheet" type="text/css"
+                  href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+            <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+            <script type="text/javascript" charset="utf8"
+                    src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+            <script>
+                $(document).ready(function () {
+                    $('#flats').DataTable({
+                            "dom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>',
+                            "language": {
+                                "url": "js/dataTable.json"
+                            }
+                        }
+                    );
+                });
+            </script>
+
+            <table id="flats" class="display nowrap" style="width: 100%">
                 <thead>
-                <tr>
-                    <th scope="col">Opis</th>
-                    <th scope="col">Miasto</th>
-                    <th scope="col">Dzielnica</th>
-                    <th scope="col">Ulica</th>
-                    <th scope="col">Sprzedane</th>
-                </tr>
+                <th></th>
+                <th>Opis</th>
+                <th>Miasto</th>
+                <th>Dzielnica</th>
+                <th>Ulica</th>
+                <th>Sprzedane</th>
+                <th></th>
+                <th></th>
                 </thead>
                 <tbody>
                 <#list trans as flat>
 
-                    <#if flat.newTransactionImportant == "tak">
+                    <#if flat.newTransactionImportant>
                         <tr style="background: lawngreen">
                     <#else>
                         <tr>
                     </#if>
+                    <td>
+                        <a class="btn btn-primary btn-lg btn-dark active" role="button"
+                           aria-pressed="true"
+                           href="/valuation?city=${flat.newTransactionCity}&district=${flat.newTransactionDistrict}&market-type=${flat.newTransactionTypeOfMarket}&flat-area=${flat.newTransactionFlatArea}&level=${flat.newTransactionLevel}&parking-spot=${flat.newTransactionParkingSpot}&standard-level=${flat.newTransactionStandardLevel}&construction=${flat.newTransactionConstructionYearCategory}">
+                            Wyceń ponownie</a>
+                    </td>
                     <td>${flat.newTransactionDescription}</td>
                     <td>${flat.newTransactionCity}</td>
                     <td>${flat.newTransactionDistrict}</td>
                     <td>${flat.newTransactionStreet}</td>
                     <td>${flat.newTransactionSale}</td>
                     <td>
-                        <a href="#" class="btn btn-dark">Edytuj</a>
+                        <a href="/edit-transaction?id=${flat.newTransactionId}" class="btn btn-dark">Edytuj</a>
                     </td>
                     <td>
-                        <a href="/delete-new-transaction?id=${flat.newTransactionId}" class="btn btn-danger">Usuń</a>
+                        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+                            Usuń
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Uwaga!</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Czy na pewno chcesz usunąć to mieszkanie?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Zamknij
+                                        </button>
+                                        <a href="/delete-new-transaction?id=${flat.newTransactionId}" type="button"
+                                           class="btn btn-danger">Usuń</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </td>
                     </tr>
                 </#list>
                 </tbody>
             </table>
-        </div>
+            <div class="jumbotron jumbotron-opacity" style="margin: 10px, 30%, 0, 30%">
+                <div style="text-align: center">
+                    <form method="post" action="/saveAs">
+                        <input class="btn btn-primary btn-lg btn-dark active" type="submit"
+                               value="Pobierz listę mieszkań">
+                    </form>
+                    <hr class="my-4">
 
+                </div>
+            </div>
+        </#if>
     </div>
 
 </div>
+
 </div>
-<footer>&copy; 2018 JBusters</footer>
-
-<script src="js/jquery-3.3.1.slim.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-
-<script>
-    function signOut() {
-        console.log("logging out ...");
-        gapi.auth.authorize(
-            {
-                'client_id': "210558406372-1i31kqkfer8n3pa5dsdkl3udifff4k9v.apps.googleusercontent.com",
-                'scope': "profile email",
-                'immediate': false,
-                cookie_policy: 'single_host_origin',
-                response_type: 'token id_token'
-            },
-            function (authResult) {
-                gapi.auth.signOut();
-                gapi.auth.disconnect();
-            }
-        );
-        console.log("redirecting to logout servlet");
-        window.location.href = '/logout';
-    }
-</script>
-</body>
-</html>
+</div>
+<#include "include-user-footer.ftlh">
 
 
