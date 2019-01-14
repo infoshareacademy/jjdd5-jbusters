@@ -12,7 +12,6 @@
         <class>com.infoshareacademy.jbusters.model.Tranzaction</class>
         <class>com.infoshareacademy.jbusters.model.DistrictWage</class>
         <class>com.infoshareacademy.jbusters.model.Suggestions</class>
-
         <properties>
             <!-- Hibernate settings -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
