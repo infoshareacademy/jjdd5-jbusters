@@ -36,16 +36,8 @@
                 </div>
             </form>
             <div class="row ">
-                <div class="col col-lg-8 float-right">
-                    <div class="card bg-light mb-3 float-right">
-                        <div class="card-header"><b>Brak twojego miasta lub dzielnicy?</b></div>
-                        <div class="card-body">
-                            <p class="card-text">Jeśli twojego miasta nie ma na liście, daj nam o tym znać! Postaramy
-                                się wkrótce
-                                uzupełnić naszą bazę!</p>
-                            <a href=/send-info class="btn btn-primary float-right">Wyślij wiadomość</a>
-                        </div>
-                    </div>
+                <div class="col col-lg-8">
+                    <a href=/send-info>Brak Twojego miasta lub dzielnicy?</a>
                 </div>
             </div>
 
