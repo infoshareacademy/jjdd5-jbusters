@@ -1,13 +1,9 @@
 package com.infoshareacademy.jbusters.dao;
 
 import com.infoshareacademy.jbusters.model.DistrictWage;
-import com.infoshareacademy.jbusters.model.User;
-import jdk.management.resource.internal.inst.InitInstrumentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.ejb.Stateless;
-import javax.enterprise.context.SessionScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
