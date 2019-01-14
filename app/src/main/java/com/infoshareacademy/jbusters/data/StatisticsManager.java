@@ -1,9 +1,12 @@
 package com.infoshareacademy.jbusters.data;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.charset.Charset;
@@ -16,23 +19,27 @@ import java.nio.file.StandardOpenOption;
 
 @ApplicationScoped
 public class StatisticsManager {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Data.class);
-    private PropLoader properties;
-    private String currency ="PLN";
+    private static final Logger LOGGER = LoggerFactory.getLogger(StatisticsManager.class);
+    private String currency;
     private static final String SEPARATOR = ",";
     private static final int COUNT = 0;
     private static final int ALL = 1;
     private static final int AVG = 2;
-    private static final Path STATISTICS_PATH = StaticFields.getStatisticsFilePath();
+
+   @Inject
+    StaticFields staticFields;
+
+    private Path STATISTICS_PATH;
 
     public StatisticsManager() {
-        properties = new PropLoader();
-        try {
-            properties = new PropLoader(StaticFields.getAppPropertiesURL().openStream());
-            currency = properties.getCurrency();
-        } catch (Exception e) {
-            LOGGER.error("Missing properties file in path {}", StaticFields.getAppPropertiesURL().toString());
-        }
+
+    }
+
+    @PostConstruct
+    public void init() {
+        currency = staticFields.getCurrency();
+        STATISTICS_PATH = staticFields.getStatisticsFilePath();
+
     }
 
     public void captureNameFromServlet(String cityName, String districtName, String value) throws IOException {
@@ -180,11 +187,11 @@ public class StatisticsManager {
 
         inputMap.entrySet().forEach(x -> {
             String result = x.getKey();
-            result += "|" + StaticFields.formatWithLongDF(x.getValue()[COUNT]);
+            result += "|" + staticFields.formatWithLongDF(x.getValue()[COUNT]);
             //loop for money values like avg, all etc.
             if(x.getValue().length>COUNT+1) {
                 for (int i = COUNT + 1; i < x.getValue().length; i++) {
-                    result += "|" + StaticFields.formatWithLongDF(x.getValue()[i])+" "+ currency;
+                    result += "|" + staticFields.formatWithLongDF(x.getValue()[i])+" "+ currency;
                 }
             }
             results.add(result);

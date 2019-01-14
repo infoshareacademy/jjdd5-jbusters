@@ -1,6 +1,5 @@
 package com.infoshareacademy.jbusters.web;
 
-import com.infoshareacademy.jbusters.console.Menu;
 import com.infoshareacademy.jbusters.dao.NewTransactionDao;
 import com.infoshareacademy.jbusters.data.Transaction;
 import com.infoshareacademy.jbusters.model.NewTransaction;
@@ -33,7 +32,6 @@ public class SaveToFileServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Menu menu = new Menu();
 
         resp.setContentType("lista_mieszkan/csv");
         resp.setHeader("Content-Disposition", "attachment; filename=\"lista_mieszkan.csv\"");
@@ -44,7 +42,7 @@ public class SaveToFileServlet extends HttpServlet {
 
         try {
             for (Transaction transaction : transactionList) {
-                String outString = menu.getTransactionAsString(transaction, true) + System.lineSeparator();
+                String outString = transaction.toStringIsUserFileOption(true) + System.lineSeparator();
                 outputStream.write(outString.getBytes(Charset.forName("UTF-8")));
             }
             outputStream.flush();

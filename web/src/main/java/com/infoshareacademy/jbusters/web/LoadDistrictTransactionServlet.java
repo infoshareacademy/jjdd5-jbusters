@@ -1,7 +1,7 @@
 package com.infoshareacademy.jbusters.web;
 
 
-import com.infoshareacademy.jbusters.data.SearchOfData;
+import com.infoshareacademy.jbusters.dao.TranzactionDao;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import com.infoshareacademy.jbusters.model.User;
 import freemarker.template.Template;
@@ -32,6 +32,9 @@ public class LoadDistrictTransactionServlet extends HttpServlet {
     @Inject
     private TemplateProvider templateProvider;
 
+    @Inject
+    private TranzactionDao tranzactionDao;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -39,7 +42,8 @@ public class LoadDistrictTransactionServlet extends HttpServlet {
         PrintWriter out = resp.getWriter();
 
         String city = req.getParameter("city");
-        List<String> districtsList = new SearchOfData().showDistrict(city);
+        List<String> districtsList = tranzactionDao.getDistrictsList(city);
+
         Map<String, Object> model = new HashMap<>();
         model.put("city", city);
         model.put("district", districtsList);

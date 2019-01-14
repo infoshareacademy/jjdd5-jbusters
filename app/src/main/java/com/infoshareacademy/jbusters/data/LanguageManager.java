@@ -3,7 +3,9 @@ package com.infoshareacademy.jbusters.data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,10 +19,17 @@ import java.util.ResourceBundle;
 public class LanguageManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LanguageManager.class);
-    private static final Path LANGUAGE_PROPERTIES_PATH = StaticFields.getLangPropertiesPath();
     private static final String LANGUAGE_KEY = "language";
     private static final String LANGUAGE_DEFAULT_VALUE = "pl";
     private static final Properties languageProperties = new Properties();
+    private Path LANGUAGE_PROPERTIES_PATH;
+    @Inject
+    StaticFields staticFields;
+
+    @PostConstruct
+    public void init(){
+        LANGUAGE_PROPERTIES_PATH = staticFields.getLangPropertiesPath();
+    }
 
     public String translate(String translationKey) throws IOException {
 
@@ -66,7 +75,7 @@ public class LanguageManager {
             LOGGER.info("Language properties file created in path: {}", LANGUAGE_PROPERTIES_PATH.toString());
         }
 
-        String url = StaticFields.getLangPropertiesPath().toString();
+        String url = staticFields.getLangPropertiesPath().toString();
         FileOutputStream fos = new FileOutputStream(url);
 
         languageProperties.setProperty(LANGUAGE_KEY, language);

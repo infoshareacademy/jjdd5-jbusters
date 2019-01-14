@@ -1,8 +1,6 @@
 package com.infoshareacademy.jbusters.dao;
 
 import com.infoshareacademy.jbusters.model.Suggestions;
-import com.infoshareacademy.jbusters.model.User;
-
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

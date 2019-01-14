@@ -54,6 +54,12 @@ public class ValuationServlet extends HttpServlet {
     @Inject
     private StatisticsManager statisticsManager;
     @Inject
+    private CalculatePrice calc;
+    @Inject
+    StaticFields staticFields;
+
+
+    @Inject
     private ExchangeRatesManager exchangeRatesManager;
     private NumericDataValidator numericDataValidator = new NumericDataValidator();
 
@@ -61,7 +67,6 @@ public class ValuationServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
         HttpSession session = req.getSession(true);
-
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("/load-other-values");
         Map<String, Object> model = new HashMap<>();
         Map<String, String> errorsMap = saveTransactionDetails(req);
@@ -100,7 +105,8 @@ public class ValuationServlet extends HttpServlet {
         } else {
 
             if (filteredList.size() >= 11) {
-                CalculatePrice calc = new CalculatePrice(newTransaction, filteredList);
+                calc.setUserTransaction(newTransaction);
+                calc.setFilteredList(filteredList);
                 BigDecimal yearlyTrendOfPriceChange = calc.overallTrend(filteredList);
                 model.put("trend", yearlyTrendOfPriceChange);
 
@@ -108,9 +114,9 @@ public class ValuationServlet extends HttpServlet {
                 BigDecimal averagePriceInList = calc.getAvaragePriceInList(filteredList).setScale(2, RoundingMode.HALF_UP);
                 BigDecimal maxPriceInList = calc.getMaxPriceInList(filteredList).setScale(2, RoundingMode.HALF_UP);
 
-                model.put("minimumPrice", minimumPriceInList);
-                model.put("averagePrice", averagePriceInList);
-                model.put("maxPrice", maxPriceInList);
+                model.put("minimumPrice", staticFields.formatWithLongDF(minimumPriceInList));
+                model.put("averagePrice", staticFields.formatWithLongDF(averagePriceInList));
+                model.put("maxPrice", staticFields.formatWithLongDF(maxPriceInList));
                 model.put("listTransactionUseValuation", filteredList);
 
                 flatPriceM2 = calc.calculatePrice().setScale(2, RoundingMode.HALF_UP);
@@ -130,8 +136,8 @@ public class ValuationServlet extends HttpServlet {
             session.setAttribute("priceM2", flatPriceM2);
             session.setAttribute(PRICE, flatPriceTotal);
 
-            model.put(PRICE, flatPriceM2);
-            model.put(PRICE_TOTAL, flatPriceTotal);
+            model.put(PRICE, staticFields.formatWithLongDF(flatPriceM2));
+            model.put(PRICE_TOTAL, staticFields.formatWithLongDF(flatPriceTotal));
             model.put(CITY, newTransaction.getCity());
             model.put(DISTRICT_1, newTransaction.getDistrict());
             model.put(MARKET_TYPE, newTransaction.getTypeOfMarket());

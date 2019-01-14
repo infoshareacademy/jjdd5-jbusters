@@ -1,135 +1,141 @@
 package com.infoshareacademy.jbusters.data;
 
-import com.infoshareacademy.jbusters.console.ConsoleViewer;
+import com.infoshareacademy.jbusters.dao.DistrictWageDao;
+import com.infoshareacademy.jbusters.dao.TranzactionDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@ApplicationScoped
+@Stateless
 public class FilterTransactions {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DataLoader.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FilterTransactions.class);
 
 
-    private DistrWagesHandler distrWagesHandler;
-    private List<Transaction> transactionsBase;
     private BigDecimal areaDiff;
-    private BigDecimal areaDiffExpanded;
+   private BigDecimal areaDiffExpanded;
     private int minResultsNumber;
     private BigDecimal priceDiff;
 
     @Inject
-    private Data data;
+    StaticFields staticFields;
+    @Inject
+    TranzactionDao tranzactionDao;
+    @Inject
+    DistrictWageDao districtWageDao;
 
-    public FilterTransactions() {
-        PropLoader properties = new PropLoader();
-        try {
-            InputStream is = StaticFields.getAppPropertiesURL().openStream();
-            properties = new PropLoader(is);
-            areaDiff = properties.getAreaDiff();
-            areaDiffExpanded = properties.getAreaDiffExpanded();
-            minResultsNumber = properties.getMinResultsNumber();
-            priceDiff = properties.getPriceDiff();
-
-            is = StaticFields.getDistrPropertiesURL().openStream();
-            distrWagesHandler = new DistrWagesHandler(is);
-        } catch (Exception e) {
-            LOGGER.error("Missing properties file in path {} or {}", StaticFields.getAppPropertiesURL().toString(), StaticFields.getDistrPropertiesURL().toString());
-        }
-    }
+    private DistrWagesHandler distrWagesHandler;
 
     @PostConstruct
     public void init() {
-        transactionsBase = data.getTransactionsBase();
+        areaDiff = staticFields.getAreaDiff();
+        areaDiffExpanded = staticFields.getAreaDiffExpanded();
+        minResultsNumber = staticFields.getMinResultsReq();
+        priceDiff = staticFields.getPriceDiff();
+        distrWagesHandler = new DistrWagesHandler(districtWageDao);
+
+
     }
 
-    public void setData(Data data) {
-        this.data = data;
+    public FilterTransactions() {
     }
-// metoda zwracajaca liste tranzakcji, ktora jest wynikiem wielokrotnego przefiltrowania gwnej bazy tranzakcji
-    //kolejnosc filtrow:  data tranzakcji/miasto/dzielnica/rynek/kategoria budowy/powierzchnia mieszkania
+
 
     public List<Transaction> theGreatFatFilter(Transaction userTransaction) {
-        List<Transaction> basicFilter = basicFilter(userTransaction);
-        if (basicFilter.size() < 11) {
+
+        LocalDate oldestDateAccepted = LocalDate.now().minusYears(2);
+        String userCity = userTransaction.getCity();
+        String userTransactionType = userTransaction.getTypeOfMarket();
+        int userConstrYearCat = userTransaction.getConstructionYearCategory();
+
+        List<Transaction> transactionsBase = new ArrayList<>();
+        tranzactionDao.basicFilter(oldestDateAccepted, userCity, userTransactionType, userConstrYearCat).forEach(t ->{
+            Transaction trans = new Transaction();
+            trans.setTransactionDate(t.getTranzactionDataTransaction());
+            trans.setCity(t.getTranzactionCity());
+            trans.setDistrict(t.getTranzactionDistrict().trim());
+            trans.setStreet(t.getTranzactionStreet());
+            trans.setTypeOfMarket(t.getTranzactionTypeOfMarket());
+            trans.setPrice(t.getTranzactionPrice());
+            trans.setFlatArea(t.getTranzactionFlatArea());
+            trans.setPricePerM2(t.getTranzactionPricePerM2());
+            trans.setLevel(t.getTranzactionLevel());
+            trans.setConstructionYearCategory(t.getTranzactionConstructionYearCategory());
+            trans.setConstructionYear(t.getTranzactionConstructionYear());
+            trans.setStandardLevel(t.getTranzactionStandardLevel());
+            trans.setParkingSpot(t.getTranzactionParkingSpot());
+            transactionsBase.add(new Transaction(t));
+        } );
+        LOGGER.info("uruchomiono filtr bazowy: tabela wynikowa zawiera {} element/ów", transactionsBase.size());
+        if (transactionsBase.size() < 11) {
             return new ArrayList<>();
         }
-        return selectorFilter(true, true, basicFilter, userTransaction);
+
+
+        return selectorFilter(true, true, transactionsBase,new ArrayList<>(), userTransaction);
     }
 
 
     private List<Transaction> notEnoughtResultsAction() {
 
-        ConsoleViewer.clearScreen();
-        System.out.println(":: Wycena niemożliwa, baza zawiera zbyt małą ilość pasujących transakcji ::\n");
         return new ArrayList<>();
     }
 
-    public List<Transaction> basicFilter(Transaction userTransaction) {
-        List<Transaction> lista = transactionsBase.stream()
-                .filter(transaction -> transaction.getTransactionDate().isAfter(userTransaction.getTransactionDate().minusYears(2)))
-                .filter(transaction -> transaction.getCity().equalsIgnoreCase(userTransaction.getCity()))
-                .filter(transaction -> transaction.getTypeOfMarket().equalsIgnoreCase(userTransaction.getTypeOfMarket()))
-                .filter(transaction -> transaction.getConstructionYearCategory() == (userTransaction.getConstructionYearCategory()))
-                .collect(Collectors.toList());
 
-        return lista;
-    }
+    private List<Transaction> selectorFilter(boolean isSingleDistrict, boolean isAreaDiffSmall, List<Transaction> outerTransactionsList, List<Transaction> innerTransactionsList,Transaction userTransaction) {
 
-    private List<Transaction> selectorFilter(boolean isSingleDistrict, boolean isAreaDiffSmall, List<Transaction> transactionsList, Transaction userTransaction) {
         if (isSingleDistrict) {
-            List<Transaction> singleDistrictFilter = singleDistrictFilter(transactionsList, userTransaction);
-            if (isAreaDiffSmall) {
 
+            if (isAreaDiffSmall) {
+                List<Transaction> singleDistrictFilter = singleDistrictFilter(outerTransactionsList, userTransaction);
                 List<Transaction> flatAreafilter = flatAreaFilter(singleDistrictFilter, userTransaction, areaDiff);
                 flatAreafilter = invalidTransactionsRemover(flatAreafilter);
                 if (isEnoughtResults(flatAreafilter, minResultsNumber)) {
                     return flatAreafilter;
                 } else {
-                    return selectorFilter(true, false, singleDistrictFilter, userTransaction);
+                    return selectorFilter(true, false,outerTransactionsList, singleDistrictFilter, userTransaction);
                 }
 
             } else {
 
-                List<Transaction> areaExpanded = flatAreaFilter(singleDistrictFilter, userTransaction, areaDiffExpanded);
+                List<Transaction> areaExpanded = flatAreaFilter(innerTransactionsList, userTransaction, areaDiffExpanded);
                 areaExpanded = invalidTransactionsRemover(areaExpanded);
                 if (isEnoughtResults(areaExpanded, minResultsNumber)) {
                     return areaExpanded;
                 } else {
-                    return selectorFilter(false, true, transactionsList, userTransaction);
+                    return selectorFilter(false, true, outerTransactionsList, new ArrayList<>(), userTransaction);
                 }
 
             }
         } else {
-            List<Transaction> multiDistrictFilter = multiDistrictFilter(transactionsList, userTransaction);
-            if (isAreaDiffSmall) {
 
+            if (isAreaDiffSmall) {
+                List<Transaction> multiDistrictFilter = multiDistrictFilter(outerTransactionsList, userTransaction);
                 List<Transaction> flatAreafilter = flatAreaFilter(multiDistrictFilter, userTransaction, areaDiff);
                 flatAreafilter = invalidTransactionsRemover(flatAreafilter);
 
                 if (isEnoughtResults(flatAreafilter, minResultsNumber)) {
                     return flatAreafilter;
                 } else {
-                    return selectorFilter(false, false, multiDistrictFilter, userTransaction);
+                    return selectorFilter(false, false, outerTransactionsList, multiDistrictFilter, userTransaction);
                 }
 
             } else {
 
-                List<Transaction> areaExpanded = flatAreaFilter(multiDistrictFilter, userTransaction, areaDiffExpanded);
+                List<Transaction> areaExpanded = flatAreaFilter(innerTransactionsList, userTransaction, areaDiffExpanded);
                 areaExpanded = invalidTransactionsRemover(areaExpanded);
                 if (isEnoughtResults(areaExpanded, minResultsNumber)) {
-                    return flatAreaFilter(multiDistrictFilter, userTransaction, areaDiffExpanded);
+                    return areaExpanded;
                 } else {
                     return notEnoughtResultsAction();
                 }
@@ -140,31 +146,34 @@ public class FilterTransactions {
 
 
     public List<Transaction> singleDistrictFilter(List<Transaction> transactionsBase, Transaction userTransaction) {
+        LOGGER.info("Single District filter aktywowany");
         List<Transaction> lista = transactionsBase.stream()
-
-                .filter(transaction -> (transaction.getDistrict()).equalsIgnoreCase(userTransaction.getDistrict()))
+                .filter(transaction -> (transaction.getDistrict().trim()).equalsIgnoreCase(userTransaction.getDistrict().trim()))
                 .collect(Collectors.toList());
-
+        LOGGER.info("Po przefiltrowaniu SingleDistrictFilter uzyskano {} element/ów",lista.size());
         return lista;
     }
 
-    //TODO add district weight evaluation
-    private List<Transaction> multiDistrictFilter(List<Transaction> transactionsBase, Transaction userTransaction) {
-        List<Transaction> lista = transactionsBase.stream()
 
+    private List<Transaction> multiDistrictFilter(List<Transaction> transactionsBase, Transaction userTransaction) {
+        LOGGER.info("Multi District filter aktywowany");
+        List<Transaction> lista = transactionsBase.stream()
                 .filter(transaction -> distrWagesHandler.districtWageComparator(transaction, userTransaction))
+                .peek(t-> System.out.println("dzielnica badana:___"+t.getDistrict()+"___"+"Dzielnica usera:___"+ userTransaction.getDistrict()))
                 .collect(Collectors.toList());
-        return new ArrayList(lista);
+        LOGGER.info("Po przefiltrowaniu MultiDistrictFilter uzyskano {} element/ów",lista.size());
+        return lista;
     }
 
     public List<Transaction> flatAreaFilter(List<Transaction> transactionsBase, Transaction userTransaction, BigDecimal areaDiff) {
-        List<Transaction> lista = transactionsBase.stream()
+        LOGGER.info("Flat Area filter aktywowany");
 
+        List<Transaction> lista = transactionsBase.stream()
                 .filter(transaction -> ((transaction.getFlatArea()).compareTo(userTransaction.getFlatArea().add(areaDiff))) <= 0)
                 .filter(transaction -> ((transaction.getFlatArea()).compareTo(userTransaction.getFlatArea().subtract(areaDiff))) >= 0)
                 .collect(Collectors.toList());
-
-        return new ArrayList(lista);
+        LOGGER.info("Po przefiltrowaniu flatAreaFilter uzyskano {} element/ów",lista.size());
+        return lista;
     }
 
     public List<Transaction> invalidTransactionsRemover(List<Transaction> finallySortedList) {

@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
@@ -21,6 +22,9 @@ import java.util.Properties;
 @ApplicationScoped
 public class MailHandler {
 
+    @Inject
+    StaticFields staticFields;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(MailHandler.class);
     private static final String SENDER_NAME = "JBusters Web App";
     private static final String ENCODING_SUBJECT = "UTF-8";
@@ -29,7 +33,7 @@ public class MailHandler {
     private static final String SUBJECT = "Raport z dnia ";
     private static final String WELCOME = "Witaj,";
     private static final String CONTENT = "w załączniku znajdziesz cykliczny raport, zawierający dane statystyczne wyszukiwań w naszej aplikacji.";
-    private static final String ATTACHMENT_PATH = StaticFields.getReportPathString();
+    private final String ATTACHMENT_PATH = staticFields.getReportPathString();
     private static final String ATTACHMENT_NAME = "Raport_";
     private static final String ATTACHMENT_TYPE = ".pdf";
 
