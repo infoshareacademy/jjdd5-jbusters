@@ -64,13 +64,14 @@ public class SendInfoServlet extends HttpServlet {
         String district = req.getParameter("district");
 
         Suggestions suggestions = new Suggestions();
-        suggestions.setSuggestionsCity(city);
-        suggestions.setSuggestionsDistrict(district);
-        suggestionsDao.save(suggestions);
+
 
         if (city.isEmpty() && district.isEmpty()) {
             model.put("fail", "Musisz wypełnić przynajmniej jedno pole");
         } else {
+            suggestions.setSuggestionsCity(city);
+            suggestions.setSuggestionsDistrict(district);
+            suggestionsDao.save(suggestions);
             model.put("success", "Twoja wiadomość została wysłana.");
         }
 
