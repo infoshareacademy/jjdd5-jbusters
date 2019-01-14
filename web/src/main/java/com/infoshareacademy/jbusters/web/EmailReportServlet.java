@@ -22,8 +22,10 @@ import java.nio.file.Paths;
 @WebServlet("/generate-email-report")
 public class EmailReportServlet extends HttpServlet {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EmailReportServlet.class);
-    private static final String REPORT_PATH = StaticFields.getReportPathString();
+
+
+    @Inject
+    private StaticFields staticFields;
 
     @Inject
     private ReportGenerator reportGenerator;
@@ -33,6 +35,9 @@ public class EmailReportServlet extends HttpServlet {
 
     @Inject
     private UserDao userDao;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(EmailReportServlet.class);
+    private  final String REPORT_PATH = staticFields.getReportPathString();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

@@ -2,8 +2,10 @@ package com.infoshareacademy.jbusters.web;
 
 import com.infoshareacademy.jbusters.data.ReportGenerator;
 import com.infoshareacademy.jbusters.data.StaticFields;
+
 import org.apache.commons.io.IOUtils;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -17,14 +19,25 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 
 @WebServlet("/generate-report")
 public class GenerateReportServlet extends HttpServlet {
 
-    public static final String REPORT_PATH = StaticFields.getReportPathString();
+    String REPORT_PATH;
 
     @Inject
     private ReportGenerator reportGenerator;
+
+    @Inject
+    StaticFields staticFields;
+
+    @PostConstruct
+    public void init() {
+      REPORT_PATH = staticFields.getReportPathString();
+
+    }
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

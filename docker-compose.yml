@@ -9,7 +9,7 @@ services:
     volumes:
       - ./data/example_db_jbusters.sql:/docker-entrypoint-initdb.d/example_db_jbusters.sql
     ports:
-      - 4285:3306
+    - 4285:3306
   app:
     build:
       context: ./web

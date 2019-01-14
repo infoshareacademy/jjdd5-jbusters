@@ -12,14 +12,14 @@
         <class-name>com.mysql.cj.jdbc.MysqlDataSource</class-name>
         <!-- DOCKERS -->
         <url>jdbc:mysql://db:3306/jbusters</url>
-        <!-- LOCAL -->
+         <!-- LOCAL -->
         <!--<url>jdbc:mysql://0.0.0.0:4285/jbusters</url>-->
         <user>root</user>
         <password>pass123</password>
-    </data-source>
+     </data-source>
 
-    <error-page>
-        <exception-type>java.lang.Exception</exception-type>
-        <location>/error</location>
-    </error-page>
-</web-app>
+     <error-page>
+         <exception-type>java.lang.Exception</exception-type>
+         <location>/error</location>
+     </error-page>
+ </web-app>

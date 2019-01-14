@@ -13,7 +13,6 @@
 
     <artifactId>app</artifactId>
     <packaging>jar</packaging>
-    <name>3. App module</name>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -29,20 +28,8 @@
             <version>7.0</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
-            <version>5.1.0</version>
-            <scope>test</scope>
-        </dependency>
 
         <!-- iText -->
-        <!-- only needed for PDF/A -->
-        <dependency>
-            <groupId>com.itextpdf</groupId>
-            <artifactId>pdfa</artifactId>
-            <version>7.1.4</version>
-        </dependency>
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>kernel</artifactId>
@@ -75,6 +62,7 @@
             <version>1.6.2</version>
         </dependency>
     </dependencies>
+
 
     <build>
         <plugins>

@@ -3,7 +3,9 @@ package com.infoshareacademy.jbusters.data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.mail.MessagingException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -22,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 public class MailScheduler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MailScheduler.class);
-    private static final String REPORT_PATH = StaticFields.getReportPathString();
+    private String REPORT_PATH = "";
     private static final Properties scheduleProperties = new Properties();
     private static final MailHandler mailHandler = new MailHandler();
     private static final ReportGenerator reportGenerator = new ReportGenerator();
@@ -37,6 +39,17 @@ public class MailScheduler {
     private static final int MILLISECOND = 00;
     private static ScheduledExecutorService scheduledExecutorService;
     private static ScheduledFuture<?> scheduledFuture;
+
+    @Inject
+    StaticFields staticFields;
+
+    @PostConstruct
+    public void init() {
+        REPORT_PATH = staticFields.getReportPathString();
+    }
+
+    public MailScheduler() {
+    }
 
     public static long getDelay() throws IOException {
 
@@ -99,11 +112,11 @@ public class MailScheduler {
         }
     }
 
-    private static void scheduler(String login, String[] recipients) throws IOException {
+    private void scheduler(String login, String[] recipients) throws IOException {
 
         LOGGER.info("Checking if some schedule task is running.");
 
-        if (scheduledFuture != null){
+        if (scheduledFuture != null) {
             scheduledFuture.cancel(false);
             scheduledExecutorService.shutdown();
             LOGGER.warn("The following schedule task was found and terminated: {}", scheduledExecutorService.toString());

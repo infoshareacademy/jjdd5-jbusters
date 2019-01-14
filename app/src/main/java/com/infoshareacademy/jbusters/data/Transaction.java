@@ -1,9 +1,13 @@
 package com.infoshareacademy.jbusters.data;
 
+import com.infoshareacademy.jbusters.dao.ConfigurationDao;
+import com.infoshareacademy.jbusters.model.Tranzaction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.net.URL;
@@ -13,9 +17,7 @@ import java.time.LocalDate;
 public class Transaction implements Serializable {
 
     private static final URL APP_PROPERTIES_FILE = Thread.currentThread().getContextClassLoader().getResource("app.properties");
-    private static final Logger LOGGER = LoggerFactory.getLogger(DataLoader.class);
-
-    // PropLoader properties = new PropLoader(System.getProperty("jboss.home.dir") + "/data/app.properties");
+    private static final Logger LOGGER = LoggerFactory.getLogger(Transaction.class);
 
     private LocalDate transactionDate;
     private String city;
@@ -24,6 +26,7 @@ public class Transaction implements Serializable {
     private String typeOfMarket;
     private BigDecimal price;
     private String currency;
+    private BigDecimal exchangeRate;
     private BigDecimal flatArea;
     private BigDecimal pricePerM2;
     private int level;
@@ -32,16 +35,19 @@ public class Transaction implements Serializable {
     private String constructionYear;
     private int constructionYearCategory;
     private String transactionName;
-    private PropLoader properties;
     private boolean important;
 
+
+    @Inject
+    StaticFields staticFields;
+
+    @PostConstruct
+    public void init(){
+        currency = staticFields.getCurrency();
+        exchangeRate = staticFields.getExchangeRate();
+    }
+
     public Transaction() {
-        properties = new PropLoader();
-        try {
-            properties = new PropLoader(APP_PROPERTIES_FILE.openStream());
-        } catch (Exception e) {
-            LOGGER.error("Missing properties file in path {}", APP_PROPERTIES_FILE.toString());
-        }
     }
 
     public Transaction(Transaction transaction) {
@@ -62,12 +68,30 @@ public class Transaction implements Serializable {
         this.constructionYearCategory = transaction.getConstructionYearCategory();
 
     }
+    public Transaction(Tranzaction tranzaction){
+
+        super();
+        this.transactionDate = tranzaction.getTranzactionDataTransaction();
+        this.city = tranzaction.getTranzactionCity();
+        this.district = tranzaction.getTranzactionDistrict();
+        this.street = tranzaction.getTranzactionStreet();
+        this.typeOfMarket = tranzaction.getTranzactionTypeOfMarket();
+        this.price = tranzaction.getTranzactionPrice();
+        this.flatArea = tranzaction.getTranzactionFlatArea();
+        this.pricePerM2 = tranzaction.getTranzactionPricePerM2();
+        this.level = tranzaction.getTranzactionLevel();
+        this.parkingSpot = tranzaction.getTranzactionParkingSpot();
+        this.standardLevel = tranzaction.getTranzactionStandardLevel();
+        this.constructionYear = tranzaction.getTranzactionConstructionYear();
+        this.constructionYearCategory = tranzaction.getTranzactionConstructionYearCategory();
+
+    }
 
     @Override
     public String toString() {
 
-        BigDecimal exchangeRate = new BigDecimal(properties.getExchangeRate());
-        currency = properties.getCurrency();
+        LOGGER.info("Price value = {}", price);
+        LOGGER.info("exchange rate value: {}", exchangeRate);
         price = price.divide(exchangeRate, BigDecimal.ROUND_HALF_UP);
         pricePerM2 = pricePerM2.divide(exchangeRate, BigDecimal.ROUND_HALF_UP);
         typeOfMarket = typeOfMarket.toLowerCase();
@@ -80,9 +104,9 @@ public class Transaction implements Serializable {
                         "Dzielnica:\t\t" + district + "\n" +
                         "Ulica:\t\t\t" + street + "\n" +
                         "Rodzaj rynku:\t\t" + typeOfMarket + "\n" +
-                        "Cena:\t\t\t" + price + " " + currency + "\n" +
+                        "Cena:\t\t\t" + price + " " + staticFields.getCurrency() + "\n" +
                         "Wielkość:\t\t" + flatArea + " m2\n" +
-                        "Cena za m2:\t\t" + pricePerM2 + " " + currency + "\n" +
+                        "Cena za m2:\t\t" + pricePerM2 + " " + staticFields.getCurrency() + "\n" +
                         "Piętro:\t\t\t" + level + "\n" +
                         "Miejsce postojowe:\t" + parkingSpot + "\n" +
                         "Standard wykończenia:\t" + standardLevel + "\n" +
@@ -92,10 +116,34 @@ public class Transaction implements Serializable {
                         "Kategoria roku budowy:\t" + constructionYearCategory;
     }
 
+    public String toStringIsUserFileOption(boolean isUserFile) {
+        String transactionName = "brak";
+        boolean transactionImportant = false;
+
+        if (isUserFile) {
+            transactionName = getTransactionName();
+            transactionImportant = isImportant();
+        }
+        return String.join(",",
+                getTransactionDate().toString().replaceAll("-", " "),
+                getCity(),
+                getDistrict(),
+                getStreet(),
+                getTypeOfMarket(),
+                getPrice().toString(),
+                getFlatArea().toString(),
+                getPricePerM2().toString(),
+                String.valueOf(getLevel()),
+                getParkingSpot(),
+                getStandardLevel(),
+                getConstructionYear(),
+                String.valueOf(getConstructionYearCategory()),
+                transactionName,
+                String.valueOf(transactionImportant));
+    }
+
     public String toStringNoPrice() {
 
-        BigDecimal exchangeRate = new BigDecimal(properties.getExchangeRate());
-        currency = properties.getCurrency();
         price = price.divide(exchangeRate, BigDecimal.ROUND_HALF_UP);
         pricePerM2 = pricePerM2.divide(exchangeRate, BigDecimal.ROUND_HALF_UP);
         typeOfMarket = typeOfMarket.toLowerCase();

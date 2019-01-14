@@ -1,6 +1,6 @@
 package com.infoshareacademy.jbusters.web;
 
-import com.infoshareacademy.jbusters.data.SearchOfData;
+import com.infoshareacademy.jbusters.dao.TranzactionDao;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import com.infoshareacademy.jbusters.model.User;
 import freemarker.template.Template;
@@ -31,15 +31,16 @@ public class LoadCityTransactionServlet extends HttpServlet {
     @Inject
     private TemplateProvider templateProvider;
     @Inject
-    private SearchOfData searchOfData;
+    private TranzactionDao tranzactionDao;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
         PrintWriter out = resp.getWriter();
 
-        List<String> cities = searchOfData.showCity();
+        List<String> cities = tranzactionDao.getCitiesList();
         Map<String, Object> model = new HashMap<>();
         model.put("cities", cities);
 
