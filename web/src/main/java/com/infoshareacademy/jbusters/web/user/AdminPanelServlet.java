@@ -1,6 +1,7 @@
 package com.infoshareacademy.jbusters.web.user;
 
 import com.infoshareacademy.jbusters.data.ExchangeRatesManager;
+import com.infoshareacademy.jbusters.data.MailScheduler;
 import com.infoshareacademy.jbusters.freemarker.TemplateProvider;
 import com.infoshareacademy.jbusters.model.User;
 import freemarker.template.Template;
@@ -34,6 +35,9 @@ public class AdminPanelServlet extends HttpServlet {
     @Inject
     private ExchangeRatesManager exchangeRatesManager;
 
+    @Inject
+    private MailScheduler mailScheduler;
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.addHeader("Content-Type", "text/html; charset=utf-8");
@@ -48,6 +52,8 @@ public class AdminPanelServlet extends HttpServlet {
         model.put("exRatesMapDate", exchangeRatesManager.getLastModifiedDate());
         model.put("exRatesURL", exchangeRatesManager.getURL());
         model.put("exRatesGetCurrent", exchangeRatesManager.getExchangeRate());
+        model.put("isSchedulerOn", mailScheduler.isSchedulerOn());
+        model.put("setDate", mailScheduler.getSetDateString());
 
         Template template = templateProvider.getTemplate(getServletContext(), TEMPLATE_NAME);
 

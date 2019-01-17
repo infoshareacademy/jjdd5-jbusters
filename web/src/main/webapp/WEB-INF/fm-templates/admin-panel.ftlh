@@ -52,6 +52,10 @@
                                         <button type="submit" class="btn btn-primary" style="float: left">Zapisz</button>
                                         <p class="text-muted btn"><em>${scheduleStatus}</em></p>
                                     </form>
+                                    <#if isSchedulerOn>
+                                    <a href="/scheduler-stop" class="btn btn-primary" style="float: left">Zatrzymaj</a>
+                                        <p class="text-muted btn"><em>Następna wysyłka: ${setDate}</em></p>
+                                    </#if>
                                     <hr class="my-4">
                                     <p class="card-text">Wysłanie korespondencji do subskrybentów wraz z załączonym raportem.</p>
                                     <a href="/generate-email-report" class="btn btn-primary" style="float: left">Wyślij teraz</a>

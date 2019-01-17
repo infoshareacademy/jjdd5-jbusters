@@ -3,7 +3,6 @@ package com.infoshareacademy.jbusters.web;
 import com.infoshareacademy.jbusters.dao.UserDao;
 import com.infoshareacademy.jbusters.data.MailHandler;
 import com.infoshareacademy.jbusters.data.ReportGenerator;
-import com.infoshareacademy.jbusters.data.StaticFields;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,11 +21,6 @@ import java.nio.file.Paths;
 @WebServlet("/generate-email-report")
 public class EmailReportServlet extends HttpServlet {
 
-
-
-    @Inject
-    private StaticFields staticFields;
-
     @Inject
     private ReportGenerator reportGenerator;
 
@@ -37,7 +31,7 @@ public class EmailReportServlet extends HttpServlet {
     private UserDao userDao;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EmailReportServlet.class);
-    private  final String REPORT_PATH = staticFields.getReportPathString();
+    private  final String REPORT_PATH = Paths.get(System.getProperty("jboss.server.temp.dir"), "report.pdf").toString();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
