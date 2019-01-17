@@ -41,9 +41,6 @@ public class MailScheduler {
     private static ScheduledExecutorService scheduledExecutorService;
     private static ScheduledFuture<?> scheduledFuture;
 
-    public MailScheduler() {
-    }
-
     private static Date getDateStamp() {
 
         if (!Files.exists(StaticFields.getSchedulerPropertiesFile())) {
@@ -60,14 +57,14 @@ public class MailScheduler {
         FileInputStream fis = null;
         try {
             fis = new FileInputStream(url);
-        } catch (FileNotFoundException e) {
+        } catch (FileNotFoundException | NullPointerException e) {
             LOGGER.error("Scheduler file not found in path: {}", StaticFields.getSchedulerPropertiesFile().toString());
         }
 
         try {
             scheduleProperties.load(fis);
             fis.close();
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             LOGGER.error("Missing properties file in path: {}", StaticFields.getSchedulerPropertiesFile().toString());
             LOGGER.info("Date stamp default values will be set.");
         }
@@ -118,7 +115,7 @@ public class MailScheduler {
         }
     }
 
-    private void scheduler(String login, String[] recipients) throws MessagingException {
+    private static void scheduler(String login, String[] recipients) throws MessagingException {
 
         stopScheduler();
 
@@ -138,7 +135,7 @@ public class MailScheduler {
         scheduledFuture = scheduledExecutorService.scheduleAtFixedRate(task, getDelay(), PERIOD, TimeUnit.SECONDS);
     }
 
-    public void stopScheduler() {
+    public static void stopScheduler() {
 
         LOGGER.info("Checking if some schedule task is running.");
 
