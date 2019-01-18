@@ -19,19 +19,20 @@ import java.util.*;
 
 @ApplicationScoped
 public class StaticFields {
-    private static final Logger LOGGER = LoggerFactory.getLogger(StaticFields.class);
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(StaticFields.class);
     private static final String JBOSS_HOME_DIR = "jboss.home.dir";
     private static final String JBOSS_TEMP_DIR = "jboss.server.temp.dir";
-    private  final Path STATISTICS_FILE_PATH = Paths.get(System.getProperty(JBOSS_HOME_DIR), "data", "statistics.txt");
-    private  final String REPORT_PATH_STRING = Paths.get(System.getProperty(JBOSS_TEMP_DIR), "report.pdf").toString();
-    private  final URL BG_IMG_PATH = Thread.currentThread().getContextClassLoader().getResource(Paths.get("img", "JBusters_logo.png").toString());
+    private final Path STATISTICS_FILE_PATH = Paths.get(System.getProperty(JBOSS_HOME_DIR), "data", "statistics.txt");
+    private final String REPORT_PATH_STRING = Paths.get(System.getProperty(JBOSS_TEMP_DIR), "report.pdf").toString();
+    private final URL BG_IMG_PATH = Thread.currentThread().getContextClassLoader().getResource(Paths.get("img", "JBusters_logo.png").toString());
     private Configuration config;
     private static final Path LANG_PROPERTIES_FILE = Paths.get(System.getProperty(JBOSS_HOME_DIR), "data", "language.properties");
     private static final Path SCHEDULER_PROPERTIES_FILE = Paths.get(System.getProperty(JBOSS_HOME_DIR), "data", "scheduler.properties");
     private static final Path EXCHANGE_RATES_PROPERTIES_FILE = Paths.get(System.getProperty(JBOSS_HOME_DIR), "data", "exchange_rates.properties");
     private static final Path EXCHANGE_RATES_SELECTION_FILE = Paths.get(System.getProperty(JBOSS_HOME_DIR), "data", "exchange_rates_selection.properties");
     private static final String EXCHANGE_RATES_URL = "http://bossa.pl/pub/waluty/omega/nbp/ndohlcv.txt";
+
     @Inject
     private ConfigurationDao configurationDao;
 
@@ -43,20 +44,23 @@ public class StaticFields {
     public void init() {
         int id = 1;
         config = configurationDao.findById(id);
-}
+    }
 
+    public Path getStatisticsFilePath() {
+        return STATISTICS_FILE_PATH;
+    }
 
-        public Path getStatisticsFilePath(){ return STATISTICS_FILE_PATH; }
+    public String getReportPathString() {
+        return REPORT_PATH_STRING;
+    }
 
-        public String getReportPathString(){ return REPORT_PATH_STRING; }
+    public URL getBgImgPath() {
+        return BG_IMG_PATH;
+    }
 
-        public URL getBgImgPath(){ return BG_IMG_PATH; }
-
-        public Path getLangPropertiesPath(){ return LANG_PROPERTIES_FILE; }
-
-
-
-
+    public Path getLangPropertiesPath() {
+        return LANG_PROPERTIES_FILE;
+    }
 
     public DecimalFormat getLongDF() {
         DecimalFormat longDF = new DecimalFormat(config.getLongDFPattern());
@@ -64,27 +68,36 @@ public class StaticFields {
         longDF.setRoundingMode(RoundingMode.CEILING);
         return longDF;
     }
-    public static Path getSchedulerPropertiesFile() { return SCHEDULER_PROPERTIES_FILE; }
 
-    public static Path getExchangeRatesPropertiesFile() { return EXCHANGE_RATES_PROPERTIES_FILE; }
+    public static Path getSchedulerPropertiesFile() {
+        return SCHEDULER_PROPERTIES_FILE;
+    }
 
-    public static Path getExchangeRatesSelectionFile() { return EXCHANGE_RATES_SELECTION_FILE; }
+    public static Path getExchangeRatesPropertiesFile() {
+        return EXCHANGE_RATES_PROPERTIES_FILE;
+    }
 
-    public static String getExchangeRatesUrl() { return EXCHANGE_RATES_URL; }
+    public static Path getExchangeRatesSelectionFile() {
+        return EXCHANGE_RATES_SELECTION_FILE;
+    }
+
+    public static String getExchangeRatesUrl() {
+        return EXCHANGE_RATES_URL;
+    }
 
 
     public String formatWithLongDF(Number num) {
         return getLongDF().format(num);
     }
 
-    public  DecimalFormat getShortDF() {
+    public DecimalFormat getShortDF() {
         DecimalFormat shortDF = new DecimalFormat(config.getShortDFPattern());
         shortDF.setDecimalFormatSymbols(getCustomizedSymbols());
         shortDF.setRoundingMode(RoundingMode.CEILING);
         return shortDF;
     }
 
-    public  String formatWithShortDF(Number num) {
+    public String formatWithShortDF(Number num) {
         return getShortDF().format(num);
     }
 
@@ -95,10 +108,12 @@ public class StaticFields {
         return decimalSymbols;
     }
 
-    public int getMinResultsReq(){
+    public int getMinResultsReq() {
         return config.getMinResultsReq();
     }
-    public BigDecimal getExchangeRate() {return config.getExchangeRate();
+
+    public BigDecimal getExchangeRate() {
+        return config.getExchangeRate();
     }
 
     public String getCurrency() {
@@ -120,5 +135,4 @@ public class StaticFields {
     public BigDecimal getPriceDiff() {
         return config.getPriceDiff();
     }
-
 }

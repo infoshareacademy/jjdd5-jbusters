@@ -13,6 +13,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.io.UnsupportedEncodingException;
+import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -22,9 +23,6 @@ import java.util.Properties;
 @ApplicationScoped
 public class MailHandler {
 
-    @Inject
-    StaticFields staticFields;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(MailHandler.class);
     private static final String SENDER_NAME = "JBusters Web App";
     private static final String ENCODING_SUBJECT = "UTF-8";
@@ -33,7 +31,7 @@ public class MailHandler {
     private static final String SUBJECT = "Raport z dnia ";
     private static final String WELCOME = "Witaj,";
     private static final String CONTENT = "w załączniku znajdziesz cykliczny raport, zawierający dane statystyczne wyszukiwań w naszej aplikacji.";
-    private final String ATTACHMENT_PATH = staticFields.getReportPathString();
+    private static String ATTACHMENT_PATH = Paths.get(System.getProperty("jboss.server.temp.dir"), "report.pdf").toString();
     private static final String ATTACHMENT_NAME = "Raport_";
     private static final String ATTACHMENT_TYPE = ".pdf";
 
