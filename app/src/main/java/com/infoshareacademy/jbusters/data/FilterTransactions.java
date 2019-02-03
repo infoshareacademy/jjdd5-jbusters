@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.OptionalInt;
 import java.util.stream.Collectors;
 
 @Stateless
@@ -43,8 +44,6 @@ public class FilterTransactions {
         minResultsNumber = staticFields.getMinResultsReq();
         priceDiff = staticFields.getPriceDiff();
         distrWagesHandler = new DistrWagesHandler(districtWageDao);
-
-
     }
 
     public FilterTransactions() {
@@ -60,20 +59,20 @@ public class FilterTransactions {
 
         List<Transaction> transactionsBase = new ArrayList<>();
         tranzactionDao.basicFilter(oldestDateAccepted, userCity, userTransactionType, userConstrYearCat).forEach(t ->{
-            Transaction trans = new Transaction();
-            trans.setTransactionDate(t.getTranzactionDataTransaction());
-            trans.setCity(t.getTranzactionCity());
-            trans.setDistrict(t.getTranzactionDistrict().trim());
-            trans.setStreet(t.getTranzactionStreet());
-            trans.setTypeOfMarket(t.getTranzactionTypeOfMarket());
-            trans.setPrice(t.getTranzactionPrice());
-            trans.setFlatArea(t.getTranzactionFlatArea());
-            trans.setPricePerM2(t.getTranzactionPricePerM2());
-            trans.setLevel(t.getTranzactionLevel());
-            trans.setConstructionYearCategory(t.getTranzactionConstructionYearCategory());
-            trans.setConstructionYear(t.getTranzactionConstructionYear());
-            trans.setStandardLevel(t.getTranzactionStandardLevel());
-            trans.setParkingSpot(t.getTranzactionParkingSpot());
+//            Transaction trans = new Transaction();
+//            trans.setTransactionDate(t.getTranzactionDataTransaction());
+//            trans.setCity(t.getTranzactionCity());
+//            trans.setDistrict(t.getTranzactionDistrict().trim());
+//            trans.setStreet(t.getTranzactionStreet());
+//            trans.setTypeOfMarket(t.getTranzactionTypeOfMarket());
+//            trans.setPrice(t.getTranzactionPrice());
+//            trans.setFlatArea(t.getTranzactionFlatArea());
+//            trans.setPricePerM2(t.getTranzactionPricePerM2());
+//            trans.setLevel(t.getTranzactionLevel());
+//            trans.setConstructionYearCategory(t.getTranzactionConstructionYearCategory());
+//            trans.setConstructionYear(t.getTranzactionConstructionYear());
+//            trans.setStandardLevel(t.getTranzactionStandardLevel());
+//            trans.setParkingSpot(t.getTranzactionParkingSpot());
             transactionsBase.add(new Transaction(t));
         } );
         LOGGER.info("uruchomiono filtr bazowy: tabela wynikowa zawiera {} element/ów", transactionsBase.size());
@@ -157,8 +156,15 @@ public class FilterTransactions {
 
     private List<Transaction> multiDistrictFilter(List<Transaction> transactionsBase, Transaction userTransaction) {
         LOGGER.info("Multi District filter aktywowany");
+        
+        OptionalInt userDistrictWage = distrWagesHandler.lookForWage(userTransaction);
+        if(!userDistrictWage.isPresent()){
+            LOGGER.warn("{} {}" + "<--- ta dzielnica nie znajduje sie w bazie",userTransaction.getCity(),userTransaction.getDistrict());
+            return new ArrayList<>();
+        }
+
         List<Transaction> lista = transactionsBase.stream()
-                .filter(transaction -> distrWagesHandler.districtWageComparator(transaction, userTransaction))
+                .filter(transaction -> distrWagesHandler.multiDistrictWageComparator(transaction, userDistrictWage.getAsInt()))
                 .peek(t-> System.out.println("dzielnica badana:___"+t.getDistrict()+"___"+"Dzielnica usera:___"+ userTransaction.getDistrict()))
                 .collect(Collectors.toList());
         LOGGER.info("Po przefiltrowaniu MultiDistrictFilter uzyskano {} element/ów",lista.size());
