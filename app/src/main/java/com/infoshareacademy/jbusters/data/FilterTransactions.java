@@ -156,7 +156,7 @@ public class FilterTransactions {
 
     private List<Transaction> multiDistrictFilter(List<Transaction> transactionsBase, Transaction userTransaction) {
         LOGGER.info("Multi District filter aktywowany");
-        
+
         OptionalInt userDistrictWage = distrWagesHandler.lookForWage(userTransaction);
         if(!userDistrictWage.isPresent()){
             LOGGER.warn("{} {}" + "<--- ta dzielnica nie znajduje sie w bazie",userTransaction.getCity(),userTransaction.getDistrict());

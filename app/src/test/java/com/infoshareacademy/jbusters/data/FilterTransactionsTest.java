@@ -72,7 +72,7 @@ public class FilterTransactionsTest {
 
     }*/
 
-    private Transaction createTransaction(BigDecimal price){
+    /*private Transaction createTransaction(BigDecimal price){
 
         Transaction trans = new Transaction();
         trans.setCity("Gdynia");
@@ -111,5 +111,5 @@ public class FilterTransactionsTest {
         return trans;
     }
 
-
+*/
 }

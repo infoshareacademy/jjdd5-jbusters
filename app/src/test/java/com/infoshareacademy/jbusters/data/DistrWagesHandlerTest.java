@@ -1,7 +1,6 @@
 package com.infoshareacademy.jbusters.data;
 
 
-import com.infoshareacademy.jbusters.model.DistrictWage;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
