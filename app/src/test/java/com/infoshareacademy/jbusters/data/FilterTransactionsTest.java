@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FilterTransactionsTest {
-/*
+
     private List<Transaction> tempTransactions = new ArrayList();
 
   // @Test
@@ -50,7 +50,8 @@ public class FilterTransactionsTest {
 
     }
 
-//@Test
+/*
+@Test
     public void basicFilterTest(){
         tempTransactions=new ArrayList();
         LocalDate now = LocalDate.now();
@@ -64,15 +65,16 @@ public class FilterTransactionsTest {
         tempTransactions.add(createTransactionByDate(now.minusYears(6)));
 
         FilterTransactions ft = new FilterTransactions();
-        ft.init();
-        tempTransactions = ft.basicFilter(createTransactionByDate(now));
+        //ft.init();
+        tempTransactions = ft.theGreatFatFilter(createTransactionByDate(now));
 
         Assertions.assertEquals(3,tempTransactions.size());
 
 
-    }*/
+    }
+*/
 
-    /*private Transaction createTransaction(BigDecimal price){
+    private Transaction createTransaction(BigDecimal price){
 
         Transaction trans = new Transaction();
         trans.setCity("Gdynia");
@@ -111,5 +113,5 @@ public class FilterTransactionsTest {
         return trans;
     }
 
-*/
+
 }

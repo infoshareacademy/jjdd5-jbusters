@@ -15,25 +15,16 @@ import java.util.Properties;
 
 public class DistrWagesHandlerTest {
 
-//
-//
-//
-//    @Test
-//    public void EqualPropertykeyTest(){
-//
-//        Properties properties = new Properties();
-//        properties.setProperty("first", "12");
-//        properties.setProperty("second", "20");
-//        properties.setProperty("third", "12");
-//
-//        DistrWagesHandler distr = new DistrWagesHandler(properties);
-//
-//        Assertions.assertEquals(true,distr.isDistrictWageEqual("first", "third"));
-//
-//    }
+
+    @Test
+    void multiDistrictWageComparator() {
 
 
+    }
+
+    @Test
+    void lookForWage() {
 
 
-
+    }
 }

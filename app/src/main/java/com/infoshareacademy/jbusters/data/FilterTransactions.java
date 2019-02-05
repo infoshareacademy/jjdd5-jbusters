@@ -59,20 +59,6 @@ public class FilterTransactions {
 
         List<Transaction> transactionsBase = new ArrayList<>();
         tranzactionDao.basicFilter(oldestDateAccepted, userCity, userTransactionType, userConstrYearCat).forEach(t ->{
-//            Transaction trans = new Transaction();
-//            trans.setTransactionDate(t.getTranzactionDataTransaction());
-//            trans.setCity(t.getTranzactionCity());
-//            trans.setDistrict(t.getTranzactionDistrict().trim());
-//            trans.setStreet(t.getTranzactionStreet());
-//            trans.setTypeOfMarket(t.getTranzactionTypeOfMarket());
-//            trans.setPrice(t.getTranzactionPrice());
-//            trans.setFlatArea(t.getTranzactionFlatArea());
-//            trans.setPricePerM2(t.getTranzactionPricePerM2());
-//            trans.setLevel(t.getTranzactionLevel());
-//            trans.setConstructionYearCategory(t.getTranzactionConstructionYearCategory());
-//            trans.setConstructionYear(t.getTranzactionConstructionYear());
-//            trans.setStandardLevel(t.getTranzactionStandardLevel());
-//            trans.setParkingSpot(t.getTranzactionParkingSpot());
             transactionsBase.add(new Transaction(t));
         } );
         LOGGER.info("uruchomiono filtr bazowy: tabela wynikowa zawiera {} element/ów", transactionsBase.size());
