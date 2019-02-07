@@ -2,6 +2,7 @@ package com.infoshareacademy.jbusters.data;
 
 //import org.junit.Assert;
 
+import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
 
 import java.math.BigDecimal;
@@ -10,17 +11,14 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.runner.RunWith;
+import org.mockito.runners.MockitoJUnitRunner;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
+//@RunWith(MockitoJUnitRunner.class)
 public class FilterTransactionsTest {
+
+
 
     private List<Transaction> tempTransactions = new ArrayList();
 
@@ -50,29 +48,29 @@ public class FilterTransactionsTest {
 
     }
 
-/*
-@Test
-    public void basicFilterTest(){
-        tempTransactions=new ArrayList();
-        LocalDate now = LocalDate.now();
-        tempTransactions.add(createTransactionByDate(now));
-        tempTransactions.add(createTransactionByDate(now.minusYears(2).plusDays(1)));
-        tempTransactions.add(createTransactionByDate(now.minusYears(2)));
-        tempTransactions.add(createTransactionByDate(now.minusYears(2).minusDays(1)));
-        tempTransactions.add(createTransactionByDate(now.minusYears(3)));
-        tempTransactions.add(createTransactionByDate(now.minusYears(4)));
-        tempTransactions.add(createTransactionByDate(now.minusYears(5)));
-        tempTransactions.add(createTransactionByDate(now.minusYears(6)));
 
-        FilterTransactions ft = new FilterTransactions();
-        //ft.init();
-        tempTransactions = ft.theGreatFatFilter(createTransactionByDate(now));
+//@Test
+//    public void basicFilterTest(){
+//        tempTransactions=new ArrayList();
+//        LocalDate now = LocalDate.now();
+//        tempTransactions.add(createTransactionByDate(now));
+//        tempTransactions.add(createTransactionByDate(now.minusYears(2).plusDays(1)));
+//        tempTransactions.add(createTransactionByDate(now.minusYears(2)));
+//        tempTransactions.add(createTransactionByDate(now.minusYears(2).minusDays(1)));
+//        tempTransactions.add(createTransactionByDate(now.minusYears(3)));
+//        tempTransactions.add(createTransactionByDate(now.minusYears(4)));
+//        tempTransactions.add(createTransactionByDate(now.minusYears(5)));
+//        tempTransactions.add(createTransactionByDate(now.minusYears(6)));
+//
+//        FilterTransactions ft = new FilterTransactions();
+//        ft.init();
+//        tempTransactions = ft.theGreatFatFilter(createTransactionByDate(now));
+//
+//        Assertions.assertEquals(3,tempTransactions.size());
+//
+//
+//    }
 
-        Assertions.assertEquals(3,tempTransactions.size());
-
-
-    }
-*/
 
     private Transaction createTransaction(BigDecimal price){
 
